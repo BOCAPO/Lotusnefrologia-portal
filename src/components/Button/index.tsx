@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { TypesButton, styles } from './style';
+import { TypesButton, styles } from './styles';
 
 type Props = {
   title: string;
