@@ -1,3 +1,5 @@
 export const Strings = {
-  entry: 'Entrar'
+  entry: 'Entrar',
+  loginRequired: 'Digite o login',
+  passwordRequired: 'Digite a senha'
 };
