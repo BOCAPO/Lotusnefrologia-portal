@@ -24,25 +24,26 @@
     "@typescript-eslint",
     "react",
     "react-hooks",
-    "eslint-plugin-import-helpers"
+    "eslint-plugin-import-helpers",
+    "prettier"
   ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/react-in-jsx-scope": "off",
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "import-helpers/order-imports": [
       "warn",
       {
         "newlinesBetween": "always", // new line between groups
         "groups": [
-            ["/^react/", "/^next/", "/^@next/"],
-            "/components/",
-            "/module/",
-            "/^@shared/",
-            "/absolute/",
-            ["parent", "sibling", "index"]
-          ],
+          ["/^react/", "/^next/", "/^@next/"],
+          "/components/",
+          "/module/",
+          "/^@shared/",
+          "/absolute/",
+          ["parent", "sibling", "index"]
+        ],
         "alphabetize": { "order": "asc", "ignoreCase": true }
       }
     ]
