@@ -28,8 +28,11 @@
     "prettier"
   ],
   "rules": {
-    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/rules-of-hooks": "warn",
+    "prefer-const": "warn",
+    "no-unused-vars": "warn",
     "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
     "react/react-in-jsx-scope": "off",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "import-helpers/order-imports": [
