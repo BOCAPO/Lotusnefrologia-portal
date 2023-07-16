@@ -1,21 +1,17 @@
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
   min-height: 100vh;
+  width: 100%;
 }
 
 .description {
   display: inherit;
   justify-content: inherit;
   align-items: inherit;
-  font-size: 0.85rem;
   max-width: var(--max-width);
-  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
   z-index: 2;
-  font-family: var(--font-mono);
+  background: url('../assets/images/bg-login-lotus-portal-edit@0.25.png') no-repeat center center fixed #00555B;
 }
 
 .description a {
