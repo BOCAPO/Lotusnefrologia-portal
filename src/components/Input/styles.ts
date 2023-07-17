@@ -17,5 +17,13 @@ export const styles = {
     width: '100%',
     fontSize: 12,
     color: Colors.redInvalid
+  },
+  input: {
+    width: '100%',
+    height: '60px',
+    fontSize: 16,
+    border: '1px solid #E5E5E5',
+    borderRadius: '6px',
+    padding: '3%'
   }
 };

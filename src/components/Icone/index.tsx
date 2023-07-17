@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { FaFontAwesome } from 'react-icons/fa';
 
 type Props = PropsWithChildren<{
@@ -25,7 +25,7 @@ function getIcon(
   size: number,
   callback: (_click: boolean) => void
 ): JSX.Element | void {
-  const [click, setClick] = useState(true);
+  const [click, setClick] = React.useState(true);
 
   const buttonClick = (click: boolean) => {
     setClick(click);

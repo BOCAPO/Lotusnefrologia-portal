@@ -1,4 +1,7 @@
-import { ReactNode, createContext, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
+
+import { Prefs } from 'repository/Prefs';
+import { login } from 'services/logins';
 
 export type AuthContextProps = {
   signIn: (_logingUser: string, _password: string) => Promise<void>;
@@ -11,7 +14,7 @@ type AuthContextProviderProps = {
   children: ReactNode;
 };
 
-export const AuthContext = createContext({} as AuthContextProps);
+export const AuthContext = React.createContext({} as AuthContextProps);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +29,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
       if (response != null) {
         const token = response.Token as string;
-        sessionStorage.setItem('token', 'Bearer ' + token);
+        Prefs.setToken(token);
       }
     } finally {
       setIsLoading(false);

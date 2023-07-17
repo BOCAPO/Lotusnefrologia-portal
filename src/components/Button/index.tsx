@@ -6,6 +6,8 @@ type Props = {
   title: string;
   isLoading?: boolean;
   type?: TypesButton;
+  style?: React.CSSProperties;
+  onClick?: () => void;
 };
 
 export function Button({

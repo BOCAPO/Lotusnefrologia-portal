@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 import { Icon, TypeIcon } from 'components/Icone';
@@ -32,6 +32,8 @@ type Props = {
   error?: string | null;
   label?: string;
   name: string;
+  placeholder?: string;
+  editable?: boolean;
   iconType?: object;
   containerStyle?: React.CSSProperties;
   inputRef?: React.RefObject<HTMLInputElement>;
@@ -52,7 +54,7 @@ export function InputForm({
   type = 'text',
   ...rest
 }: Props) {
-  const [showInputContent, setShowInputContent] = useState(
+  const [showInputContent, setShowInputContent] = React.useState(
     type === 'password' ? false : true
   );
 
@@ -113,6 +115,8 @@ export function InputForm({
               <input
                 ref={inputRef}
                 {...rest}
+                style={styles.input}
+                name={name}
                 value={value || ''}
                 type={showInputContent ? type : 'password'}
                 onChange={handleChange}
