@@ -1,6 +1,7 @@
 export const Colors = {
   white: '#fff',
   black: '#000',
+  greenDark: '#00555B',
   button: {
     reset: {
       lightGray: '#EFEFEF',

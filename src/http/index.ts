@@ -1,18 +1,16 @@
-import { TipoToast } from '~/components/Toast';
+import { toast } from 'react-toastify';
 
+import { Strings } from 'assets/Strings';
 import axios from 'axios';
-import md5 from 'md5';
 import moment from 'moment';
-import { Flavor } from '~/assets/Flavor';
-import { Prefs } from '~/repository/Prefs';
-import { store } from '~/store';
-import { exibirToast } from '~/utils';
+import { Prefs } from 'repository/Prefs';
+import { store } from 'store';
 
 const client = axios.create();
 
 client.interceptors.request.use(async (config) => {
-  config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-  config.headers['X-Key'] = md5(`new${moment().utc().format('YY-MM-DD-HH')}`);
+  config.headers['Content-Type'] = 'application/json';
+  config.headers['X-Key'] = `new${moment().utc().format('YY-MM-DD-HH')}`;
   const token = await Prefs.getToken();
   if (token != null) {
     config.headers['Authorization'] = token;
@@ -29,13 +27,13 @@ client.interceptors.response.use(
     const silent = error.config.silent as boolean;
 
     if (error.response == undefined) {
-      exibirToast(Flavor.textos.falhaRequest, TipoToast.Erro);
+      toast.error(Strings.falhaRequest);
       return Promise.reject(error);
     } else if (body.status != undefined) {
       const status = body.status;
       if (status >= 500) {
         if (!silent) {
-          exibirToast(Flavor.textos.falhaRequest, TipoToast.Erro);
+          toast.error(Strings.falhaRequest);
         }
 
         return Promise.reject(error);
@@ -47,9 +45,9 @@ client.interceptors.response.use(
 
     if (!ok) {
       if (body.Msg_Erro != null) {
-        exibirToast(body.Msg_Erro, TipoToast.Erro);
+        toast.error(body.Msg_Erro);
       } else if (body.mensagem != null) {
-        exibirToast(body.mensagem, TipoToast.Erro);
+        toast.error(body.mensagem);
       }
     }
     return Promise.reject(new Error(body.Msg_Erro));

@@ -25,8 +25,15 @@ export const styles = {
   primaryButton: {
     backgroundColor: Colors.button.primary.greenDark,
     color: '#fff',
+    width: '100%',
+    height: '60px',
+    border: 'none',
+    borderRadius: '6px',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    fontFamily: 'Arial, sans-serif ',
     hover: {
-      opacity: 0.8
+      opacity: 0.2
     }
   },
   secondaryButton: {
