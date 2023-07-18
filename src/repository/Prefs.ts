@@ -1,15 +1,22 @@
 const PrefKeys = {
   token: 'token',
   login: 'login',
-  password: 'password'
+  password: 'password',
+  nameUser: 'nameUser'
 };
 
 export const Prefs = {
   setToken(valor: string) {
     set(PrefKeys.token, valor);
   },
+  setNameUser(valor: string) {
+    set(PrefKeys.nameUser, valor);
+  },
   getToken() {
     return get(PrefKeys.token);
+  },
+  getNameUser() {
+    return get(PrefKeys.nameUser);
   }
 };
 

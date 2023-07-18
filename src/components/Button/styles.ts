@@ -1,4 +1,5 @@
 import { Colors } from 'configs/Colors_default';
+import { Fonts } from 'configs/Fonts_default';
 
 export type TypesButton =
   | 'button'
@@ -31,7 +32,7 @@ export const styles = {
     borderRadius: '6px',
     fontSize: '18px',
     fontWeight: 'bold',
-    fontFamily: 'Arial, sans-serif ',
+    fontFamily: Fonts.primary.regular,
     hover: {
       opacity: 0.2
     }
