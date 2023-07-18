@@ -38,13 +38,22 @@
   border-radius: 6px;
   box-shadow: 0px 3px 6px #00000029;
   width: 30%;
-  height: 55%;
-  padding: 2%;
+  height: 45%;
+  padding: 2.5%;
 }
 
-.forgotPassword{
+.inputPassword {
+  padding: '2%'
+}
+
+.forgotPassword {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 1.3s ease-in-out;
+}
+
+.forgotPasswordText:hover {
+  text-decoration: underline;
 }

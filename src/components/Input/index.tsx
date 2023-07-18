@@ -37,6 +37,7 @@ type Props = {
   iconType?: object;
   containerStyle?: React.CSSProperties;
   inputRef?: React.RefObject<HTMLInputElement>;
+  className?: string;
   type?: string;
   getValue?: (_text: string) => void;
 };
@@ -51,6 +52,7 @@ export function InputForm({
   iconType = {},
   getValue,
   control,
+  className = '',
   type = 'text',
   ...rest
 }: Props) {
@@ -118,6 +120,7 @@ export function InputForm({
                 style={styles.input}
                 name={name}
                 value={value || ''}
+                className={className}
                 type={showInputContent ? type : 'password'}
                 onChange={handleChange}
               />

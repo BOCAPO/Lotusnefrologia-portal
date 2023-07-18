@@ -7,6 +7,7 @@ type Props = {
   bold: boolean;
   color: string;
   style?: object | null;
+  className?: string | undefined;
   callback?: () => void;
 };
 
@@ -16,10 +17,12 @@ function Text({
   lineHeight,
   bold,
   color,
+  className = undefined,
   style = null
 }: Props): JSX.Element {
   return (
     <p
+      className={className}
       style={{
         fontSize: sizeFont,
         lineHeight: lineHeight,
@@ -39,6 +42,7 @@ type PropsVariation = {
   bold: boolean;
   color: string;
   style?: object | null;
+  className?: string | undefined;
 };
 
 export function SmallText(props: PropsVariation) {
@@ -50,6 +54,7 @@ export function SmallText(props: PropsVariation) {
       text={props.text}
       color={props.color}
       style={props.style}
+      className={props.className}
     />
   );
 }
@@ -63,6 +68,7 @@ export function LitteText(props: PropsVariation) {
       text={props.text}
       color={props.color}
       style={props.style}
+      className={props.className}
     />
   );
 }
@@ -75,6 +81,7 @@ export function SmallMediumText(props: PropsVariation) {
       bold={props.bold}
       text={props.text}
       color={props.color}
+      className={props.className}
       style={props.style}
     />
   );
@@ -88,6 +95,7 @@ export function MediumText(props: PropsVariation) {
       bold={props.bold}
       text={props.text}
       color={props.color}
+      className={props.className}
       style={props.style}
     />
   );
@@ -96,11 +104,12 @@ export function MediumText(props: PropsVariation) {
 export function MediumLargeText(props: PropsVariation) {
   return (
     <Text
-      sizeFont={18}
-      lineHeight={20}
+      sizeFont={25}
+      lineHeight={5}
       bold={props.bold}
       text={props.text}
       color={props.color}
+      className={props.className}
       style={props.style}
     />
   );
@@ -114,6 +123,7 @@ export function LargeText(props: PropsVariation) {
       bold={props.bold}
       text={props.text}
       color={props.color}
+      className={props.className}
       style={props.style}
     />
   );
@@ -127,6 +137,7 @@ export function GiantBigText(props: PropsVariation) {
       bold={props.bold}
       text={props.text}
       color={props.color}
+      className={props.className}
       style={props.style}
     />
   );

@@ -1,18 +1,18 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from 'components/Button';
 import { InputForm } from 'components/Input';
-import { LargeText, SmallMediumText } from 'components/Text';
+import { LargeText, MediumText } from 'components/Text';
 
 import styles from './page.module.css';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { useAuth } from 'hooks/useAuth';
 import * as Yup from 'yup';
 
 type DataProps = {
@@ -24,9 +24,10 @@ const schema = Yup.object({
   password: Yup.string().required(Strings.passwordRequired)
 });
 
-export default function Login() {
+export default function LoginPage() {
   const [isLoading, setIsLoading] = React.useState(false);
-  const { signIn } = useAuth();
+  // const { signIn } = useAuth();
+  const router = useRouter();
 
   const {
     control,
@@ -39,7 +40,9 @@ export default function Login() {
   async function handleLogin(data: DataProps) {
     try {
       setIsLoading(true);
-      await signIn(String(data.login), String(data.password));
+      console.log(data);
+      // await signIn(String(data.login), String(data.password));
+      router.push('/home');
     } finally {
       setIsLoading(false);
     }
@@ -68,17 +71,18 @@ export default function Login() {
             type="password"
             placeholder={Strings.password}
             editable={!isLoading}
+            className={styles.inputPassword}
             error={errors.login?.message?.toString()}
             control={control}
-            style={{ padding: '2%' }}
-            containerStyle={{ width: '100%', marginTop: 20 }}
+            containerStyle={{ width: '100%', marginTop: 40 }}
           />
           <div className={styles.forgotPassword}>
-            <SmallMediumText
+            <MediumText
               text={Strings.forgotPassord}
               bold={false}
               color={Colors.greenDark}
               style={{ lineHeight: 5 }}
+              className={styles.forgotPasswordText}
             />
           </div>
           <div>
