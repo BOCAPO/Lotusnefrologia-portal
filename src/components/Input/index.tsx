@@ -128,7 +128,7 @@ export function InputForm({
           }}
         />
         {Object.keys(iconType).length >= 1 && (
-          <Icon typeIcon={iconType} size={20} callback={showContent} />
+          <Icon typeIcon={iconType} size={20} callback={showContent} color="" />
         )}
       </div>
       {error && <input style={styles.messageError}>{error}</input>}

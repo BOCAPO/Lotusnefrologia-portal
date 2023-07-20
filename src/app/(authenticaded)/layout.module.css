@@ -1,9 +1,72 @@
-.header {
-    height: 100px;
-    background-color: #fff;
-    padding: 0 5%;
+.bodyAuth {
+    background: url('../../assets/images/Logo-7@0.3x.png') #F5F6FA center center no-repeat;
+    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
 }
 
-.logoHeader {
-    line-height: 5;
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 15vh;
+    background-color: #fff;
+    padding: 0 7% 0 7%;
+}
+
+.logoHome {
+    width: 15%;
+    display: flex;
+}
+
+.logoHome img {
+    width: 100%;
+    height: 100%;
+}
+
+.searchBar {
+    width: 65%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.searchBar input[type="search"] {
+    width: 50%;
+    height: 40px;
+    border-radius: 4px;
+    border: none;
+    background: #F5F6FA;
+    padding: 0 4%;
+}
+
+.searchBar input[type="search"]::placeholder {
+    color: #8C8E90;
+}
+
+.searchBar input[type="search"]:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
+}
+
+.buttonsHeader {
+    width: 20%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.buttonsConfigHeader {
+    width: 39px;
+    height: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 14px;
+    background-color: #F5F6FA;
 }

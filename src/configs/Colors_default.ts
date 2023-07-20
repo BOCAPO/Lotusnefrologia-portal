@@ -1,5 +1,7 @@
 export const Colors = {
   white: '#fff',
+  whiteSmoke: '#F5F6FA',
+  gray60: '#8C8E90',
   black: '#000',
   greenDark: '#00555B',
   button: {
