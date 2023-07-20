@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,6 +12,7 @@ import { LargeText, MediumText } from 'components/Text';
 import styles from './page.module.css';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import LogoHome from 'assets/images/Logo@2x.png';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import * as Yup from 'yup';
@@ -51,12 +53,15 @@ export default function LoginPage() {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
+        <div className={styles.logoLogin}>
+          <Image src={LogoHome} alt="Logo Lótus Nefrologia" />
+        </div>
         <div className={styles.login}>
           <LargeText
             text={Strings.entry}
             color={Colors.gray90}
             bold={true}
-            style={{ lineHeight: 0 }}
+            style={{ lineHeight: 0, marginBottom: '5vh', marginTop: '4vh' }}
           />
           <InputForm
             name="login"
@@ -64,7 +69,8 @@ export default function LoginPage() {
             editable={!isLoading}
             error={errors.login?.message?.toString()}
             control={control}
-            containerStyle={{ width: '100%', marginTop: 16 }}
+            containerStyle={{ width: '100%' }}
+            className={styles.inputLogin}
           />
           <InputForm
             name="password"
@@ -74,7 +80,7 @@ export default function LoginPage() {
             className={styles.inputPassword}
             error={errors.login?.message?.toString()}
             control={control}
-            containerStyle={{ width: '100%', marginTop: 40 }}
+            containerStyle={{ width: '100%' }}
           />
           <div className={styles.forgotPassword}>
             <MediumText

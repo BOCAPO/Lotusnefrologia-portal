@@ -1,10 +1,19 @@
-import React, { PropsWithChildren } from 'react';
-import { FaFontAwesome } from 'react-icons/fa';
+'use client';
+
+import { PropsWithChildren, useState } from 'react';
+import {
+  FiBell,
+  FiEye,
+  FiEyeOff,
+  FiMoreVertical,
+  FiUser
+} from 'react-icons/fi';
 
 type Props = PropsWithChildren<{
   className?: string;
   style?: object;
   typeIcon?: object;
+  color: string;
   size: number;
   callback?: (_click: boolean) => void;
 }>;
@@ -13,19 +22,21 @@ export function Icon(props: Props): JSX.Element {
   const {
     typeIcon,
     size,
+    color,
     callback = () => {
       return;
     }
   } = props;
-  return getIcon(typeIcon, size, callback)!;
+  return getIcon(typeIcon, size, color, callback)!;
 }
 
 function getIcon(
   typeIcon: any,
   size: number,
+  color: string,
   callback: (_click: boolean) => void
 ): JSX.Element | void {
-  const [click, setClick] = React.useState(true);
+  const [click, setClick] = useState(true);
 
   const buttonClick = (click: boolean) => {
     setClick(click);
@@ -33,9 +44,10 @@ function getIcon(
   };
 
   return (
-    <typeIcon.typeFont
+    <typeIcon.icon
       name={click ? typeIcon.icon : typeIcon.alternativeIcon}
       size={size}
+      color={color}
       onClick={() => buttonClick(!click)}
     />
   );
@@ -43,8 +55,19 @@ function getIcon(
 
 export const TypeIcon = {
   Password: {
-    icon: 'eye',
-    alternativeIcon: 'eye-slash',
-    typeFont: FaFontAwesome
+    icon: FiEye,
+    alternativeIcon: FiEyeOff
+  },
+  UserLogged: {
+    icon: FiUser,
+    alternativeIcon: null
+  },
+  Notification: {
+    icon: FiBell,
+    alternativeIcon: null
+  },
+  More: {
+    icon: FiMoreVertical,
+    alternativeIcon: null
   }
 };

@@ -1,4 +1,4 @@
-import { http } from 'http';
+import { http } from '../http';
 
 export async function login(login: string, password: string) {
   const body = {
