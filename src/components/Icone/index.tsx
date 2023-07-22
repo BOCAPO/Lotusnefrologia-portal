@@ -6,6 +6,7 @@ import {
   FiEye,
   FiEyeOff,
   FiMoreVertical,
+  FiSearch,
   FiUser
 } from 'react-icons/fi';
 
@@ -68,6 +69,10 @@ export const TypeIcon = {
   },
   More: {
     icon: FiMoreVertical,
+    alternativeIcon: null
+  },
+  Search: {
+    icon: FiSearch,
     alternativeIcon: null
   }
 };

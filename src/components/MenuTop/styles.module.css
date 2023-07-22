@@ -1,0 +1,59 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2vh 10% 0 10%;
+    height: 80px;
+    background: #fff;
+    width: 80%;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.buttonsMenu {
+    width: 10%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s ease-in 0.1s;
+}
+
+.buttonsMenu:hover {
+    background-color: #A1C9A4;
+    cursor: pointer;
+}
+
+.buttonsMenu:hover .cardIcon img {
+    filter: contrast(0) brightness(0) invert(1);
+}
+
+.buttonsMenu:hover p {
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+.buttonsMenu:focus, .buttonsMenu:active {
+    border-bottom: 7px solid #A1C9A4;
+}
+
+.buttonsMenu:focus p, .buttonsMenu:active p {
+    font-weight: bold !important;
+}
+
+.cardIcon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonsMenu .cardIcon img {
+    margin-top: 3vh;
+    padding-top: 2vh;
+    width: 30px;
+    height: 30px;
+}
