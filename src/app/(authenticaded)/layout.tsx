@@ -37,6 +37,14 @@ export default function RootLayout({
           </div>
           <div className={styles.searchBar}>
             <input type="search" placeholder="Pesquisar" />
+            <div className={styles.iconSearch}>
+              <Icon
+                typeIcon={TypeIcon.Search}
+                size={20}
+                color={Colors.gray60}
+                callback={() => {}}
+              />
+            </div>
           </div>
           <div className={styles.buttonsHeader}>
             <MediumText
