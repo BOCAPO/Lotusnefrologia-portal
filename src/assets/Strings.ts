@@ -6,5 +6,14 @@ export const Strings = {
   password: 'Senha',
   forgotPassord: 'Esqueci a senha?',
   buttonLogin: 'Entrar',
-  falhaRequest: 'Serviço indisponível no momento. Tente novamente mais tarde'
+  falhaRequest: 'Serviço indisponível no momento. Tente novamente mais tarde',
+  headersHistory: [
+    'Nome',
+    'CPF',
+    'Data',
+    'Hora',
+    'Especialidade',
+    'Especialista',
+    'Unidade'
+  ]
 };

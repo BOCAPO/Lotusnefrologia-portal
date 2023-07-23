@@ -14,7 +14,7 @@ import LogoSchedules from 'assets/images/icons/1x/schedules_1.png';
 import LogoSchedulesAlternative from 'assets/images/icons/1x/schedules_alternative.png';
 import LogoStock from 'assets/images/icons/1x/stock_1.png';
 import LogoStockAlternative from 'assets/images/icons/1x/stock_alternative.png';
-import { MenuModel } from 'models/Menu';
+import { MenuModel } from 'models/MenuModel';
 
 export const menus: MenuModel[] = [
   {
@@ -30,31 +30,114 @@ export const menus: MenuModel[] = [
     title: 'Agendamentos',
     image: LogoSchedules,
     alternativeImage: LogoSchedulesAlternative,
-    link: '/schedules',
-    internalMenus: null
+    link: null,
+    internalMenus: [
+      {
+        idMenu: 9,
+        title: 'Calendário de Consultas',
+        image: null,
+        alternativeImage: null,
+        link: '/schedules/calendar',
+        internalMenus: null
+      },
+      {
+        idMenu: 10,
+        title: 'Histórico de Consultas',
+        image: null,
+        alternativeImage: null,
+        link: '/schedules/history',
+        internalMenus: null
+      },
+      {
+        idMenu: 11,
+        title: 'Consultas',
+        image: null,
+        alternativeImage: null,
+        link: '/schedules/consultations',
+        internalMenus: null
+      }
+    ]
   },
   {
     idMenu: 3,
     title: 'Exames',
     image: LogoExams,
     alternativeImage: LogoExamsAlternative,
-    link: '/exams',
-    internalMenus: null
+    link: null,
+    internalMenus: [
+      {
+        idMenu: 12,
+        title: 'Cadastrar Exames',
+        image: null,
+        alternativeImage: null,
+        link: '/exams/register',
+        internalMenus: null
+      },
+      {
+        idMenu: 13,
+        title: 'Consultar de Exames',
+        image: null,
+        alternativeImage: null,
+        link: '/exams/consult',
+        internalMenus: null
+      }
+    ]
   },
   {
     idMenu: 4,
     title: 'Nutrição',
     image: LogoNutrition,
     alternativeImage: LogoNutritionAlternative,
-    link: '/nutrition',
-    internalMenus: null
+    link: null,
+    internalMenus: [
+      {
+        idMenu: 14,
+        title: 'Pedidos da Cozinha',
+        image: null,
+        alternativeImage: null,
+        link: '/nutrition/kitchen',
+        internalMenus: null
+      },
+      {
+        idMenu: 15,
+        title: 'Cadastro de Produtos',
+        image: null,
+        alternativeImage: null,
+        link: '/nutrition/products',
+        internalMenus: null
+      },
+      {
+        idMenu: 16,
+        title: 'Cadastro de Nota Fiscal',
+        image: null,
+        alternativeImage: null,
+        link: '/nutrition/include-invoice',
+        internalMenus: null
+      },
+      {
+        idMenu: 17,
+        title: 'Cadastro de Cardápio',
+        image: null,
+        alternativeImage: null,
+        link: '/nutrition/include-menu',
+        internalMenus: null
+      },
+      {
+        idMenu: 18,
+        title: 'Planejar Cardápio',
+        image: null,
+        alternativeImage: null,
+        link: '/nutrition/plan-menu',
+        internalMenus: null
+      }
+    ]
   },
   {
     idMenu: 5,
     title: 'Financeiro',
     image: LogoFinancial,
     alternativeImage: LogoFinancialAlternative,
-    link: '/financial',
+    link: null,
     internalMenus: null
   },
   {
@@ -62,7 +145,7 @@ export const menus: MenuModel[] = [
     title: 'Assistencial',
     image: LogoAssistance,
     alternativeImage: LogoAssistanceAlternative,
-    link: '/assistance',
+    link: null,
     internalMenus: null
   },
   {
@@ -70,7 +153,7 @@ export const menus: MenuModel[] = [
     title: 'Estoque',
     image: LogoStock,
     alternativeImage: LogoStockAlternative,
-    link: '/stock',
+    link: null,
     internalMenus: null
   },
   {
@@ -78,7 +161,7 @@ export const menus: MenuModel[] = [
     title: 'Chat',
     image: LogoChat,
     alternativeImage: LogoChatAlternative,
-    link: '/chat',
+    link: null,
     internalMenus: null
   }
 ];
