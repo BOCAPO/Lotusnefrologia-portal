@@ -17,7 +17,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: 0.3s ease-in 0.1s;
+    transition: 0.2s ease-in 0.1s;
+    position: relative;
 }
 
 .buttonsMenu:hover {
@@ -29,9 +30,14 @@
     filter: contrast(0) brightness(0) invert(1);
 }
 
-.buttonsMenu:hover p {
+.buttonsMenu:hover a>p {
     color: #fff !important;
     font-weight: bold !important;
+}
+
+.buttonsMenu:hover .subMenu a p {
+    color: #00555B !important;
+    font-weight: normal !important;
 }
 
 .buttonsMenu:focus, .buttonsMenu:active {
@@ -42,18 +48,29 @@
     font-weight: bold !important;
 }
 
-.cardIcon {
+.buttonsMenu a, .cardIcon {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-decoration: none;
 }
 
-.buttonsMenu .cardIcon img {
+.buttonsMenu .cardIcon img, .buttonsMenu .cardIcon a img {
     margin-top: 3vh;
     padding-top: 2vh;
     width: 30px;
     height: 30px;
+}
+
+.buttonsMenu:hover div:first-of-type,
+.buttonsMenu:focus div:first-of-type,
+.buttonsMenu:active div:first-of-type {
+    display: flex !important;
+}
+
+.buttonsMenu div:first-of-type:hover {
+    display: flex !important;
 }
