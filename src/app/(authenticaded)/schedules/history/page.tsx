@@ -11,6 +11,7 @@ import styles from './page.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import dataHIstory from 'tests/mocks/dataHistory'; //mock de teste de dados
 
 export default function SchedulesPage() {
   return (
@@ -18,11 +19,13 @@ export default function SchedulesPage() {
       <MenuTop />
       <div className={styles.bodyHistory}>
         <div className={styles.headerHistory}>
-          <Button
-            title="Realizar Agendamento"
-            type="secondary"
-            onClick={() => {}}
-          />
+          <div className={styles.btnAddSchedule}>
+            <Button
+              title="Realizar Agendamento"
+              type="secondary"
+              onClick={() => {}}
+            />
+          </div>
           <div className={styles.searchBar}>
             <input type="search" placeholder="Pesquisar" />
             <div className={styles.iconSearch}>
@@ -36,7 +39,7 @@ export default function SchedulesPage() {
           </div>
         </div>
         <div className={styles.tableHistory}>
-          <Table headers={Strings.headersHistory} data={null} />
+          <Table headers={Strings.headersHistory} data={dataHIstory} />
         </div>
       </div>
     </React.Fragment>
