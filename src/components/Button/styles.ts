@@ -39,6 +39,13 @@ export const styles = {
   },
   secondaryButton: {
     backgroundColor: Colors.button.secondary.greenLight,
-    color: Colors.button.secondary.gray90
+    color: Colors.button.secondary.gray90,
+    width: '100%',
+    height: '100%',
+    maxHeight: '40px',
+    border: 'none',
+    borderRadius: '3px',
+    fontFamily: Fonts.primary.regular,
+    fontSize: '12px'
   }
 };

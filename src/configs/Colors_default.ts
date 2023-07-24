@@ -2,6 +2,7 @@ export const Colors = {
   white: '#fff',
   whiteSmoke: '#F5F6FA',
   gray60: '#8C8E90',
+  gray70: '#6F6D79',
   black: '#000',
   greenDark: '#00555B',
   button: {
