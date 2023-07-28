@@ -4,31 +4,30 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { ToastContainer } from 'react-toastify';
 
 import { Button } from 'components/Button';
+import { TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { LargeText, MediumText } from 'components/Text';
 
 import styles from './page.module.css';
 
+import { schema } from './schema';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import LogoHome from 'assets/images/Logo@2x.png';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import * as Yup from 'yup';
+import { useAuth } from 'hooks/useAuth';
 
 type DataProps = {
   [name: string]: string | number;
 };
 
-const schema = Yup.object({
-  login: Yup.string().required(Strings.loginRequired),
-  password: Yup.string().required(Strings.passwordRequired)
-});
-
 export default function LoginPage() {
   const [isLoading, setIsLoading] = React.useState(false);
-  // const { signIn } = useAuth();
+  const { signIn } = useAuth();
   const router = useRouter();
 
   const {
@@ -38,13 +37,15 @@ export default function LoginPage() {
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
   });
-
   async function handleLogin(data: DataProps) {
     try {
       setIsLoading(true);
-      console.log(data);
-      // await signIn(String(data.login), String(data.password));
-      router.push('/home');
+      const response = await signIn(String(data.login), String(data.password));
+      if (response !== undefined) {
+        router.push('/home');
+      } else {
+        throw new Error('Erro ao realizar login');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -63,25 +64,28 @@ export default function LoginPage() {
             bold={true}
             style={{ lineHeight: 0, marginBottom: '5vh', marginTop: '4vh' }}
           />
-          <InputForm
-            name="login"
-            placeholder={Strings.login}
-            editable={!isLoading}
-            error={errors.login?.message?.toString()}
-            control={control}
-            containerStyle={{ width: '100%' }}
-            className={styles.inputLogin}
-          />
-          <InputForm
-            name="password"
-            type="password"
-            placeholder={Strings.password}
-            editable={!isLoading}
-            className={styles.inputPassword}
-            error={errors.login?.message?.toString()}
-            control={control}
-            containerStyle={{ width: '100%' }}
-          />
+          <div className={styles.inputLogin}>
+            <InputForm
+              control={control}
+              name="login"
+              placeholder={Strings.login}
+              mask="cpfCnpj"
+              maxLength={14}
+              containerStyle={{ width: '100%' }}
+              error={errors.login?.message?.toString()}
+            />
+          </div>
+          <div className={styles.inputPassword}>
+            <InputForm
+              name="password"
+              control={control}
+              type="password"
+              placeholder={Strings.password}
+              containerStyle={{ width: '100%' }}
+              iconType={TypeIcon.Password}
+              error={errors.password?.message?.toString()}
+            />
+          </div>
           <div className={styles.forgotPassword}>
             <MediumText
               text={Strings.forgotPassord}
@@ -101,6 +105,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }

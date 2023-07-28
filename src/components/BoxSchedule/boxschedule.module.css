@@ -1,0 +1,23 @@
+.containerBoxSchedule{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #21212169;
+    position: absolute;
+    top: 0;
+}
+
+.bodyBoxSchedule{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    height: 50%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+}
