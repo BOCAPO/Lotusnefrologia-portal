@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { BoxSchedule } from 'components/BoxSchedule';
 import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
@@ -14,6 +15,8 @@ import { Colors } from 'configs/Colors_default';
 import dataHIstory from 'tests/mocks/dataHistory'; //mock de teste de dados
 
 export default function SchedulesPage() {
+  const [visible, setVisible] = React.useState(false);
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -23,7 +26,9 @@ export default function SchedulesPage() {
             <Button
               title="Realizar Agendamento"
               type="secondary"
-              onClick={() => {}}
+              onClick={() => {
+                setVisible(true);
+              }}
             />
           </div>
           <div className={styles.searchBar}>
@@ -42,6 +47,7 @@ export default function SchedulesPage() {
           <Table headers={Strings.headersHistory} data={dataHIstory} />
         </div>
       </div>
+      <BoxSchedule visible={visible} />
     </React.Fragment>
   );
 }

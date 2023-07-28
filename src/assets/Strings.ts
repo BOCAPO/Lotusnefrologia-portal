@@ -1,9 +1,10 @@
 export const Strings = {
   entry: 'Entrar',
-  loginRequired: 'Digite o login',
+  loginRequired: 'Digite o CPF',
   passwordRequired: 'Digite a senha',
   login: 'CPF',
   password: 'Senha',
+  schemaValidationCpfCnpj: 'CPF inválido.',
   forgotPassord: 'Esqueci a senha?',
   buttonLogin: 'Entrar',
   falhaRequest: 'Serviço indisponível no momento. Tente novamente mais tarde',
@@ -15,5 +16,21 @@ export const Strings = {
     'Especialidade',
     'Especialista',
     'Unidade'
-  ]
+  ],
+  schedule: 'Agendamento',
+  description: 'Descrição',
+  pacient: 'Paciente',
+  speciality: 'Especialidade',
+  specialist: 'Especialista',
+  date: 'Data',
+  hour: 'Hora',
+  observation: 'Observação',
+  descriptionRequired: 'Descrição é obrigatório',
+  pacientRequired: 'Paciente é obrigatório',
+  specialityRequired: 'Especialidade é obrigatório',
+  specialistRequired: 'Especialista é obrigatório',
+  dateRequired: 'Data é obrigatório',
+  hourRequired: 'Hora é obrigatório',
+  save: 'Salvar',
+  cancel: 'Cancelar'
 };

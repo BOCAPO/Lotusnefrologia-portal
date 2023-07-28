@@ -4,23 +4,29 @@ import { Control, Controller } from 'react-hook-form';
 import { Icon, TypeIcon } from 'components/Icone';
 import { MediumText } from 'components/Text';
 
+import stylesCss from './input.module.css';
+
 import { styles } from './styles';
 
 import { Colors } from 'configs/Colors_default';
 import {
-  cellPhoneMask,
+  cellPhoneMak,
   cepMask,
+  cnpjMask,
   coinMask,
   cpfCnpjMask,
+  cpfMask,
   dateMask,
   onlyLetters,
-  phoneMask
+  phoneMak
 } from 'utils/masks';
 
 type MaskProps =
   | 'coin'
   | 'date'
   | 'cpfCnpj'
+  | 'cpf'
+  | 'cnpj'
   | 'phone'
   | 'cellPhone'
   | 'cep'
@@ -32,6 +38,7 @@ type Props = {
   error?: string | null;
   label?: string;
   name: string;
+  maxLength?: number | undefined;
   placeholder?: string;
   editable?: boolean;
   iconType?: object;
@@ -49,10 +56,10 @@ export function InputForm({
   name,
   containerStyle = {},
   inputRef,
+  maxLength = 100,
   iconType = {},
   getValue,
   control,
-  className = '',
   type = 'text',
   ...rest
 }: Props) {
@@ -65,16 +72,21 @@ export function InputForm({
     setShowInputContent(!showInputContent);
   }
 
+  function setMasks(text: string, mask?: MaskProps) {
+    if (['cpf', 'cnpj', 'cpfCnpj'].includes(mask!)) {
+      return cpfCnpjMasks(text, mask);
+    }
+    return masks(text, mask);
+  }
+
   function masks(text: string, mask?: MaskProps) {
     switch (mask) {
       case 'date':
         return dateMask(text);
-      case 'cpfCnpj':
-        return cpfCnpjMask(text);
       case 'phone':
-        return phoneMask(text);
+        return phoneMak(text);
       case 'cellPhone':
-        return cellPhoneMask(text);
+        return cellPhoneMak(text);
       case 'cep':
         return cepMask(text);
       case 'onlyLetters':
@@ -82,12 +94,25 @@ export function InputForm({
       case 'coin':
         return coinMask(text, true);
       default:
-        return text;
+        text;
+    }
+  }
+
+  function cpfCnpjMasks(text: string, mask?: MaskProps) {
+    switch (mask) {
+      case 'cpfCnpj':
+        return cpfCnpjMask(text);
+      case 'cnpj':
+        return cnpjMask(text);
+      case 'cpf':
+        return cpfMask(text);
+      default:
+        text;
     }
   }
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className={stylesCss.container}>
       {label && (
         <MediumText
           text={label}
@@ -108,9 +133,12 @@ export function InputForm({
           render={({ field: { onChange, value } }) => {
             const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
               const text = event.target.value;
-              const updatedValue = mask ? masks(text, mask) : text;
+              const updatedValue =
+                mask !== null && mask !== undefined
+                  ? setMasks(text, mask!)
+                  : text;
               onChange(updatedValue);
-              getValue && getValue(updatedValue.toString());
+              getValue && getValue(updatedValue!.toString());
             };
 
             return (
@@ -119,8 +147,9 @@ export function InputForm({
                 {...rest}
                 style={styles.input}
                 name={name}
-                value={value || ''}
-                className={className}
+                maxLength={maxLength}
+                value={value}
+                className={stylesCss.input}
                 type={showInputContent ? type : 'password'}
                 onChange={handleChange}
               />
@@ -128,10 +157,19 @@ export function InputForm({
           }}
         />
         {Object.keys(iconType).length >= 1 && (
-          <Icon typeIcon={iconType} size={20} callback={showContent} color="" />
+          <div className={stylesCss.iconContainer}>
+            <Icon
+              typeIcon={iconType}
+              size={20}
+              callback={() => {
+                showContent;
+              }}
+              color=""
+            />
+          </div>
         )}
       </div>
-      {error && <input style={styles.messageError}>{error}</input>}
+      {error && <p className={stylesCss.messageError}>{error}</p>}
     </div>
   );
 }

@@ -20,7 +20,7 @@ export const Prefs = {
   }
 };
 
-async function set(chave: string, valor: string) {
+function set(chave: string, valor: string) {
   try {
     return localStorage.setItem(chave, valor);
   } catch (e) {
@@ -28,7 +28,7 @@ async function set(chave: string, valor: string) {
   }
 }
 
-async function get(chave: string) {
+function get(chave: string) {
   try {
     return localStorage.getItem(chave);
   } catch (e) {

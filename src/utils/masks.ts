@@ -1,19 +1,27 @@
 export const cpfCnpjMask = (value: string) => {
   if (value.length > 13) {
-    return value
-      .replace(/\D/g, '')
-      .replace(/(\d{2})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d{2})/, '$1/$2')
-      .replace(/(\d{4})(\d)/, '$1-$2');
+    return cnpjMask(value);
   } else {
-    return value
-      .replace(/\D/g, '')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d{2})/, '$1-$2')
-      .replace(/(-\d{2})\d+?$/, '$1');
+    return cpfMask(value);
   }
+};
+
+export const cnpjMask = (value: string) => {
+  return value
+    .replace(/\D/g, '')
+    .replace(/(\d{2})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{2})/, '$1/$2')
+    .replace(/(\d{4})(\d)/, '$1-$2');
+};
+
+export const cpfMask = (value: string) => {
+  return value
+    .replace(/\D/g, '')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{2})/, '$1-$2')
+    .replace(/(-\d{2})\d+?$/, '$1');
 };
 
 export const dateMask = (value: string) => {
@@ -24,7 +32,7 @@ export const dateMask = (value: string) => {
     .replace(/(\d{4})(\d)/, '$1');
 };
 
-export const phoneMask = (value: string) => {
+export const phoneMak = (value: string) => {
   return value
     .replace(/\D/g, '')
     .replace(/(\d{2})(\d)/, '($1) $2')
@@ -32,7 +40,7 @@ export const phoneMask = (value: string) => {
     .replace(/(-\d{4})(\d+?)$/, '$1');
 };
 
-export const cellPhoneMask = (value: string) => {
+export const cellPhoneMak = (value: string) => {
   return value
     .replace(/\D/g, '')
     .replace(/(\d{2})(\d)/, '($1) $2')

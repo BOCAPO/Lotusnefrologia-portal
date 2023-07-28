@@ -2,6 +2,7 @@
 
 import { Metadata } from 'next';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 import { Icon, TypeIcon } from 'components/Icone';
 import { MediumText } from 'components/Text';
@@ -10,6 +11,8 @@ import styles from './layout.module.css';
 
 import LogoHome from 'assets/images/Logo-7.png';
 import { Colors } from 'configs/Colors_default';
+import { useIsClient } from 'hooks/useIsClient';
+import { Prefs } from 'repository/Prefs';
 
 export const metadata: Metadata = {
   title: 'Portal Lótus Nefrologia - Login',
@@ -28,6 +31,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const isClient = useIsClient();
+  const [nameUser, setNameUser] = useState('' as string | undefined);
+  useEffect(() => {
+    if (isClient) {
+      setNameUser(Prefs.getNameUser()?.toString());
+    }
+  }, [isClient]);
+
   return (
     <html lang="pt-br">
       <body className={styles.bodyAuth}>
@@ -48,10 +59,10 @@ export default function RootLayout({
           </div>
           <div className={styles.buttonsHeader}>
             <MediumText
-              text="Danilo"
+              text={nameUser !== undefined ? nameUser : 'Usuário'}
               bold={true}
               color={Colors.gray90}
-              style={{ lineheight: 5 }}
+              style={{ lineheight: 5, marginRight: 10 }}
             />
             <button className={styles.buttonsConfigHeader}>
               <Icon

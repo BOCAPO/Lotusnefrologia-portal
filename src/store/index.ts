@@ -4,7 +4,7 @@ const slice = createSlice({
   name: 'portal',
   initialState: {
     isLogged: false,
-    baseURL: ''
+    baseURL: 'https://lotus.1boaideia.com.br/api'
   },
   reducers: {
     setLogged: (state, action) => {
