@@ -62,7 +62,7 @@ export default function RootLayout({
               text={nameUser !== undefined ? nameUser : 'Usuário'}
               bold={true}
               color={Colors.gray90}
-              style={{ lineheight: 5, marginRight: 10 }}
+              style={{ lineHeight: 5, marginRight: 10 }}
             />
             <button className={styles.buttonsConfigHeader}>
               <Icon
