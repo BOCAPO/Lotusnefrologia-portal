@@ -17,6 +17,9 @@ export const Colors = {
     secondary: {
       greenLight: '#CBEACF',
       gray90: '#212121'
+    },
+    cancel: {
+      grayLight: '#EFEFEF'
     }
   },
   redInvalid: '#FF0000',

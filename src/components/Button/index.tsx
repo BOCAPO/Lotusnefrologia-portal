@@ -19,6 +19,8 @@ export function Button({
   const stylesButton = useMemo(() => {
     if (type === 'button') {
       return styles.button;
+    } else if (type === 'cancel') {
+      return styles.cancelButton;
     } else if (type === 'reset') {
       return styles.resetButton;
     } else if (type === 'primary') {
