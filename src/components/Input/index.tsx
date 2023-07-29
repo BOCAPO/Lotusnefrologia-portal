@@ -46,6 +46,7 @@ type Props = {
   inputRef?: React.RefObject<HTMLInputElement>;
   className?: string;
   type?: string;
+  style?: React.CSSProperties | undefined;
   getValue?: (_text: string) => void;
 };
 
@@ -60,6 +61,7 @@ export function InputForm({
   iconType = {},
   getValue,
   control,
+  style,
   type = 'text',
   ...rest
 }: Props) {
@@ -145,10 +147,10 @@ export function InputForm({
               <input
                 ref={inputRef}
                 {...rest}
-                style={styles.input}
                 name={name}
                 maxLength={maxLength}
                 value={value}
+                style={style}
                 className={stylesCss.input}
                 type={showInputContent ? type : 'password'}
                 onChange={handleChange}
