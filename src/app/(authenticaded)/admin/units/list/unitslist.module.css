@@ -1,4 +1,4 @@
-.bodyHistory {
+.bodyUnitsList {
     width: 90%;
     height: 70%;
     display: flex;
@@ -8,10 +8,12 @@
     align-items: center;
     background: #FFFFFF;
     overflow: hidden;
-    position: relative;
+    position: relative; 
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 9px;
 }
 
-.headerHistory {
+.headerUnitsList {
     width: 100%;
     height: 5vh;
     display: flex;
@@ -19,6 +21,7 @@
     align-items: center;
     justify-content: space-between;
 }
+
 
 .searchBar {
     width: 25%;
@@ -30,8 +33,8 @@
 
 .iconSearch {
     position: absolute;
-    left: 1%;
-    top: 1vh;
+    left: 2%;
+    top: 0.5vh;
 }
 
 .searchBar input[type="search"] {
@@ -53,7 +56,7 @@
     outline: none;
 }
 
-.tableHistory {
+.tableUnitsList {
     width: 100%;
     height: 100%;
     display: flex;
@@ -62,7 +65,7 @@
     align-items: center;
 }
 
-.btnAddSchedule {
+.btnAddUnit {
     width: 10%;
     height: 5vh;
     display: flex;
@@ -71,7 +74,7 @@
     transition: all 0.2s ease-in-out;
 }
 
-.btnAddSchedule:hover {
+.btnAddUnit:hover {
     cursor: pointer;
     filter: brightness(0.9);
 }

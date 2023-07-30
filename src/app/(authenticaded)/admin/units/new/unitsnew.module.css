@@ -1,0 +1,45 @@
+.bodyNewUnit {
+    width: 90%;
+    height: 70%;
+    display: flex;
+    margin: 3vh 5%;
+    flex-direction: column;
+    padding: 1% 2%;
+    align-items: center;
+    background: #FFFFFF;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 9px;
+}
+
+.headerNewUnit{
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    border-bottom: 1px solid #00000029;
+    margin-bottom: 2vh;
+}
+
+.formNewUnit{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+}
+
+.formNewUnit > div{
+    width: 100%;
+    height: 6vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+}

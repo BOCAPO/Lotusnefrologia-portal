@@ -166,7 +166,7 @@ export const menusAdmin: MenuModel[] = [
     title: 'Unidades',
     image: null,
     alternativeImage: null,
-    link: '/admin/units',
+    link: '/admin/units/list',
     internalMenus: null
   },
   {

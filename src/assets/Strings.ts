@@ -17,6 +17,7 @@ export const Strings = {
     'Especialista',
     'Unidade'
   ],
+  headersUnits: ['CNPJ', 'Nome', 'Telefone', 'E-mail', 'CEP', 'Endereço'],
   schedule: 'Agendamento',
   description: 'Descrição',
   pacient: 'Paciente',
@@ -32,5 +33,6 @@ export const Strings = {
   dateRequired: 'Data é obrigatório',
   hourRequired: 'Hora é obrigatório',
   save: 'Salvar',
-  cancel: 'Cancelar'
+  cancel: 'Cancelar',
+  inserUnit: 'Cadastrar Unidade'
 };
