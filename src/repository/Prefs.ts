@@ -17,6 +17,10 @@ export const Prefs = {
   },
   getNameUser() {
     return get(PrefKeys.nameUser);
+  },
+  clear() {
+    localStorage.clear();
+    sessionStorage.clear();
   }
 };
 

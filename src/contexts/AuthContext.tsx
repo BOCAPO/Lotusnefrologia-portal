@@ -12,7 +12,7 @@ export type AuthContextDataProps = {
     _loginUser: string,
     _password: string
   ) => Promise<string | undefined>;
-  signOut: () => void;
+  signOut: () => Promise<boolean>;
   isLoading: boolean;
   isLogged: boolean;
 };
@@ -55,8 +55,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
-  function signOut() {
+  async function signOut(): Promise<boolean> {
+    Prefs.clear();
     setIsLogged(false);
+    return true;
   }
 
   return (

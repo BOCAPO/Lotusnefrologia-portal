@@ -9,10 +9,10 @@ import { MediumText } from 'components/Text';
 import styles from './menutop.module.css';
 
 import { Colors } from 'configs/Colors_default';
-import { menus } from 'utils/menus';
+import { menusMain } from 'utils/menus';
 
 export function MenuTop() {
-  const menusArray = Object.values(menus);
+  const menusArray = Object.values(menusMain);
   return (
     <div className={styles.container}>
       {menusArray.map((menu, index) => (

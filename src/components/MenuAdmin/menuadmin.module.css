@@ -1,0 +1,44 @@
+.menuAdmin {
+    position: absolute;
+    top: 7vh;
+    right: 10%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 15%;
+    background-color: #fff;
+    z-index: 2;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    display: none;
+    transition: 0.5s ease-in-out 3s;
+}
+
+.menuAdmin:hover{
+    display: block !important;
+    transition: all 0.5s ease-in-out 3s;
+}
+
+.menuAdmin a {
+    width: 100%;
+    text-decoration: none;
+}
+
+.menuAdminItem {
+    width: 90%;
+    padding: 2% 0%;
+    margin: 0 5%;
+    height: 45px;
+    border-bottom: 1px solid #D0D1D5;
+    transition: 0.5s ease-in 0.1s;
+}
+
+.menuAdmin a:last-child .menuAdminItem {
+    border-bottom: none;
+}
+
+.menuAdminItem:hover {
+    background-color: #F5F6FA;
+}

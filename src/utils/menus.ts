@@ -10,7 +10,7 @@ import LogoSchedules from 'assets/images/icons/1x/schedules_1.png';
 import LogoSchedulesAlternative from 'assets/images/icons/1x/schedules_alternative.png';
 import { MenuModel } from 'models/MenuModel';
 
-export const menus: MenuModel[] = [
+export const menusMain: MenuModel[] = [
   {
     idMenu: 1,
     title: 'Home',
@@ -156,6 +156,76 @@ export const menus: MenuModel[] = [
     image: LogoChat,
     alternativeImage: LogoChatAlternative,
     link: null,
+    internalMenus: null
+  }
+];
+
+export const menusAdmin: MenuModel[] = [
+  {
+    idMenu: 1,
+    title: 'Unidades',
+    image: null,
+    alternativeImage: null,
+    link: '/admin/units',
+    internalMenus: null
+  },
+  {
+    idMenu: 2,
+    title: 'Perfil de Acesso',
+    image: null,
+    alternativeImage: null,
+    link: '/admin/profile-access',
+    internalMenus: null
+  },
+  {
+    idMenu: 3,
+    title: 'Usuários',
+    image: null,
+    alternativeImage: null,
+    link: '/admin/users',
+    internalMenus: null
+  },
+  {
+    idMenu: 4,
+    title: 'Especialidades',
+    image: null,
+    alternativeImage: null,
+    link: '/admin/specialties',
+    internalMenus: null
+  },
+  {
+    idMenu: 5,
+    title: 'Especialistas',
+    image: null,
+    alternativeImage: null,
+    link: '/admin/specialists',
+    internalMenus: null
+  },
+  {
+    idMenu: 6,
+    title: 'Pacientes',
+    image: null,
+    alternativeImage: null,
+    link: '/admin/patients',
+    internalMenus: null
+  }
+];
+
+export const menusProfile: MenuModel[] = [
+  {
+    idMenu: 1,
+    title: 'Meus Dados',
+    image: null,
+    alternativeImage: null,
+    link: '/profile/my-data',
+    internalMenus: null
+  },
+  {
+    idMenu: 2,
+    title: 'Alterar Senha',
+    image: null,
+    alternativeImage: null,
+    link: '/profile/change-password',
     internalMenus: null
   }
 ];
