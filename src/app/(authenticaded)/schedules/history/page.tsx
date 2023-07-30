@@ -2,10 +2,10 @@
 
 import React from 'react';
 
-import { BoxSchedule } from 'components/BoxSchedule';
 import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
+import Modal from 'components/ModalBoxSchedule';
 import { Table } from 'components/Table';
 
 import styles from './page.module.css';
@@ -47,7 +47,13 @@ export default function SchedulesPage() {
           <Table headers={Strings.headersHistory} data={dataHIstory} />
         </div>
       </div>
-      <BoxSchedule visible={visible} />
+      {/* <BoxSchedule visible={visible} /> */}
+      <Modal
+        show={visible}
+        onHide={() => {
+          setVisible(false);
+        }}
+      />
     </React.Fragment>
   );
 }

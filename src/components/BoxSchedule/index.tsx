@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 
 import { Button } from 'components/Button';
@@ -57,9 +58,32 @@ export function BoxSchedule({ visible }: Props) {
                 error={errors.descriptionRequired?.message?.toString()}
                 style={{ height: '40px', padding: '5px 10px', fontSize: 12 }}
               />
-              <select>
-                <option value="1">1</option>
-              </select>
+              <Form.Select aria-label="Default select example">
+                <option value="1">
+                  <Form.Control
+                    type="color"
+                    id="exampleColorInput"
+                    defaultValue="#563d7c"
+                    title="Choose your color"
+                  />
+                </option>
+                <option value="2">
+                  <Form.Control
+                    type="color"
+                    id="exampleColorInput"
+                    defaultValue="#563d7c"
+                    title="Choose your color"
+                  />
+                </option>
+                <option value="3">
+                  <Form.Control
+                    type="color"
+                    id="exampleColorInput"
+                    defaultValue="#563d7c"
+                    title="Choose your color"
+                  />
+                </option>
+              </Form.Select>
             </div>
             <div className={styles.twoColumns}>
               <InputForm
@@ -140,7 +164,7 @@ export function BoxSchedule({ visible }: Props) {
                 className={styles.observationInput}
                 name="observation"
                 style={{
-                  width: '95%',
+                  width: '100%',
                   height: '100px',
                   fontSize: 12
                 }}

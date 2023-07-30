@@ -3,9 +3,9 @@
     justify-content: space-around;
     align-items: center;
     padding: 2vh 10% 0 10%;
-    height: 80px;
+    height: 10vh;
     background: #fff;
-    width: 80%;
+    width: 100%;
     border-bottom: 1px solid #ddd;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }
@@ -61,8 +61,7 @@
 .buttonsMenu .cardIcon img, .buttonsMenu .cardIcon a img {
     margin-top: 3vh;
     padding-top: 2vh;
-    width: 30px;
-    height: 30px;
+    width: 20%;
 }
 
 .buttonsMenu:hover div:first-of-type,

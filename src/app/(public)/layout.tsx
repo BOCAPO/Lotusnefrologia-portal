@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 
 import { AuthContextProvider } from 'contexts/AuthContext';
+// Importing the Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/global.css';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Portal Lótus Nefrologia - Login',
@@ -25,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body className={inter.className}>
+      <body>
         <AuthContextProvider>{children}</AuthContextProvider>
       </body>
     </html>

@@ -37,7 +37,7 @@
 .iconSearch {
     position: absolute;
     left: 1%;
-    top: 1vh;
+    top: 0.5vh;
 }
 
 .searchBar input[type="search"] {
@@ -67,7 +67,7 @@
     justify-content: space-around;
 }
 
-.buttonsConfigHeader {
+.firstMenuAdmin, .secondMenuAdmin, .thirtyMenuAdmin {
     width: 39px;
     height: 39px;
     display: flex;
@@ -76,4 +76,16 @@
     border: none;
     border-radius: 14px;
     background-color: #F5F6FA;
+}
+
+.firstMenuAdmin:hover+div,
+.firstMenuAdmin:focus+div,
+.firstMenuAdmin:active+div {
+    display: block !important;
+}
+
+.thirtyMenuAdmin:hover+div,
+.thirtyMenuAdmin:focus+div,
+.thirtyMenuAdmin:active+div {
+    display: block !important;
 }

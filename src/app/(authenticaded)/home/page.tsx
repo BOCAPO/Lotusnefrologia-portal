@@ -1,3 +1,5 @@
+'use client';
+
 import { MenuTop } from 'components/MenuTop';
 
 export default function HomePage() {
