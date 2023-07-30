@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 100%;
   height: calc(100% - 13vh);
+  min-height: 50vh;
   overflow: hidden scroll;
   scroll-behavior: auto;
 }

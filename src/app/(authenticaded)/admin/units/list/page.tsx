@@ -1,33 +1,35 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
-import Modal from 'components/ModalBoxSchedule';
 import { Table } from 'components/Table';
 
-import styles from './history.module.css';
+import styles from './unitslist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import dataHIstory from 'tests/mocks/dataHistory'; //mock de teste de dados
+import dataUnits from 'tests/mocks/dataUnits'; //mock de teste de dados
 
-export default function SchedulesPage() {
-  const [visible, setVisible] = React.useState(false);
+export default function ListUnitsPage() {
+  //   const { data, isLoading } = useGetUnits();
+  const router = useRouter();
+  //   if (isLoading) return <Loading />;
 
   return (
     <React.Fragment>
       <MenuTop />
-      <div className={styles.bodyHistory}>
-        <div className={styles.headerHistory}>
-          <div className={styles.btnAddSchedule}>
+      <div className={styles.bodyUnitsList}>
+        <div className={styles.headerUnitsList}>
+          <div className={styles.btnAddUnit}>
             <Button
-              title="Realizar Agendamento"
+              title="Cadastrar Unidade"
               type="secondary"
               onClick={() => {
-                setVisible(true);
+                router.push('/admin/units/new');
               }}
             />
           </div>
@@ -43,16 +45,10 @@ export default function SchedulesPage() {
             </div>
           </div>
         </div>
-        <div className={styles.tableHistory}>
-          <Table headers={Strings.headersHistory} data={dataHIstory} />
+        <div className={styles.tableUnitsList}>
+          <Table headers={Strings.headersUnits} data={dataUnits} />
         </div>
       </div>
-      <Modal
-        show={visible}
-        onHide={() => {
-          setVisible(false);
-        }}
-      />
     </React.Fragment>
   );
 }

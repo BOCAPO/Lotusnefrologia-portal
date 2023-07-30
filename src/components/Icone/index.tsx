@@ -3,6 +3,7 @@
 import { PropsWithChildren, useState } from 'react';
 import {
   FiBell,
+  FiExternalLink,
   FiEye,
   FiEyeOff,
   FiMoreVertical,
@@ -73,6 +74,10 @@ export const TypeIcon = {
   },
   Search: {
     icon: FiSearch,
+    alternativeIcon: null
+  },
+  ExternalLink: {
+    icon: FiExternalLink,
     alternativeIcon: null
   }
 };

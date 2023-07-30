@@ -43,6 +43,7 @@ export default function MenuProfile({ style, id }: Props) {
         onClick={() => {
           handleLogout();
         }}
+        className={styles.menuProfilerBtn}
       >
         <SmallMediumText
           text="Sair"

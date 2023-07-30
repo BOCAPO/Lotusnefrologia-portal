@@ -42,3 +42,18 @@
 .menuProfileItem:hover {
     background-color: #F5F6FA;
 }
+
+.menuProfilerBtn{
+    border: none;
+    background-color: transparent;
+    margin: 0% 5%;
+    padding:0%;
+    height: 45px;
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.menuProfilerBtn:hover{
+    background-color: #F5F6FA;
+}
