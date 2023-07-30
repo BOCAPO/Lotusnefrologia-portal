@@ -8,26 +8,26 @@ import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
 import { Table } from 'components/Table';
 
-import styles from './unitslist.module.css';
+import styles from './patientslist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import dataUnits from 'tests/mocks/dataUnits'; //mock de teste de dados
+import dataPatients from 'tests/mocks/dataPatients'; //mock de teste de dados
 
-export default function ListUnitsPage() {
+export default function PatientListPage() {
   const router = useRouter();
 
   return (
     <React.Fragment>
       <MenuTop />
-      <div className={styles.bodyUnitsList}>
-        <div className={styles.headerUnitsList}>
-          <div className={styles.btnAddUnit}>
+      <div className={styles.bodyPatientList}>
+        <div className={styles.headerPatientList}>
+          <div className={styles.btnAddPatient}>
             <Button
-              title={Strings.inserUnit}
+              title={Strings.insertPatient}
               type="secondary"
               onClick={() => {
-                router.push('/admin/units/new');
+                router.push('/admin/patients/new');
               }}
             />
           </div>
@@ -43,8 +43,8 @@ export default function ListUnitsPage() {
             </div>
           </div>
         </div>
-        <div className={styles.tableUnitsList}>
-          <Table headers={Strings.headersUnits} data={dataUnits} />
+        <div className={styles.tablePatientList}>
+          <Table headers={Strings.headersPatient} data={dataPatients} />
         </div>
       </div>
     </React.Fragment>

@@ -8,26 +8,26 @@ import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
 import { Table } from 'components/Table';
 
-import styles from './unitslist.module.css';
+import styles from './specialistlist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import dataUnits from 'tests/mocks/dataUnits'; //mock de teste de dados
+import dataSpecialist from 'tests/mocks/dataSpecialist'; //mock de teste de dados
 
-export default function ListUnitsPage() {
+export default function SpecialistListPage() {
   const router = useRouter();
 
   return (
     <React.Fragment>
       <MenuTop />
-      <div className={styles.bodyUnitsList}>
-        <div className={styles.headerUnitsList}>
-          <div className={styles.btnAddUnit}>
+      <div className={styles.bodySpecialistList}>
+        <div className={styles.headerSpecialistList}>
+          <div className={styles.btnAddSpecialist}>
             <Button
-              title={Strings.inserUnit}
+              title={Strings.insertSpecialist}
               type="secondary"
               onClick={() => {
-                router.push('/admin/units/new');
+                router.push('/admin/specialists/new');
               }}
             />
           </div>
@@ -43,8 +43,8 @@ export default function ListUnitsPage() {
             </div>
           </div>
         </div>
-        <div className={styles.tableUnitsList}>
-          <Table headers={Strings.headersUnits} data={dataUnits} />
+        <div className={styles.tableSpecialistList}>
+          <Table headers={Strings.headersSpecialist} data={dataSpecialist} />
         </div>
       </div>
     </React.Fragment>

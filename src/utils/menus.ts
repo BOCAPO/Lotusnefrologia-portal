@@ -182,7 +182,7 @@ export const menusAdmin: MenuModel[] = [
     title: 'Usuários',
     image: null,
     alternativeImage: null,
-    link: '/admin/users',
+    link: '/admin/users/list',
     internalMenus: null
   },
   {
@@ -198,7 +198,7 @@ export const menusAdmin: MenuModel[] = [
     title: 'Especialistas',
     image: null,
     alternativeImage: null,
-    link: '/admin/specialists',
+    link: '/admin/specialists/list',
     internalMenus: null
   },
   {
@@ -206,7 +206,7 @@ export const menusAdmin: MenuModel[] = [
     title: 'Pacientes',
     image: null,
     alternativeImage: null,
-    link: '/admin/patients',
+    link: '/admin/patients/list',
     internalMenus: null
   }
 ];

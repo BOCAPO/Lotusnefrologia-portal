@@ -18,6 +18,33 @@ export const Strings = {
     'Unidade'
   ],
   headersUnits: ['CNPJ', 'Nome', 'Telefone', 'E-mail', 'CEP', 'Endereço'],
+  headersUsers: [
+    'Nome',
+    'CPF',
+    'Usuário',
+    'Telefone',
+    'E-mail',
+    'Perfil de Acesso',
+    'Status'
+  ],
+  headersSpecialist: [
+    'Nome',
+    'CPF',
+    'Usuário',
+    'Telefone',
+    'E-mail',
+    'Especialidade',
+    'Status'
+  ],
+  headersPatient: [
+    'Nome',
+    'CPF',
+    'Unidade',
+    'Nascimento',
+    'Telefone',
+    'E-mail',
+    'Status'
+  ],
   schedule: 'Agendamento',
   description: 'Descrição',
   pacient: 'Paciente',
@@ -34,5 +61,9 @@ export const Strings = {
   hourRequired: 'Hora é obrigatório',
   save: 'Salvar',
   cancel: 'Cancelar',
-  inserUnit: 'Cadastrar Unidade'
+  inserUnit: 'Cadastrar Unidade',
+  insertUser: 'Cadastrar Usuário',
+  insertSpecialist: 'Cadastrar Especialista',
+  insertPatient: 'Cadastrar Paciente',
+  search: 'Pesquisar'
 };

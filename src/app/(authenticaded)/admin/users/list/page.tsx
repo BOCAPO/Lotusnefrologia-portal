@@ -8,26 +8,26 @@ import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
 import { Table } from 'components/Table';
 
-import styles from './unitslist.module.css';
+import styles from './userslist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import dataUnits from 'tests/mocks/dataUnits'; //mock de teste de dados
+import dataUsers from 'tests/mocks/dataUsers'; //mock de teste de dados
 
-export default function ListUnitsPage() {
+export default function UsersListPage() {
   const router = useRouter();
 
   return (
     <React.Fragment>
       <MenuTop />
-      <div className={styles.bodyUnitsList}>
-        <div className={styles.headerUnitsList}>
-          <div className={styles.btnAddUnit}>
+      <div className={styles.bodyUsersList}>
+        <div className={styles.headerUsersList}>
+          <div className={styles.btnAddUser}>
             <Button
-              title={Strings.inserUnit}
+              title={Strings.insertUser}
               type="secondary"
               onClick={() => {
-                router.push('/admin/units/new');
+                router.push('/admin/users/new');
               }}
             />
           </div>
@@ -43,8 +43,8 @@ export default function ListUnitsPage() {
             </div>
           </div>
         </div>
-        <div className={styles.tableUnitsList}>
-          <Table headers={Strings.headersUnits} data={dataUnits} />
+        <div className={styles.tableUsersList}>
+          <Table headers={Strings.headersUsers} data={dataUsers} />
         </div>
       </div>
     </React.Fragment>
