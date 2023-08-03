@@ -49,6 +49,14 @@ export const menusMain: MenuModel[] = [
         alternativeImage: null,
         link: '/schedules/consultations',
         internalMenus: null
+      },
+      {
+        idMenu: 19,
+        title: 'Escala de Consultas',
+        image: null,
+        alternativeImage: null,
+        link: '/schedules/scale-consultations',
+        internalMenus: null
       }
     ]
   },
