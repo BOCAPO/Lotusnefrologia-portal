@@ -55,7 +55,7 @@ export const menusMain: MenuModel[] = [
         title: 'Escala de Consultas',
         image: null,
         alternativeImage: null,
-        link: '/schedules/scale-consultations',
+        link: '/schedules/scale',
         internalMenus: null
       }
     ]

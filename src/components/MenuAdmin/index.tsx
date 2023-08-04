@@ -12,7 +12,7 @@ type Props = {
   id?: string;
 };
 
-export default function MenuAdmin({ style, id }: Props) {
+export default function MenuAdmin({ style, id }: Props): JSX.Element {
   return (
     <div className={styles.menuAdmin} style={style} id={id}>
       {menusAdmin?.map((menu, index) => (
