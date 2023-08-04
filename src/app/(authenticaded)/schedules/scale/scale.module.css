@@ -1,14 +1,31 @@
 .bodyScale {
-    width: 90%;
-    height: 70%;
     display: flex;
-    margin: 3vh 5%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin: 0 5%;
+
+}
+
+.formInserScale {
+    width: 60%;
+    height: 74vh;
+    display: flex;
+    margin: 3vh 0%;
     flex-direction: column;
-    padding: 1% 5%;
+    padding: 1% 2%;
     align-items: center;
     background: #FFFFFF;
     overflow: hidden;
     position: relative;
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 9px;
+}
+
+.formInserScale div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
