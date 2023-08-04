@@ -15,7 +15,7 @@ type Props = {
   headers: string[];
   data: DataScaleModel[] | null;
   style?: React.CSSProperties;
-  onItemClick?: (item: string[]) => void;
+  onItemClick?: (item: DataScaleModel) => void;
 };
 
 export function FormTwoColumns({
@@ -25,7 +25,7 @@ export function FormTwoColumns({
 }: Props): JSX.Element {
   const [keys, setKeys] = React.useState<string[]>([]);
 
-  const handleItemClick = (item: string[]) => {
+  const handleItemClick = (item: DataScaleModel) => {
     if (onItemClick) {
       onItemClick(item);
     }
