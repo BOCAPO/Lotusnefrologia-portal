@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import { Icon, TypeIcon } from 'components/Icone';
 import { SmallMediumText } from 'components/Text';
 
@@ -7,10 +9,11 @@ import styles from './formTwoColumns.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataScaleModel } from 'models/DataScaleModel';
 
 type Props = {
   headers: string[];
-  data: string[][] | null;
+  data: DataScaleModel[] | null;
   style?: React.CSSProperties;
   onItemClick?: (item: string[]) => void;
 };
@@ -20,11 +23,22 @@ export function FormTwoColumns({
   data,
   onItemClick
 }: Props): JSX.Element {
+  const [keys, setKeys] = React.useState<string[]>([]);
+
   const handleItemClick = (item: string[]) => {
     if (onItemClick) {
       onItemClick(item);
     }
   };
+
+  React.useEffect(() => {
+    if (data !== null && data.length > 0) {
+      // Obter as chaves do primeiro objeto do array
+      const objectKeys: string[] = Object.keys(data[0]);
+      // Definir as chaves do objeto
+      setKeys(objectKeys);
+    }
+  }, [data]);
 
   return (
     <div className={styles.bodyFormTwoColumns}>
@@ -47,19 +61,21 @@ export function FormTwoColumns({
         <table className={styles.tableScale}>
           <thead>
             <tr className={styles.headers}>
-              {headers?.map((header, index) => <th key={index}>{header}</th>)}
+              {headers.map((header, index) => (
+                <th key={index}>{header}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {data?.map((row, index) => (
-              <tr key={index}>
-                {row?.map((cell, index) => (
+            {data?.map((row: any, rowIndex: any) => (
+              <tr key={rowIndex}>
+                {keys.map((key: string, cellIndex) => (
                   <td
-                    key={index}
+                    key={cellIndex}
                     className={styles.rows}
                     onClick={() => handleItemClick(row)}
                   >
-                    {cell.toLocaleUpperCase()}
+                    {String(row[key]).toLocaleUpperCase()}
                   </td>
                 ))}
               </tr>

@@ -1,10 +1,10 @@
 .bodyFormTwoColumns {
-    width: 25%;
-    height: 75vh;
+    width: 95%;
+    height: 74vh;
     display: flex;
-    margin: 3vh 5%;
+    margin: 3vh 2%;
     flex-direction: column;
-    padding: 1% 2%;
+    padding: 1% 5%;
     align-items: center;
     background: #FFFFFF;
     overflow: hidden;
@@ -14,13 +14,13 @@
 }
 
 .searchBarFormTwoColumns {
-    width: 100%;
+    width: 85%;
     height: 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3vh;
+    margin: 2vh 0 3vh 0;
     position: relative;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .searchBarFormTwoColumns input[type="search"] {
-    width: 100%;
+    width: 85%;
     height: 40px;
     border-radius: 4px;
     border: none;
