@@ -1,0 +1,14 @@
+.bodyScale {
+    width: 90%;
+    height: 70%;
+    display: flex;
+    margin: 3vh 5%;
+    flex-direction: column;
+    padding: 1% 5%;
+    align-items: center;
+    background: #FFFFFF;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 9px;
+}

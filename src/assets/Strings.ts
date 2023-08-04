@@ -45,6 +45,7 @@ export const Strings = {
     'E-mail',
     'Status'
   ],
+  headersScale: ['Especialista', 'Unid'],
   schedule: 'Agendamento',
   description: 'Descrição',
   pacient: 'Paciente',
@@ -65,5 +66,6 @@ export const Strings = {
   insertUser: 'Cadastrar Usuário',
   insertSpecialist: 'Cadastrar Especialista',
   insertPatient: 'Cadastrar Paciente',
-  search: 'Pesquisar'
+  search: 'Pesquisar',
+  scheduleConfirmation: 'Confirmação de Agenda'
 };

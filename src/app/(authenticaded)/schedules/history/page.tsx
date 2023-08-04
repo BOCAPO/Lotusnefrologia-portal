@@ -14,7 +14,7 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import dataHIstory from 'tests/mocks/dataHistory'; //mock de teste de dados
 
-export default function SchedulesPage() {
+export default function SchedulesPage(): JSX.Element {
   const [visible, setVisible] = React.useState(false);
 
   return (
