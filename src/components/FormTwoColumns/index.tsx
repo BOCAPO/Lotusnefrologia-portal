@@ -15,7 +15,7 @@ type Props = {
   headers: string[];
   data: DataScaleModel[] | null;
   style?: React.CSSProperties;
-  onItemClick?: (item: DataScaleModel) => void;
+  onItemClick?: (_item: DataScaleModel) => void;
 };
 
 export function FormTwoColumns({
