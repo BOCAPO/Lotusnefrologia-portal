@@ -59,21 +59,24 @@ export default function ScalePage(): JSX.Element {
               color={Colors.gray90}
             />
           </div>
-          <div className={styles.bodyScale}>
+          <div className={styles.bodySelectScale}>
             {selectedItem === '' ? (
-              <LitteText
-                text={Strings.selectSpecialist}
-                style={{ textAlign: 'center', lineHeight: 2, opacity: 0.5 }}
-                bold={true}
-                color={Colors.gray90}
-              />
+              <div className={styles.emptySpecialist}>
+                <LitteText
+                  text={Strings.selectSpecialist}
+                  style={{ textAlign: 'center', lineHeight: 2, opacity: 0.5 }}
+                  bold={true}
+                  color={Colors.gray90}
+                />
+              </div>
             ) : (
               <div className={styles.scheduleScale}>
                 <InputForm
                   control={control}
                   name="initialHour"
                   type="time"
-                  containerStyle={{ width: '30%' }}
+                  containerStyle={{ width: '20%' }}
+                  style={{ height: '40px' }}
                   placeholder={Strings.date}
                   error={errors.initialHour?.message?.toString()}
                 />
@@ -81,8 +84,9 @@ export default function ScalePage(): JSX.Element {
                   control={control}
                   name="finalHour"
                   type="time"
+                  style={{ height: '40px' }}
                   placeholder={Strings.hour}
-                  containerStyle={{ width: '30%' }}
+                  containerStyle={{ width: '20%' }}
                   error={errors.finalHour?.message?.toString()}
                 />
                 <select>
@@ -112,14 +116,14 @@ export default function ScalePage(): JSX.Element {
             )}
           </div>
           <div className={styles.footerScale}>
-            <div>
+            <div className={styles.btnSaveScale}>
               <Button
                 title={Strings.save}
                 type="secondary"
                 onClick={() => {}}
               />
             </div>
-            <div>
+            <div className={styles.btnCancelScale}>
               <Button
                 title={Strings.cancel}
                 type="cancel"
