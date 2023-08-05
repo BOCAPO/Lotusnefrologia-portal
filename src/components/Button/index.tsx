@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { TypesButton, styles } from './styles';
 
@@ -7,6 +7,7 @@ type Props = {
   isLoading?: boolean;
   type?: TypesButton;
   style?: React.CSSProperties;
+  icon?: ReactNode; // Defina a prop "icon" como tipo ReactNode
   onClick?: () => void;
 };
 
@@ -14,6 +15,7 @@ export function Button({
   title,
   isLoading = false,
   type = 'button',
+  icon,
   ...rest
 }: Props) {
   const stylesButton = useMemo(() => {
@@ -32,6 +34,7 @@ export function Button({
 
   return (
     <button style={stylesButton} disabled={isLoading} {...rest}>
+      {icon && <span>{icon}</span>}
       {isLoading ? 'Carregando...' : title}
     </button>
   );

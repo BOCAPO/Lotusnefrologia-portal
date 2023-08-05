@@ -67,5 +67,10 @@ export const Strings = {
   insertSpecialist: 'Cadastrar Especialista',
   insertPatient: 'Cadastrar Paciente',
   search: 'Pesquisar',
-  scheduleConfirmation: 'Confirmação de Agenda'
+  scheduleConfirmation: 'Confirmação de Agenda',
+  selectSpecialist: 'Selecione o Especialista',
+  schemaRequiredInitialHour: 'Hora inicial é obrigatório',
+  schemaRequiredFinalHour: 'Hora final é obrigatório',
+  schemaRequiredInterval: 'Intervalo é obrigatório',
+  timeOfAttendance: ['15 minutos', '30 minutos', '45 minutos', '1 hora']
 };
