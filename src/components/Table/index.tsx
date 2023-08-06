@@ -5,15 +5,33 @@ import { SmallMediumText } from 'components/Text';
 import styles from './table.module.css';
 
 import { Colors } from 'configs/Colors_default';
+import { ResponseGetModel } from 'models/ResponseGetModel';
 
 type Props = {
   headers: string[];
-  data: string[][] | null;
+  headersResponse?: string[];
   style?: React.CSSProperties;
   onClick?: () => void;
+  response?: ResponseGetModel;
 };
 
-export function Table({ headers, data }: Props) {
+export function Table({ headers, response, headersResponse }: Props) {
+  const [keys, setKeys] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    if (
+      response !== undefined &&
+      response?.data !== null &&
+      response?.data.length > 0
+    ) {
+      const objectKeys: string[] = Object.keys(response?.data[0]);
+      const commonKeys = objectKeys.filter(
+        (key) => headersResponse?.includes(key)
+      );
+      setKeys(commonKeys);
+    }
+  }, [response?.data?.length]);
+
   return (
     <React.Fragment>
       <div className={styles.containerTable}>
@@ -24,11 +42,16 @@ export function Table({ headers, data }: Props) {
             </tr>
           </thead>
           <tbody>
-            {data?.map((row, index) => (
+            {response?.data?.map((row: any, index: number) => (
               <tr key={index}>
-                {row?.map((cell, index) => (
+                {/* {row?.map((cell, index) => (
                   <td key={index} className={styles.rows}>
                     {cell}
+                  </td>
+                ))} */}
+                {keys.map((key, index) => (
+                  <td key={index} className={styles.rows}>
+                    {String(row[key])}
                   </td>
                 ))}
               </tr>
@@ -39,13 +62,17 @@ export function Table({ headers, data }: Props) {
       <div className={styles.footer}>
         <div className={styles.footerLeft}>
           <select>
-            {data?.map((row, index) => <option key={index}>{index}</option>)}
+            {response?.links.map((link, index) => (
+              <option key={index}>{link?.label}</option>
+            ))}
           </select>
         </div>
         <SmallMediumText
           bold={false}
           style={{ lineHeight: 2, marginLeft: '2%' }}
-          text={`Exibindo 1 de ${data?.length}`}
+          text={`Exibindo ${response?.current_page} de ${
+            Number(response?.links.length) - 2
+          }`}
           color={Colors.gray70}
         />
       </div>

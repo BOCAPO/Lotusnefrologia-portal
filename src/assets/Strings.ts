@@ -18,6 +18,14 @@ export const Strings = {
     'Unidade'
   ],
   headersUnits: ['CNPJ', 'Nome', 'Telefone', 'E-mail', 'CEP', 'Endereço'],
+  headersUnitsResponse: [
+    'cnpj',
+    'name',
+    'phone_primary',
+    'email',
+    'zip_code',
+    'street'
+  ],
   headersUsers: [
     'Nome',
     'CPF',

@@ -67,7 +67,7 @@ export function FormTwoColumns({
             </tr>
           </thead>
           <tbody>
-            {data?.map((row: any, rowIndex: any) => (
+            {data?.map((row: any, rowIndex: number) => (
               <tr key={rowIndex}>
                 {keys.map((key: string, cellIndex) => (
                   <td
