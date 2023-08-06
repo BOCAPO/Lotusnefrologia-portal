@@ -29,11 +29,18 @@ export const Strings = {
   headersUsers: [
     'Nome',
     'CPF',
-    'Usuário',
     'Telefone',
     'E-mail',
     'Perfil de Acesso',
     'Status'
+  ],
+  headersUsersResponse: [
+    'name',
+    'cpf',
+    'telephone',
+    'email',
+    'profile',
+    'status'
   ],
   headersSpecialist: [
     'Nome',
