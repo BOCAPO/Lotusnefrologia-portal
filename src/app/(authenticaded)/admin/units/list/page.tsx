@@ -17,6 +17,7 @@ import { getAllUnits } from 'services/units';
 export default function ListUnitsPage() {
   const router = useRouter();
   const [data, setData] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     getUnits();
@@ -24,8 +25,8 @@ export default function ListUnitsPage() {
 
   async function getUnits() {
     const response = await getAllUnits();
-    console.log(response.data);
     setData(response.data);
+    setLoading(false);
   }
 
   return (
@@ -59,6 +60,7 @@ export default function ListUnitsPage() {
             headers={Strings.headersUnits}
             headersResponse={Strings.headersUnitsResponse}
             response={data}
+            isLoading={loading}
           />
         </div>
       </div>
