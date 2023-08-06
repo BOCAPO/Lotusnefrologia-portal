@@ -12,10 +12,21 @@ import styles from './unitslist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import dataUnits from 'tests/mocks/dataUnits'; //mock de teste de dados
+import { getAllUnits } from 'services/units';
 
 export default function ListUnitsPage() {
   const router = useRouter();
+  const [data, setData] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    getUnits();
+  }, [data?.length]);
+
+  async function getUnits() {
+    const response = await getAllUnits();
+    console.log(response.data);
+    setData(response.data);
+  }
 
   return (
     <React.Fragment>
@@ -44,7 +55,11 @@ export default function ListUnitsPage() {
           </div>
         </div>
         <div className={styles.tableUnitsList}>
-          <Table headers={Strings.headersUnits} data={dataUnits} />
+          <Table
+            headers={Strings.headersUnits}
+            headersResponse={Strings.headersUnitsResponse}
+            response={data}
+          />
         </div>
       </div>
     </React.Fragment>
