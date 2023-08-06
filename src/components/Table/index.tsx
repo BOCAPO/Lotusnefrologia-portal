@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { SpinnerLoading } from 'components/Spinner';
 import { SmallMediumText } from 'components/Text';
 
 import styles from './table.module.css';
@@ -13,9 +14,15 @@ type Props = {
   style?: React.CSSProperties;
   onClick?: () => void;
   response?: ResponseGetModel;
+  isLoading?: boolean;
 };
 
-export function Table({ headers, response, headersResponse }: Props) {
+export function Table({
+  headers,
+  response,
+  headersResponse,
+  isLoading = true
+}: Props) {
   const [keys, setKeys] = React.useState<string[]>([]);
 
   React.useEffect(() => {
@@ -35,29 +42,33 @@ export function Table({ headers, response, headersResponse }: Props) {
   return (
     <React.Fragment>
       <div className={styles.containerTable}>
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.headers}>
-              {headers?.map((header, index) => <th key={index}>{header}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {response?.data?.map((row: any, index: number) => (
-              <tr key={index}>
-                {/* {row?.map((cell, index) => (
+        {isLoading ? (
+          <SpinnerLoading />
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr className={styles.headers}>
+                {headers?.map((header, index) => <th key={index}>{header}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {response?.data?.map((row: any, index: number) => (
+                <tr key={index}>
+                  {/* {row?.map((cell, index) => (
                   <td key={index} className={styles.rows}>
                     {cell}
                   </td>
                 ))} */}
-                {keys.map((key, index) => (
-                  <td key={index} className={styles.rows}>
-                    {String(row[key])}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  {keys.map((key, index) => (
+                    <td key={index} className={styles.rows}>
+                      {String(row[key])}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
       <div className={styles.footer}>
         <div className={styles.footerLeft}>
@@ -70,9 +81,13 @@ export function Table({ headers, response, headersResponse }: Props) {
         <SmallMediumText
           bold={false}
           style={{ lineHeight: 2, marginLeft: '2%' }}
-          text={`Exibindo ${response?.current_page} de ${
-            Number(response?.links.length) - 2
-          }`}
+          text={
+            isLoading
+              ? 'Carregando...'
+              : `Exibindo ${response?.current_page} de ${
+                  Number(response?.links.length) - 2
+                }`
+          }
           color={Colors.gray70}
         />
       </div>
