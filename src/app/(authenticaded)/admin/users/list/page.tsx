@@ -12,10 +12,23 @@ import styles from './userslist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { getAllUsers } from 'services/users';
 import dataUsers from 'tests/mocks/dataUsers'; //mock de teste de dados
 
 export default function UsersListPage() {
   const router = useRouter();
+  const [data, setData] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    getUsers();
+  }, [dataUsers?.length]);
+
+  async function getUsers() {
+    const response = await getAllUsers();
+    setData(response.data);
+    setLoading(false);
+  }
 
   return (
     <React.Fragment>
@@ -44,7 +57,12 @@ export default function UsersListPage() {
           </div>
         </div>
         <div className={styles.tableUsersList}>
-          <Table headers={Strings.headersUsers} data={dataUsers} />
+          <Table
+            headers={Strings.headersUsers}
+            response={data}
+            headersResponse={Strings.headersUsersResponse}
+            isLoading={loading}
+          />
         </div>
       </div>
     </React.Fragment>
