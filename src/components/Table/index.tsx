@@ -23,7 +23,7 @@ export function Table({
   headersResponse,
   isLoading = true
 }: Props) {
-  const [keys, setKeys] = React.useState<string[]>([]);
+  const [keys, setKeys] = React.useState<string[] | undefined>([]);
 
   React.useEffect(() => {
     if (
@@ -32,8 +32,8 @@ export function Table({
       response?.data.length > 0
     ) {
       const objectKeys: string[] = Object.keys(response?.data[0]);
-      const commonKeys = objectKeys.filter(
-        (key) => headersResponse?.includes(key)
+      const commonKeys = headersResponse?.filter(
+        (key) => objectKeys?.includes(key)
       );
       setKeys(commonKeys);
     }
@@ -54,14 +54,17 @@ export function Table({
             <tbody>
               {response?.data?.map((row: any, index: number) => (
                 <tr key={index}>
-                  {/* {row?.map((cell, index) => (
-                  <td key={index} className={styles.rows}>
-                    {cell}
-                  </td>
-                ))} */}
-                  {keys.map((key, index) => (
+                  {keys?.map((key, index) => (
                     <td key={index} className={styles.rows}>
-                      {String(row[key])}
+                      {key === 'status' ? (
+                        row[key] === 1 ? (
+                          <span>Ativo</span>
+                        ) : (
+                          <span>Inativo</span>
+                        )
+                      ) : (
+                        String(row[key])
+                      )}
                     </td>
                   ))}
                 </tr>

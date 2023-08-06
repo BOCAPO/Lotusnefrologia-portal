@@ -12,10 +12,23 @@ import styles from './patientslist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { getAllPatients } from 'services/patients';
 import dataPatients from 'tests/mocks/dataPatients'; //mock de teste de dados
 
 export default function PatientListPage() {
   const router = useRouter();
+  const [data, setData] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    getPatients();
+  }, [dataPatients?.length]);
+
+  async function getPatients() {
+    const response = await getAllPatients();
+    setData(response.data);
+    setLoading(false);
+  }
 
   return (
     <React.Fragment>
@@ -44,7 +57,12 @@ export default function PatientListPage() {
           </div>
         </div>
         <div className={styles.tablePatientList}>
-          <Table headers={Strings.headersPatient} data={dataPatients} />
+          <Table
+            headers={Strings.headersPatient}
+            headersResponse={Strings.headersPatientsResponse}
+            response={data}
+            isLoading={loading}
+          />
         </div>
       </div>
     </React.Fragment>

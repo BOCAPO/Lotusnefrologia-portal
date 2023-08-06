@@ -12,10 +12,22 @@ import styles from './specialistlist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import dataSpecialist from 'tests/mocks/dataSpecialist'; //mock de teste de dados
+import { getAllSpecialists } from 'services/specialists';
 
 export default function SpecialistListPage() {
   const router = useRouter();
+  const [data, setData] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    getSpecialist();
+  }, []);
+
+  async function getSpecialist() {
+    const response = await getAllSpecialists();
+    setData(response.data);
+    setLoading(false);
+  }
 
   return (
     <React.Fragment>
@@ -44,7 +56,12 @@ export default function SpecialistListPage() {
           </div>
         </div>
         <div className={styles.tableSpecialistList}>
-          <Table headers={Strings.headersSpecialist} data={dataSpecialist} />
+          <Table
+            headers={Strings.headersSpecialist}
+            headersResponse={Strings.headersSpecialistResponse}
+            response={data}
+            isLoading={loading}
+          />
         </div>
       </div>
     </React.Fragment>
