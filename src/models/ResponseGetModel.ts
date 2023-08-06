@@ -1,9 +1,16 @@
+import { DataPatientsModel } from './DataPatientsModel';
+import { DataSpecialistsModel } from './DataSpecialistsModel';
+import { DataSpecialtiesModel } from './DataSpecialtiesModel';
 import { DataUnitsModel } from './DataUnitsModel';
 import { LinksModel } from './LinksModel';
 
 export type ResponseGetModel = {
   current_page: number;
-  data: DataUnitsModel[];
+  data:
+    | DataUnitsModel[]
+    | DataSpecialistsModel[]
+    | DataSpecialtiesModel[]
+    | DataPatientsModel[];
   first_page_url: string;
   from: number;
   last_page: number;

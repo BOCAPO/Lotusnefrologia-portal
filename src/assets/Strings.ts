@@ -38,11 +38,18 @@ export const Strings = {
   headersSpecialist: [
     'Nome',
     'CPF',
-    'Usuário',
     'Telefone',
     'E-mail',
     'Especialidade',
     'Status'
+  ],
+  headersSpecialistResponse: [
+    'name',
+    'cpf',
+    'phone_primary',
+    'email',
+    'specialties',
+    'status'
   ],
   headersPatient: [
     'Nome',
@@ -52,6 +59,15 @@ export const Strings = {
     'Telefone',
     'E-mail',
     'Status'
+  ],
+  headersPatientsResponse: [
+    'name',
+    'cpf',
+    'unit',
+    'birth_date',
+    'phone_primary',
+    'email',
+    'status'
   ],
   headersScale: ['Especialista', 'Unid'],
   schedule: 'Agendamento',
