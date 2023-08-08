@@ -1,8 +1,10 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
@@ -42,133 +44,214 @@ export default function NewUnitPage() {
           />
         </div>
         <div className={styles.formNewUnit}>
-          <div>
+          <div style={{ marginBottom: '2vh' }}>
             <InputForm
-              placeholder="Cnpj"
+              placeholder={Strings.placeholderCNJP}
               type="text"
               name="cnpj"
               control={control}
               error={errors.cnpj?.message}
               containerStyle={{ width: '20%' }}
-              style={{ height: '40px', padding: '0 10px' }}
+              style={{ height: '40px', padding: '22px' }}
             />
             <InputForm
-              placeholder="Nome"
+              placeholder={Strings.placeholderName}
               type="text"
               name="nome"
               control={control}
               containerStyle={{ width: '42.5%' }}
-              style={{ height: '40px', padding: '0 10px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.nome?.message}
             />
             <InputForm
-              placeholder="Responsável"
+              placeholder={Strings.placeholderResponsable}
               type="text"
               name="responsavel"
               control={control}
               containerStyle={{ width: '32.5%' }}
-              style={{ height: '40px', padding: '0 10px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.responsavel?.message}
             />
           </div>
-          <div>
+          <div style={{ marginBottom: '2vh' }}>
             <InputForm
-              placeholder="E-mail"
+              placeholder={Strings.placeholderEmail}
               type="email"
               name="email"
               control={control}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
+              containerStyle={{ width: '30%' }}
               error={errors.email?.message}
             />
             <InputForm
-              placeholder="Telefone Principal"
+              placeholder={Strings.placeholderPhonePrimay}
               type="text"
               name="telefonePrincipal"
               control={control}
-              style={{ height: '40px' }}
+              containerStyle={{ width: '20%' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.telefonePrincipal?.message}
             />
             <InputForm
-              placeholder="Telefone Secundário"
+              placeholder={Strings.placeholderPhoneSecondary}
               type="text"
               name="telefoneSecundario"
               control={control}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.telefoneSecundario?.message}
             />
             <InputForm
-              placeholder="Latitude"
+              placeholder={Strings.placeholderLatitude}
               type="text"
               name="latitude"
               control={control}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.latitude?.message}
             />
             <InputForm
-              placeholder="Longitude"
+              placeholder={Strings.placeholderLongitude}
               type="text"
               name="longitude"
               control={control}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.longitude?.message}
             />
-            <Icon
-              typeIcon={TypeIcon.ExternalLink}
-              color={Colors.greenDark}
-              size={20}
-            />
+            <Link href="/admin/units" target="_blank">
+              <Icon
+                typeIcon={TypeIcon.ExternalLink}
+                color={Colors.greenDark}
+                size={20}
+              />
+            </Link>
           </div>
-          <div>
+          <div style={{ marginBottom: '2vh' }}>
             <InputForm
-              placeholder="CEP"
+              placeholder={Strings.placeholderZipCode}
               type="text"
               name="cep"
               control={control}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.cep?.message}
             />
             <InputForm
-              placeholder="Logradouro"
+              placeholder={Strings.placeholderStreet}
               type="text"
               name="logradouro"
               control={control}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.logradouro?.message}
             />
             <InputForm
-              placeholder="Número"
+              placeholder={Strings.placeholderNumber}
               type="text"
               name="numero"
               control={control}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.numero?.message}
             />
             <InputForm
-              placeholder="Quadra"
+              placeholder={Strings.placeholderBlock}
               type="text"
               name="quadra"
               control={control}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.quadra?.message}
             />
             <InputForm
-              placeholder="Lote"
+              placeholder={Strings.placeholderLot}
               type="text"
               name="lote"
               control={control}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
               error={errors.lote?.message}
             />
             <InputForm
-              placeholder="Complemento"
+              placeholder={Strings.placeholderComplement}
               type="text"
               name="complemento"
               control={control}
               error={errors.complemento?.message}
-              style={{ height: '40px' }}
+              style={{ height: '40px', padding: '22px' }}
             />
           </div>
+          <div style={{ marginBottom: '2vh', width: '100%' }}>
+            <div style={{ width: '50%' }}>
+              <div style={{ marginBottom: '2vh', width: '100%' }}>
+                <select>
+                  <option value="0">Selecione o estado</option>
+                </select>
+                <select>
+                  <option value="0">Selecione a cidade</option>
+                </select>
+                <select>
+                  <option value="0">Selecione o status</option>
+                </select>
+              </div>
+              <div className={styles.linksUnit}>
+                <InputForm
+                  placeholder={Strings.placeholderLinkFacebook}
+                  type="text"
+                  name="linkFacebook"
+                  control={control}
+                  containerStyle={{ width: '95%' }}
+                  style={{ height: '40px', padding: '22px' }}
+                  error={errors.linkFacebook?.message}
+                />
+                <Icon
+                  typeIcon={TypeIcon.ExternalLink}
+                  color={Colors.greenDark}
+                  size={20}
+                />
+              </div>
+              <div className={styles.linksUnit}>
+                <InputForm
+                  placeholder={Strings.placeholderLinkInstagram}
+                  type="text"
+                  name="linkInstagram"
+                  control={control}
+                  containerStyle={{ width: '95%' }}
+                  style={{ height: '40px', padding: '22px' }}
+                  error={errors.linkInstagram?.message}
+                />
+                <Icon
+                  typeIcon={TypeIcon.ExternalLink}
+                  color={Colors.greenDark}
+                  size={20}
+                />
+              </div>
+              <div className={styles.linksUnit}>
+                <InputForm
+                  placeholder={Strings.placeholderLinkSite}
+                  type="text"
+                  name="linkSite"
+                  control={control}
+                  containerStyle={{ width: '95%' }}
+                  style={{ height: '40px', padding: '22px' }}
+                  error={errors.linkSite?.message}
+                />
+                <Icon
+                  typeIcon={TypeIcon.ExternalLink}
+                  color={Colors.greenDark}
+                  size={20}
+                />
+              </div>
+            </div>
+            <div style={{ width: '50%' }}>
+              <InputForm
+                type="file"
+                name="logo"
+                control={control}
+                error={errors.logo?.message}
+              />
+            </div>
+          </div>
         </div>
+        <footer>
+          <div>
+            <Button type="secondary" title={Strings.save} onClick={() => {}} />
+            <Button type="cancel" title={Strings.cancel} onClick={() => {}} />
+          </div>
+        </footer>
       </div>
     </React.Fragment>
   );
