@@ -12,6 +12,8 @@ import styles from './specialistlist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
+import { ResponseGetModel } from 'models/ResponseGetModel';
 import { getAllSpecialists } from 'services/specialists';
 
 export default function SpecialistListPage() {
@@ -25,6 +27,17 @@ export default function SpecialistListPage() {
 
   async function getSpecialist() {
     const response = await getAllSpecialists();
+
+    const dataUpdated = response.data.data as ResponseGetModel[];
+    let specialties: string[] = [];
+    dataUpdated.map((element: any) => {
+      element.specialties.map((specialty: DataSpecialtiesModel) => {
+        specialties.push(specialty.description);
+      });
+      element.specialties = specialties.join(' | ');
+      specialties = [];
+    });
+    response.data.data = dataUpdated;
     setData(response.data);
     setLoading(false);
   }
