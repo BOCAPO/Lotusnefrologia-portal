@@ -32,7 +32,6 @@ type DataProps = {
 
 export default function NewUnitPage() {
   const [states, setStates] = React.useState<any>(null);
-  const [stateCode, setStateCode] = React.useState<string>('');
   const [cities, setCities] = React.useState<any>(null);
   const router = useRouter();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
@@ -72,11 +71,9 @@ export default function NewUnitPage() {
 
   const handleStateCode = (selectedStateCode: any) => {
     getCities(selectedStateCode.toString());
-    setStateCode(selectedStateCode);
   };
 
   function onSubmit(data: DataProps) {
-    console.log(data);
     const newUnit: DataUnitsModel = {
       cnpj: data.cnpj.toString(),
       name: data.name.toString(),
@@ -100,8 +97,6 @@ export default function NewUnitPage() {
       created_at: String(new Date()),
       updated_at: String(new Date())
     };
-
-    console.log(newUnit);
 
     try {
       const response = createUnit(newUnit);

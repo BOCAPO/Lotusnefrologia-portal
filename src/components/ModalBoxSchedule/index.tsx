@@ -44,8 +44,6 @@ export default function ModalBoxSchedule({
 
   function handleSubmitAppoitment(data: DataProps) {
     data.name = 'teste';
-    console.log('passa aqui');
-    console.log(data);
     onHide();
   }
 
