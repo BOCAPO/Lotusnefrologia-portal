@@ -5,7 +5,7 @@ import React from 'react';
 import { Icon, TypeIcon } from 'components/Icone';
 import { SmallMediumText } from 'components/Text';
 
-import styles from './formTwoColumns.module.css';
+import styles from './formtwocolumns.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
