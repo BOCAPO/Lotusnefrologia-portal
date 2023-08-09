@@ -91,10 +91,10 @@ function cnpjCalcValidation(numbers: number[]) {
   return calc;
 }
 
-function cnpjRemoveInvalidEquals(numbers: number[]) {
-  const items = [...new Set(numbers)];
-  if (items.length === 1) return false;
-}
+// function cnpjRemoveInvalidEquals(numbers: number[]) {
+//   const items = [...new Set(numbers)];
+//   if (items.length === 1) return false;
+// }
 
 function checkCnpjIsValid(cnpj: string) {
   if (cnpj === null) return false;
@@ -111,7 +111,7 @@ function checkCnpjIsValid(cnpj: string) {
 
   if (numbers.length !== 14) return false;
 
-  cnpjRemoveInvalidEquals(numbers);
+  // cnpjRemoveInvalidEquals(numbers);
 
   const calc = cnpjCalcValidation(numbers);
 
