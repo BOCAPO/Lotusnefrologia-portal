@@ -33,9 +33,7 @@ export function FormTwoColumns({
 
   React.useEffect(() => {
     if (data !== null && data.length > 0) {
-      // Obter as chaves do primeiro objeto do array
       const objectKeys: string[] = Object.keys(data[0]);
-      // Definir as chaves do objeto
       setKeys(objectKeys);
     }
   }, [data]);
