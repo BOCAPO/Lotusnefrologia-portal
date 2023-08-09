@@ -1,6 +1,5 @@
 'use client';
 
-import { Metadata } from 'next';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -19,17 +18,17 @@ import { AuthContextProvider } from 'contexts/AuthContext';
 import { useIsClient } from 'hooks/useIsClient';
 import { Prefs } from 'repository/Prefs';
 
-export const metadata: Metadata = {
-  title: 'Portal Lótus Nefrologia - Login',
-  description: 'Portal Lótus Nefrologia - Login',
-  authors: [
-    { name: 'WorkingTech', url: '' },
-    { name: 'Danilo Alves', url: '' }
-  ],
-  viewport: 'width=device-width, initial-scale=1.0',
-  robots: 'index, follow',
-  keywords: 'Portal Lótus Nefrologia - Login'
-};
+// export const metadata: Metadata = {
+//   title: 'Portal Lótus Nefrologia - Login',
+//   description: 'Portal Lótus Nefrologia - Login',
+//   authors: [
+//     { name: 'WorkingTech', url: '' },
+//     { name: 'Danilo Alves', url: '' }
+//   ],
+//   viewport: 'width=device-width, initial-scale=1.0',
+//   robots: 'index, follow',
+//   keywords: 'Portal Lótus Nefrologia - Login'
+// };
 
 export default function RootLayout({
   children
