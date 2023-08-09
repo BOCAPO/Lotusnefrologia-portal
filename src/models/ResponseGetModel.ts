@@ -1,6 +1,7 @@
 import { DataPatientsModel } from './DataPatientsModel';
 import { DataSpecialistsModel } from './DataSpecialistsModel';
 import { DataSpecialtiesModel } from './DataSpecialtiesModel';
+import { DataStatesModel } from './DataStatesModel';
 import { DataUnitsModel } from './DataUnitsModel';
 import { LinksModel } from './LinksModel';
 
@@ -10,7 +11,8 @@ export type ResponseGetModel = {
     | DataUnitsModel[]
     | DataSpecialistsModel[]
     | DataSpecialtiesModel[]
-    | DataPatientsModel[];
+    | DataPatientsModel[]
+    | DataStatesModel[];
   first_page_url: string;
   from: number;
   last_page: number;

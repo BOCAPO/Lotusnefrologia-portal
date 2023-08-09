@@ -17,19 +17,87 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataStatesModel } from 'models/DataStatesModel';
+import { DataUnitsModel } from 'models/DataUnitsModel';
+import { getAllCities } from 'services/cities';
+import { getAllStates } from 'services/states';
+import { createUnit } from 'services/units';
 
 type DataProps = {
   [name: string]: string | number;
 };
 
 export default function NewUnitPage() {
+  const [states, setStates] = React.useState<any>(null);
+  const [cities, setCities] = React.useState<any>(null);
+  const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
+
   const {
     control,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
   });
+
+  React.useEffect(() => {
+    getStates();
+  }, []);
+
+  async function getStates() {
+    const response = await getAllStates();
+    const statesUpdated = response.data.data as DataStatesModel[];
+    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
+  }
+
+  async function getCities(state_code: string) {
+    setIsLoadingCities(true);
+    const response = await getAllCities();
+    let citiesUpdated = response.data.data as DataCitiesModel[];
+    citiesUpdated = citiesUpdated.filter(
+      (city: DataCitiesModel) => city.state_code === state_code
+    );
+    setCities(
+      citiesUpdated
+        .slice()
+        .sort((a, b) => a.description.localeCompare(b.description))
+    );
+    setIsLoadingCities(false);
+  }
+
+  async function onSubmit(data: DataProps) {
+    const newUnit: DataUnitsModel = {
+      cnpj: data.cnpj.toString(),
+      name: data.nome.toString(),
+      responsible: data.responsavel.toString(),
+      email: data.email.toString(),
+      phone_primary: data.telefonePrincipal.toString(),
+      phone_secondary: data.telefoneSecundario.toString(),
+      latitude: data.latitude.toString(),
+      longitude: data.longitude.toString(),
+      zip_code: data.cep.toString(),
+      citie_code: data.endereco.toString(),
+      street: data.rua.toString(),
+      number: data.numero.toString(),
+      block: data.bloco.toString(),
+      lot: data.lote.toString(),
+      complement: data.complemento.toString(),
+      facebook_link: data.facebook.toString(),
+      instagram_link: data.instagram.toString(),
+      site_link: data.site.toString(),
+      status: Number(data.status),
+      created_at: String(new Date()),
+      updated_at: String(new Date())
+    };
+
+    try {
+      const response = await createUnit(newUnit);
+      if (response !== null) alert('Unidade criada com sucesso!');
+    } catch (error) {
+      alert('Erro ao criar unidade!');
+    }
+  }
 
   return (
     <React.Fragment>
@@ -176,13 +244,40 @@ export default function NewUnitPage() {
           </div>
           <div style={{ marginBottom: '2vh', width: '100%' }}>
             <div style={{ width: '50%' }}>
-              <div style={{ marginBottom: '2vh', width: '100%' }}>
-                <select>
+              <div
+                style={{ marginBottom: '2vh', width: '100%' }}
+                className={styles.newUnitDataGeografic}
+              >
+                <select
+                  onChange={(event) => {
+                    getCities(event.target.value);
+                  }}
+                >
                   <option value="0">Selecione o estado</option>
+                  {states &&
+                    states.map((state: DataStatesModel) => (
+                      <option key={state.code} value={state.code}>
+                        {' '}
+                        {state.UF}{' '}
+                      </option>
+                    ))}
                 </select>
                 <select>
-                  <option value="0">Selecione a cidade</option>
+                  {isLoadingCities ? (
+                    <option value="0">Carregando...</option>
+                  ) : (
+                    <>
+                      <option value="0">Selecione a cidade</option>
+                      {cities &&
+                        cities.map((city: DataCitiesModel) => (
+                          <option key={city.code} value={city.code}>
+                            {city.description}
+                          </option>
+                        ))}
+                    </>
+                  )}
                 </select>
+
                 <select>
                   <option value="0">Selecione o status</option>
                 </select>
@@ -213,11 +308,13 @@ export default function NewUnitPage() {
                   style={{ height: '40px', padding: '22px' }}
                   error={errors.linkInstagram?.message}
                 />
-                <Icon
-                  typeIcon={TypeIcon.ExternalLink}
-                  color={Colors.greenDark}
-                  size={20}
-                />
+                <Link href="/admin/units" target="_blank">
+                  <Icon
+                    typeIcon={TypeIcon.ExternalLink}
+                    color={Colors.greenDark}
+                    size={20}
+                  />
+                </Link>
               </div>
               <div className={styles.linksUnit}>
                 <InputForm
@@ -236,22 +333,31 @@ export default function NewUnitPage() {
                 />
               </div>
             </div>
-            <div style={{ width: '50%' }}>
+            <div style={{ width: '43%', marginLeft: '2%', height: '100%' }}>
               <InputForm
                 type="file"
                 name="logo"
                 control={control}
+                style={{ height: '27vh' }}
                 error={errors.logo?.message}
               />
             </div>
           </div>
         </div>
-        <footer>
-          <div>
-            <Button type="secondary" title={Strings.save} onClick={() => {}} />
+        <div className={styles.footerNewUnit}>
+          <div className={styles.btnSaveNewUnit}>
+            <Button
+              type="secondary"
+              title={Strings.save}
+              onClick={() => {
+                handleSubmit(onSubmit);
+              }}
+            />
+          </div>
+          <div className={styles.btnCancelNewUnit}>
             <Button type="cancel" title={Strings.cancel} onClick={() => {}} />
           </div>
-        </footer>
+        </div>
       </div>
     </React.Fragment>
   );

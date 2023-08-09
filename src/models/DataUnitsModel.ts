@@ -1,5 +1,5 @@
 export type DataUnitsModel = {
-  id: number;
+  id?: number | null;
   cnpj: string;
   name: string;
   responsible: string;
@@ -21,5 +21,5 @@ export type DataUnitsModel = {
   status: number;
   created_at: string;
   updated_at: string;
-  deleted_at: string | null;
+  deleted_at?: string | null;
 };
