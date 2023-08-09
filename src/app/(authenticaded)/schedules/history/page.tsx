@@ -12,10 +12,32 @@ import styles from './history.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import dataHIstory from 'tests/mocks/dataHistory'; //mock de teste de dados
+import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
+import { getAllAppointments } from 'services/appointments';
+import { getAllSpecialists } from 'services/specialists';
 
 export default function SchedulesPage(): JSX.Element {
   const [visible, setVisible] = React.useState(false);
+  const [specialists, setSpecialists] = React.useState<any>(null);
+  const [data, setData] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    getAppointments();
+    getSpecialists();
+  }, []);
+
+  async function getAppointments() {
+    const response = await getAllAppointments();
+    setData(response.data);
+  }
+
+  async function getSpecialists() {
+    const response = await getAllSpecialists();
+    const specialistsUpdated = response.data.data as DataSpecialistsModel[];
+    setSpecialists(
+      specialistsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name))
+    );
+  }
 
   return (
     <React.Fragment>
@@ -44,7 +66,7 @@ export default function SchedulesPage(): JSX.Element {
           </div>
         </div>
         <div className={styles.tableHistory}>
-          <Table headers={Strings.headersHistory} data={dataHIstory} />
+          <Table headers={Strings.headersHistory} response={data} />
         </div>
       </div>
       <Modal
@@ -52,6 +74,7 @@ export default function SchedulesPage(): JSX.Element {
         onHide={() => {
           setVisible(false);
         }}
+        specialists={specialists !== null ? specialists : []}
       />
     </React.Fragment>
   );

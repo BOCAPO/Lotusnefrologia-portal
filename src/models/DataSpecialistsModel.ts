@@ -1,3 +1,4 @@
+import { DataSpecialtiesModel } from './DataSpecialtiesModel';
 import { DataUnitsModel } from './DataUnitsModel';
 
 export type DataSpecialistsModel = {
@@ -20,5 +21,5 @@ export type DataSpecialistsModel = {
   updated_at: string;
   deleted_at: string | null;
   units: DataUnitsModel[];
-  specialties: [];
+  specialties: DataSpecialtiesModel[];
 };

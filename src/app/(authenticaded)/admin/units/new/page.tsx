@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -8,6 +9,7 @@ import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import { SelectForm } from 'components/SelectForm';
 import { SmallMediumText } from 'components/Text';
 
 import styles from './unitsnew.module.css';
@@ -30,7 +32,9 @@ type DataProps = {
 
 export default function NewUnitPage() {
   const [states, setStates] = React.useState<any>(null);
+  const [stateCode, setStateCode] = React.useState<string>('');
   const [cities, setCities] = React.useState<any>(null);
+  const router = useRouter();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
 
   const {
@@ -66,33 +70,41 @@ export default function NewUnitPage() {
     setIsLoadingCities(false);
   }
 
-  async function onSubmit(data: DataProps) {
+  const handleStateCode = (selectedStateCode: any) => {
+    getCities(selectedStateCode.toString());
+    setStateCode(selectedStateCode);
+  };
+
+  function onSubmit(data: DataProps) {
+    console.log(data);
     const newUnit: DataUnitsModel = {
       cnpj: data.cnpj.toString(),
-      name: data.nome.toString(),
-      responsible: data.responsavel.toString(),
+      name: data.name.toString(),
+      responsible: data.responsible.toString(),
       email: data.email.toString(),
-      phone_primary: data.telefonePrincipal.toString(),
-      phone_secondary: data.telefoneSecundario.toString(),
+      phone_primary: data.phonePrimary.toString(),
+      phone_secondary: data.phoneSecondary.toString(),
       latitude: data.latitude.toString(),
       longitude: data.longitude.toString(),
-      zip_code: data.cep.toString(),
-      citie_code: data.endereco.toString(),
-      street: data.rua.toString(),
-      number: data.numero.toString(),
-      block: data.bloco.toString(),
-      lot: data.lote.toString(),
-      complement: data.complemento.toString(),
-      facebook_link: data.facebook.toString(),
-      instagram_link: data.instagram.toString(),
-      site_link: data.site.toString(),
-      status: Number(data.status),
+      zip_code: data.zipCode.toString(),
+      street: data.street.toString(),
+      number: data.number.toString(),
+      block: data.block.toString(),
+      lot: data.lot.toString(),
+      citie_code: data.citieCode.toString(),
+      complement: data.complement.toString(),
+      facebook_link: data.linkFacebook.toString(),
+      instagram_link: data.linkInstagram.toString(),
+      site_link: data.linkSite.toString(),
+      status: 0,
       created_at: String(new Date()),
       updated_at: String(new Date())
     };
 
+    console.log(newUnit);
+
     try {
-      const response = await createUnit(newUnit);
+      const response = createUnit(newUnit);
       if (response !== null) alert('Unidade criada com sucesso!');
     } catch (error) {
       alert('Erro ao criar unidade!');
@@ -117,6 +129,8 @@ export default function NewUnitPage() {
               placeholder={Strings.placeholderCNJP}
               type="text"
               name="cnpj"
+              mask={'cpfCnpj'}
+              maxLength={18}
               control={control}
               error={errors.cnpj?.message}
               containerStyle={{ width: '20%' }}
@@ -125,20 +139,20 @@ export default function NewUnitPage() {
             <InputForm
               placeholder={Strings.placeholderName}
               type="text"
-              name="nome"
+              name="name"
               control={control}
               containerStyle={{ width: '42.5%' }}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.nome?.message}
+              error={errors.name?.message}
             />
             <InputForm
               placeholder={Strings.placeholderResponsable}
               type="text"
-              name="responsavel"
+              name="responsible"
               control={control}
               containerStyle={{ width: '32.5%' }}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.responsavel?.message}
+              error={errors.responsible?.message}
             />
           </div>
           <div style={{ marginBottom: '2vh' }}>
@@ -154,19 +168,21 @@ export default function NewUnitPage() {
             <InputForm
               placeholder={Strings.placeholderPhonePrimay}
               type="text"
-              name="telefonePrincipal"
+              name="phonePrimary"
               control={control}
+              mask={'phone'}
               containerStyle={{ width: '20%' }}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.telefonePrincipal?.message}
+              error={errors.phonePrimary?.message}
             />
             <InputForm
               placeholder={Strings.placeholderPhoneSecondary}
               type="text"
-              name="telefoneSecundario"
+              name="phoneSecondary"
               control={control}
+              mask={'phone'}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.telefoneSecundario?.message}
+              error={errors.phoneSecondary?.message}
             />
             <InputForm
               placeholder={Strings.placeholderLatitude}
@@ -196,49 +212,51 @@ export default function NewUnitPage() {
             <InputForm
               placeholder={Strings.placeholderZipCode}
               type="text"
-              name="cep"
+              name="zipCode"
+              mask={'cep'}
+              maxLength={9}
               control={control}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.cep?.message}
+              error={errors.zipCode?.message}
             />
             <InputForm
               placeholder={Strings.placeholderStreet}
               type="text"
-              name="logradouro"
+              name="street"
               control={control}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.logradouro?.message}
+              error={errors.street?.message}
             />
             <InputForm
               placeholder={Strings.placeholderNumber}
               type="text"
-              name="numero"
+              name="number"
               control={control}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.numero?.message}
+              error={errors.number?.message}
             />
             <InputForm
               placeholder={Strings.placeholderBlock}
               type="text"
-              name="quadra"
+              name="block"
               control={control}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.quadra?.message}
+              error={errors.block?.message}
             />
             <InputForm
               placeholder={Strings.placeholderLot}
               type="text"
-              name="lote"
+              name="lot"
               control={control}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.lote?.message}
+              error={errors.lot?.message}
             />
             <InputForm
               placeholder={Strings.placeholderComplement}
               type="text"
-              name="complemento"
+              name="complement"
               control={control}
-              error={errors.complemento?.message}
+              error={errors.complement?.message}
               style={{ height: '40px', padding: '22px' }}
             />
           </div>
@@ -248,36 +266,22 @@ export default function NewUnitPage() {
                 style={{ marginBottom: '2vh', width: '100%' }}
                 className={styles.newUnitDataGeografic}
               >
-                <select
-                  onChange={(event) => {
-                    getCities(event.target.value);
-                  }}
-                >
-                  <option value="0">Selecione o estado</option>
-                  {states &&
-                    states.map((state: DataStatesModel) => (
-                      <option key={state.code} value={state.code}>
-                        {' '}
-                        {state.UF}{' '}
-                      </option>
-                    ))}
-                </select>
-                <select>
-                  {isLoadingCities ? (
-                    <option value="0">Carregando...</option>
-                  ) : (
-                    <>
-                      <option value="0">Selecione a cidade</option>
-                      {cities &&
-                        cities.map((city: DataCitiesModel) => (
-                          <option key={city.code} value={city.code}>
-                            {city.description}
-                          </option>
-                        ))}
-                    </>
-                  )}
-                </select>
-
+                <SelectForm
+                  control={control}
+                  name="state"
+                  data={states}
+                  error={errors.state?.message}
+                  onSelectChange={handleStateCode}
+                  containerStyle={{ width: '50%' }}
+                />
+                <SelectForm
+                  control={control}
+                  name="citieCode"
+                  data={cities !== null ? cities : null}
+                  isLoading={isLoadingCities}
+                  error={errors.city?.message}
+                  containerStyle={{ width: '50%' }}
+                />
                 <select>
                   <option value="0">Selecione o status</option>
                 </select>
@@ -334,13 +338,13 @@ export default function NewUnitPage() {
               </div>
             </div>
             <div style={{ width: '43%', marginLeft: '2%', height: '100%' }}>
-              <InputForm
+              {/* <InputForm
                 type="file"
                 name="logo"
                 control={control}
                 style={{ height: '27vh' }}
                 error={errors.logo?.message}
-              />
+              /> */}
             </div>
           </div>
         </div>
@@ -349,13 +353,17 @@ export default function NewUnitPage() {
             <Button
               type="secondary"
               title={Strings.save}
-              onClick={() => {
-                handleSubmit(onSubmit);
-              }}
+              onClick={handleSubmit(onSubmit)}
             />
           </div>
           <div className={styles.btnCancelNewUnit}>
-            <Button type="cancel" title={Strings.cancel} onClick={() => {}} />
+            <Button
+              type="cancel"
+              title={Strings.cancel}
+              onClick={() => {
+                router.back();
+              }}
+            />
           </div>
         </div>
       </div>

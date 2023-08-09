@@ -1,3 +1,4 @@
+import React from 'react';
 import { Form } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
@@ -13,10 +14,13 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
+import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
 
 type Props = {
   onHide: () => void;
   show: boolean;
+  specialists: DataSpecialistsModel[];
 };
 
 type DataProps = {
@@ -25,15 +29,40 @@ type DataProps = {
 
 export default function ModalBoxSchedule({
   onHide,
+  specialists,
   ...props
 }: Props & { show: boolean }) {
+  const [specialties, setSpecialties] = React.useState<any>(null);
+  const [isLoadingSpecialties, setIsLoadingSpecialties] = React.useState(false);
   const {
     control,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
   });
+
+  function handleSubmitAppoitment(data: DataProps) {
+    data.name = 'teste';
+    console.log('passa aqui');
+    console.log(data);
+    onHide();
+  }
+
+  async function getSpecialties(specialistId: number) {
+    setIsLoadingSpecialties(true);
+    const specialistSelected = specialists.filter((item) => {
+      return item.id === specialistId;
+    });
+    const specialtiesUpdated = specialistSelected[0].specialties;
+    setSpecialties(
+      specialtiesUpdated
+        .slice()
+        .sort((a, b) => a.description.localeCompare(b.description))
+    );
+    setIsLoadingSpecialties(false);
+  }
+
   return (
     <Modal
       {...props}
@@ -108,31 +137,37 @@ export default function ModalBoxSchedule({
           />
         </div>
         <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
-          <InputForm
-            control={control}
-            placeholder={Strings.speciality}
-            type="text"
-            containerStyle={{
-              width: '47.5%',
-              height: '40px',
-              marginRight: '10%'
+          <select
+            onChange={(event) => {
+              getSpecialties(Number(event.target.value));
             }}
-            name="speciality"
-            error={errors.specialityRequired?.message?.toString()}
-            style={{ height: '40px', padding: '5px 10px', fontSize: 12 }}
-          />
-          <InputForm
-            control={control}
-            placeholder={Strings.specialist}
-            type="text"
-            containerStyle={{
-              width: '47.5%',
-              height: '40px'
-            }}
-            name="specialist"
-            error={errors.specialistRequired?.message?.toString()}
-            style={{ height: '40px', padding: '5px 10px', fontSize: 12 }}
-          />
+          >
+            <option value="">Selecione o especialista</option>
+            {specialists?.map((specialist: DataSpecialistsModel) => {
+              return (
+                <option key={specialist.id} value={specialist.id}>
+                  {specialist.name}
+                </option>
+              );
+            })}
+          </select>
+          <select>
+            {isLoadingSpecialties ? (
+              <option value="">Carregando...</option>
+            ) : (
+              <>
+                <option value="">Selecione a especialidade</option>
+                {specialties &&
+                  specialties?.map((specialty: DataSpecialtiesModel) => {
+                    return (
+                      <option key={specialty.id} value={specialty.id}>
+                        {specialty.description}
+                      </option>
+                    );
+                  })}
+              </>
+            )}
+          </select>
         </div>
         <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
           <InputForm
@@ -177,7 +212,7 @@ export default function ModalBoxSchedule({
             <Button
               title={Strings.save}
               type="secondary"
-              // onClick={handleSubmit(handleLogin)}
+              onClick={handleSubmit(handleSubmitAppoitment)}
             />
           </div>
           <div className={styles.btnDefault}>
