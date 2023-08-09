@@ -1,0 +1,15 @@
+.selectGeneral{
+    width: 90% !important;
+    height: 45px;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
+    padding: 0 4%;
+    font-size: 16px;
+    color: #8C8E90;
+}
+
+.selectGeneral select:active, .selectGeneral select:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
+}

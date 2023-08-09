@@ -123,5 +123,17 @@ export const Strings = {
   placeholderComplement: 'Complemento',
   placeholderLinkFacebook: 'Link do Facebook',
   placeholderLinkInstagram: 'Link do Instagram',
-  placeholderLinkSite: 'Link do Site'
+  placeholderLinkSite: 'Link do Site',
+  schemaRequiredCnpj: 'CNPJ é obrigatório',
+  schemaNameRequired: 'Nome é obrigatório',
+  schemaResponsibleRequired: 'Responsável é obrigatório',
+  schemaEmailRequired: 'E-mail é obrigatório',
+  schemaStateRequired: 'Estado é obrigatório',
+  schemaCityRequired: 'Cidade é obrigatório',
+  schemaPhonePrimaryRequired: 'Telefone Principal é obrigatório',
+  schemaLatitudeRequired: 'Latitude é obrigatório',
+  schemaLongitudeRequired: 'Longitude é obrigatório',
+  schemaZipCodeRequired: 'CEP é obrigatório',
+  schemaStreetRequired: 'Logradouro é obrigatório',
+  schemaNumberRequired: 'Número é obrigatório'
 };
