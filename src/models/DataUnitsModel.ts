@@ -19,7 +19,7 @@ export type DataUnitsModel = {
   instagram_link: string | null;
   site_link: string | null;
   status: number;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
   deleted_at?: string | null;
 };

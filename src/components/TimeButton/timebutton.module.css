@@ -1,0 +1,29 @@
+.btnTimeButton {
+    background-color: #F2F2F2;
+    border: none;
+    border-radius: 6px;
+    color: #444444;
+    cursor: pointer;
+    width: 32px;
+    max-width: 60px;
+    height: 45px;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    margin: 1vh 0.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btnTimeButton p {
+    display: flex;
+     justify-content: center;
+    align-items: center;
+    margin: 0 !important;
+}
+
+.btnTimeButton:hover, .btnTimeButton:focus, .btnTimeButton:active {
+    background-color: #A1E2A5;
+    cursor: pointer;
+}

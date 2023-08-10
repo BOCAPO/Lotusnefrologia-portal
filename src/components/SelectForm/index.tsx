@@ -52,7 +52,7 @@ export function SelectForm({
                     {data &&
                       data.map((item: any) => (
                         <option
-                          key={item.id}
+                          key={item.id ? item.id : item.code}
                           value={item.id ? item.id : item.code}
                         >
                           {item.name ? item.name : item.description}

@@ -7,7 +7,7 @@ import { Button } from 'components/Button';
 import { InputForm } from 'components/Input';
 import { SmallMediumText } from 'components/Text';
 
-import styles from './modal.module.css';
+import styles from './modalboxschedule.module.css';
 
 import { schema } from './schema';
 

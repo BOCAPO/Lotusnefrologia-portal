@@ -8,7 +8,10 @@ import { FormTwoColumns } from 'components/FormTwoColumns';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import { SelectForm } from 'components/SelectForm';
+import TenButtons from 'components/TenButtons';
 import { LitteText, SmallMediumText } from 'components/Text';
+import { TimeButton } from 'components/TimeButton';
 
 import styles from './scale.module.css';
 
@@ -19,14 +22,17 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataScaleModel } from 'models/DataScaleModel';
 import dataScale from 'tests/mocks/dataScale'; //mock de teste de dados
+import { intervalSchedule } from 'utils/enums';
 
 type DataProps = {
   [name: string]: string | number;
 };
 
 export default function ScalePage(): JSX.Element {
-  const [selectedItem, setSelectedItem] = React.useState<string>(''); //array de string vazio
-
+  const [selectedItem, setSelectedItem] = React.useState<string>('');
+  const [visibleDatesHours, setVisibleDatesHours] =
+    React.useState<boolean>(false);
+  const [periodicity, setPeriodicity] = React.useState<number>(0);
   function handleItemSelection(item: DataScaleModel) {
     setSelectedItem(item.name);
   }
@@ -38,6 +44,29 @@ export default function ScalePage(): JSX.Element {
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
   });
+
+  const searchSchedulesDispobles = () => {
+    setVisibleDatesHours(true);
+  };
+
+  const handlePeriodicity = (periodicity: string) => {
+    switch (periodicity) {
+      case '1':
+        setPeriodicity(15);
+        break;
+      case '2':
+        setPeriodicity(30);
+        break;
+      case '3':
+        setPeriodicity(45);
+        break;
+      case '4':
+        setPeriodicity(60);
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <React.Fragment>
@@ -75,7 +104,7 @@ export default function ScalePage(): JSX.Element {
                   control={control}
                   name="initialHour"
                   type="time"
-                  containerStyle={{ width: '20%' }}
+                  containerStyle={{ width: '25%' }}
                   style={{ height: '40px' }}
                   placeholder={Strings.date}
                   error={errors.initialHour?.message?.toString()}
@@ -86,10 +115,18 @@ export default function ScalePage(): JSX.Element {
                   type="time"
                   style={{ height: '40px' }}
                   placeholder={Strings.hour}
-                  containerStyle={{ width: '20%' }}
+                  containerStyle={{ width: '25%' }}
                   error={errors.finalHour?.message?.toString()}
                 />
-                <select>
+                <SelectForm
+                  control={control}
+                  name="timeOfAttendance"
+                  containerStyle={{ width: '25%' }}
+                  error={errors.timeOfAttendance?.message?.toString()}
+                  data={intervalSchedule}
+                  onSelectChange={handlePeriodicity}
+                />
+                {/* <select>
                   {Strings.timeOfAttendance.map((item, index) => {
                     return (
                       <option key={index} value={item}>
@@ -97,11 +134,13 @@ export default function ScalePage(): JSX.Element {
                       </option>
                     );
                   })}
-                </select>
+                </select> */}
                 <Button
                   title=""
                   type="secondary"
-                  onClick={() => {}}
+                  onClick={() => {
+                    searchSchedulesDispobles();
+                  }}
                   style={{ backgroundColor: 'transparent', border: 'none' }}
                   icon={
                     <Icon
@@ -115,24 +154,53 @@ export default function ScalePage(): JSX.Element {
               </div>
             )}
           </div>
-          <div className={styles.footerScale}>
-            <div className={styles.btnSaveScale}>
-              <Button
-                title={Strings.save}
-                type="secondary"
-                onClick={() => {}}
-              />
-            </div>
-            <div className={styles.btnCancelScale}>
-              <Button
-                title={Strings.cancel}
-                type="cancel"
-                onClick={() => {
-                  setSelectedItem('');
-                }}
-              />
-            </div>
-          </div>
+          {visibleDatesHours && (
+            <React.Fragment>
+              <div className={styles.selectDateScale}>
+                <div style={{ marginBottom: '2vh' }}>
+                  <SmallMediumText
+                    text={Strings.selectDate}
+                    bold={true}
+                    color={Colors.gray90}
+                    style={{ lineHeight: 1 }}
+                  />
+                </div>
+                <div className={styles.divDatesSchedule}>
+                  <TenButtons />
+                </div>
+                <div style={{ marginBottom: '2vh' }}>
+                  <SmallMediumText
+                    text={Strings.hoursDisponibles}
+                    bold={true}
+                    color={Colors.gray90}
+                    style={{ lineHeight: 1 }}
+                  />
+                </div>
+                <div className={styles.divHoursDisponibles}>
+                  <TimeButton periodicity={periodicity} />
+                </div>
+              </div>
+              <div className={styles.footerScale}>
+                <div className={styles.btnSaveScale}>
+                  <Button
+                    title={Strings.save}
+                    type="secondary"
+                    onClick={() => {}}
+                  />
+                </div>
+                <div className={styles.btnCancelScale}>
+                  <Button
+                    title={Strings.cancel}
+                    type="cancel"
+                    onClick={() => {
+                      setSelectedItem('');
+                      setVisibleDatesHours(false);
+                    }}
+                  />
+                </div>
+              </div>
+            </React.Fragment>
+          )}
         </div>
       </div>
     </React.Fragment>

@@ -135,5 +135,10 @@ export const Strings = {
   schemaLongitudeRequired: 'Longitude é obrigatório',
   schemaZipCodeRequired: 'CEP é obrigatório',
   schemaStreetRequired: 'Logradouro é obrigatório',
-  schemaNumberRequired: 'Número é obrigatório'
+  schemaNumberRequired: 'Número é obrigatório',
+  confirmation: 'Confirmação',
+  close: 'Fechar',
+  messageSuccessInsertUnit: 'O cadastro da unidade foi realizada com sucesso.',
+  selectDate: 'Selecione a data',
+  hoursDisponibles: 'Horários disponíveis'
 };
