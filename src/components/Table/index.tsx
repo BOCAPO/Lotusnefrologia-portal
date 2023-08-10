@@ -57,13 +57,17 @@ export function Table({
                   {keys?.map((key, index) => (
                     <td key={index} className={styles.rows}>
                       {key === 'status' ? (
-                        row[key] === 1 ? (
+                        row[key] === 0 ? (
                           <span>Ativo</span>
                         ) : (
                           <span>Inativo</span>
                         )
+                      ) : row[key] === null ? (
+                        'Não informado'
+                      ) : key === 'birthday' ? (
+                        new Date(row[key]).toLocaleDateString('pt-BR')
                       ) : (
-                        String(row[key])
+                        row[key].toString()
                       )}
                     </td>
                   ))}

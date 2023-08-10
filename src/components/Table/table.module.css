@@ -8,6 +8,22 @@
   scroll-behavior: auto;
 }
 
+.containerTable::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: #00555B;
+  border-radius: 5px;
+}
+
+.containerTable::-webkit-scrollbar-thumb{
+  background: #A1E2A5;
+  border-radius: 5px;
+}
+
+.containerTable::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
 .table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -53,6 +69,6 @@
   opacity: 0.8;
 }
 
-.table tbody tr:hover{
+.table tbody tr:hover {
   background-color: #A1E2A5;
 }
