@@ -9,6 +9,7 @@ import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import { SmallMediumText } from 'components/Text';
 
@@ -25,6 +26,7 @@ import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
 import { createUnit } from 'services/units';
+import { statusUnit } from 'utils/enums';
 
 type DataProps = {
   [name: string]: string | number;
@@ -33,6 +35,8 @@ type DataProps = {
 export default function NewUnitPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
+  const [showModalSuccess, setShowModalSuccess] =
+    React.useState<boolean>(false);
   const router = useRouter();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
 
@@ -73,7 +77,7 @@ export default function NewUnitPage() {
     getCities(selectedStateCode.toString());
   };
 
-  function onSubmit(data: DataProps) {
+  async function onSubmit(data: DataProps) {
     const newUnit: DataUnitsModel = {
       cnpj: data.cnpj.toString(),
       name: data.name.toString(),
@@ -93,14 +97,14 @@ export default function NewUnitPage() {
       facebook_link: data.linkFacebook.toString(),
       instagram_link: data.linkInstagram.toString(),
       site_link: data.linkSite.toString(),
-      status: 0,
-      created_at: String(new Date()),
-      updated_at: String(new Date())
+      status: Number(data.status) - 1
     };
 
     try {
-      const response = createUnit(newUnit);
-      if (response !== null) alert('Unidade criada com sucesso!');
+      const response = await createUnit(newUnit);
+      if (response !== null) {
+        setShowModalSuccess(true);
+      }
     } catch (error) {
       alert('Erro ao criar unidade!');
     }
@@ -277,9 +281,13 @@ export default function NewUnitPage() {
                   error={errors.city?.message}
                   containerStyle={{ width: '50%' }}
                 />
-                <select>
-                  <option value="0">Selecione o status</option>
-                </select>
+                <SelectForm
+                  control={control}
+                  name="status"
+                  data={statusUnit}
+                  error={errors.status?.message}
+                  containerStyle={{ width: '50%' }}
+                />
               </div>
               <div className={styles.linksUnit}>
                 <InputForm
@@ -362,6 +370,11 @@ export default function NewUnitPage() {
           </div>
         </div>
       </div>
+      <ModalSuccess
+        show={showModalSuccess}
+        onHide={() => setShowModalSuccess(false)}
+        message={Strings.messageSuccessInsertUnit}
+      />
     </React.Fragment>
   );
 }
