@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 2vh 10% 0 10%;
+    padding: 2vh 20% 0 20%;
     height: 10vh;
     background: #fff;
     width: 100%;
@@ -11,7 +11,7 @@
 }
 
 .buttonsMenu {
-    width: 10%;
+    width: 20%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -59,9 +59,9 @@
 }
 
 .buttonsMenu .cardIcon img, .buttonsMenu .cardIcon a img {
-    margin-top: 3vh;
+    margin-top: 4vh;
     padding-top: 2vh;
-    width: 20%;
+    width: 14%;
 }
 
 .buttonsMenu:hover div:first-of-type,

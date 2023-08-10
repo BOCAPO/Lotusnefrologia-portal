@@ -58,20 +58,11 @@ export const Strings = {
     'specialties',
     'status'
   ],
-  headersPatient: [
-    'Nome',
-    'CPF',
-    'Unidade',
-    'Nascimento',
-    'Telefone',
-    'E-mail',
-    'Status'
-  ],
+  headersPatient: ['Nome', 'CPF', 'Nascimento', 'Telefone', 'E-mail', 'Status'],
   headersPatientsResponse: [
     'name',
     'cpf',
-    'unit',
-    'birth_date',
+    'birthday',
     'phone_primary',
     'email',
     'status'

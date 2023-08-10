@@ -47,7 +47,11 @@ function getIcon(
 
   return (
     <typeIcon.icon
-      name={click ? typeIcon.icon : typeIcon.alternativeIcon}
+      name={
+        click || typeIcon.alternativeVersion == null
+          ? typeIcon.icon
+          : typeIcon.alternativeIcon
+      }
       size={size}
       color={color}
       onClick={() => buttonClick(!click)}
