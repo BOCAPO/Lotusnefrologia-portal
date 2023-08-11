@@ -52,27 +52,41 @@ export function Table({
               </tr>
             </thead>
             <tbody>
-              {response?.data?.map((row: any, index: number) => (
-                <tr key={index}>
-                  {keys?.map((key, index) => (
-                    <td key={index} className={styles.rows}>
-                      {key === 'status' ? (
-                        row[key] === 0 ? (
-                          <span>Ativo</span>
+              {response !== undefined &&
+              response.data !== undefined &&
+              response?.data?.length > 0 ? (
+                response?.data?.map((row: any, index: number) => (
+                  <tr key={index}>
+                    {keys?.map((key, index) => (
+                      <td key={index} className={styles.rows}>
+                        {key === 'status' ? (
+                          row[key] === 0 ? (
+                            <span>Ativo</span>
+                          ) : (
+                            <span>Inativo</span>
+                          )
+                        ) : row[key] === null ? (
+                          'Não informado'
+                        ) : key === 'birthday' ? (
+                          new Date(row[key]).toLocaleDateString('pt-BR')
                         ) : (
-                          <span>Inativo</span>
-                        )
-                      ) : row[key] === null ? (
-                        'Não informado'
-                      ) : key === 'birthday' ? (
-                        new Date(row[key]).toLocaleDateString('pt-BR')
-                      ) : (
-                        row[key].toString()
-                      )}
-                    </td>
-                  ))}
+                          row[key].toString()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={headersResponse?.length} className={styles.rows}>
+                    <p
+                      style={{ margin: 0, width: '100%', textAlign: 'center' }}
+                    >
+                      Nenhum registro encontrado.
+                    </p>
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         )}

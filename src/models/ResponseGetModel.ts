@@ -1,3 +1,4 @@
+import { DataAppoitmentTag } from './DataAppoitmentTag';
 import { DataPatientsModel } from './DataPatientsModel';
 import { DataSpecialistsModel } from './DataSpecialistsModel';
 import { DataSpecialtiesModel } from './DataSpecialtiesModel';
@@ -12,7 +13,8 @@ export type ResponseGetModel = {
     | DataSpecialistsModel[]
     | DataSpecialtiesModel[]
     | DataPatientsModel[]
-    | DataStatesModel[];
+    | DataStatesModel[]
+    | DataAppoitmentTag[];
   first_page_url: string;
   from: number;
   last_page: number;

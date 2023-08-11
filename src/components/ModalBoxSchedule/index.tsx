@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
 
 import { Button } from 'components/Button';
+import ColorSelector from 'components/ColorSelector';
 import { InputForm } from 'components/Input';
 import { SmallMediumText } from 'components/Text';
 
@@ -14,6 +14,8 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataAppoitmentTag } from 'models/DataAppoitmentTag';
+import { DataPatientsModel } from 'models/DataPatientsModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
 
@@ -21,6 +23,8 @@ type Props = {
   onHide: () => void;
   show: boolean;
   specialists: DataSpecialistsModel[];
+  patients: DataPatientsModel[];
+  tags: DataAppoitmentTag[];
 };
 
 type DataProps = {
@@ -30,12 +34,20 @@ type DataProps = {
 export default function ModalBoxSchedule({
   onHide,
   specialists,
+  patients,
+  tags,
   ...props
 }: Props & { show: boolean }) {
   const [specialties, setSpecialties] = React.useState<any>(null);
   const [isLoadingSpecialties, setIsLoadingSpecialties] = React.useState(false);
+  const [isVisibleListPatients, setIsVisibleListPatients] =
+    React.useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [patient, setPatient] = React.useState<any>(null);
+  const [filteredProducts, setFilteredProducts] = React.useState<any>(null);
   const {
     control,
+    setValue,
     handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
@@ -46,6 +58,22 @@ export default function ModalBoxSchedule({
     data.name = 'teste';
     onHide();
   }
+
+  const handleFilteredProduct = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    const { value } = event.currentTarget;
+    if (value.length >= 3) setIsVisibleListPatients(true);
+    else setIsVisibleListPatients(false);
+
+    value.length >= 3
+      ? setFilteredProducts(
+          patients?.filter((item: DataPatientsModel) =>
+            item.name.toUpperCase().includes(value.toUpperCase())
+          )
+        )
+      : [];
+  };
 
   async function getSpecialties(specialistId: number) {
     setIsLoadingSpecialties(true);
@@ -83,42 +111,14 @@ export default function ModalBoxSchedule({
             type="text"
             name="description"
             containerStyle={{
-              width: '95%',
+              width: '80%',
               height: '40px',
               marginRight: '5%'
             }}
             error={errors.descriptionRequired?.message?.toString()}
             style={{ height: '40px', padding: '5px 10px', fontSize: 12 }}
           />
-          <Form.Select
-            aria-label="Default select example"
-            style={{ width: '25%' }}
-          >
-            <option value="1">
-              <Form.Control
-                type="color"
-                id="exampleColorInput"
-                defaultValue="#563d7c"
-                title="Choose your color"
-              />
-            </option>
-            <option value="2">
-              <Form.Control
-                type="color"
-                id="exampleColorInput"
-                defaultValue="#563d7c"
-                title="Choose your color"
-              />
-            </option>
-            <option value="3">
-              <Form.Control
-                type="color"
-                id="exampleColorInput"
-                defaultValue="#563d7c"
-                title="Choose your color"
-              />
-            </option>
-          </Form.Select>
+          <ColorSelector colors={tags} />
         </div>
         <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
           <InputForm
@@ -132,8 +132,40 @@ export default function ModalBoxSchedule({
             name="pacient"
             error={errors.pacientRequired?.message?.toString()}
             style={{ height: '40px', padding: '5px 10px', fontSize: 12 }}
+            onKeyUp={handleFilteredProduct}
           />
         </div>
+        {isVisibleListPatients &&
+          patients !== null &&
+          patients !== undefined && (
+            <>
+              <div className={styles.listPatients}>
+                {filteredProducts !== undefined && filteredProducts.length ? (
+                  filteredProducts?.map((patient: DataPatientsModel) => {
+                    return (
+                      <div
+                        key={patient.id}
+                        className={styles.patient}
+                        onClick={() => {
+                          setPatient(patient);
+                          setValue('pacient', patient.name);
+                          setIsVisibleListPatients(false);
+                        }}
+                      >
+                        <p style={{ margin: '2px 0' }}>{patient.name}</p>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className={styles.patient}>
+                    <p style={{ margin: '2px 0', fontSize: '12px' }}>
+                      Nenhum paciente encontrado.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
           <select
             onChange={(event) => {

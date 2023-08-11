@@ -49,6 +49,7 @@ type Props = {
   style?: React.CSSProperties | undefined;
   getValue?: (_text: string) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 export function InputForm({
