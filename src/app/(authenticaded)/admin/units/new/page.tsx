@@ -106,7 +106,7 @@ export default function NewUnitPage() {
         setShowModalSuccess(true);
       }
     } catch (error) {
-      alert('Erro ao criar unidade!');
+      // console.log('Erro ao criar unidade!' + error);
     }
   }
 

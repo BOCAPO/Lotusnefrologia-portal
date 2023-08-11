@@ -37,6 +37,7 @@ export default function ScalePage(): JSX.Element {
   const [startTime, setStartTime] = React.useState<string>('');
   const [endTime, setEndTime] = React.useState<string>('');
   const [nameSelected, setNameSelected] = React.useState<string>('');
+  const [loading, setLoading] = React.useState<boolean>(true);
   function handleItemSelection(item: any) {
     setSelectedItem(item);
     const listSpecalist = data?.data;
@@ -62,6 +63,7 @@ export default function ScalePage(): JSX.Element {
   async function getEspecialists() {
     const response = await getAllSpecialists();
     setData(response.data);
+    setLoading(false);
   }
 
   const searchSchedulesDispobles = () => {
@@ -120,8 +122,9 @@ export default function ScalePage(): JSX.Element {
             headers={Strings.headersScale}
             headersResponse={Strings.headersScaleResponse}
             response={data}
-            isLoading={false}
+            isLoading={loading}
             onItemClick={handleItemSelection}
+            type="scaleSchedule"
           />
         </div>
         <div className={styles.formInserScale}>

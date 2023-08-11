@@ -18,6 +18,7 @@ import { DataAppoitmentTag } from 'models/DataAppoitmentTag';
 import { DataPatientsModel } from 'models/DataPatientsModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
+import { createAppointment } from 'services/appointments';
 
 type Props = {
   onHide: () => void;
@@ -54,11 +55,6 @@ export default function ModalBoxSchedule({
     resolver: yupResolver(schema)
   });
 
-  function handleSubmitAppoitment(data: DataProps) {
-    data.name = 'teste';
-    onHide();
-  }
-
   const handleFilteredProduct = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
@@ -87,6 +83,28 @@ export default function ModalBoxSchedule({
         .sort((a, b) => a.description.localeCompare(b.description))
     );
     setIsLoadingSpecialties(false);
+  }
+
+  async function handleSubmitAppoitment(data: DataProps) {
+    const newAppoitment = {
+      description: data.description,
+      date: data.date,
+      hour: data.hour,
+      observation: data.observation,
+      patient_id: patient.id,
+      specialist_id: 1,
+      specialty_id: 1,
+      tag_id: 1
+    };
+
+    try {
+      const response = await createAppointment(newAppoitment);
+      if (response !== null) {
+        onHide();
+      }
+    } catch (error) {
+      //console.log('Error ao criar agendamento: ', error);
+    }
   }
 
   return (
