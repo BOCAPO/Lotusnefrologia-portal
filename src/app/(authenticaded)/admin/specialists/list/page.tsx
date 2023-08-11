@@ -27,7 +27,6 @@ export default function SpecialistListPage() {
 
   async function getSpecialist() {
     const response = await getAllSpecialists();
-
     const dataUpdated = response.data.data as ResponseGetModel[];
     let specialties: string[] = [];
     dataUpdated.map((element: any) => {
