@@ -7,7 +7,7 @@
     height: 60px;
 }
 
-.btnDateSchedule:hover, .btnDateSchedule:focus, .btnDateSchedule:active {
+.btnDateSchedule:hover, .btnDateSchedule:focus, .btnDateSchedule:active, .btnDateSchedule.visited {
     background-color: #A1E2A5;
     color: #FFFFFF;
     cursor: pointer;

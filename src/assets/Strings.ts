@@ -68,6 +68,7 @@ export const Strings = {
     'status'
   ],
   headersScale: ['Especialista', 'Unid'],
+  headersScaleResponse: ['name', 'unit'],
   schedule: 'Agendamento',
   description: 'Descrição',
   pacient: 'Paciente',

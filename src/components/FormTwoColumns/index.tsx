@@ -9,34 +9,44 @@ import styles from './formtwocolumns.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { DataScaleModel } from 'models/DataScaleModel';
+import { ResponseGetModel } from 'models/ResponseGetModel';
 
 type Props = {
   headers: string[];
-  data: DataScaleModel[] | null;
+  headersResponse?: string[];
+  response?: ResponseGetModel;
   style?: React.CSSProperties;
-  onItemClick?: (_item: DataScaleModel) => void;
+  isLoading?: boolean;
+  onItemClick?: (_item: any) => void;
 };
 
 export function FormTwoColumns({
   headers,
-  data,
+  headersResponse,
+  response,
+  isLoading = true,
   onItemClick
 }: Props): JSX.Element {
-  const [keys, setKeys] = React.useState<string[]>([]);
-
-  const handleItemClick = (item: DataScaleModel) => {
-    if (onItemClick) {
-      onItemClick(item);
+  const [keys, setKeys] = React.useState<string[] | undefined>([]);
+  function handleRowClick(event: React.MouseEvent<HTMLTableRowElement>) {
+    const userId = event.currentTarget.getAttribute('data-user-id');
+    if (userId !== undefined && onItemClick !== undefined) {
+      onItemClick(userId);
     }
-  };
-
+  }
   React.useEffect(() => {
-    if (data !== null && data.length > 0) {
-      const objectKeys: string[] = Object.keys(data[0]);
-      setKeys(objectKeys);
+    if (
+      response !== undefined &&
+      response?.data !== null &&
+      response?.data.length > 0
+    ) {
+      const objectKeys: string[] = Object.keys(response?.data[0]);
+      const commonKeys = headersResponse?.filter(
+        (key) => objectKeys?.includes(key)
+      );
+      setKeys(commonKeys);
     }
-  }, [data]);
+  }, [response?.data?.length]);
 
   return (
     <div className={styles.bodyFormTwoColumns}>
@@ -65,15 +75,23 @@ export function FormTwoColumns({
             </tr>
           </thead>
           <tbody>
-            {data?.map((row: any, rowIndex: number) => (
-              <tr key={rowIndex}>
-                {keys.map((key: string, cellIndex) => (
-                  <td
-                    key={cellIndex}
-                    className={styles.rows}
-                    onClick={() => handleItemClick(row)}
-                  >
-                    {String(row[key]).toLocaleUpperCase()}
+            {response?.data.map((row: any, index: number) => (
+              <tr key={index} onClick={handleRowClick} data-user-id={row.id}>
+                {keys?.map((key, index) => (
+                  <td key={index} className={styles.rows}>
+                    {key === 'status' ? (
+                      row[key] === 0 ? (
+                        <span>Ativo</span>
+                      ) : (
+                        <span>Inativo</span>
+                      )
+                    ) : row[key] === null ? (
+                      'Não informado'
+                    ) : key === 'birthday' ? (
+                      new Date(row[key]).toLocaleDateString('pt-BR')
+                    ) : (
+                      row[key].toString()
+                    )}
                   </td>
                 ))}
               </tr>
@@ -84,13 +102,21 @@ export function FormTwoColumns({
       <div className={styles.footer}>
         <div className={styles.footerLeft}>
           <select>
-            {data?.map((row, index) => <option key={index}>{index}</option>)}
+            {response?.links.map((link, index) => (
+              <option key={index}>{link?.label}</option>
+            ))}
           </select>
         </div>
         <SmallMediumText
           bold={false}
           style={{ lineHeight: 2, marginLeft: '2%' }}
-          text={`Exibindo 1 de ${data?.length}`}
+          text={
+            isLoading
+              ? 'Carregando...'
+              : `Exibindo ${response?.current_page} de ${
+                  Number(response?.links.length) - 2
+                }`
+          }
           color={Colors.gray70}
         />
       </div>

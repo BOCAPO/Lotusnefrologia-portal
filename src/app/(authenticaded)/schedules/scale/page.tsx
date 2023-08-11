@@ -20,8 +20,8 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { DataScaleModel } from 'models/DataScaleModel';
-import dataScale from 'tests/mocks/dataScale'; //mock de teste de dados
+import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
+import { getAllSpecialists } from 'services/specialists';
 import { intervalSchedule } from 'utils/enums';
 
 type DataProps = {
@@ -29,14 +29,22 @@ type DataProps = {
 };
 
 export default function ScalePage(): JSX.Element {
+  const [data, setData] = React.useState<any>(null);
   const [selectedItem, setSelectedItem] = React.useState<string>('');
   const [visibleDatesHours, setVisibleDatesHours] =
     React.useState<boolean>(false);
   const [periodicity, setPeriodicity] = React.useState<number>(0);
   const [startTime, setStartTime] = React.useState<string>('');
   const [endTime, setEndTime] = React.useState<string>('');
-  function handleItemSelection(item: DataScaleModel) {
-    setSelectedItem(item.name);
+  const [nameSelected, setNameSelected] = React.useState<string>('');
+  function handleItemSelection(item: any) {
+    setSelectedItem(item);
+    const listSpecalist = data?.data;
+    setNameSelected(
+      listSpecalist?.filter(
+        (element: DataSpecialistsModel) => element.id === Number(item)
+      )[0].name
+    );
   }
 
   const {
@@ -46,6 +54,15 @@ export default function ScalePage(): JSX.Element {
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
   });
+
+  React.useEffect(() => {
+    getEspecialists();
+  }, [selectedItem]);
+
+  async function getEspecialists() {
+    const response = await getAllSpecialists();
+    setData(response.data);
+  }
 
   const searchSchedulesDispobles = () => {
     setVisibleDatesHours(true);
@@ -101,14 +118,16 @@ export default function ScalePage(): JSX.Element {
         <div style={{ width: '30%' }}>
           <FormTwoColumns
             headers={Strings.headersScale}
-            data={dataScale}
+            headersResponse={Strings.headersScaleResponse}
+            response={data}
+            isLoading={false}
             onItemClick={handleItemSelection}
           />
         </div>
         <div className={styles.formInserScale}>
           <div className={styles.titleScale}>
             <SmallMediumText
-              text={Strings.scheduleConfirmation + ': ' + `${selectedItem}`}
+              text={Strings.scheduleConfirmation + ': ' + `${nameSelected}`}
               style={{ textAlign: 'left', lineHeight: 2 }}
               bold={true}
               color={Colors.gray90}
@@ -217,6 +236,7 @@ export default function ScalePage(): JSX.Element {
                     type="cancel"
                     onClick={() => {
                       setSelectedItem('');
+                      setNameSelected('');
                       setVisibleDatesHours(false);
                     }}
                   />
