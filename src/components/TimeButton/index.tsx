@@ -1,4 +1,4 @@
-import styles from './timebutton.module.css'; // Substitua pelo caminho correto
+import styles from './timebutton.module.css';
 
 interface TimeButtonProps {
   startTime: string;
