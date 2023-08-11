@@ -12,8 +12,8 @@ export function TimeButton({
   periodicity
 }: TimeButtonProps) {
   const generateTimeButtons = () => {
-    console.log('startTime', startTime);
-    console.log('endTime', endTime);
+    // console.log('startTime', startTime);
+    // console.log('endTime', endTime);
     const startTimeParts = startTime.split(':').map(Number);
     const endTimeParts = endTime.split(':').map(Number);
 

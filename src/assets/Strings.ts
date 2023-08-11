@@ -15,7 +15,19 @@ export const Strings = {
     'Hora',
     'Especialidade',
     'Especialista',
-    'Unidade'
+    'Unidade',
+    'Status'
+  ],
+  headersHistoryResponse: [
+    'name',
+    'cpf',
+    'date',
+    'date',
+    'hour',
+    'specialist',
+    'specialty',
+    'unit',
+    'appointment_status'
   ],
   headersUnits: ['CNPJ', 'Nome', 'Telefone', 'E-mail', 'CEP', 'Endereço'],
   headersUnitsResponse: [
