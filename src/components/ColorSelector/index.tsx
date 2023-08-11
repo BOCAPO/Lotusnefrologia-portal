@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import styles from './ColorSelector.module.css'; // Estilos CSS
+import styles from './colorselector.module.css'; // Estilos CSS
 
 import { DataAppoitmentTag } from 'models/DataAppoitmentTag';
 

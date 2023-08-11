@@ -1,4 +1,4 @@
-import styles from './tenbuttons.module.css'; // Substitua pelo caminho correto
+import styles from './tenbuttons.module.css';
 
 import { addDays, format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
