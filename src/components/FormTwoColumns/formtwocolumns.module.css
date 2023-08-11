@@ -55,6 +55,22 @@
     overflow-x: hidden;
 }
 
+.containerTable::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: #00555B;
+    border-radius: 5px;
+  }
+  
+.containerTable::-webkit-scrollbar-thumb{
+    background: #A1E2A5;
+    border-radius: 5px;
+}
+
+.containerTable::-webkit-scrollbar-track {
+    border-radius: 5px;
+}
+
 .tableScale {
     width: 100%;
 }
@@ -67,6 +83,16 @@
 
 .tableScale tbody tr:hover {
     background-color: #A1E2A5;
+}
+
+.tableScale thead tr th{
+    font: normal normal bold 12px/14px Arial;
+    font-weight: bold;
+    letter-spacing: 0.03333em;
+    text-align: left;
+    color: #212121;
+    height: 50px;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .footer {
