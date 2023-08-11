@@ -48,6 +48,7 @@ type Props = {
   type?: string;
   style?: React.CSSProperties | undefined;
   getValue?: (_text: string) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 };
 
 export function InputForm({

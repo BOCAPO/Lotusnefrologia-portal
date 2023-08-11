@@ -33,6 +33,8 @@ export default function ScalePage(): JSX.Element {
   const [visibleDatesHours, setVisibleDatesHours] =
     React.useState<boolean>(false);
   const [periodicity, setPeriodicity] = React.useState<number>(0);
+  const [startTime, setStartTime] = React.useState<string>('');
+  const [endTime, setEndTime] = React.useState<string>('');
   function handleItemSelection(item: DataScaleModel) {
     setSelectedItem(item.name);
   }
@@ -67,6 +69,30 @@ export default function ScalePage(): JSX.Element {
         break;
     }
   };
+
+  const handleInitialHourBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setStartTime(value);
+  };
+  const handleEndHourBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setEndTime(value);
+  };
+
+  // function isSecondTimeGreaterThanFirst(
+  //   initialTime: string,
+  //   secondTime: string
+  // ): boolean {
+  //   const [firstHours, firstMinutes] = initialTime.split(':').map(Number);
+  //   const [secondHours, secondMinutes] = secondTime.split(':').map(Number);
+
+  //   if (secondHours > firstHours) {
+  //     return true;
+  //   } else if (secondHours === firstHours && secondMinutes > firstMinutes) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   return (
     <React.Fragment>
@@ -108,6 +134,7 @@ export default function ScalePage(): JSX.Element {
                   style={{ height: '40px' }}
                   placeholder={Strings.date}
                   error={errors.initialHour?.message?.toString()}
+                  onBlur={handleInitialHourBlur}
                 />
                 <InputForm
                   control={control}
@@ -117,6 +144,7 @@ export default function ScalePage(): JSX.Element {
                   placeholder={Strings.hour}
                   containerStyle={{ width: '25%' }}
                   error={errors.finalHour?.message?.toString()}
+                  onBlur={handleEndHourBlur}
                 />
                 <SelectForm
                   control={control}
@@ -126,15 +154,6 @@ export default function ScalePage(): JSX.Element {
                   data={intervalSchedule}
                   onSelectChange={handlePeriodicity}
                 />
-                {/* <select>
-                  {Strings.timeOfAttendance.map((item, index) => {
-                    return (
-                      <option key={index} value={item}>
-                        {item}
-                      </option>
-                    );
-                  })}
-                </select> */}
                 <Button
                   title=""
                   type="secondary"
@@ -177,7 +196,11 @@ export default function ScalePage(): JSX.Element {
                   />
                 </div>
                 <div className={styles.divHoursDisponibles}>
-                  <TimeButton periodicity={periodicity} />
+                  <TimeButton
+                    periodicity={periodicity}
+                    startTime={startTime}
+                    endTime={endTime}
+                  />
                 </div>
               </div>
               <div className={styles.footerScale}>
