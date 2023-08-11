@@ -87,14 +87,15 @@ export default function ModalBoxSchedule({
 
   async function handleSubmitAppoitment(data: DataProps) {
     const newAppoitment = {
-      description: data.description,
-      date: data.date,
-      hour: data.hour,
-      observation: data.observation,
-      patient_id: patient.id,
       specialist_id: 1,
+      patient_id: patient.id as number,
+      unit_id: 1,
       specialty_id: 1,
-      tag_id: 1
+      schedule_id: 1,
+      appointment_status: 1,
+      observation: data.observation.toString(),
+      tag_id: '1',
+      status: 0
     };
 
     try {
