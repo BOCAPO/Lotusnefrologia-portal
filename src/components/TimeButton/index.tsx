@@ -1,21 +1,32 @@
 import styles from './timebutton.module.css'; // Substitua pelo caminho correto
 
 interface TimeButtonProps {
+  startTime: string;
+  endTime: string;
   periodicity: number;
 }
 
-export function TimeButton({ periodicity }: TimeButtonProps) {
+export function TimeButton({
+  startTime,
+  endTime,
+  periodicity
+}: TimeButtonProps) {
   const generateTimeButtons = () => {
-    const startTime = new Date();
-    startTime.setHours(6, 0, 0, 0); // 06:00
+    console.log('startTime', startTime);
+    console.log('endTime', endTime);
+    const startTimeParts = startTime.split(':').map(Number);
+    const endTimeParts = endTime.split(':').map(Number);
 
-    const endTime = new Date();
-    endTime.setHours(17, 30, 0, 0); // 17:30
+    const startDate = new Date();
+    startDate.setHours(startTimeParts[0], startTimeParts[1], 0, 0);
+
+    const endDate = new Date();
+    endDate.setHours(endTimeParts[0], endTimeParts[1], 0, 0);
 
     const timeButtons: JSX.Element[] = [];
-    const currentTime = new Date(startTime);
+    const currentTime = new Date(startDate);
 
-    while (currentTime <= endTime) {
+    while (currentTime <= endDate) {
       const formattedTime = currentTime.toLocaleTimeString('pt-BR', {
         hour: '2-digit',
         minute: '2-digit'
@@ -30,7 +41,11 @@ export function TimeButton({ periodicity }: TimeButtonProps) {
       currentTime.setMinutes(currentTime.getMinutes() + periodicity);
     }
 
-    return timeButtons;
+    if (timeButtons.length > 0) {
+      return timeButtons;
+    } else {
+      return <p>Não há horários disponíveis</p>;
+    }
   };
 
   return generateTimeButtons();

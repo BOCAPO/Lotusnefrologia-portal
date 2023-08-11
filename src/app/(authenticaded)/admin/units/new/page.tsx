@@ -123,7 +123,7 @@ export default function NewUnitPage() {
           />
         </div>
         <div className={styles.formNewUnit}>
-          <div style={{ marginBottom: '2vh' }}>
+          <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderCNJP}
               type="text"
@@ -154,7 +154,7 @@ export default function NewUnitPage() {
               error={errors.responsible?.message}
             />
           </div>
-          <div style={{ marginBottom: '2vh' }}>
+          <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderEmail}
               type="email"
@@ -207,7 +207,7 @@ export default function NewUnitPage() {
               />
             </Link>
           </div>
-          <div style={{ marginBottom: '2vh' }}>
+          <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderZipCode}
               type="text"
@@ -259,7 +259,7 @@ export default function NewUnitPage() {
               style={{ height: '40px', padding: '22px' }}
             />
           </div>
-          <div style={{ marginBottom: '2vh', width: '100%' }}>
+          <div style={{ marginBottom: '3vh', width: '100%' }}>
             <div style={{ width: '50%' }}>
               <div
                 style={{ marginBottom: '2vh', width: '100%' }}
