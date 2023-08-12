@@ -12,12 +12,3 @@
     color: #FFFFFF;
     cursor: pointer;
 }
-
-.inputCalendar{
-    color: transparent;
-    border: none;
-    background-color: #F2F2F2;
-    border-radius: 6px;
-    width: 55px;
-    height: 60px;
-}

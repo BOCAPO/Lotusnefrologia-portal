@@ -1,3 +1,7 @@
+'use client';
+
+import React from 'react';
+
 import styles from './timebutton.module.css';
 
 interface TimeButtonProps {
@@ -12,10 +16,9 @@ export function TimeButton({
   periodicity
 }: TimeButtonProps) {
   const generateTimeButtons = () => {
-    // console.log('startTime', startTime);
-    // console.log('endTime', endTime);
     const startTimeParts = startTime.split(':').map(Number);
     const endTimeParts = endTime.split(':').map(Number);
+    const [hoursSelected, setHoursSelected] = React.useState<any>([]);
 
     const startDate = new Date();
     startDate.setHours(startTimeParts[0], startTimeParts[1], 0, 0);
@@ -26,6 +29,19 @@ export function TimeButton({
     const timeButtons: JSX.Element[] = [];
     const currentTime = new Date(startDate);
 
+    async function handleTimeButtons(formattedTime: string) {
+      const dataHoursSelected = hoursSelected;
+      if (dataHoursSelected.includes(formattedTime) === true) {
+        const index = dataHoursSelected.indexOf(formattedTime);
+        if (index > -1) {
+          dataHoursSelected.splice(index, 1);
+          setHoursSelected(dataHoursSelected);
+        }
+      } else {
+        setHoursSelected([...hoursSelected, formattedTime]);
+      }
+    }
+
     while (currentTime <= endDate) {
       const formattedTime = currentTime.toLocaleTimeString('pt-BR', {
         hour: '2-digit',
@@ -33,7 +49,17 @@ export function TimeButton({
       });
 
       timeButtons.push(
-        <button key={formattedTime} className={styles.btnTimeButton}>
+        <button
+          key={formattedTime}
+          className={styles.btnTimeButton}
+          onClick={() => handleTimeButtons(formattedTime)}
+          style={{
+            backgroundColor: hoursSelected.includes(formattedTime)
+              ? '#A1E2A5'
+              : '#F2F2F2',
+            color: hoursSelected.includes(formattedTime) ? '#fff' : '#000'
+          }}
+        >
           <p>{formattedTime}</p>
         </button>
       );
