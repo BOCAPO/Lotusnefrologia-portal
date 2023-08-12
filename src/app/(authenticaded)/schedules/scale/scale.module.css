@@ -114,7 +114,7 @@
     align-items: center;
 }
 
-.divHoursDisponibles{
+.divHoursDisponibles {
     display: flex;
     flex-direction: row !important;
     width: 100%;
@@ -122,4 +122,13 @@
     margin-bottom: 3vh;
     align-items: center;
     flex-wrap: wrap;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .formInserScale {
+        height: 78vh;
+    }
+    .btnSaveScale{
+        margin-right: 8%;
+    }
 }

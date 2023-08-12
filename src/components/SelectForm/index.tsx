@@ -54,6 +54,7 @@ export function SelectForm({
                         <option
                           key={item.id ? item.id : item.code}
                           value={item.id ? item.id : item.code}
+                          style={{ padding: '5%' }}
                         >
                           {item.name ? item.name : item.description}
                         </option>

@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './layout.module.css';
 
 import LogoHome from 'assets/images/Logo-7.png';
+import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { AuthContextProvider } from 'contexts/AuthContext';
 import { useIsClient } from 'hooks/useIsClient';
@@ -53,7 +54,7 @@ export default function RootLayout({
               <Image src={LogoHome} alt="Logo da Home Page" />
             </div>
             <div className={styles.searchBar}>
-              <input type="search" placeholder="Pesquisar" />
+              <input type="search" placeholder={Strings.search} />
               <div className={styles.iconSearch}>
                 <Icon
                   typeIcon={TypeIcon.Search}

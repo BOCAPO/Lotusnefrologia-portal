@@ -7,8 +7,8 @@
     border-radius: 8;
     border-width: 1;
     border-color: #A1E2A5;
-    height: 48;
-    padding: 0 16
+    height: 40px;
+    padding: 0 16px;
 }
 
 .inputContentError {
@@ -28,8 +28,8 @@
 
 .input {
     width: 100%;
-    height: 60px;
-    font-size: 16px;
+    height: 30px;
+    font-size: 14px;
     border: 1px solid #E5E5E5;
     border-radius: 6px;
     padding: 5%
@@ -49,4 +49,10 @@
     position: absolute;
     top: 2vh;
     right: 3%;
+}
+
+@media screen and (max-width: 1440px) and (max-height: 643px) {
+    .inputContent {
+        height: 35px;
+    }
 }

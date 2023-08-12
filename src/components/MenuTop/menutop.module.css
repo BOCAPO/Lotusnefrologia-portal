@@ -48,7 +48,7 @@
     font-weight: bold !important;
 }
 
-.buttonsMenu a, .cardIcon {
+.buttonsMenu a {
     width: 100%;
     height: 100%;
     display: flex;
@@ -58,10 +58,22 @@
     text-decoration: none;
 }
 
-.buttonsMenu .cardIcon img, .buttonsMenu .cardIcon a img {
-    margin-top: 4vh;
-    padding-top: 2vh;
-    width: 14%;
+.linksMenu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardIcon {
+    width: 100%;
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonsMenu .cardIcon img, .buttonsMenu .cardIcon a div img {
+    transform: scale(0.11);
 }
 
 .buttonsMenu:hover div:first-of-type,
@@ -72,4 +84,21 @@
 
 .buttonsMenu div:first-of-type:hover {
     display: flex !important;
+}
+
+.labelMenu {
+    line-height: 2px !important;
+    margin: 0 !important;
+    margin-bottom: 40px !important;
+
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .buttonsMenu .cardIcon img, .buttonsMenu .cardIcon a div img {
+        transform: scale(0.08);
+    }
+
+    .labelMenu {
+        margin-bottom: 20px !important;
+    }
 }

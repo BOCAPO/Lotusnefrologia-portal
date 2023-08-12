@@ -103,3 +103,14 @@
     width: 100%;
     padding: 1.5vh 2% 0 2%;
 }
+
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .formInserRole {
+        height: 78vh;
+    }
+
+    .btnSaveNewRole {
+        margin-right: 6%;
+    }
+}

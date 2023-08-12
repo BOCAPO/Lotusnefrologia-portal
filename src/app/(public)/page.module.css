@@ -14,7 +14,7 @@
   background: url('../../assets/images/bg-login-lotus-portal-edit@0.25.png') no-repeat center center #00555B;
 }
 
-.logoLogin{
+.logoLogin {
   width: 50%;
   display: flex;
   justify-content: flex-start;
@@ -39,7 +39,7 @@
   padding: 2.5%;
 }
 
-.inputLogin{
+.inputLogin {
   margin: 4vh 0;
 }
 
@@ -52,10 +52,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 1.3s ease-in-out;
-  margin: 2vh 0 2vh 0;
+  transition: all 1s ease-in-out;
+  margin: 2vh 0 20% 0;
 }
 
 .forgotPasswordText:hover {
   text-decoration: underline;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+  .forgotPassword {
+    margin: 2vh 0 10% 0;
+  }
 }

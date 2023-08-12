@@ -50,7 +50,16 @@ export function Table({
 
   return (
     <React.Fragment>
-      <div className={styles.containerTable}>
+      <div
+        className={styles.containerTable}
+        style={
+          response !== undefined &&
+          response?.data !== undefined &&
+          response?.data?.length > 0
+            ? { height: '82%' }
+            : { height: '90%' }
+        }
+      >
         {isLoading ? (
           <SpinnerLoading />
         ) : (

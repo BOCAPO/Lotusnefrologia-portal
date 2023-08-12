@@ -67,6 +67,10 @@
     justify-content: space-around;
 }
 
+.buttonsHeader p:first-child {
+    margin: 0;
+}
+
 .firstMenuAdmin, .secondMenuAdmin, .thirtyMenuAdmin {
     width: 39px;
     height: 39px;
@@ -88,4 +92,22 @@
 .thirtyMenuAdmin:focus+div,
 .thirtyMenuAdmin:active+div {
     display: block !important;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .header {
+        height: 7vh;
+        padding: 1% 10% 0 10%;
+    }
+
+    .iconSearch {
+        top: 1vh;
+    }
+
+    .searchBar input[type="search"] {
+        padding: 0 5%;
+    }
+    .buttonsHeader{
+        width: 40%;
+    }
 }

@@ -1,5 +1,5 @@
 export type DataPatientsModel = {
-  id: number;
+  id?: number;
   cpf: string;
   name: string;
   email: string;
@@ -13,9 +13,9 @@ export type DataPatientsModel = {
   lot: string;
   complement: string | null;
   status: number;
-  password: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
+  password?: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
   unit: number;
 };

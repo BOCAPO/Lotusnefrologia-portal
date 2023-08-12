@@ -64,7 +64,7 @@
     height: 45px;
     border: 1px solid #E5E5E5;
     border-radius: 5px;
-    padding: 1%;
+    padding: 1% 5%;
     font-size: 16px;
     color: #8C8E90;
 }
@@ -151,4 +151,13 @@
 
 .tableLinkedUnits tbody tr input[type="checkbox"]:checked {
     color: #A1E2A5 !important;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .divTableLinkedUnits {
+        height: 20vh;
+    }
+    .tableLinkedUnits tbody tr{
+        height: 30px;
+    }
 }
