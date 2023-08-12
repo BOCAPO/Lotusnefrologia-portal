@@ -31,6 +31,15 @@ export function Table({
       response?.data !== null &&
       response?.data.length > 0
     ) {
+      const links = response.links;
+      links.map((link) => {
+        if (
+          link.label === '&laquo; Anterior' ||
+          link.label === 'Próximo &raquo;'
+        ) {
+          links.splice(links.indexOf(link), 1);
+        }
+      });
       const objectKeys: string[] = Object.keys(response?.data[0]);
       const commonKeys = headersResponse?.filter(
         (key) => objectKeys?.includes(key)
@@ -105,9 +114,9 @@ export function Table({
           text={
             isLoading
               ? 'Carregando...'
-              : `Exibindo ${response?.current_page} de ${
-                  Number(response?.links.length) - 2
-                }`
+              : `Exibindo ${response?.current_page} de ${Number(
+                  response?.links.length
+                )}`
           }
           color={Colors.gray70}
         />
