@@ -36,7 +36,7 @@ export default function ListUnitsPage() {
         <div className={styles.headerUnitsList}>
           <div className={styles.btnAddUnit}>
             <Button
-              title={Strings.inserUnit}
+              title={Strings.insertUnit}
               type="secondary"
               onClick={() => {
                 router.push('/admin/units/new');
