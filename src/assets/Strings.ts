@@ -38,18 +38,11 @@ export const Strings = {
     'zip_code',
     'street'
   ],
-  headersUsers: [
-    'Nome',
-    'CPF',
-    'Telefone',
-    'E-mail',
-    'Perfil de Acesso',
-    'Status'
-  ],
+  headersUsers: ['Nome', 'CPF', 'Telefone', 'E-mail', 'Status'],
   headersUsersResponse: [
     'name',
     'cpf',
-    'telephone',
+    'phone_primary',
     'email',
     'profile',
     'status'
@@ -97,7 +90,7 @@ export const Strings = {
   hourRequired: 'Hora é obrigatório',
   save: 'Salvar',
   cancel: 'Cancelar',
-  inserUnit: 'Cadastrar Unidade',
+  insertUnit: 'Cadastrar Unidade',
   insertUser: 'Cadastrar Usuário',
   insertSpecialist: 'Cadastrar Especialista',
   insertPatient: 'Cadastrar Paciente',
@@ -109,6 +102,7 @@ export const Strings = {
   schemaRequiredInterval: 'Intervalo é obrigatório',
   timeOfAttendance: ['15 minutos', '30 minutos', '45 minutos', '1 hora'],
   placeholderCNJP: 'CNPJ',
+  placeholderCPF: 'CPF',
   placeholderName: 'Nome',
   placeholderResponsable: 'Responsável',
   placeholderPhonePrimay: 'Telefone Principal',
@@ -143,6 +137,13 @@ export const Strings = {
   confirmation: 'Confirmação',
   close: 'Fechar',
   messageSuccessInsertUnit: 'O cadastro da unidade foi realizada com sucesso.',
+  messageSuccessInsertUser: 'O cadastro do usuário foi realizada com sucesso.',
+  messageSuccessInsertSpecialist:
+    'O cadastro do especialista foi realizada com sucesso.',
   selectDate: 'Selecione a data',
-  hoursDisponibles: 'Horários disponíveis'
+  hoursDisponibles: 'Horários disponíveis',
+  resetPasswordSpecialist: 'Redefinir Senha do Especialista',
+  resetPasswordUser: 'Redefinir Senha do Usuário',
+  status: 'Status',
+  linkedUnits: 'Unidades Vinculadas'
 };
