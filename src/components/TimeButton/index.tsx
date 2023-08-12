@@ -8,12 +8,14 @@ interface TimeButtonProps {
   startTime: string;
   endTime: string;
   periodicity: number;
+  onTimeSelect: (selectedTime: []) => void;
 }
 
 export function TimeButton({
   startTime,
   endTime,
-  periodicity
+  periodicity,
+  onTimeSelect
 }: TimeButtonProps) {
   const generateTimeButtons = () => {
     const startTimeParts = startTime.split(':').map(Number);
@@ -36,9 +38,12 @@ export function TimeButton({
         if (index > -1) {
           dataHoursSelected.splice(index, 1);
           setHoursSelected(dataHoursSelected);
+          onTimeSelect(dataHoursSelected);
         }
       } else {
-        setHoursSelected([...hoursSelected, formattedTime]);
+        dataHoursSelected.push(formattedTime);
+        onTimeSelect(dataHoursSelected);
+        setHoursSelected(dataHoursSelected);
       }
     }
 

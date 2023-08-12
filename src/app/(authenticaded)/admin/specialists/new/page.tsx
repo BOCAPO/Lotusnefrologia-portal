@@ -97,17 +97,6 @@ export default function NewSpecialistPage() {
     getCities(selectedStateCode.toString());
   };
 
-  // async function onSubmit(data: DataProps) {
-  //   try {
-  //     const response = await createUnit(newUnit);
-  //     if (response !== null) {
-  //       setShowModalSuccess(true);
-  //     }
-  //   } catch (error) {
-  //     // console.log('Erro ao criar unidade!' + error);
-  //   }
-  // }
-
   return (
     <React.Fragment>
       <MenuTop />
