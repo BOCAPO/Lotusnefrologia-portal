@@ -119,11 +119,11 @@ export default function NewUnitPage() {
             text={Strings.insertUnit}
             bold={true}
             color={Colors.gray90}
-            style={{ lineHeight: '5px' }}
+            style={{ lineHeight: '3px' }}
           />
         </div>
         <div className={styles.formNewUnit}>
-          <div style={{ marginBottom: '3vh' }}>
+          <div className={styles.marginBotton1vh}>
             <InputForm
               placeholder={Strings.placeholderCNJP}
               type="text"
@@ -154,14 +154,14 @@ export default function NewUnitPage() {
               error={errors.responsible?.message}
             />
           </div>
-          <div style={{ marginBottom: '3vh' }}>
+          <div className={styles.marginBotton1vh}>
             <InputForm
               placeholder={Strings.placeholderEmail}
               type="email"
               name="email"
               control={control}
               style={{ height: '40px', padding: '22px' }}
-              containerStyle={{ width: '30%' }}
+              containerStyle={{ width: '25%' }}
               error={errors.email?.message}
             />
             <InputForm
@@ -170,7 +170,7 @@ export default function NewUnitPage() {
               name="phonePrimary"
               control={control}
               mask={'phone'}
-              containerStyle={{ width: '20%' }}
+              containerStyle={{ width: '15%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.phonePrimary?.message}
             />
@@ -180,6 +180,7 @@ export default function NewUnitPage() {
               name="phoneSecondary"
               control={control}
               mask={'phone'}
+              containerStyle={{ width: '15%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.phoneSecondary?.message}
             />
@@ -188,6 +189,7 @@ export default function NewUnitPage() {
               type="text"
               name="latitude"
               control={control}
+              containerStyle={{ width: '12%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.latitude?.message}
             />
@@ -196,6 +198,7 @@ export default function NewUnitPage() {
               type="text"
               name="longitude"
               control={control}
+              containerStyle={{ width: '12%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.longitude?.message}
             />
@@ -207,7 +210,7 @@ export default function NewUnitPage() {
               />
             </Link>
           </div>
-          <div style={{ marginBottom: '3vh' }}>
+          <div className={styles.marginBotton1vh}>
             <InputForm
               placeholder={Strings.placeholderZipCode}
               type="text"
@@ -215,6 +218,7 @@ export default function NewUnitPage() {
               mask={'cep'}
               maxLength={9}
               control={control}
+              containerStyle={{ width: '15%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.zipCode?.message}
             />
@@ -222,6 +226,7 @@ export default function NewUnitPage() {
               placeholder={Strings.placeholderStreet}
               type="text"
               name="street"
+              containerStyle={{ width: '20%' }}
               control={control}
               style={{ height: '40px', padding: '22px' }}
               error={errors.street?.message}
@@ -231,6 +236,7 @@ export default function NewUnitPage() {
               type="text"
               name="number"
               control={control}
+              containerStyle={{ width: '10%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.number?.message}
             />
@@ -239,6 +245,7 @@ export default function NewUnitPage() {
               type="text"
               name="block"
               control={control}
+              containerStyle={{ width: '10%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.block?.message}
             />
@@ -247,6 +254,7 @@ export default function NewUnitPage() {
               type="text"
               name="lot"
               control={control}
+              containerStyle={{ width: '10%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.lot?.message}
             />
@@ -259,10 +267,10 @@ export default function NewUnitPage() {
               style={{ height: '40px', padding: '22px' }}
             />
           </div>
-          <div style={{ marginBottom: '3vh', width: '100%' }}>
+          <div style={{ marginBottom: '1vh', width: '100%' }}>
             <div style={{ width: '50%' }}>
               <div
-                style={{ marginBottom: '2vh', width: '100%' }}
+                style={{ width: '100%' }}
                 className={styles.newUnitDataGeografic}
               >
                 <SelectForm
