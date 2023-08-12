@@ -72,7 +72,9 @@ export const Strings = {
     'email',
     'status'
   ],
+  headersNewRole: ['Description', 'Status'],
   headersScale: ['Especialista', 'Unid'],
+  headersSpecialty: ['Descrição', 'Status'],
   headersScaleResponse: ['name', 'unit'],
   schedule: 'Agendamento',
   description: 'Descrição',
@@ -94,6 +96,8 @@ export const Strings = {
   insertUser: 'Cadastrar Usuário',
   insertSpecialist: 'Cadastrar Especialista',
   insertPatient: 'Cadastrar Paciente',
+  insertSpecialty: 'Cadastrar Especialidade',
+  insertRole: 'Cadastrar Perfil',
   search: 'Pesquisar',
   scheduleConfirmation: 'Confirmação de Agenda',
   selectSpecialist: 'Selecione o Especialista',
@@ -144,10 +148,14 @@ export const Strings = {
     'O cadastro do paciente foi realizada com sucesso.',
   messageSuccessInsertScaleSchedule:
     'O cadastro da escala foi realizada com sucesso.',
+  messageSuccessInsertSpecialty:
+    'O cadastro da especialidade foi realizado com sucesso.',
+  messageSuccessInsertRole: 'O cadastro do perfil foi realizado com sucesso.',
   selectDate: 'Selecione a data',
   hoursDisponibles: 'Horários disponíveis',
   resetPasswordSpecialist: 'Redefinir Senha do Especialista',
   resetPasswordUser: 'Redefinir Senha do Usuário',
   status: 'Status',
-  linkedUnits: 'Unidades Vinculadas'
+  linkedUnits: 'Unidades Vinculadas',
+  headersResponseNewSpecialties: ['description', 'status']
 };

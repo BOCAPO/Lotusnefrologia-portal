@@ -10,7 +10,9 @@ import styles from './formtwocolumns.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataRolesModel } from 'models/DataRolesModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
+import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 
@@ -62,7 +64,13 @@ export function FormTwoColumns({
         case 'scaleSchedule':
           adptedDataSpecialist(response?.data);
           break;
+        case 'newSpecialty':
+          adptedDataSpecialties(response?.data);
+          break;
 
+        case 'newRole':
+          adptedDataRoles(response?.data);
+          break;
         default:
           break;
       }
@@ -80,6 +88,30 @@ export function FormTwoColumns({
         };
         setDataAdapted((oldArray) => [...oldArray, dataAdapted]);
       });
+    });
+  }
+
+  async function adptedDataSpecialties(data: any) {
+    data.forEach((element: DataSpecialtiesModel) => {
+      const dataAdapted = {
+        firstId: element.id,
+        secondId: element.id,
+        firstColumn: element.description,
+        secondColumn: element.status === 0 ? 'Ativo' : 'Inativo'
+      };
+      setDataAdapted((oldArray) => [...oldArray, dataAdapted]);
+    });
+  }
+
+  async function adptedDataRoles(data: any) {
+    data.forEach((element: DataRolesModel) => {
+      const dataAdapted = {
+        firstId: element.id,
+        secondId: element.id,
+        firstColumn: element.name,
+        secondColumn: 'Ativo'
+      };
+      setDataAdapted((oldArray) => [...oldArray, dataAdapted]);
     });
   }
 

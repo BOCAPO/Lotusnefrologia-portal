@@ -1,4 +1,4 @@
-export const statusUnit = [
+export const statusGeneral = [
   { id: 1, name: 'Ativo' },
   { id: 2, name: 'Inativo' }
 ];
