@@ -123,7 +123,7 @@ export default function NewUnitPage() {
           />
         </div>
         <div className={styles.formNewUnit}>
-          <div className={styles.marginBotton1vh}>
+          <div className={styles.marginBotton}>
             <InputForm
               placeholder={Strings.placeholderCNJP}
               type="text"
@@ -132,8 +132,8 @@ export default function NewUnitPage() {
               maxLength={18}
               control={control}
               error={errors.cnpj?.message}
+              className={styles.inputNewUnit}
               containerStyle={{ width: '20%' }}
-              style={{ height: '40px', padding: '22px' }}
             />
             <InputForm
               placeholder={Strings.placeholderName}
@@ -141,7 +141,7 @@ export default function NewUnitPage() {
               name="name"
               control={control}
               containerStyle={{ width: '42.5%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.name?.message}
             />
             <InputForm
@@ -150,17 +150,17 @@ export default function NewUnitPage() {
               name="responsible"
               control={control}
               containerStyle={{ width: '32.5%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.responsible?.message}
             />
           </div>
-          <div className={styles.marginBotton1vh}>
+          <div className={styles.marginBotton}>
             <InputForm
               placeholder={Strings.placeholderEmail}
               type="email"
               name="email"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               containerStyle={{ width: '25%' }}
               error={errors.email?.message}
             />
@@ -171,7 +171,7 @@ export default function NewUnitPage() {
               control={control}
               mask={'phone'}
               containerStyle={{ width: '15%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.phonePrimary?.message}
             />
             <InputForm
@@ -181,7 +181,7 @@ export default function NewUnitPage() {
               control={control}
               mask={'phone'}
               containerStyle={{ width: '15%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.phoneSecondary?.message}
             />
             <InputForm
@@ -190,7 +190,7 @@ export default function NewUnitPage() {
               name="latitude"
               control={control}
               containerStyle={{ width: '12%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.latitude?.message}
             />
             <InputForm
@@ -199,7 +199,7 @@ export default function NewUnitPage() {
               name="longitude"
               control={control}
               containerStyle={{ width: '12%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.longitude?.message}
             />
             <Link href="/admin/units" target="_blank">
@@ -210,7 +210,7 @@ export default function NewUnitPage() {
               />
             </Link>
           </div>
-          <div className={styles.marginBotton1vh}>
+          <div className={styles.marginBotton}>
             <InputForm
               placeholder={Strings.placeholderZipCode}
               type="text"
@@ -219,7 +219,7 @@ export default function NewUnitPage() {
               maxLength={9}
               control={control}
               containerStyle={{ width: '15%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.zipCode?.message}
             />
             <InputForm
@@ -228,7 +228,7 @@ export default function NewUnitPage() {
               name="street"
               containerStyle={{ width: '20%' }}
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.street?.message}
             />
             <InputForm
@@ -237,7 +237,7 @@ export default function NewUnitPage() {
               name="number"
               control={control}
               containerStyle={{ width: '10%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.number?.message}
             />
             <InputForm
@@ -246,7 +246,7 @@ export default function NewUnitPage() {
               name="block"
               control={control}
               containerStyle={{ width: '10%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.block?.message}
             />
             <InputForm
@@ -255,7 +255,7 @@ export default function NewUnitPage() {
               name="lot"
               control={control}
               containerStyle={{ width: '10%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
               error={errors.lot?.message}
             />
             <InputForm
@@ -264,10 +264,10 @@ export default function NewUnitPage() {
               name="complement"
               control={control}
               error={errors.complement?.message}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUnit}
             />
           </div>
-          <div style={{ marginBottom: '1vh', width: '100%' }}>
+          <div style={{ width: '100%' }}>
             <div style={{ width: '50%' }}>
               <div
                 style={{ width: '100%' }}
@@ -304,7 +304,7 @@ export default function NewUnitPage() {
                   name="linkFacebook"
                   control={control}
                   containerStyle={{ width: '95%' }}
-                  style={{ height: '40px', padding: '22px' }}
+                  className={styles.inputNewUnit}
                   error={errors.linkFacebook?.message}
                 />
                 <Icon
@@ -320,7 +320,7 @@ export default function NewUnitPage() {
                   name="linkInstagram"
                   control={control}
                   containerStyle={{ width: '95%' }}
-                  style={{ height: '40px', padding: '22px' }}
+                  className={styles.inputNewUnit}
                   error={errors.linkInstagram?.message}
                 />
                 <Link href="/admin/units" target="_blank">
@@ -338,7 +338,7 @@ export default function NewUnitPage() {
                   name="linkSite"
                   control={control}
                   containerStyle={{ width: '95%' }}
-                  style={{ height: '40px', padding: '22px' }}
+                  className={styles.inputNewUnit}
                   error={errors.linkSite?.message}
                 />
                 <Icon

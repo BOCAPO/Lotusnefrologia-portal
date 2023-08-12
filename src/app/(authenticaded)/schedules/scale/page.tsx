@@ -161,7 +161,7 @@ export default function ScalePage(): JSX.Element {
     <React.Fragment>
       <MenuTop />
       <div className={styles.bodyScale}>
-        <div style={{ width: '30%' }}>
+        <div style={{ width: '40%' }}>
           <FormTwoColumns
             headers={Strings.headersScale}
             headersResponse={Strings.headersScaleResponse}

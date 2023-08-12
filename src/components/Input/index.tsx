@@ -153,7 +153,7 @@ export function InputForm({
                 maxLength={maxLength}
                 value={value}
                 style={style}
-                className={stylesCss.input}
+                className={`${stylesCss.input} ${rest.className}`}
                 type={showInputContent ? type : 'password'}
                 onChange={handleChange}
               />

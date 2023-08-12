@@ -6,7 +6,7 @@ export const styles = {
     borderRadius: 8,
     borderWidth: 1,
     borderColor: Colors.input.borderColor,
-    height: 48,
+    height: 40,
     paddingHorizontal: 16
   },
   inputContentError: {

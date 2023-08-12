@@ -17,7 +17,10 @@ export function MenuTop() {
     <div className={styles.container}>
       {menusArray.map((menu, index) => (
         <div key={index} className={styles.buttonsMenu}>
-          <Link href={menu.link !== null ? menu.link : ''}>
+          <Link
+            href={menu.link !== null ? menu.link : ''}
+            className={styles.linksMenu}
+          >
             <div className={styles.cardIcon}>
               <Image
                 src={menu.image !== null ? menu.image : ''}
@@ -28,7 +31,7 @@ export function MenuTop() {
               text={menu.title}
               bold={false}
               color={Colors.greenDark}
-              style={{ lineHeight: 3, margin: 0, marginBottom: 40 }}
+              className={styles.labelMenu}
             />
           </Link>
           <SubMenuTop

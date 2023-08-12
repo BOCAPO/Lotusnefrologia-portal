@@ -155,6 +155,7 @@ export const Strings = {
   hoursDisponibles: 'Horários disponíveis',
   resetPasswordSpecialist: 'Redefinir Senha do Especialista',
   resetPasswordUser: 'Redefinir Senha do Usuário',
+  resetPasswordPatient: 'Redefinir Senha do Paciente',
   status: 'Status',
   linkedUnits: 'Unidades Vinculadas',
   headersResponseNewSpecialties: ['description', 'status']

@@ -116,3 +116,9 @@
     color: #6F6D79;
     opacity: 0.8;
 }
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .bodyFormTwoColumns {
+        height: 78vh;
+    }
+}

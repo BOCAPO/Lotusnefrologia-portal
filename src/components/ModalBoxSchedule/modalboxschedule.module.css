@@ -133,3 +133,9 @@
 .patient:hover{
     background-color: #E5E5E5;
 }
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .btnDefault:first-child {
+        margin-right: 20% !important;
+    }
+  }

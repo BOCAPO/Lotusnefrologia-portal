@@ -103,3 +103,12 @@
     width: 100%;
     padding: 1.5vh 2% 0 2%;
 }
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .formInserSpecialty {
+        height: 78vh;
+    }
+    .btnSaveNewSpecialty{
+        margin-right: 6%;
+    }
+}

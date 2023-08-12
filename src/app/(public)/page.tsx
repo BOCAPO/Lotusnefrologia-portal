@@ -91,7 +91,7 @@ export default function LoginPage() {
               text={Strings.forgotPassord}
               bold={false}
               color={Colors.greenDark}
-              style={{ lineHeight: 5 }}
+              style={{ lineHeight: '2px' }}
               className={styles.forgotPasswordText}
             />
           </div>
