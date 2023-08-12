@@ -11,6 +11,7 @@ import styles from './formtwocolumns.module.css';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
+import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 
 type Props = {
@@ -19,7 +20,7 @@ type Props = {
   response?: ResponseGetModel;
   style?: React.CSSProperties;
   isLoading?: boolean;
-  onItemClick?: (_item: any) => void;
+  onItemClick?: (firstId: any, secondId: any) => void;
   type?: string;
 };
 
@@ -32,9 +33,14 @@ export function FormTwoColumns({
 }: Props): JSX.Element {
   const [dataAdapted, setDataAdapted] = React.useState<any[]>([]);
   function handleRowClick(event: React.MouseEvent<HTMLTableRowElement>) {
-    const userId = event.currentTarget.getAttribute('data-user-id');
-    if (userId !== undefined && onItemClick !== undefined) {
-      onItemClick(userId);
+    const firstId = event.currentTarget.getAttribute('data-user-first-id');
+    const secondId = event.currentTarget.getAttribute('data-user-second-id');
+    if (
+      firstId !== undefined &&
+      onItemClick !== undefined &&
+      secondId !== undefined
+    ) {
+      onItemClick(firstId, secondId);
     }
   }
   React.useEffect(() => {
@@ -65,9 +71,10 @@ export function FormTwoColumns({
 
   async function adptedDataSpecialist(data: any) {
     data.forEach((element: DataSpecialistsModel) => {
-      element.units.forEach((unit) => {
+      element.units.forEach((unit: DataUnitsModel) => {
         const dataAdapted = {
-          id: element.id,
+          firstId: element.id,
+          secondId: unit.id,
           firstColumn: element.name,
           secondColumn: unit.name
         };
@@ -107,7 +114,12 @@ export function FormTwoColumns({
             </thead>
             <tbody>
               {dataAdapted.map((row: any, index: number) => (
-                <tr key={index} onClick={handleRowClick} data-user-id={row.id}>
+                <tr
+                  key={index}
+                  onClick={handleRowClick}
+                  data-user-first-id={row.firstId}
+                  data-user-second-id={row.secondId}
+                >
                   <td className={styles.rows}>{row.firstColumn}</td>
                   <td className={styles.rows}>{row.secondColumn}</td>
                 </tr>

@@ -8,6 +8,7 @@ import { FormTwoColumns } from 'components/FormTwoColumns';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import TenButtons from 'components/TenButtons';
 import { LitteText, SmallMediumText } from 'components/Text';
@@ -21,6 +22,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
+import { NewScheduleModel } from 'models/NewScheduleModel';
+import { createSchedule } from 'services/schedules';
 import { getAllSpecialists } from 'services/specialists';
 import { intervalSchedule } from 'utils/enums';
 
@@ -30,27 +33,24 @@ type DataProps = {
 
 export default function ScalePage(): JSX.Element {
   const [data, setData] = React.useState<any>(null);
-  const [selectedItem, setSelectedItem] = React.useState<string>('');
+  const [selectedSpectialistId, setSelectedSpecialistId] =
+    React.useState<string>('');
+  const [selectedUnitId, setSelectedUnitId] = React.useState<string>('');
   const [visibleDatesHours, setVisibleDatesHours] =
     React.useState<boolean>(false);
   const [periodicity, setPeriodicity] = React.useState<number>(0);
   const [startTime, setStartTime] = React.useState<string>('');
   const [endTime, setEndTime] = React.useState<string>('');
   const [nameSelected, setNameSelected] = React.useState<string>('');
+  const [selectedDate, setSelectedDate] = React.useState<string>('');
+  const [selectedTime, setSelectedTime] = React.useState<any>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
-  function handleItemSelection(item: any) {
-    setSelectedItem(item);
-    const listSpecalist = data?.data;
-    setNameSelected(
-      listSpecalist?.filter(
-        (element: DataSpecialistsModel) => element.id === Number(item)
-      )[0].name
-    );
-  }
+  const [showModalSuccess, setShowModalSuccess] =
+    React.useState<boolean>(false);
 
   const {
     control,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -58,7 +58,7 @@ export default function ScalePage(): JSX.Element {
 
   React.useEffect(() => {
     getEspecialists();
-  }, [selectedItem]);
+  }, [selectedSpectialistId]);
 
   async function getEspecialists() {
     const response = await getAllSpecialists();
@@ -69,6 +69,17 @@ export default function ScalePage(): JSX.Element {
   const searchSchedulesDispobles = () => {
     setVisibleDatesHours(true);
   };
+
+  function handleItemSelection(firstId: any, secondId: any) {
+    setSelectedSpecialistId(firstId);
+    setSelectedUnitId(secondId);
+    const listSpecalist = data?.data;
+    setNameSelected(
+      listSpecalist?.filter(
+        (element: DataSpecialistsModel) => element.id === Number(firstId)
+      )[0].name
+    );
+  }
 
   const handlePeriodicity = (periodicity: string) => {
     switch (periodicity) {
@@ -97,6 +108,39 @@ export default function ScalePage(): JSX.Element {
     const { value } = event.target;
     setEndTime(value);
   };
+
+  const handleDateSelect = (selectedDate: string) => {
+    setSelectedDate(selectedDate);
+  };
+
+  const handleTimeSelect = (selectedTime: []) => {
+    setSelectedTime(selectedTime);
+  };
+
+  async function handleNewSchedule() {
+    const newSchedule: NewScheduleModel = {
+      specialist_id: Number(selectedSpectialistId),
+      unit_id: Number(selectedUnitId),
+      duration: periodicity,
+      dates: [
+        {
+          date: selectedDate,
+          schedules: selectedTime
+        }
+      ]
+    };
+
+    const response = await createSchedule(newSchedule);
+    if (response !== null) {
+      setShowModalSuccess(true);
+      setSelectedSpecialistId('');
+      setNameSelected('');
+      setVisibleDatesHours(false);
+      setTimeout(() => {
+        setShowModalSuccess(false);
+      }, 2500);
+    }
+  }
 
   // function isSecondTimeGreaterThanFirst(
   //   initialTime: string,
@@ -137,7 +181,7 @@ export default function ScalePage(): JSX.Element {
             />
           </div>
           <div className={styles.bodySelectScale}>
-            {selectedItem === '' ? (
+            {selectedSpectialistId === '' ? (
               <div className={styles.emptySpecialist}>
                 <LitteText
                   text={Strings.selectSpecialist}
@@ -207,7 +251,7 @@ export default function ScalePage(): JSX.Element {
                   />
                 </div>
                 <div className={styles.divDatesSchedule}>
-                  <TenButtons />
+                  <TenButtons onDateSelect={handleDateSelect} />
                 </div>
                 <div style={{ marginBottom: '2vh' }}>
                   <SmallMediumText
@@ -222,6 +266,7 @@ export default function ScalePage(): JSX.Element {
                     periodicity={periodicity}
                     startTime={startTime}
                     endTime={endTime}
+                    onTimeSelect={handleTimeSelect}
                   />
                 </div>
               </div>
@@ -230,7 +275,7 @@ export default function ScalePage(): JSX.Element {
                   <Button
                     title={Strings.save}
                     type="secondary"
-                    onClick={() => {}}
+                    onClick={handleSubmit(handleNewSchedule)}
                   />
                 </div>
                 <div className={styles.btnCancelScale}>
@@ -238,7 +283,7 @@ export default function ScalePage(): JSX.Element {
                     title={Strings.cancel}
                     type="cancel"
                     onClick={() => {
-                      setSelectedItem('');
+                      setSelectedSpecialistId('');
                       setNameSelected('');
                       setVisibleDatesHours(false);
                     }}
@@ -249,6 +294,11 @@ export default function ScalePage(): JSX.Element {
           )}
         </div>
       </div>
+      <ModalSuccess
+        show={showModalSuccess}
+        onHide={() => setShowModalSuccess(false)}
+        message={Strings.messageSuccessInsertScaleSchedule}
+      />
     </React.Fragment>
   );
 }

@@ -140,6 +140,10 @@ export const Strings = {
   messageSuccessInsertUser: 'O cadastro do usuário foi realizada com sucesso.',
   messageSuccessInsertSpecialist:
     'O cadastro do especialista foi realizada com sucesso.',
+  messageSuccessInsertPatient:
+    'O cadastro do paciente foi realizada com sucesso.',
+  messageSuccessInsertScaleSchedule:
+    'O cadastro da escala foi realizada com sucesso.',
   selectDate: 'Selecione a data',
   hoursDisponibles: 'Horários disponíveis',
   resetPasswordSpecialist: 'Redefinir Senha do Especialista',
