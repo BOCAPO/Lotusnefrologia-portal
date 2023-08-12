@@ -24,7 +24,7 @@ import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
 import { getAllUnits } from 'services/units';
-import { statusUnit } from 'utils/enums';
+import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
   [name: string]: string | number;
@@ -245,7 +245,7 @@ export default function NewUserPage() {
               <SelectForm
                 control={control}
                 name="status"
-                data={statusUnit}
+                data={statusGeneral}
                 error={errors.status?.message}
                 containerStyle={{ width: '50%' }}
               />

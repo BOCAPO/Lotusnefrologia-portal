@@ -182,7 +182,7 @@ export const menusAdmin: MenuModel[] = [
     title: 'Perfil de Acesso',
     image: null,
     alternativeImage: null,
-    link: '/admin/profile-access',
+    link: '/admin/roles/new',
     internalMenus: null
   },
   {
@@ -198,7 +198,7 @@ export const menusAdmin: MenuModel[] = [
     title: 'Especialidades',
     image: null,
     alternativeImage: null,
-    link: '/admin/specialties',
+    link: '/admin/specialties/new',
     internalMenus: null
   },
   {

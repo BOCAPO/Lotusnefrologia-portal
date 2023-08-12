@@ -1,5 +1,6 @@
 import { DataAppoitmentTag } from './DataAppoitmentTag';
 import { DataPatientsModel } from './DataPatientsModel';
+import { DataRolesModel } from './DataRolesModel';
 import { DataSpecialistsModel } from './DataSpecialistsModel';
 import { DataSpecialtiesModel } from './DataSpecialtiesModel';
 import { DataStatesModel } from './DataStatesModel';
@@ -14,7 +15,8 @@ export type ResponseGetModel = {
     | DataSpecialtiesModel[]
     | DataPatientsModel[]
     | DataStatesModel[]
-    | DataAppoitmentTag[];
+    | DataAppoitmentTag[]
+    | DataRolesModel[];
   first_page_url: string;
   from: number;
   last_page: number;
