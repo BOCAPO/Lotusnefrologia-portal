@@ -1,19 +1,17 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from 'components/Button';
-import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
 import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import { SmallMediumText } from 'components/Text';
 
-import styles from './unitsnew.module.css';
+import styles from './usersnew.module.css';
 
 import { schema } from './schema';
 
@@ -25,16 +23,17 @@ import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
-import { createUnit } from 'services/units';
+import { getAllUnits } from 'services/units';
 import { statusUnit } from 'utils/enums';
 
 type DataProps = {
   [name: string]: string | number;
 };
 
-export default function NewUnitPage() {
+export default function NewUserPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
+  const [units, setUnits] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
@@ -42,7 +41,7 @@ export default function NewUnitPage() {
 
   const {
     control,
-    handleSubmit,
+    // handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -50,6 +49,7 @@ export default function NewUnitPage() {
 
   React.useEffect(() => {
     getStates();
+    getUnits();
   }, []);
 
   async function getStates() {
@@ -73,65 +73,49 @@ export default function NewUnitPage() {
     setIsLoadingCities(false);
   }
 
+  async function getUnits() {
+    const response = await getAllUnits();
+    const unitsUpdated = response.data.data as DataUnitsModel[];
+    setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
+  }
+
   const handleStateCode = (selectedStateCode: any) => {
     getCities(selectedStateCode.toString());
   };
 
-  async function onSubmit(data: DataProps) {
-    const newUnit: DataUnitsModel = {
-      cnpj: data.cnpj.toString(),
-      name: data.name.toString(),
-      responsible: data.responsible.toString(),
-      email: data.email.toString(),
-      phone_primary: data.phonePrimary.toString(),
-      phone_secondary: data.phoneSecondary.toString(),
-      latitude: data.latitude.toString(),
-      longitude: data.longitude.toString(),
-      zip_code: data.zipCode.toString(),
-      street: data.street.toString(),
-      number: data.number.toString(),
-      block: data.block.toString(),
-      lot: data.lot.toString(),
-      citie_code: data.citieCode.toString(),
-      complement: data.complement.toString(),
-      facebook_link: data.linkFacebook.toString(),
-      instagram_link: data.linkInstagram.toString(),
-      site_link: data.linkSite.toString(),
-      status: Number(data.status) - 1
-    };
-
-    try {
-      const response = await createUnit(newUnit);
-      if (response !== null) {
-        setShowModalSuccess(true);
-      }
-    } catch (error) {
-      // console.log('Erro ao criar unidade!' + error);
-    }
-  }
+  // async function onSubmit(data: DataProps) {
+  //   try {
+  //     const response = await createUnit(newUnit);
+  //     if (response !== null) {
+  //       setShowModalSuccess(true);
+  //     }
+  //   } catch (error) {
+  //     // console.log('Erro ao criar unidade!' + error);
+  //   }
+  // }
 
   return (
     <React.Fragment>
       <MenuTop />
-      <div className={styles.bodyNewUnit}>
-        <div className={styles.headerNewUnit}>
+      <div className={styles.bodyNewUser}>
+        <div className={styles.headerNewUser}>
           <SmallMediumText
-            text={Strings.insertUnit}
+            text={Strings.insertUser}
             bold={true}
             color={Colors.gray90}
             style={{ lineHeight: '5px' }}
           />
         </div>
-        <div className={styles.formNewUnit}>
+        <div className={styles.formNewUser}>
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
-              placeholder={Strings.placeholderCNJP}
+              placeholder={Strings.placeholderCPF}
               type="text"
-              name="cnpj"
+              name="cpf"
               mask={'cpfCnpj'}
-              maxLength={18}
+              maxLength={14}
               control={control}
-              error={errors.cnpj?.message}
+              error={errors.cpf?.message}
               containerStyle={{ width: '20%' }}
               style={{ height: '40px', padding: '22px' }}
             />
@@ -147,7 +131,7 @@ export default function NewUnitPage() {
             <InputForm
               placeholder={Strings.placeholderResponsable}
               type="text"
-              name="responsible"
+              name="profile"
               control={control}
               containerStyle={{ width: '32.5%' }}
               style={{ height: '40px', padding: '22px' }}
@@ -161,7 +145,7 @@ export default function NewUnitPage() {
               name="email"
               control={control}
               style={{ height: '40px', padding: '22px' }}
-              containerStyle={{ width: '30%' }}
+              containerStyle={{ width: '65%' }}
               error={errors.email?.message}
             />
             <InputForm
@@ -170,7 +154,7 @@ export default function NewUnitPage() {
               name="phonePrimary"
               control={control}
               mask={'phone'}
-              containerStyle={{ width: '20%' }}
+              containerStyle={{ width: '15%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.phonePrimary?.message}
             />
@@ -180,32 +164,10 @@ export default function NewUnitPage() {
               name="phoneSecondary"
               control={control}
               mask={'phone'}
+              containerStyle={{ width: '15%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.phoneSecondary?.message}
             />
-            <InputForm
-              placeholder={Strings.placeholderLatitude}
-              type="text"
-              name="latitude"
-              control={control}
-              style={{ height: '40px', padding: '22px' }}
-              error={errors.latitude?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderLongitude}
-              type="text"
-              name="longitude"
-              control={control}
-              style={{ height: '40px', padding: '22px' }}
-              error={errors.longitude?.message}
-            />
-            <Link href="/admin/units" target="_blank">
-              <Icon
-                typeIcon={TypeIcon.ExternalLink}
-                color={Colors.greenDark}
-                size={20}
-              />
-            </Link>
           </div>
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
@@ -259,107 +221,84 @@ export default function NewUnitPage() {
               style={{ height: '40px', padding: '22px' }}
             />
           </div>
-          <div style={{ marginBottom: '3vh', width: '100%' }}>
-            <div style={{ width: '50%' }}>
-              <div
-                style={{ marginBottom: '2vh', width: '100%' }}
-                className={styles.newUnitDataGeografic}
-              >
-                <SelectForm
-                  control={control}
-                  name="state"
-                  data={states}
-                  error={errors.state?.message}
-                  onSelectChange={handleStateCode}
-                  containerStyle={{ width: '50%' }}
-                />
-                <SelectForm
-                  control={control}
-                  name="citieCode"
-                  data={cities !== null ? cities : null}
-                  isLoading={isLoadingCities}
-                  error={errors.city?.message}
-                  containerStyle={{ width: '50%' }}
-                />
-                <SelectForm
-                  control={control}
-                  name="status"
-                  data={statusUnit}
-                  error={errors.status?.message}
-                  containerStyle={{ width: '50%' }}
-                />
-              </div>
-              <div className={styles.linksUnit}>
-                <InputForm
-                  placeholder={Strings.placeholderLinkFacebook}
-                  type="text"
-                  name="linkFacebook"
-                  control={control}
-                  containerStyle={{ width: '95%' }}
-                  style={{ height: '40px', padding: '22px' }}
-                  error={errors.linkFacebook?.message}
-                />
-                <Icon
-                  typeIcon={TypeIcon.ExternalLink}
-                  color={Colors.greenDark}
-                  size={20}
-                />
-              </div>
-              <div className={styles.linksUnit}>
-                <InputForm
-                  placeholder={Strings.placeholderLinkInstagram}
-                  type="text"
-                  name="linkInstagram"
-                  control={control}
-                  containerStyle={{ width: '95%' }}
-                  style={{ height: '40px', padding: '22px' }}
-                  error={errors.linkInstagram?.message}
-                />
-                <Link href="/admin/units" target="_blank">
-                  <Icon
-                    typeIcon={TypeIcon.ExternalLink}
-                    color={Colors.greenDark}
-                    size={20}
-                  />
-                </Link>
-              </div>
-              <div className={styles.linksUnit}>
-                <InputForm
-                  placeholder={Strings.placeholderLinkSite}
-                  type="text"
-                  name="linkSite"
-                  control={control}
-                  containerStyle={{ width: '95%' }}
-                  style={{ height: '40px', padding: '22px' }}
-                  error={errors.linkSite?.message}
-                />
-                <Icon
-                  typeIcon={TypeIcon.ExternalLink}
-                  color={Colors.greenDark}
-                  size={20}
-                />
+          <div style={{ marginBottom: '2vh', width: '100%' }}>
+            <div
+              style={{ marginBottom: '1vh', width: '100%' }}
+              className={styles.newUserDataGeografic}
+            >
+              <SelectForm
+                control={control}
+                name="state"
+                data={states}
+                error={errors.state?.message}
+                onSelectChange={handleStateCode}
+                containerStyle={{ width: '50%' }}
+              />
+              <SelectForm
+                control={control}
+                name="citieCode"
+                data={cities !== null ? cities : null}
+                isLoading={isLoadingCities}
+                error={errors.city?.message}
+                containerStyle={{ width: '50%' }}
+              />
+              <SelectForm
+                control={control}
+                name="status"
+                data={statusUnit}
+                error={errors.status?.message}
+                containerStyle={{ width: '50%' }}
+              />
+              <div style={{ height: '40px', minWidth: '20%' }}>
+                <Button type="cancel" title={Strings.resetPasswordUser} />
               </div>
             </div>
-            <div style={{ width: '43%', marginLeft: '2%', height: '100%' }}>
-              {/* <InputForm
-                type="file"
-                name="logo"
-                control={control}
-                style={{ height: '27vh' }}
-                error={errors.logo?.message}
-              /> */}
+          </div>
+          <div>
+            <div className={styles.divTableLinkedUnits}>
+              <table className={styles.tableLinkedUnits}>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>{Strings.linkedUnits}</th>
+                    <th>{Strings.status}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {units !== null && units.length > 0 ? (
+                    units.map((unit: DataUnitsModel) => (
+                      <tr key={unit.id}>
+                        <td>
+                          <label className={styles.checkboxContainer}>
+                            <input
+                              type="checkbox"
+                              className={styles.checkbox}
+                            />
+                          </label>
+                        </td>
+                        <td>{unit.name}</td>
+                        <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={3}>Nenhuma unidade vinculada</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-        <div className={styles.footerNewUnit}>
-          <div className={styles.btnSaveNewUnit}>
+        <div className={styles.footerNewUser}>
+          <div className={styles.btnSaveNewUser}>
             <Button
               type="secondary"
               title={Strings.save}
-              onClick={handleSubmit(onSubmit)}
+              // onClick={handleSubmit(onSubmit)}
             />
           </div>
-          <div className={styles.btnCancelNewUnit}>
+          <div className={styles.btnCancelNewUser}>
             <Button
               type="cancel"
               title={Strings.cancel}
@@ -373,7 +312,7 @@ export default function NewUnitPage() {
       <ModalSuccess
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
-        message={Strings.messageSuccessInsertUnit}
+        message={Strings.messageSuccessInsertUser}
       />
     </React.Fragment>
   );
