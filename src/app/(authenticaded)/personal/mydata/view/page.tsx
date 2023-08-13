@@ -281,7 +281,7 @@ export default function ViewUserPage() {
               type="cancel"
               title={Strings.goBack}
               onClick={() => {
-                router.back();
+                router.push('/home');
               }}
             />
           </div>

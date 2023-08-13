@@ -36,10 +36,10 @@ export default function ModalSuccess({ message, onHide, ...props }: Props) {
           text={Strings.confirmation}
           bold={true}
           color={Colors.gray90}
-          style={{ lineHeight: 0 }}
+          style={{ lineHeight: '1px' }}
         />
       </div>
-      <Modal.Body className={styles.modalSuccess}>
+      <Modal.Body className={styles.modalBodydSuccess}>
         <LitteText text={message} color={Colors.gray90} bold={false} />
       </Modal.Body>
       <div className={styles.footer}>

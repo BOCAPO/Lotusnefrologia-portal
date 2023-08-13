@@ -40,11 +40,11 @@
     font-weight: normal !important;
 }
 
-.buttonsMenu:focus, .buttonsMenu:active {
+.buttonsMenu:focus {
     border-bottom: 7px solid #A1C9A4;
 }
 
-.buttonsMenu:focus p, .buttonsMenu:active p {
+.buttonsMenu:focus p {
     font-weight: bold !important;
 }
 

@@ -93,12 +93,12 @@ export default function ScalePage(): JSX.Element {
     const listSpecalist = data?.data;
     const nameSpecialist = listSpecalist?.filter(
       (element: DataSpecialistsModel) => element.id === Number(firstId)
-    )[0].name;
+    )[0]?.name;
 
     const listUnits = units?.data;
     const nameUnit = listUnits?.filter(
       (element: DataUnitsModel) => element.id === Number(secondId)
-    )[0].name;
+    )[0]?.name;
     const joinData = nameSpecialist + ' - ' + nameUnit;
     setSpecialistAndUnitSelectedName(joinData);
   }

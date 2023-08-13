@@ -10,8 +10,7 @@
 }
 
 .headSuccess {
-    width: 28%;
-    margin: 0 36%;
+    width: 400px !important;
 }
 
 .headerModalSuccess {
@@ -21,8 +20,19 @@
     padding: 1% 3%;
 }
 
-.modalSuccess {
-    width: 330px !important;
+.headSuccess .modal-dialog {
+    width: 400px !important;
+}
+
+.headSuccess .modal-dialog .modal-content {
+    width: 400px !important;
+    border-radius: 15px;
+    border: none;
+    height: 160px !important;
+}
+
+.modalBodydSuccess {
+    width: 400px !important;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -32,13 +42,10 @@
     height: 30px !important;
 }
 
-.modalSuccess .modal-dialog .modal-content {
-    width: 330px !important;
-    border-radius: 15px;
-    border: none;
-    height: 160px !important;
+.headSuccess .modal-dialog {
+    margin: 1.75rem calc((100% - 400px)/2) !important;
 }
 
-.modalSuccess .modal-dialog {
-    margin: 1.75rem calc((100% - 330px)/2) !important;
+.footer {
+    width: 70%;
 }
