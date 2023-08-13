@@ -17,7 +17,7 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { UserModel } from 'models/UserModel';
+import { DataUserModel } from 'models/DataUserModel';
 import { Prefs } from 'repository/Prefs';
 import { getUserById } from 'services/users';
 import { statusGeneral } from 'utils/enums';
@@ -45,7 +45,7 @@ export default function ViewUserPage() {
 
   async function getUser() {
     const response = await getUserById(Number(idUser));
-    const dataUser = response.data as UserModel;
+    const dataUser = response.data as DataUserModel;
     if (dataUser !== null) {
       setValue('cpf', dataUser.cpf);
       setValue('name', dataUser.name);

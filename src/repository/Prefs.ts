@@ -3,7 +3,8 @@ const PrefKeys = {
   login: 'login',
   password: 'password',
   nameUser: 'nameUser',
-  idUser: 'idUser'
+  idUser: 'idUser',
+  units: 'units'
 };
 
 export const Prefs = {
@@ -16,6 +17,9 @@ export const Prefs = {
   setIdUser(valor: string) {
     set(PrefKeys.idUser, valor);
   },
+  setUnits(valor: string) {
+    set(PrefKeys.units, valor);
+  },
   getToken() {
     return get(PrefKeys.token);
   },
@@ -24,6 +28,9 @@ export const Prefs = {
   },
   getIdUser() {
     return get(PrefKeys.idUser);
+  },
+  getUnits() {
+    return get(PrefKeys.units);
   },
   clear() {
     localStorage.clear();

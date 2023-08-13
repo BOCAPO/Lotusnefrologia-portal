@@ -18,7 +18,8 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { getAllRoles, getRolesPerPage } from 'services/roles';
+import { DataRolesModel } from 'models/DataRolesModel';
+import { createRole, getAllRoles, getRolesPerPage } from 'services/roles';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -50,7 +51,7 @@ export default function NewRolePage() {
 
   const {
     control,
-    // handleSubmit,
+    handleSubmit,
     // resetField,
     formState: { errors }
   } = useForm<DataProps>({
@@ -61,26 +62,18 @@ export default function NewRolePage() {
     setPage(parseInt(selectedValue));
   };
 
-  // async function onSubmit(data: DataProps) {
-  //   const dataStatus = Number(data.status) - 1;
-  //   const newSpecialty: DataSpecialtiesModel = {
-  //     description: data.specialty.toString(),
-  //     status: Number(dataStatus)
-  //   };
-  //   const response = await createSpecialty(newSpecialty);
-  //   if (response !== null) {
-  //     setShowModalSuccess(true);
-  //     resetField('specialty');
-  //     resetField('status');
-  //     setTimeout(() => {
-  //       setShowModalSuccess(false);
-  //     }, 2500);
-  //   }
-  // }
-
-  // const handleSelectionPage = (selectedValue: string) => {
-  //   setPage(parseInt(selectedValue));
-  // };
+  async function onSubmit(data: DataProps) {
+    const newRole: DataRolesModel = {
+      field_name: data.role.toString()
+    };
+    const response = await createRole(newRole);
+    if (response !== null) {
+      setShowModalSuccess(true);
+      setTimeout(() => {
+        setShowModalSuccess(false);
+      }, 3000);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -130,7 +123,7 @@ export default function NewRolePage() {
               <Button
                 type="secondary"
                 title={Strings.save}
-                // onClick={handleSubmit(onSubmit)}
+                onClick={handleSubmit(onSubmit)}
               />
             </div>
             <div className={styles.btnCancelNewRole}>

@@ -19,11 +19,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataRolesModel } from 'models/DataRolesModel';
 import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
+import { getAllRoles } from 'services/roles';
 import { getAllStates } from 'services/states';
 import { getAllUnits } from 'services/units';
+import { createUser } from 'services/users';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -34,14 +37,15 @@ export default function NewUserPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
+  const [roles, setRoles] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
-
+  const [selectedUnits, setSelectedUnits] = React.useState<number[]>([]);
   const {
     control,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -50,6 +54,7 @@ export default function NewUserPage() {
   React.useEffect(() => {
     getStates();
     getUnits();
+    getRoles();
   }, []);
 
   async function getStates() {
@@ -79,20 +84,55 @@ export default function NewUserPage() {
     setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
   }
 
+  async function getRoles() {
+    const response = await getAllRoles();
+    const rolesUpdated = response.data.data as DataRolesModel[];
+    setRoles(rolesUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
+  }
+
   const handleStateCode = (selectedStateCode: any) => {
     getCities(selectedStateCode.toString());
   };
 
-  // async function onSubmit(data: DataProps) {
-  //   try {
-  //     const response = await createUnit(newUnit);
-  //     if (response !== null) {
-  //       setShowModalSuccess(true);
-  //     }
-  //   } catch (error) {
-  //     // console.log('Erro ao criar unidade!' + error);
-  //   }
-  // }
+  const handleCheckboxChange = (unitId: number) => {
+    if (selectedUnits.includes(unitId)) {
+      setSelectedUnits(selectedUnits.filter((id) => id !== unitId));
+    } else {
+      setSelectedUnits([...selectedUnits, unitId]);
+    }
+  };
+
+  async function onSubmit(data: DataProps) {
+    try {
+      const newUser = {
+        cpf: data.cpf.toString(),
+        name: data.name.toString(),
+        email: data.email.toString(),
+        phone_primary: data.phonePrimary.toString(),
+        phone_secondary: data.phoneSecondary.toString(),
+        zip_code: data.zipCode.toString(),
+        citie_code: data.citieCode.toString(),
+        street: data.street.toString(),
+        number: data.number.toString(),
+        block: data.block.toString(),
+        lot: data.lot.toString(),
+        complement: data.complement.toString(),
+        unit: selectedUnits,
+        status: Number(data.status),
+        profile: data.profile
+      };
+
+      const response = await createUser(newUser);
+      if (response !== null) {
+        setShowModalSuccess(true);
+        setTimeout(() => {
+          router.back();
+        }, 3000);
+      }
+    } catch (error) {
+      console.log('Erro ao criar usuario!' + error);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -117,7 +157,7 @@ export default function NewUserPage() {
               control={control}
               error={errors.cpf?.message}
               containerStyle={{ width: '20%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
             />
             <InputForm
               placeholder={Strings.placeholderName}
@@ -125,17 +165,15 @@ export default function NewUserPage() {
               name="name"
               control={control}
               containerStyle={{ width: '42.5%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
               error={errors.name?.message}
             />
-            <InputForm
-              placeholder={Strings.placeholderResponsable}
-              type="text"
+            <SelectForm
               name="profile"
               control={control}
               containerStyle={{ width: '32.5%' }}
-              style={{ height: '40px', padding: '22px' }}
-              error={errors.responsible?.message}
+              data={roles}
+              error={errors.profile?.message}
             />
           </div>
           <div style={{ marginBottom: '3vh' }}>
@@ -144,7 +182,7 @@ export default function NewUserPage() {
               type="email"
               name="email"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
               containerStyle={{ width: '65%' }}
               error={errors.email?.message}
             />
@@ -155,7 +193,7 @@ export default function NewUserPage() {
               control={control}
               mask={'phone'}
               containerStyle={{ width: '15%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
               error={errors.phonePrimary?.message}
             />
             <InputForm
@@ -165,7 +203,7 @@ export default function NewUserPage() {
               control={control}
               mask={'phone'}
               containerStyle={{ width: '15%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
               error={errors.phoneSecondary?.message}
             />
           </div>
@@ -177,7 +215,7 @@ export default function NewUserPage() {
               mask={'cep'}
               maxLength={9}
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
               error={errors.zipCode?.message}
             />
             <InputForm
@@ -185,7 +223,7 @@ export default function NewUserPage() {
               type="text"
               name="street"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
               error={errors.street?.message}
             />
             <InputForm
@@ -193,7 +231,7 @@ export default function NewUserPage() {
               type="text"
               name="number"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
               error={errors.number?.message}
             />
             <InputForm
@@ -201,7 +239,7 @@ export default function NewUserPage() {
               type="text"
               name="block"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
               error={errors.block?.message}
             />
             <InputForm
@@ -209,7 +247,7 @@ export default function NewUserPage() {
               type="text"
               name="lot"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
               error={errors.lot?.message}
             />
             <InputForm
@@ -218,7 +256,7 @@ export default function NewUserPage() {
               name="complement"
               control={control}
               error={errors.complement?.message}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputNewUser}
             />
           </div>
           <div style={{ marginBottom: '2vh', width: '100%' }}>
@@ -273,6 +311,8 @@ export default function NewUserPage() {
                             <input
                               type="checkbox"
                               className={styles.checkbox}
+                              checked={selectedUnits.includes(unit.id!)}
+                              onChange={() => handleCheckboxChange(unit.id!)}
                             />
                           </label>
                         </td>
@@ -295,7 +335,7 @@ export default function NewUserPage() {
             <Button
               type="secondary"
               title={Strings.save}
-              // onClick={handleSubmit(onSubmit)}
+              onClick={handleSubmit(onSubmit)}
             />
           </div>
           <div className={styles.btnCancelNewUser}>

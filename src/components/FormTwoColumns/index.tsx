@@ -39,9 +39,11 @@ export function FormTwoColumns({
   const [selectedOption, setSelectedOption] = React.useState<
     string | undefined
   >(response?.links[0]?.label);
+  const [selectedRowId, setSelectedRowId] = React.useState<any>(null);
 
   function handleRowClick(event: React.MouseEvent<HTMLTableRowElement>) {
     const firstId = event.currentTarget.getAttribute('data-user-first-id');
+    setSelectedRowId(firstId);
     const secondId = event.currentTarget.getAttribute('data-user-second-id');
     if (
       firstId !== undefined &&
@@ -51,6 +53,7 @@ export function FormTwoColumns({
       onItemClick(firstId, secondId);
     }
   }
+
   React.useEffect(() => {
     if (
       response !== undefined &&
@@ -118,7 +121,7 @@ export function FormTwoColumns({
       const dataAdapted = {
         firstId: element.id,
         secondId: element.id,
-        firstColumn: element.name,
+        firstColumn: element.field_name,
         secondColumn: 'Ativo'
       };
       setDataAdapted((oldArray: any) => [...oldArray, dataAdapted]);
@@ -161,6 +164,13 @@ export function FormTwoColumns({
                   onClick={handleRowClick}
                   data-user-first-id={row.firstId}
                   data-user-second-id={row.secondId}
+                  style={{
+                    cursor: 'pointer',
+                    background:
+                      selectedRowId === row.firstId
+                        ? Colors.greenLight
+                        : Colors.white
+                  }}
                 >
                   <td className={styles.rows}>{row.firstColumn}</td>
                   <td className={styles.rows}>{row.secondColumn}</td>
