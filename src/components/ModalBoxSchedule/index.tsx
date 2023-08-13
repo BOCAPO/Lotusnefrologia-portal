@@ -130,12 +130,11 @@ export default function ModalBoxSchedule({
             type="text"
             name="description"
             containerStyle={{
-              width: '80%',
-              height: '40px',
-              marginRight: '5%'
+              width: '70%',
+              height: '40px'
             }}
             error={errors.descriptionRequired?.message?.toString()}
-            style={{ height: '40px', padding: '5px 10px', fontSize: 12 }}
+            className={styles.inputNewAppointment}
           />
           <ColorSelector colors={tags} />
         </div>
@@ -150,7 +149,7 @@ export default function ModalBoxSchedule({
             }}
             name="pacient"
             error={errors.pacientRequired?.message?.toString()}
-            style={{ height: '40px', padding: '5px 10px', fontSize: 12 }}
+            className={styles.inputNewAppointment}
             onKeyUp={handleFilteredProduct}
           />
         </div>
@@ -230,7 +229,7 @@ export default function ModalBoxSchedule({
               marginRight: '10%'
             }}
             error={errors.dateRequired?.message?.toString()}
-            style={{ height: '40px', padding: '5px 10px', fontSize: 12 }}
+            className={styles.inputNewAppointment}
           />
           <InputForm
             control={control}
@@ -242,7 +241,7 @@ export default function ModalBoxSchedule({
               height: '40px'
             }}
             error={errors.hourRequired?.message?.toString()}
-            style={{ height: '40px', padding: '5px 10px', fontSize: 12 }}
+            className={styles.inputNewAppointment}
           />
         </div>
         <div className={styles.observation}>

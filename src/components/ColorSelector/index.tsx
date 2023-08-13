@@ -27,7 +27,7 @@ function ColorSelector({ colors }: Props): JSX.Element {
   return (
     <div className={styles.colorSelector}>
       <div className={styles.tagSelector}>
-        <div style={{ width: '30%' }}>
+        <div style={{ width: '20%' }}>
           <span>TAG</span>
         </div>
         <div

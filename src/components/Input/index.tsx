@@ -47,6 +47,7 @@ type Props = {
   className?: string;
   type?: string;
   style?: React.CSSProperties | undefined;
+  readonly?: boolean;
   getValue?: (_text: string) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -61,6 +62,7 @@ export function InputForm({
   inputRef,
   maxLength = 100,
   iconType = {},
+  readonly = false,
   getValue,
   control,
   style,
@@ -152,6 +154,7 @@ export function InputForm({
                 name={name}
                 maxLength={maxLength}
                 value={value}
+                readOnly={readonly}
                 style={style}
                 className={`${stylesCss.input} ${rest.className}`}
                 type={showInputContent ? type : 'password'}

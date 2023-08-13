@@ -7,3 +7,7 @@ export async function getAllUsers() {
 export async function getUsersPerPage(page: number) {
   return await getJson(`/users?page=${page}`);
 }
+
+export async function getUserById(id: number) {
+  return await getJson(`/users/${id}`);
+}

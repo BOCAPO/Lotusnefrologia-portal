@@ -22,7 +22,8 @@ export function SelectForm({
   isLoading,
   containerStyle,
   onSelectChange, // Receba o callback como uma prop
-  getValue
+  getValue,
+  value
 }: Props) {
   return (
     <div style={containerStyle}>
@@ -55,6 +56,7 @@ export function SelectForm({
                           key={item.id ? item.id : item.code}
                           value={item.id ? item.id : item.code}
                           style={{ padding: '5%' }}
+                          selected={value === (item.id ? item.id : item.code)}
                         >
                           {item.name ? item.name : item.description}
                         </option>
