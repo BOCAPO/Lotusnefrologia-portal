@@ -22,9 +22,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
+import { DataUnitsModel } from 'models/DataUnitsModel';
 import { NewScheduleModel } from 'models/NewScheduleModel';
 import { createSchedule } from 'services/schedules';
-import { getAllSpecialists } from 'services/specialists';
+import { getAllSpecialists, getSpecialistsPerPage } from 'services/specialists';
+import { getAllUnits } from 'services/units';
 import { intervalSchedule } from 'utils/enums';
 
 type DataProps = {
@@ -33,6 +35,7 @@ type DataProps = {
 
 export default function ScalePage(): JSX.Element {
   const [data, setData] = React.useState<any>(null);
+  const [units, setUnits] = React.useState<any>(null);
   const [selectedSpectialistId, setSelectedSpecialistId] =
     React.useState<string>('');
   const [selectedUnitId, setSelectedUnitId] = React.useState<string>('');
@@ -41,13 +44,14 @@ export default function ScalePage(): JSX.Element {
   const [periodicity, setPeriodicity] = React.useState<number>(0);
   const [startTime, setStartTime] = React.useState<string>('');
   const [endTime, setEndTime] = React.useState<string>('');
-  const [nameSelected, setNameSelected] = React.useState<string>('');
+  const [specialistAndUnitSelectedName, setSpecialistAndUnitSelectedName] =
+    React.useState<string>('');
   const [selectedDate, setSelectedDate] = React.useState<string>('');
   const [selectedTime, setSelectedTime] = React.useState<any>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
-
+  const [page, setPage] = React.useState<number>(1);
   const {
     control,
     handleSubmit,
@@ -58,12 +62,25 @@ export default function ScalePage(): JSX.Element {
 
   React.useEffect(() => {
     getEspecialists();
-  }, [selectedSpectialistId]);
+    getUnits();
+  }, [selectedSpectialistId, page]);
 
   async function getEspecialists() {
-    const response = await getAllSpecialists();
-    setData(response.data);
+    if (page === 1) {
+      setData(null);
+      const response = await getAllSpecialists();
+      setData(response.data);
+    } else {
+      setData(null);
+      const response = await getSpecialistsPerPage(page);
+      setData(response.data);
+    }
     setLoading(false);
+  }
+
+  async function getUnits() {
+    const response = await getAllUnits();
+    setUnits(response.data);
   }
 
   const searchSchedulesDispobles = () => {
@@ -74,11 +91,16 @@ export default function ScalePage(): JSX.Element {
     setSelectedSpecialistId(firstId);
     setSelectedUnitId(secondId);
     const listSpecalist = data?.data;
-    setNameSelected(
-      listSpecalist?.filter(
-        (element: DataSpecialistsModel) => element.id === Number(firstId)
-      )[0].name
-    );
+    const nameSpecialist = listSpecalist?.filter(
+      (element: DataSpecialistsModel) => element.id === Number(firstId)
+    )[0].name;
+
+    const listUnits = units?.data;
+    const nameUnit = listUnits?.filter(
+      (element: DataUnitsModel) => element.id === Number(secondId)
+    )[0].name;
+    const joinData = nameSpecialist + ' - ' + nameUnit;
+    setSpecialistAndUnitSelectedName(joinData);
   }
 
   const handlePeriodicity = (periodicity: string) => {
@@ -117,6 +139,10 @@ export default function ScalePage(): JSX.Element {
     setSelectedTime(selectedTime);
   };
 
+  const handleSelectionPage = (selectedValue: string) => {
+    setPage(parseInt(selectedValue));
+  };
+
   async function handleNewSchedule() {
     const newSchedule: NewScheduleModel = {
       specialist_id: Number(selectedSpectialistId),
@@ -134,7 +160,6 @@ export default function ScalePage(): JSX.Element {
     if (response !== null) {
       setShowModalSuccess(true);
       setSelectedSpecialistId('');
-      setNameSelected('');
       setVisibleDatesHours(false);
       setTimeout(() => {
         setShowModalSuccess(false);
@@ -169,12 +194,17 @@ export default function ScalePage(): JSX.Element {
             isLoading={loading}
             onItemClick={handleItemSelection}
             type="scaleSchedule"
+            onClick={handleSelectionPage}
           />
         </div>
         <div className={styles.formInserScale}>
           <div className={styles.titleScale}>
             <SmallMediumText
-              text={Strings.scheduleConfirmation + ': ' + `${nameSelected}`}
+              text={
+                Strings.scheduleConfirmation +
+                ': ' +
+                `${specialistAndUnitSelectedName}`
+              }
               style={{ textAlign: 'left', lineHeight: 2 }}
               bold={true}
               color={Colors.gray90}
@@ -284,8 +314,8 @@ export default function ScalePage(): JSX.Element {
                     type="cancel"
                     onClick={() => {
                       setSelectedSpecialistId('');
-                      setNameSelected('');
                       setVisibleDatesHours(false);
+                      setSpecialistAndUnitSelectedName('');
                     }}
                   />
                 </div>

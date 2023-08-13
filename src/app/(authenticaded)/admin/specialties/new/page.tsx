@@ -19,7 +19,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
-import { createSpecialty, getAllSpecialties } from 'services/specialties';
+import {
+  createSpecialty,
+  getAllSpecialties,
+  getSpecialtiesPerPage
+} from 'services/specialties';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -30,16 +34,28 @@ export default function NewSpecialTyPage() {
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>(null);
+  const [page, setPage] = React.useState<number>(1);
 
   React.useEffect(() => {
     getSpecialties();
-  }, []);
+  }, [page]);
 
   async function getSpecialties() {
-    const response = await getAllSpecialties();
-    setData(response.data);
+    if (page === 1) {
+      setData(null);
+      const response = await getAllSpecialties();
+      setData(response.data);
+    } else {
+      setData(null);
+      const response = await getSpecialtiesPerPage(page);
+      setData(response.data);
+    }
     setLoading(false);
   }
+
+  const handleSelectionPage = (selectedValue: string) => {
+    setPage(parseInt(selectedValue));
+  };
 
   const {
     control,
@@ -78,6 +94,7 @@ export default function NewSpecialTyPage() {
             response={data}
             isLoading={loading}
             type="newSpecialty"
+            onClick={handleSelectionPage}
           />
         </div>
         <div className={styles.formInserSpecialty}>

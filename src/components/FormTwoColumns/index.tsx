@@ -23,6 +23,7 @@ type Props = {
   style?: React.CSSProperties;
   isLoading?: boolean;
   onItemClick?: (firstId: any, secondId: any) => void;
+  onClick?: (selectedValue: string) => void;
   type?: string;
 };
 
@@ -31,9 +32,14 @@ export function FormTwoColumns({
   response,
   isLoading = true,
   type,
+  onClick,
   onItemClick
 }: Props): JSX.Element {
-  const [dataAdapted, setDataAdapted] = React.useState<any[]>([]);
+  const [dataAdapted, setDataAdapted] = React.useState<any>([]);
+  const [selectedOption, setSelectedOption] = React.useState<
+    string | undefined
+  >(response?.links[0]?.label);
+
   function handleRowClick(event: React.MouseEvent<HTMLTableRowElement>) {
     const firstId = event.currentTarget.getAttribute('data-user-first-id');
     const secondId = event.currentTarget.getAttribute('data-user-second-id');
@@ -51,15 +57,8 @@ export function FormTwoColumns({
       response?.data !== null &&
       response?.data.length > 0
     ) {
-      const links = response.links;
-      links.map((link) => {
-        if (
-          link.label === '&laquo; Anterior' ||
-          link.label === 'Próximo &raquo;'
-        ) {
-          links.splice(links.indexOf(link), 1);
-        }
-      });
+      fixedPagination(response);
+      setDataAdapted([]);
       switch (type) {
         case 'scaleSchedule':
           adptedDataSpecialist(response?.data);
@@ -67,7 +66,6 @@ export function FormTwoColumns({
         case 'newSpecialty':
           adptedDataSpecialties(response?.data);
           break;
-
         case 'newRole':
           adptedDataRoles(response?.data);
           break;
@@ -76,6 +74,18 @@ export function FormTwoColumns({
       }
     }
   }, [response?.data?.length]);
+
+  async function fixedPagination(response: any) {
+    const links = response.links;
+    await links.map((link: any) => {
+      if (
+        link.label === '&laquo; Anterior' ||
+        link.label === 'Próximo &raquo;'
+      ) {
+        links.splice(links.indexOf(link), 1);
+      }
+    });
+  }
 
   async function adptedDataSpecialist(data: any) {
     data.forEach((element: DataSpecialistsModel) => {
@@ -86,7 +96,7 @@ export function FormTwoColumns({
           firstColumn: element.name,
           secondColumn: unit.name
         };
-        setDataAdapted((oldArray) => [...oldArray, dataAdapted]);
+        setDataAdapted((oldArray: any) => [...oldArray, dataAdapted]);
       });
     });
   }
@@ -99,7 +109,7 @@ export function FormTwoColumns({
         firstColumn: element.description,
         secondColumn: element.status === 0 ? 'Ativo' : 'Inativo'
       };
-      setDataAdapted((oldArray) => [...oldArray, dataAdapted]);
+      setDataAdapted((oldArray: any) => [...oldArray, dataAdapted]);
     });
   }
 
@@ -111,7 +121,7 @@ export function FormTwoColumns({
         firstColumn: element.name,
         secondColumn: 'Ativo'
       };
-      setDataAdapted((oldArray) => [...oldArray, dataAdapted]);
+      setDataAdapted((oldArray: any) => [...oldArray, dataAdapted]);
     });
   }
 
@@ -163,7 +173,14 @@ export function FormTwoColumns({
       {!isLoading ? (
         <div className={styles.footer}>
           <div className={styles.footerLeft}>
-            <select>
+            <select
+              value={selectedOption}
+              onChange={(event) => {
+                const selectedValue = event.target.value;
+                setSelectedOption(selectedValue);
+                onClick && onClick(selectedValue);
+              }}
+            >
               {response?.links.map((link, index) => (
                 <option key={index}>{link?.label}</option>
               ))}
@@ -174,6 +191,8 @@ export function FormTwoColumns({
             style={{ lineHeight: 2, marginLeft: '2%' }}
             text={
               isLoading
+                ? 'Carregando...'
+                : response?.current_page === undefined
                 ? 'Carregando...'
                 : `Exibindo ${response?.current_page} de ${Number(
                     response?.links.length

@@ -106,7 +106,7 @@
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .formInserSpecialty {
-        height: 78vh;
+        height: 77vh;
     }
     .btnSaveNewSpecialty{
         margin-right: 6%;

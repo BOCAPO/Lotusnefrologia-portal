@@ -9,3 +9,7 @@ export async function getAllPatients() {
 export async function createPatient(patient: DataPatientsModel) {
   return await postJson('/patients', patient);
 }
+
+export async function getPatientsPerPage(page: number) {
+  return await getJson(`/patients?page=${page}`);
+}
