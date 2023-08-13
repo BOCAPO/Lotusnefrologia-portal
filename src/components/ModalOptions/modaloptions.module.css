@@ -9,31 +9,31 @@
     cursor: pointer;
 }
 
-.headSuccess {
+.headOptions {
     width: 400px !important;
     margin: 0px calc((100% - 400px)/2) !important;
 }
 
-.headerModalSuccess {
+.headerModalOptions {
     height: 40px;
     margin-top: 20px;
     border-bottom: 1px solid #E5E5E5;
     padding: 1% 3%;
 }
 
-.headSuccess .modal-dialog {
+.headOptions .modal-dialog {
     margin: 0px calc((100% - 400px)/2) !important;
     width: 400px !important;
 }
 
-.headSuccess .modal-dialog .modal-content {
+.headOptions .modal-dialog .modal-content {
     width: 400px !important;
     border-radius: 15px;
     border: none;
     height: 160px !important;
 }
 
-.modalBodydSuccess {
+.modalBodydOptions {
     width: 400px !important;
     margin-top: 20px;
     display: flex;
@@ -44,7 +44,7 @@
     height: 40px !important;
 }
 
-.headSuccess .modal-dialog {
+.headOptions .modal-dialog {
     margin: 1.75rem calc((100% - 400px)/2) !important;
 }
 

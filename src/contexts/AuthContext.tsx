@@ -2,8 +2,8 @@
 
 import React, { ReactNode, useState } from 'react';
 
+import { DataUserModel } from 'models/DataUserModel';
 import { ResponseUserModel } from 'models/ResponseUserModel';
-import { UserModel } from 'models/UserModel';
 import { Prefs } from 'repository/Prefs';
 import { login } from 'services/login';
 
@@ -40,7 +40,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       if (response !== undefined) {
         responseOK = response.data as ResponseUserModel;
         const token = responseOK.token as string;
-        const usuario = responseOK.usuario as UserModel;
+        const usuario = responseOK.usuario as DataUserModel;
         if (token != null) {
           Prefs.setToken(token);
           Prefs.setNameUser(usuario.name.toString());

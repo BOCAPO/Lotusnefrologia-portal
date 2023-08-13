@@ -14,6 +14,7 @@ type Props = {
   style?: React.CSSProperties;
   onClick?: (selectedValue: string) => void;
   response?: ResponseGetModel;
+  onItemClick?: (item: any) => void;
   isLoading?: boolean;
 };
 
@@ -22,12 +23,21 @@ export function Table({
   response,
   headersResponse,
   isLoading = true,
+  onItemClick,
   onClick
 }: Props) {
   const [keys, setKeys] = React.useState<string[] | undefined>([]);
   const [selectedOption, setSelectedOption] = React.useState<
     string | undefined
   >(response?.links[0]?.label);
+
+  function handleRowClick(event: React.MouseEvent<HTMLTableRowElement>) {
+    const item = event.currentTarget.getAttribute('data-id');
+    if (item !== undefined && onItemClick) {
+      onItemClick(item);
+    }
+  }
+
   React.useEffect(() => {
     if (
       response !== undefined &&
@@ -81,7 +91,11 @@ export function Table({
               response.data !== undefined &&
               response?.data?.length > 0 ? (
                 response?.data?.map((row: any, index: number) => (
-                  <tr key={index}>
+                  <tr
+                    key={index}
+                    data-id={JSON.stringify(row)}
+                    onClick={handleRowClick}
+                  >
                     {keys?.map((key, index) => (
                       <td key={index} className={styles.rows}>
                         {key === 'status' ? (

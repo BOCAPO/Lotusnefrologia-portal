@@ -93,6 +93,7 @@ export default function NewPatientPage() {
       phone_primary: data.phonePrimary.toString(),
       phone_secondary: data.phoneSecondary.toString(),
       zip_code: data.zipCode.toString(),
+      birthday: data.birthDate.toString(),
       citie_code: data.citieCode.toString(),
       street: data.street.toString(),
       number: data.number.toString(),
@@ -108,7 +109,7 @@ export default function NewPatientPage() {
       setShowModalSuccess(true);
       setTimeout(() => {
         router.back();
-      }, 2500);
+      }, 3500);
     }
   }
 

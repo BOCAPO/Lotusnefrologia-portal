@@ -1,8 +1,8 @@
-import { UserModel } from './UserModel';
+import { DataUserModel } from './DataUserModel';
 
 export type ResponseUserModel = {
   status: boolean;
   message: string;
   token: string;
-  usuario: UserModel;
+  usuario: DataUserModel;
 };

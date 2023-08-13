@@ -40,7 +40,12 @@ export default function ModalSuccess({ message, onHide, ...props }: Props) {
         />
       </div>
       <Modal.Body className={styles.modalBodydSuccess}>
-        <LitteText text={message} color={Colors.gray90} bold={false} />
+        <LitteText
+          text={message}
+          color={Colors.gray90}
+          bold={false}
+          style={{ lineHeight: '12px' }}
+        />
       </Modal.Body>
       <div className={styles.footer}>
         <Button

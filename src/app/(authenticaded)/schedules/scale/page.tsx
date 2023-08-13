@@ -44,8 +44,9 @@ export default function ScalePage(): JSX.Element {
   const [periodicity, setPeriodicity] = React.useState<number>(0);
   const [startTime, setStartTime] = React.useState<string>('');
   const [endTime, setEndTime] = React.useState<string>('');
-  const [specialistAndUnitSelectedName, setSpecialistAndUnitSelectedName] =
+  const [nameSelectedSpecialist, setNameSelectedSpecialist] =
     React.useState<string>('');
+  const [nameSelectedUnit, setNameSelectedUnit] = React.useState<string>('');
   const [selectedDate, setSelectedDate] = React.useState<string>('');
   const [selectedTime, setSelectedTime] = React.useState<any>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -91,16 +92,18 @@ export default function ScalePage(): JSX.Element {
     setSelectedSpecialistId(firstId);
     setSelectedUnitId(secondId);
     const listSpecalist = data?.data;
-    const nameSpecialist = listSpecalist?.filter(
-      (element: DataSpecialistsModel) => element.id === Number(firstId)
-    )[0]?.name;
+    setNameSelectedSpecialist(
+      listSpecalist?.filter(
+        (element: DataSpecialistsModel) => element.id === Number(firstId)
+      )[0]?.name
+    );
 
     const listUnits = units?.data;
-    const nameUnit = listUnits?.filter(
-      (element: DataUnitsModel) => element.id === Number(secondId)
-    )[0]?.name;
-    const joinData = nameSpecialist + ' - ' + nameUnit;
-    setSpecialistAndUnitSelectedName(joinData);
+    setNameSelectedUnit(
+      listUnits?.filter(
+        (element: DataUnitsModel) => element.id === Number(secondId)
+      )[0]?.name
+    );
   }
 
   const handlePeriodicity = (periodicity: string) => {
@@ -201,9 +204,15 @@ export default function ScalePage(): JSX.Element {
           <div className={styles.titleScale}>
             <SmallMediumText
               text={
-                Strings.scheduleConfirmation +
-                ': ' +
-                `${specialistAndUnitSelectedName}`
+                nameSelectedUnit === ''
+                  ? Strings.scheduleConfirmation +
+                    ': ' +
+                    `${nameSelectedSpecialist}`
+                  : Strings.scheduleConfirmation +
+                    ': ' +
+                    `${nameSelectedSpecialist}` +
+                    ' - ' +
+                    `${nameSelectedUnit}`
               }
               style={{ textAlign: 'left', lineHeight: 2 }}
               bold={true}
@@ -283,22 +292,26 @@ export default function ScalePage(): JSX.Element {
                 <div className={styles.divDatesSchedule}>
                   <TenButtons onDateSelect={handleDateSelect} />
                 </div>
-                <div style={{ marginBottom: '2vh' }}>
-                  <SmallMediumText
-                    text={Strings.hoursDisponibles}
-                    bold={true}
-                    color={Colors.gray90}
-                    style={{ lineHeight: 1 }}
-                  />
-                </div>
-                <div className={styles.divHoursDisponibles}>
-                  <TimeButton
-                    periodicity={periodicity}
-                    startTime={startTime}
-                    endTime={endTime}
-                    onTimeSelect={handleTimeSelect}
-                  />
-                </div>
+                {selectedDate !== '' && (
+                  <React.Fragment>
+                    <div style={{ marginBottom: '2vh' }}>
+                      <SmallMediumText
+                        text={Strings.hoursDisponibles}
+                        bold={true}
+                        color={Colors.gray90}
+                        style={{ lineHeight: 1 }}
+                      />
+                    </div>
+                    <div className={styles.divHoursDisponibles}>
+                      <TimeButton
+                        periodicity={periodicity}
+                        startTime={startTime}
+                        endTime={endTime}
+                        onTimeSelect={handleTimeSelect}
+                      />
+                    </div>
+                  </React.Fragment>
+                )}
               </div>
               <div className={styles.footerScale}>
                 <div className={styles.btnSaveScale}>
@@ -315,7 +328,8 @@ export default function ScalePage(): JSX.Element {
                     onClick={() => {
                       setSelectedSpecialistId('');
                       setVisibleDatesHours(false);
-                      setSpecialistAndUnitSelectedName('');
+                      setNameSelectedSpecialist('');
+                      setNameSelectedUnit('');
                     }}
                   />
                 </div>

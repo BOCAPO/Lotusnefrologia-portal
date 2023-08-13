@@ -61,10 +61,10 @@
 }
 
 .newUserDataGeografic select {
-    height: 45px;
+    height: 40px;
     border: 1px solid #E5E5E5;
     border-radius: 5px;
-    padding: 1%;
+    padding: 1% 5%;
     font-size: 16px;
     color: #8C8E90;
 }
@@ -151,4 +151,16 @@
 
 .tableLinkedUnits tbody tr input[type="checkbox"]:checked {
     color: #A1E2A5 !important;
+}
+
+.inputNewUser{
+    height: 40px !important;
+    padding: 20px !important;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .bodyNewUser {
+        height: 79%;
+        margin: 2.5vh 5%;
+    }
 }

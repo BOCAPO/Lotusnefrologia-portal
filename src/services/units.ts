@@ -1,4 +1,4 @@
-import { getJson, postJson } from '../http';
+import { deleteJson, getJson, postJson } from '../http';
 
 import { DataUnitsModel } from 'models/DataUnitsModel';
 
@@ -12,4 +12,8 @@ export async function getUnitsPerPage(page: number) {
 
 export async function createUnit(unit: DataUnitsModel) {
   return await postJson('/units', unit);
+}
+
+export async function deleteUnit(id: number) {
+  return await deleteJson(`/units/${id}`);
 }

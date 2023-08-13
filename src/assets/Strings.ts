@@ -73,7 +73,7 @@ export const Strings = {
     'status'
   ],
   headersNewRole: ['Description', 'Status'],
-  headersScale: ['Especialista', 'Unid'],
+  headersScale: ['Especialista', 'Unidade'],
   headersSpecialty: ['Descrição', 'Status'],
   headersScaleResponse: ['name', 'unit'],
   schedule: 'Agendamento',
@@ -144,6 +144,7 @@ export const Strings = {
   schemaStreetRequired: 'Logradouro é obrigatório',
   schemaNumberRequired: 'Número é obrigatório',
   confirmation: 'Confirmação',
+  whatDoYouWantToDo: 'O que você deseja fazer?',
   close: 'Fechar',
   messageSuccessInsertUnit: 'O cadastro da unidade foi realizada com sucesso.',
   messageSuccessInsertUser: 'O cadastro do usuário foi realizada com sucesso.',
@@ -163,5 +164,6 @@ export const Strings = {
   resetPasswordPatient: 'Redefinir Senha do Paciente',
   status: 'Status',
   linkedUnits: 'Unidades Vinculadas',
-  headersResponseNewSpecialties: ['description', 'status']
+  headersResponseNewSpecialties: ['description', 'status'],
+  erase: 'Excluir'
 };
