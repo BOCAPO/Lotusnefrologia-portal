@@ -103,7 +103,7 @@
     height: 45px;
     border: 1px solid #E5E5E5;
     border-radius: 5px;
-    padding: 1%;
+    padding: 1% 2%;
     font-size: 14px;
     color: #8C8E90;
 }
@@ -134,8 +134,17 @@
     background-color: #E5E5E5;
 }
 
+.inputNewAppointment{
+    height: 40px !important;
+    padding: 20px;
+}
+
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .btnDefault:first-child {
         margin-right: 20% !important;
+    }
+    .listPatients{
+        top: 21vh;
+        height: 55%;
     }
   }

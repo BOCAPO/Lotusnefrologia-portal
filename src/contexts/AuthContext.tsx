@@ -44,6 +44,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         if (token != null) {
           Prefs.setToken(token);
           Prefs.setNameUser(usuario.name.toString());
+          Prefs.setIdUser(usuario.id.toString());
           setIsLogged(true);
         }
         return token;

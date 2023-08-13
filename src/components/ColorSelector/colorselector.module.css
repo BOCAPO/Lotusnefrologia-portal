@@ -1,73 +1,80 @@
 .colorSelector {
-    display: inline-flex;
-    align-items: center;
-    width: 20% !important;
-    border: 1px solid #ccc;
-    height: 40px;
-    border-radius: 6px;
-    position: relative;
-  }
-  
-  .selectedColor {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    margin-right: 10px;
-    cursor: pointer;
-  }
+  display: inline-flex;
+  align-items: center;
+  width: 20% !important;
+  border: 1px solid #ccc;
+  height: 40px;
+  border-radius: 6px;
+  position: relative;
+}
 
-  .tagSelector{
-    display: flex;
-    align-items: center;
-    width: 100%;
-    justify-content: space-around;
-  }
+.selectedColor {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+  cursor: pointer;
+}
 
-  .tagSelector span{
-    color: #8C8E90;
-    font-size: 12px;
-  }
-  
-  .select {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .option {
-    display: flex;
-    align-items: center;
-    padding: 5px;
-  }
-  
-  .colorCircle {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid #ccc;
-  }
-  
-  .colorSelected{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.tagSelector {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-around;
+}
 
-  .colorOptions{
-    position: absolute;
-    top: 40px;
-    right: 0;
-    background: #E5E5E4;
-    z-index: 2;
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 6px;
+.tagSelector span {
+  color: #8C8E90;
+  font-size: 12px;
+  margin-left: 2%;
+}
+
+.select {
+  padding: 1% 4%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.colorCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
+
+.colorSelected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.colorOptions {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: #E5E5E4;
+  z-index: 2;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 6px;
+}
+
+.colorOptions div {
+  margin: 3px 0px;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+  .colorSelector {
+    width: 25% !important;
   }
-  
-  .colorOptions div {
-    margin: 3px 0px;
-  }
+}

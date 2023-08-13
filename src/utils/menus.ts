@@ -225,7 +225,7 @@ export const menusProfile: MenuModel[] = [
     title: 'Meus Dados',
     image: null,
     alternativeImage: null,
-    link: '/profile/my-data',
+    link: '/personal/mydata/view',
     internalMenus: null
   },
   {
@@ -233,7 +233,7 @@ export const menusProfile: MenuModel[] = [
     title: 'Alterar Senha',
     image: null,
     alternativeImage: null,
-    link: '/profile/change-password',
+    link: '/personal/change-password',
     internalMenus: null
   }
 ];
