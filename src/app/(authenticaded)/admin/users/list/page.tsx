@@ -12,23 +12,33 @@ import styles from './userslist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { getAllUsers } from 'services/users';
+import { getAllUsers, getUsersPerPage } from 'services/users';
 import dataUsers from 'tests/mocks/dataUsers'; //mock de teste de dados
 
 export default function UsersListPage() {
   const router = useRouter();
   const [data, setData] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [page, setPage] = React.useState<number>(1);
 
   React.useEffect(() => {
     getUsers();
-  }, [dataUsers?.length]);
+  }, [dataUsers?.length, page]);
 
   async function getUsers() {
-    const response = await getAllUsers();
-    setData(response.data);
+    if (page === 1) {
+      const response = await getAllUsers();
+      setData(response.data);
+    } else {
+      const response = await getUsersPerPage(page);
+      setData(response.data);
+    }
     setLoading(false);
   }
+
+  const handleSelectionPage = (selectedValue: string) => {
+    setPage(parseInt(selectedValue));
+  };
 
   return (
     <React.Fragment>
@@ -62,6 +72,7 @@ export default function UsersListPage() {
             response={data}
             headersResponse={Strings.headersUsersResponse}
             isLoading={loading}
+            onClick={handleSelectionPage}
           />
         </div>
       </div>

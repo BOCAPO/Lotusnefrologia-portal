@@ -126,7 +126,7 @@
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .formInserScale {
-        height: 78vh;
+        height: 77vh;
     }
     .btnSaveScale{
         margin-right: 8%;

@@ -14,19 +14,26 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
-import { getAllSpecialists } from 'services/specialists';
+import { getAllSpecialists, getSpecialistsPerPage } from 'services/specialists';
 
 export default function SpecialistListPage() {
   const router = useRouter();
   const [data, setData] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [page, setPage] = React.useState<number>(1);
 
   React.useEffect(() => {
     getSpecialist();
-  }, []);
+  }, [page]);
 
   async function getSpecialist() {
-    const response = await getAllSpecialists();
+    let response: any;
+    if (page === 1) {
+      response = await getAllSpecialists();
+    } else {
+      response = await getSpecialistsPerPage(page);
+    }
+    setLoading(true);
     const dataUpdated = response.data.data as ResponseGetModel[];
     let specialties: string[] = [];
     dataUpdated.map((element: any) => {
@@ -40,6 +47,10 @@ export default function SpecialistListPage() {
     setData(response.data);
     setLoading(false);
   }
+
+  const handleSelectionPage = (selectedValue: string) => {
+    setPage(parseInt(selectedValue));
+  };
 
   return (
     <React.Fragment>
@@ -73,6 +84,7 @@ export default function SpecialistListPage() {
             headersResponse={Strings.headersSpecialistResponse}
             response={data}
             isLoading={loading}
+            onClick={handleSelectionPage}
           />
         </div>
       </div>

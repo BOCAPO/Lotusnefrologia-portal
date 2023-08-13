@@ -12,22 +12,32 @@ import styles from './unitslist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { getAllUnits } from 'services/units';
+import { getAllUnits, getUnitsPerPage } from 'services/units';
 
 export default function ListUnitsPage() {
   const router = useRouter();
   const [data, setData] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [page, setPage] = React.useState<number>(1);
 
   React.useEffect(() => {
     getUnits();
-  }, [data?.length]);
+  }, [data?.length, page]);
 
   async function getUnits() {
-    const response = await getAllUnits();
-    setData(response.data);
+    if (page === 1) {
+      const response = await getAllUnits();
+      setData(response.data);
+    } else {
+      const response = await getUnitsPerPage(page);
+      setData(response.data);
+    }
     setLoading(false);
   }
+
+  const handleSelectionPage = (selectedValue: string) => {
+    setPage(parseInt(selectedValue));
+  };
 
   return (
     <React.Fragment>
@@ -61,6 +71,7 @@ export default function ListUnitsPage() {
             headersResponse={Strings.headersUnitsResponse}
             response={data}
             isLoading={loading}
+            onClick={handleSelectionPage}
           />
         </div>
       </div>

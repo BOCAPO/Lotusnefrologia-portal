@@ -12,7 +12,7 @@ type Props = {
   headers: string[];
   headersResponse?: string[];
   style?: React.CSSProperties;
-  onClick?: () => void;
+  onClick?: (selectedValue: string) => void;
   response?: ResponseGetModel;
   isLoading?: boolean;
 };
@@ -21,25 +21,20 @@ export function Table({
   headers,
   response,
   headersResponse,
-  isLoading = true
+  isLoading = true,
+  onClick
 }: Props) {
   const [keys, setKeys] = React.useState<string[] | undefined>([]);
-
+  const [selectedOption, setSelectedOption] = React.useState<
+    string | undefined
+  >(response?.links[0]?.label);
   React.useEffect(() => {
     if (
       response !== undefined &&
       response?.data !== null &&
       response?.data.length > 0
     ) {
-      const links = response.links;
-      links.map((link) => {
-        if (
-          link.label === '&laquo; Anterior' ||
-          link.label === 'Próximo &raquo;'
-        ) {
-          links.splice(links.indexOf(link), 1);
-        }
-      });
+      fixedPagination(response);
       const objectKeys: string[] = Object.keys(response?.data[0]);
       const commonKeys = headersResponse?.filter(
         (key) => objectKeys?.includes(key)
@@ -47,6 +42,18 @@ export function Table({
       setKeys(commonKeys);
     }
   }, [response?.data?.length]);
+
+  async function fixedPagination(response: any) {
+    const links = response.links;
+    await links.map((link: any) => {
+      if (
+        link.label === '&laquo; Anterior' ||
+        link.label === 'Próximo &raquo;'
+      ) {
+        links.splice(links.indexOf(link), 1);
+      }
+    });
+  }
 
   return (
     <React.Fragment>
@@ -111,9 +118,18 @@ export function Table({
       </div>
       <div className={styles.footer}>
         <div className={styles.footerLeft}>
-          <select>
+          <select
+            value={selectedOption}
+            onChange={(event) => {
+              const selectedValue = event.target.value;
+              setSelectedOption(selectedValue);
+              onClick && onClick(selectedValue);
+            }}
+          >
             {response?.links.map((link, index) => (
-              <option key={index}>{link?.label}</option>
+              <option key={index} value={link?.label}>
+                {link?.label}
+              </option>
             ))}
           </select>
         </div>

@@ -12,23 +12,32 @@ import styles from './patientslist.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { getAllPatients } from 'services/patients';
-import dataPatients from 'tests/mocks/dataPatients'; //mock de teste de dados
+import { getAllPatients, getPatientsPerPage } from 'services/patients';
 
 export default function PatientListPage() {
   const router = useRouter();
   const [data, setData] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [page, setPage] = React.useState<number>(1);
 
   React.useEffect(() => {
     getPatients();
-  }, [dataPatients?.length]);
+  }, [data?.length, page]);
 
   async function getPatients() {
-    const response = await getAllPatients();
-    setData(response.data);
+    if (page === 1) {
+      const response = await getAllPatients();
+      setData(response.data);
+    } else {
+      const response = await getPatientsPerPage(page);
+      setData(response.data);
+    }
     setLoading(false);
   }
+
+  const handleSelectionPage = (selectedValue: string) => {
+    setPage(parseInt(selectedValue));
+  };
 
   return (
     <React.Fragment>
@@ -62,6 +71,7 @@ export default function PatientListPage() {
             headersResponse={Strings.headersPatientsResponse}
             response={data}
             isLoading={loading}
+            onClick={handleSelectionPage}
           />
         </div>
       </div>

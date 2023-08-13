@@ -18,7 +18,7 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { getAllRoles } from 'services/roles';
+import { getAllRoles, getRolesPerPage } from 'services/roles';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -29,14 +29,22 @@ export default function NewRolePage() {
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>(null);
+  const [page, setPage] = React.useState<number>(1);
 
   React.useEffect(() => {
     getRoles();
-  }, []);
+  }, [page]);
 
   async function getRoles() {
-    const response = await getAllRoles();
-    setData(response.data);
+    if (page === 1) {
+      setData(null);
+      const response = await getAllRoles();
+      setData(response.data);
+    } else {
+      setData(null);
+      const response = await getRolesPerPage(page);
+      setData(response.data);
+    }
     setLoading(false);
   }
 
@@ -48,6 +56,10 @@ export default function NewRolePage() {
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
   });
+
+  const handleSelectionPage = (selectedValue: string) => {
+    setPage(parseInt(selectedValue));
+  };
 
   // async function onSubmit(data: DataProps) {
   //   const dataStatus = Number(data.status) - 1;
@@ -66,6 +78,10 @@ export default function NewRolePage() {
   //   }
   // }
 
+  // const handleSelectionPage = (selectedValue: string) => {
+  //   setPage(parseInt(selectedValue));
+  // };
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -77,6 +93,7 @@ export default function NewRolePage() {
             response={data}
             isLoading={loading}
             type="newRole"
+            onClick={handleSelectionPage}
           />
         </div>
         <div className={styles.formInserRole}>
