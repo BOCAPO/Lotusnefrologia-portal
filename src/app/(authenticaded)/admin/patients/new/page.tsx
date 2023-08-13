@@ -86,6 +86,7 @@ export default function NewPatientPage() {
   };
 
   async function onSubmit(data: DataProps) {
+    const status = Number(data.status) - 1;
     const newPatient: DataPatientsModel = {
       cpf: data.cpf.toString(),
       name: data.name.toString(),
@@ -97,10 +98,10 @@ export default function NewPatientPage() {
       citie_code: data.citieCode.toString(),
       street: data.street.toString(),
       number: data.number.toString(),
-      block: data.block.toString(),
-      lot: data.lot.toString(),
-      complement: data.complement.toString(),
-      status: Number(data.status),
+      block: data.block?.toString(),
+      lot: data.lot?.toString(),
+      complement: data.complement?.toString(),
+      status: Number(status),
       unit: Number(data.unit)
     };
 

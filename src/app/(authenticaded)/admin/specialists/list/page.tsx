@@ -6,6 +6,7 @@ import React from 'react';
 import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
+import ModalOptions from 'components/ModalOptions';
 import { Table } from 'components/Table';
 
 import styles from './specialistlist.module.css';
@@ -19,12 +20,17 @@ import { getAllSpecialists, getSpecialistsPerPage } from 'services/specialists';
 export default function SpecialistListPage() {
   const router = useRouter();
   const [data, setData] = React.useState<any>(null);
+  const [quantitySpecialists, setQuantitySpecialists] =
+    React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [page, setPage] = React.useState<number>(1);
+  const [showModalOptions, setShowModalOptions] =
+    React.useState<boolean>(false);
+  const [selectedItem, setSelectedItem] = React.useState<any>(null);
 
   React.useEffect(() => {
     getSpecialist();
-  }, [page]);
+  }, [quantitySpecialists, page]);
 
   async function getSpecialist() {
     let response: any;
@@ -35,6 +41,7 @@ export default function SpecialistListPage() {
     }
     setLoading(true);
     const dataUpdated = response.data.data as ResponseGetModel[];
+    setQuantitySpecialists(response.data.total);
     let specialties: string[] = [];
     dataUpdated.map((element: any) => {
       element.specialties.map((specialty: DataSpecialtiesModel) => {
@@ -51,6 +58,17 @@ export default function SpecialistListPage() {
   const handleSelectionPage = (selectedValue: string) => {
     setPage(parseInt(selectedValue));
   };
+
+  function handleItemSelection(item: any) {
+    setSelectedItem(item);
+    setShowModalOptions(true);
+  }
+
+  function updateQuantitySpecialists(status: boolean) {
+    if (status) {
+      setQuantitySpecialists(quantitySpecialists - 1);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -85,9 +103,24 @@ export default function SpecialistListPage() {
             response={data}
             isLoading={loading}
             onClick={handleSelectionPage}
+            onItemClick={handleItemSelection}
           />
         </div>
       </div>
+      <ModalOptions
+        message={Strings.whatDoYouWantToDo}
+        show={
+          showModalOptions &&
+          selectedItem !== null &&
+          selectedItem !== undefined
+        }
+        onHide={() => {
+          setShowModalOptions(false);
+        }}
+        item={selectedItem}
+        typeItem="specialist"
+        reset={updateQuantitySpecialists}
+      />
     </React.Fragment>
   );
 }

@@ -9,13 +9,14 @@ import styles from './modaloptions.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { deletePatient } from 'services/patients';
+import { deleteSpecialist } from 'services/specialists';
 import { deleteUnit } from 'services/units';
 
 type Props = {
   message: string;
   show: boolean;
   onHide: () => void;
-  page: number;
   item: any;
   typeItem: string;
   reset?: (status: boolean) => void;
@@ -34,7 +35,12 @@ export default function ModalOptions({
       case 'unit':
         await callDeleteUnit();
         break;
-
+      case 'specialist':
+        await callDeleteSpecialist();
+        break;
+      case 'patient':
+        await callDeletePatient();
+        break;
       default:
         break;
     }
@@ -44,6 +50,20 @@ export default function ModalOptions({
 
   async function callDeleteUnit() {
     const response = await deleteUnit(JSON.parse(item).id);
+    if (response !== null) {
+      onHide();
+    }
+  }
+
+  async function callDeleteSpecialist() {
+    const response = await deleteSpecialist(JSON.parse(item).id);
+    if (response !== null) {
+      onHide();
+    }
+  }
+
+  async function callDeletePatient() {
+    const response = await deletePatient(JSON.parse(item).id);
     if (response !== null) {
       onHide();
     }
@@ -79,7 +99,7 @@ export default function ModalOptions({
             onClick={() => {
               deleteItem();
             }}
-            title={Strings.close}
+            title={Strings.edit}
             type="secondary"
           />
         </div>
@@ -90,6 +110,15 @@ export default function ModalOptions({
             }}
             title={Strings.erase}
             type="secondary"
+          />
+        </div>
+        <div className={styles.footer}>
+          <Button
+            onClick={() => {
+              onHide();
+            }}
+            title={Strings.cancel}
+            type="cancel"
           />
         </div>
       </div>

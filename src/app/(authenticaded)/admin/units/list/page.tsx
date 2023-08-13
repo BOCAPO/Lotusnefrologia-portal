@@ -109,7 +109,6 @@ export default function ListUnitsPage() {
         }}
         item={selectedItem}
         typeItem="unit"
-        page={page}
         reset={updateQuantityUnits}
       />
     </React.Fragment>
