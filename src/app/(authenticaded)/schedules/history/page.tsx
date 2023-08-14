@@ -12,7 +12,6 @@ import styles from './history.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { DataPatientsModel } from 'models/DataPatientsModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
@@ -20,7 +19,7 @@ import {
   getAllAppointmensTags,
   getAllAppointments
 } from 'services/appointments';
-import { getAllPatients } from 'services/patients';
+import { getPatientsWithoutPagination } from 'services/patients';
 import { getAllSpecialists } from 'services/specialists';
 import { getAllUnits } from 'services/units';
 
@@ -62,11 +61,9 @@ export default function SchedulesPage(): JSX.Element {
   }
 
   async function getPatients() {
-    const response = await getAllPatients();
-    const patientsUpdated = response.data.data as DataPatientsModel[];
-    setPatients(
-      patientsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name))
-    );
+    const response = await getPatientsWithoutPagination();
+    const patientsUpdated = response.data as ResponseGetModel;
+    setPatients(patientsUpdated);
   }
 
   async function getUnits() {
