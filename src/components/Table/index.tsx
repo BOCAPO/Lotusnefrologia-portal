@@ -58,7 +58,9 @@ export function Table({
     await links.map((link: any) => {
       if (
         link.label === '&laquo; Anterior' ||
-        link.label === 'Próximo &raquo;'
+        link.label === 'Próximo &raquo;' ||
+        link.label.includes('Anterior') ||
+        link.label.includes('Próximo')
       ) {
         links.splice(links.indexOf(link), 1);
       }
@@ -140,11 +142,17 @@ export function Table({
               onClick && onClick(selectedValue);
             }}
           >
-            {response?.links.map((link, index) => (
-              <option key={index} value={link?.label}>
-                {link?.label}
-              </option>
-            ))}
+            {response?.links.map(
+              (link, index) =>
+                link.label !== '&laquo; Anterior' &&
+                link.label !== 'Próximo &raquo;' &&
+                link.label !== 'Anterior' &&
+                link.label !== 'Próximo' && (
+                  <option key={index} value={link?.label}>
+                    {link?.label}
+                  </option>
+                )
+            )}
           </select>
         </div>
         <SmallMediumText
@@ -154,7 +162,9 @@ export function Table({
             isLoading
               ? 'Carregando...'
               : `Exibindo ${response?.current_page} de ${Number(
-                  response?.links.length
+                  Number(response?.links.length) > 1
+                    ? Number(response?.links.length) / 2
+                    : Number(response?.links.length)
                 )}`
           }
           color={Colors.gray70}
