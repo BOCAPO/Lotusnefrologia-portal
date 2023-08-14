@@ -57,6 +57,7 @@ export default function ModalBoxSchedule({
   const [selectedSpecialist, setSelectedSpecialist] = React.useState<number>(0);
   const [selectedDate, setSelectedDate] = React.useState<string>('');
   const [hours, setHours] = React.useState<any>(null);
+  const [selectedScheduleId, setSelectedScheduleId] = React.useState<number>(0);
   const {
     control,
     setValue,
@@ -98,7 +99,7 @@ export default function ModalBoxSchedule({
       date,
       selectedUnit
     );
-    const responseHours = response.data as ResponseSchedulesModel;
+    const responseHours = response.data[0] as ResponseSchedulesModel;
     setHours(responseHours.schedules);
   }
 
@@ -116,13 +117,17 @@ export default function ModalBoxSchedule({
     if (selectedSpecialist !== 0 && value !== '') getHoursSchedule(value);
   };
 
+  const handleGetScheduleId = (scheduleId: any) => {
+    setSelectedScheduleId(scheduleId);
+  };
+
   async function handleSubmitAppoitment(data: DataProps) {
     const newAppoitment = {
       specialist_id: Number(selectedSpecialist),
       patient_id: patient.id as number,
       unit_id: Number(selectedUnit),
       specialty_id: 9,
-      schedule_id: 1,
+      schedule_id: Number(selectedScheduleId),
       appointment_status: 1,
       observation: 'Teste',
       tag_id: '1',
@@ -265,7 +270,7 @@ export default function ModalBoxSchedule({
           />
           <select
             onChange={(event) => {
-              handleGetSpecialist(event.target.value);
+              handleGetScheduleId(event.target.value);
             }}
           >
             <option value="">Selecione o horário</option>
