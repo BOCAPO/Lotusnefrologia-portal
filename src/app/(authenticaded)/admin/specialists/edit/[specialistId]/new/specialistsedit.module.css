@@ -1,0 +1,163 @@
+.bodyNewSpecialist {
+    width: 90%;
+    height: 75%;
+    display: flex;
+    margin: 3vh 5%;
+    flex-direction: column;
+    padding: 1% 0%;
+    align-items: center;
+    background: #FFFFFF;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 9px;
+}
+
+.headerNewSpecialist {
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    padding: 1.5%;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #00000029;
+    margin-bottom: 2vh;
+}
+
+.formNewSpecialist {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 2%;
+}
+
+.formNewSpecialist>div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.linksSpecialist {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 3% 0;
+}
+
+.newSpecialistDataGeografic {
+    margin-bottom: 2vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.newSpecialistDataGeografic select {
+    height: 45px;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
+    padding: 1% 5%;
+    font-size: 16px;
+    color: #8C8E90;
+}
+
+.newSpecialistDataGeografic select:active, .newSpecialistDataGeografic select:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
+}
+
+.footerNewSpecialist {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border-top: 0.5px solid #D0D1D5;
+    height: 7vh;
+    width: 100%;
+    padding: 1.5vh 2% 0 2%;
+}
+
+.btnSaveNewSpecialist {
+    margin-right: 3%;
+}
+
+.btnSaveNewSpecialist, .btnCancelNewSpecialist {
+    width: 10% !important;
+    height: 40px;
+}
+
+.divTableLinkedUnits {
+    width: 30% !important;
+    height: 25vh;
+    margin-bottom: 2vh;
+    display: flex;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    overflow-y: auto;
+}
+
+.divTableLinkedUnits::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: #00555B;
+    border-radius: 5px;
+}
+
+.divTableLinkedUnits::-webkit-scrollbar-thumb {
+    background: #A1E2A5;
+    border-radius: 5px;
+}
+
+.divTableLinkedUnits::-webkit-scrollbar-track {
+    border-radius: 5px;
+}
+
+.tableLinkedUnits {
+    width: 100%;
+    height: 100px;
+}
+
+.tableLinkedUnits thead {
+    background: #CBEACF;
+    color: #010101;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    height: 40px;
+}
+
+.tableLinkedUnits tbody tr {
+    color: #010101;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    height: 42px;
+    vertical-align: center;
+}
+
+.tableLinkedUnits tbody tr input[type="checkbox"] {
+    border-radius: 9px !important;
+    width: 15px;
+    height: 15px;
+}
+
+.tableLinkedUnits tbody tr input[type="checkbox"]:checked {
+    color: #A1E2A5 !important;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .divTableLinkedUnits {
+        height: 20vh;
+    }
+    .tableLinkedUnits tbody tr{
+        height: 30px;
+    }
+}

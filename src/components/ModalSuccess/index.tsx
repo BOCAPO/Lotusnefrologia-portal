@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import Modal from 'react-bootstrap/Modal';
 
 import { Button } from 'components/Button';
@@ -16,11 +15,8 @@ type Props = {
 };
 
 export default function ModalSuccess({ message, onHide, ...props }: Props) {
-  const router = useRouter();
-
   function goBack() {
     onHide();
-    router.back();
   }
 
   return (

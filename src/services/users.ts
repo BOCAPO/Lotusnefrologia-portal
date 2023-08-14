@@ -1,4 +1,4 @@
-import { getJson, postJson } from '../http';
+import { deleteJson, getJson, postJson } from '../http';
 
 import { DataUserModel } from 'models/DataUserModel';
 
@@ -16,4 +16,8 @@ export async function getUserById(id: number) {
 
 export async function createUser(user: DataUserModel) {
   return await postJson(`/users`, user);
+}
+
+export async function deleteUser(id: number) {
+  return await deleteJson(`/users/${id}`);
 }

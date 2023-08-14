@@ -19,7 +19,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataRolesModel } from 'models/DataRolesModel';
-import { createRole, getAllRoles, getRolesPerPage } from 'services/roles';
+import { ResponseGetModel } from 'models/ResponseGetModel';
+import {
+  createRole,
+  deleteRole,
+  getAllRoles,
+  getRolesPerPage
+} from 'services/roles';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -30,21 +36,27 @@ export default function NewRolePage() {
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>(null);
+  const [quantityRoles, setQuantityRoles] = React.useState<number>(0);
+  const [selectedRole, setSelectedRole] = React.useState<any>(null);
   const [page, setPage] = React.useState<number>(1);
 
   React.useEffect(() => {
     getRoles();
-  }, [page]);
+  }, [quantityRoles, page]);
 
   async function getRoles() {
     if (page === 1) {
       setData(null);
       const response = await getAllRoles();
-      setData(response.data);
+      const data = response.data as ResponseGetModel;
+      setData(data);
+      setQuantityRoles(data.total);
     } else {
       setData(null);
       const response = await getRolesPerPage(page);
-      setData(response.data);
+      const data = response.data as ResponseGetModel;
+      setData(data);
+      setQuantityRoles(data.total);
     }
     setLoading(false);
   }
@@ -52,7 +64,8 @@ export default function NewRolePage() {
   const {
     control,
     handleSubmit,
-    // resetField,
+    resetField,
+    setValue,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -61,6 +74,20 @@ export default function NewRolePage() {
   const handleSelectionPage = (selectedValue: string) => {
     setPage(parseInt(selectedValue));
   };
+
+  async function deleteRoleID() {
+    const response = await deleteRole(selectedRole.id);
+    if (response !== null) {
+      setQuantityRoles(quantityRoles - 1);
+      setSelectedRole(null);
+      setValue('role', '');
+      resetField('role');
+      setShowModalSuccess(true);
+      setTimeout(() => {
+        setShowModalSuccess(false);
+      }, 3500);
+    }
+  }
 
   async function onSubmit(data: DataProps) {
     const newRole: DataRolesModel = {
@@ -75,6 +102,16 @@ export default function NewRolePage() {
     }
   }
 
+  function handleItemSelection(firstId: any) {
+    const dataRoleSelected = data?.data?.filter(
+      (element: DataRolesModel) => element.id === Number(firstId)
+    )[0];
+
+    setSelectedRole(dataRoleSelected);
+    setValue('role', dataRoleSelected.field_name);
+    setValue('status', Number(dataRoleSelected.blocked) + 1);
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -87,6 +124,7 @@ export default function NewRolePage() {
             isLoading={loading}
             type="newRole"
             onClick={handleSelectionPage}
+            onItemClick={handleItemSelection}
           />
         </div>
         <div className={styles.formInserRole}>
@@ -126,8 +164,24 @@ export default function NewRolePage() {
                 onClick={handleSubmit(onSubmit)}
               />
             </div>
+            <div className={styles.btnDeleteNewRole}>
+              <Button
+                type="secondary"
+                title={Strings.erase}
+                onClick={() => {
+                  deleteRoleID();
+                }}
+              />
+            </div>
             <div className={styles.btnCancelNewRole}>
-              <Button type="cancel" title={Strings.cancel} onClick={() => {}} />
+              <Button
+                type="cancel"
+                title={Strings.cancel}
+                onClick={() => {
+                  setValue('role', '');
+                  resetField('role');
+                }}
+              />
             </div>
           </div>
         </div>
