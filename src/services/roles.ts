@@ -1,4 +1,4 @@
-import { getJson, postJson } from '../http';
+import { deleteJson, getJson, postJson } from '../http';
 
 import { DataRolesModel } from 'models/DataRolesModel';
 
@@ -12,4 +12,8 @@ export async function getRolesPerPage(page: number) {
 
 export async function createRole(data: DataRolesModel) {
   return await postJson('/roles', data);
+}
+
+export async function deleteRole(id: number) {
+  return await deleteJson(`/roles/${id}`);
 }

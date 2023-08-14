@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import Modal from 'react-bootstrap/Modal';
 
 import { Button } from 'components/Button';
@@ -30,6 +31,8 @@ export default function ModalOptions({
   reset,
   ...props
 }: Props) {
+  const router = useRouter();
+
   async function deleteItem() {
     switch (typeItem) {
       case 'unit':
@@ -46,6 +49,22 @@ export default function ModalOptions({
     }
     reset && reset(true);
     onHide();
+  }
+
+  async function goEdit() {
+    switch (typeItem) {
+      case 'unit':
+        router.push(`edit/${JSON.parse(item).id}`);
+        break;
+      case 'specialist':
+        router.push(`edit/${JSON.parse(item).id}`);
+        break;
+      case 'patient':
+        router.push(`edit/${JSON.parse(item).id}`);
+        break;
+      default:
+        break;
+    }
   }
 
   async function callDeleteUnit() {
@@ -97,7 +116,7 @@ export default function ModalOptions({
         <div className={styles.footer}>
           <Button
             onClick={() => {
-              deleteItem();
+              goEdit();
             }}
             title={Strings.edit}
             type="secondary"

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from 'components/Button';
 import ColorSelector from 'components/ColorSelector';
 import { InputForm } from 'components/Input';
+import { SelectForm } from 'components/SelectForm';
 import { SmallMediumText } from 'components/Text';
 
 import styles from './modalboxschedule.module.css';
@@ -18,6 +19,7 @@ import { DataAppoitmentTag } from 'models/DataAppoitmentTag';
 import { DataPatientsModel } from 'models/DataPatientsModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
+import { DataUnitsModel } from 'models/DataUnitsModel';
 import { createAppointment } from 'services/appointments';
 
 type Props = {
@@ -26,6 +28,7 @@ type Props = {
   specialists: DataSpecialistsModel[];
   patients: DataPatientsModel[];
   tags: DataAppoitmentTag[];
+  units: DataUnitsModel[];
 };
 
 type DataProps = {
@@ -36,6 +39,7 @@ export default function ModalBoxSchedule({
   onHide,
   specialists,
   patients,
+  units,
   tags,
   ...props
 }: Props & { show: boolean }) {
@@ -124,17 +128,15 @@ export default function ModalBoxSchedule({
           style={{ lineHeight: 2, textAlign: 'left', width: '100%' }}
         />
         <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
-          <InputForm
+          <SelectForm
             control={control}
-            placeholder={Strings.description}
-            type="text"
             name="description"
             containerStyle={{
               width: '70%',
               height: '40px'
             }}
+            data={units}
             error={errors.descriptionRequired?.message?.toString()}
-            className={styles.inputNewAppointment}
           />
           <ColorSelector colors={tags} />
         </div>

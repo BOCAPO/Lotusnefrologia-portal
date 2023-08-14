@@ -14,17 +14,20 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataPatientsModel } from 'models/DataPatientsModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
+import { DataUnitsModel } from 'models/DataUnitsModel';
 import {
   getAllAppointmensTags,
   getAllAppointments
 } from 'services/appointments';
 import { getAllPatients } from 'services/patients';
 import { getAllSpecialists } from 'services/specialists';
+import { getAllUnits } from 'services/units';
 
 export default function SchedulesPage(): JSX.Element {
   const [visible, setVisible] = React.useState(false);
   const [specialists, setSpecialists] = React.useState<any>(null);
   const [patients, setPatients] = React.useState<any>(null);
+  const [units, setUnits] = React.useState<any>(null);
   const [tags, setTags] = React.useState<any>(null);
   const [data, setData] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -34,6 +37,7 @@ export default function SchedulesPage(): JSX.Element {
     getSpecialists();
     getAppointmentTags();
     getPatients();
+    getUnits();
   }, []);
 
   async function getAppointments() {
@@ -61,6 +65,12 @@ export default function SchedulesPage(): JSX.Element {
     setPatients(
       patientsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name))
     );
+  }
+
+  async function getUnits() {
+    const response = await getAllUnits();
+    const unitsUpdated = response.data.data as DataUnitsModel[];
+    setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
   }
 
   return (
@@ -106,6 +116,7 @@ export default function SchedulesPage(): JSX.Element {
         specialists={specialists !== null ? specialists : []}
         tags={tags !== null ? tags : []}
         patients={patients !== null ? patients : []}
+        units={units !== null ? units : []}
       />
     </React.Fragment>
   );

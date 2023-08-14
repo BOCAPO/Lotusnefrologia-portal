@@ -49,6 +49,8 @@ export default function ScalePage(): JSX.Element {
   const [nameSelectedUnit, setNameSelectedUnit] = React.useState<string>('');
   const [selectedDate, setSelectedDate] = React.useState<string>('');
   const [selectedTime, setSelectedTime] = React.useState<any>([]);
+  const [quantitySelectedTime, setQuantitySelectedTime] =
+    React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
@@ -64,7 +66,7 @@ export default function ScalePage(): JSX.Element {
   React.useEffect(() => {
     getEspecialists();
     getUnits();
-  }, [selectedSpectialistId, page]);
+  }, [selectedSpectialistId, page, quantitySelectedTime]);
 
   async function getEspecialists() {
     if (page === 1) {
@@ -140,6 +142,7 @@ export default function ScalePage(): JSX.Element {
 
   const handleTimeSelect = (selectedTime: []) => {
     setSelectedTime(selectedTime);
+    setQuantitySelectedTime(selectedTime.length);
   };
 
   const handleSelectionPage = (selectedValue: string) => {

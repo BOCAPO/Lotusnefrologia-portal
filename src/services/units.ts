@@ -17,3 +17,7 @@ export async function createUnit(unit: DataUnitsModel) {
 export async function deleteUnit(id: number) {
   return await deleteJson(`/units/${id}`);
 }
+
+export async function getUnitsById(id: number) {
+  return await getJson(`/units/${id}`);
+}

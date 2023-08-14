@@ -100,6 +100,7 @@ export const Strings = {
   insertPatient: 'Cadastrar Paciente',
   insertSpecialty: 'Cadastrar Especialidade',
   insertRole: 'Cadastrar Perfil',
+  editUnit: 'Editar Unidade',
   viewDataUser: 'Dados do Usuário',
   myData: 'Meus Dados',
   search: 'Pesquisar',
@@ -157,6 +158,15 @@ export const Strings = {
   messageSuccessInsertSpecialty:
     'O cadastro da especialidade foi realizado com sucesso.',
   messageSuccessInsertRole: 'O cadastro do perfil foi realizado com sucesso.',
+  messageSuccessUpdateUnit: 'O cadastro da unidade foi atualizado com sucesso.',
+  messageSuccessUpdateUser: 'O cadastro do usuário foi atualizado com sucesso.',
+  messageSuccessUpdateSpecialist:
+    'O cadastro do especialista foi atualizado com sucesso.',
+  messageSuccessUpdatePatient:
+    'O cadastro do paciente foi atualizado com sucesso.',
+  messageSuccessUpdateSpecialty:
+    'O cadastro da especialidade foi atualizado com sucesso.',
+  messageSuccessUpdateRole: 'O cadastro do perfil foi atualizado com sucesso.',
   selectDate: 'Selecione a data',
   hoursDisponibles: 'Horários disponíveis',
   resetPasswordSpecialist: 'Redefinir Senha do Especialista',

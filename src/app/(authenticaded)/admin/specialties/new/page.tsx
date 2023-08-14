@@ -19,10 +19,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
+import { ResponseGetModel } from 'models/ResponseGetModel';
 import {
   createSpecialty,
+  deleteSpecialty,
   getAllSpecialties,
-  getSpecialtiesPerPage
+  getSpecialtiesPerPage,
+  updateSpecialty
 } from 'services/specialties';
 import { statusGeneral } from 'utils/enums';
 
@@ -34,21 +37,28 @@ export default function NewSpecialTyPage() {
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>(null);
+  const [quantitySpecialties, setQuantitySpecialties] =
+    React.useState<number>(0);
   const [page, setPage] = React.useState<number>(1);
+  const [selectedSpecialty, setSelectedSpecialty] = React.useState<any>(null);
 
   React.useEffect(() => {
     getSpecialties();
-  }, [page]);
+  }, [quantitySpecialties, selectedSpecialty, page]);
 
   async function getSpecialties() {
     if (page === 1) {
       setData(null);
       const response = await getAllSpecialties();
-      setData(response.data);
+      const data = response.data as ResponseGetModel;
+      setData(data);
+      setQuantitySpecialties(data.total);
     } else {
       setData(null);
       const response = await getSpecialtiesPerPage(page);
-      setData(response.data);
+      const data = response.data as ResponseGetModel;
+      setData(data);
+      setQuantitySpecialties(data.total);
     }
     setLoading(false);
   }
@@ -61,19 +71,43 @@ export default function NewSpecialTyPage() {
     control,
     handleSubmit,
     resetField,
+    setValue,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
   });
 
+  async function deleteSpecialtyId() {
+    const response = await deleteSpecialty(selectedSpecialty.id);
+    if (response !== null) {
+      setQuantitySpecialties(quantitySpecialties - 1);
+      setShowModalSuccess(true);
+      setValue('specialty', '');
+      setValue('status', 0);
+      setTimeout(() => {
+        setShowModalSuccess(false);
+      }, 3500);
+    }
+  }
+
   async function onSubmit(data: DataProps) {
     const dataStatus = Number(data.status) - 1;
-    const newSpecialty: DataSpecialtiesModel = {
-      description: data.specialty.toString(),
-      status: Number(dataStatus)
-    };
-    const response = await createSpecialty(newSpecialty);
+    let response = null;
+    if (selectedSpecialty !== null) {
+      const newSpecialty: DataSpecialtiesModel = {
+        description: data.specialty.toString(),
+        status: Number(dataStatus)
+      };
+      response = await updateSpecialty(newSpecialty, selectedSpecialty.id);
+    } else {
+      const newSpecialty: DataSpecialtiesModel = {
+        description: data.specialty.toString(),
+        status: Number(dataStatus)
+      };
+      response = await createSpecialty(newSpecialty);
+    }
     if (response !== null) {
+      setQuantitySpecialties(quantitySpecialties + 1);
       setShowModalSuccess(true);
       resetField('specialty');
       resetField('status');
@@ -81,6 +115,16 @@ export default function NewSpecialTyPage() {
         setShowModalSuccess(false);
       }, 2500);
     }
+  }
+
+  function handleItemSelection(firstId: any) {
+    const dataSpecialtySelected = data?.data?.filter(
+      (element: DataSpecialtiesModel) => element.id === Number(firstId)
+    )[0];
+
+    setSelectedSpecialty(dataSpecialtySelected);
+    setValue('specialty', dataSpecialtySelected.description);
+    setValue('status', Number(dataSpecialtySelected.status) + 1);
   }
 
   return (
@@ -95,6 +139,7 @@ export default function NewSpecialTyPage() {
             isLoading={loading}
             type="newSpecialty"
             onClick={handleSelectionPage}
+            onItemClick={handleItemSelection}
           />
         </div>
         <div className={styles.formInserSpecialty}>
@@ -134,8 +179,25 @@ export default function NewSpecialTyPage() {
                 onClick={handleSubmit(onSubmit)}
               />
             </div>
+            <div className={styles.btnDeleteNewSpecialty}>
+              <Button
+                type="secondary"
+                title={Strings.erase}
+                onClick={() => {
+                  deleteSpecialtyId();
+                }}
+              />
+            </div>
             <div className={styles.btnCancelNewSpecialty}>
-              <Button type="cancel" title={Strings.cancel} onClick={() => {}} />
+              <Button
+                type="cancel"
+                title={Strings.cancel}
+                onClick={() => {
+                  setSelectedSpecialty(null);
+                  setValue('specialty', '');
+                  setValue('status', 0);
+                }}
+              />
             </div>
           </div>
         </div>
@@ -143,7 +205,11 @@ export default function NewSpecialTyPage() {
       <ModalSuccess
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
-        message={Strings.messageSuccessInsertSpecialty}
+        message={
+          selectedSpecialty !== null
+            ? Strings.messageSuccessUpdateSpecialty
+            : Strings.messageSuccessInsertSpecialty
+        }
       />
     </React.Fragment>
   );

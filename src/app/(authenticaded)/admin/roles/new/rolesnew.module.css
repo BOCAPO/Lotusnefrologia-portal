@@ -86,11 +86,11 @@
     padding: 2vh 2% 0 2%;
 }
 
-.btnSaveNewRole {
+.btnSaveNewRole, .btnDeleteNewRole {
     margin-right: 3%;
 }
 
-.btnSaveNewRole, .btnCancelNewRole {
+.btnSaveNewRole, .btnCancelNewRole, .btnDeleteNewRole {
     width: 15% !important;
 }
 
@@ -110,7 +110,7 @@
         height: 77vh;
     }
 
-    .btnSaveNewRole {
+    .btnSaveNewRole, .btnDeleteNewRole {
         margin-right: 6%;
     }
 }

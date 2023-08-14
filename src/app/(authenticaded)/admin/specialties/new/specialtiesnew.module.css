@@ -55,7 +55,7 @@
     height: 40px;
     border: 1px solid #E5E5E5;
     border-radius: 5px;
-    padding: 0 1%;
+    padding: 1% 5%;
     font-size: 16px;
 }
 
@@ -86,11 +86,11 @@
     padding: 2vh 2% 0 2%;
 }
 
-.btnSaveNewSpecialty {
+.btnSaveNewSpecialty, .btnDeleteNewSpecialty {
     margin-right: 3%;
 }
 
-.btnSaveNewSpecialty, .btnCancelNewSpecialty {
+.btnSaveNewSpecialty, .btnCancelNewSpecialty, .btnDeleteNewSpecialty {
     width: 15% !important;
 }
 
@@ -108,7 +108,8 @@
     .formInserSpecialty {
         height: 77vh;
     }
-    .btnSaveNewSpecialty{
+
+    .btnSaveNewSpecialty, .btnDeleteNewSpecialty {
         margin-right: 6%;
     }
 }

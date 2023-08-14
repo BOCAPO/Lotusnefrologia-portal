@@ -38,7 +38,7 @@ export function SelectForm({
           };
 
           return (
-            <div style={{ width: '100%' }}>
+            <div style={{ width: '100%', display: 'flex' }}>
               <select
                 className={styles.selectGeneral}
                 onChange={handleChange}
