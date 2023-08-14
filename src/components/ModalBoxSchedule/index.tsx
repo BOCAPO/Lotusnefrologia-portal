@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
@@ -20,7 +21,9 @@ import { DataPatientsModel } from 'models/DataPatientsModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
+import { ResponseSchedulesModel } from 'models/ResponseSchedulesModel';
 import { createAppointment } from 'services/appointments';
+import { getHoursBySpecialistAndDateAndUnit } from 'services/schedules';
 
 type Props = {
   onHide: () => void;
@@ -50,6 +53,10 @@ export default function ModalBoxSchedule({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [patient, setPatient] = React.useState<any>(null);
   const [filteredProducts, setFilteredProducts] = React.useState<any>(null);
+  const [selectedUnit, setSelectedUnit] = React.useState<number>(0);
+  const [selectedSpecialist, setSelectedSpecialist] = React.useState<number>(0);
+  const [selectedDate, setSelectedDate] = React.useState<string>('');
+  const [hours, setHours] = React.useState<any>(null);
   const {
     control,
     setValue,
@@ -81,23 +88,43 @@ export default function ModalBoxSchedule({
       return item.id === specialistId;
     });
     const specialtiesUpdated = specialistSelected[0].specialties;
-    setSpecialties(
-      specialtiesUpdated
-        .slice()
-        .sort((a, b) => a.description.localeCompare(b.description))
-    );
+    setSpecialties(specialtiesUpdated);
     setIsLoadingSpecialties(false);
   }
 
+  async function getHoursSchedule(date: string) {
+    const response = await getHoursBySpecialistAndDateAndUnit(
+      selectedSpecialist,
+      date,
+      selectedUnit
+    );
+    const responseHours = response.data as ResponseSchedulesModel;
+    setHours(responseHours.schedules);
+  }
+
+  const handleGetUnit = (selectedUnitCode: any) => {
+    setSelectedUnit(selectedUnitCode);
+  };
+
+  const handleGetSpecialist = (selectedSpecialistCode: any) => {
+    setSelectedSpecialist(selectedSpecialistCode);
+  };
+
+  const handleDataSelected = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSelectedDate(value);
+    if (selectedSpecialist !== 0 && value !== '') getHoursSchedule(value);
+  };
+
   async function handleSubmitAppoitment(data: DataProps) {
     const newAppoitment = {
-      specialist_id: 1,
+      specialist_id: Number(selectedSpecialist),
       patient_id: patient.id as number,
-      unit_id: 1,
-      specialty_id: 1,
+      unit_id: Number(selectedUnit),
+      specialty_id: 9,
       schedule_id: 1,
       appointment_status: 1,
-      observation: data.observation.toString(),
+      observation: 'Teste',
       tag_id: '1',
       status: 0
     };
@@ -130,13 +157,14 @@ export default function ModalBoxSchedule({
         <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
           <SelectForm
             control={control}
-            name="description"
+            name="unit"
             containerStyle={{
               width: '70%',
               height: '40px'
             }}
             data={units}
             error={errors.descriptionRequired?.message?.toString()}
+            onSelectChange={handleGetUnit}
           />
           <ColorSelector colors={tags} />
         </div>
@@ -190,6 +218,7 @@ export default function ModalBoxSchedule({
           <select
             onChange={(event) => {
               getSpecialties(Number(event.target.value));
+              handleGetSpecialist(event.target.value);
             }}
           >
             <option value="">Selecione o especialista</option>
@@ -226,25 +255,45 @@ export default function ModalBoxSchedule({
             type="date"
             name="date"
             containerStyle={{
-              width: '47.5%',
+              width: '45%',
               height: '40px',
-              marginRight: '10%'
+              marginRight: '8%'
             }}
             error={errors.dateRequired?.message?.toString()}
             className={styles.inputNewAppointment}
+            onBlur={handleDataSelected}
           />
-          <InputForm
-            control={control}
-            placeholder={Strings.hour}
-            type="time"
-            name="hour"
-            containerStyle={{
-              width: '47.5%',
-              height: '40px'
+          <select
+            onChange={(event) => {
+              handleGetSpecialist(event.target.value);
             }}
-            error={errors.hourRequired?.message?.toString()}
-            className={styles.inputNewAppointment}
-          />
+          >
+            <option value="">Selecione o horário</option>
+            {hours?.map((item: any) => {
+              return (
+                <option key={item.id} value={item.id}>
+                  {item.start}
+                </option>
+              );
+            })}
+          </select>
+          {/* <select>
+            {isLoadingSpecialties ? (
+              <option value="">Carregando...</option>
+            ) : (
+              <>
+                <option value="">Selecione a especialidade</option>
+                {specialties &&
+                  specialties?.map((specialty: DataSpecialtiesModel) => {
+                    return (
+                      <option key={specialty.id} value={specialty.id}>
+                        {specialty.description}
+                      </option>
+                    );
+                  })}
+              </>
+            )}
+          </select> */}
         </div>
         <div className={styles.observation}>
           <textarea

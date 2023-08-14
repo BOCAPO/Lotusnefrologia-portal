@@ -7,109 +7,79 @@ import { useForm } from 'react-hook-form';
 import { Button } from 'components/Button';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
-import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import { SmallMediumText } from 'components/Text';
 
-import styles from './specialistsedit.module.css';
+import styles from './userview.module.css';
 
 import { schema } from './schema';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { DataCitiesModel } from 'models/DataCitiesModel';
-import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
-import { DataStatesModel } from 'models/DataStatesModel';
-import { DataUnitsModel } from 'models/DataUnitsModel';
-import { getAllCities } from 'services/cities';
-import { getAllSpecialties } from 'services/specialties';
-import { getAllStates } from 'services/states';
-import { getAllUnits } from 'services/units';
+import { DataUserModel } from 'models/DataUserModel';
+import { Prefs } from 'repository/Prefs';
+import { getUserById } from 'services/users';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
   [name: string]: string | number;
 };
 
-export default function EditSpecialistPage() {
-  const [states, setStates] = React.useState<any>(null);
-  const [cities, setCities] = React.useState<any>(null);
-  const [specialties, setSpecialties] = React.useState<any>(null);
-  const [units, setUnits] = React.useState<any>(null);
-  const [showModalSuccess, setShowModalSuccess] =
-    React.useState<boolean>(false);
+export default function ViewUserPage() {
   const router = useRouter();
-  const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
+  const idUser = Prefs.getIdUser();
 
   const {
     control,
     // handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
   });
 
   React.useEffect(() => {
-    getStates();
-    getSpecialities();
-    getUnits();
-  }, []);
+    getUser();
+  }, [idUser]);
 
-  async function getStates() {
-    const response = await getAllStates();
-    const statesUpdated = response.data.data as DataStatesModel[];
-    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
+  async function getUser() {
+    const response = await getUserById(Number(idUser));
+    const dataUser = response.data as DataUserModel;
+    if (dataUser !== null) {
+      setValue('cpf', dataUser.cpf);
+      setValue('name', dataUser.name);
+      // setValue('profile', dataUser.profile);
+      setValue('email', dataUser.email);
+      setValue('phonePrimary', dataUser.phone_primary);
+      setValue('phoneSecondary', dataUser.phone_secondary);
+      setValue('zipCode', dataUser.zip_code);
+      setValue('street', dataUser.street);
+      setValue('number', dataUser.number);
+      setValue('block', dataUser.block);
+      setValue('lot', dataUser.lot);
+      setValue(
+        'complement',
+        dataUser.complement !== null ? dataUser.complement : ''
+      );
+      setValue('citieCode', dataUser.citie_code);
+      setValue('status', dataUser.status);
+    }
   }
-
-  async function getCities(state_code: string) {
-    setIsLoadingCities(true);
-    const response = await getAllCities();
-    let citiesUpdated = response.data.data as DataCitiesModel[];
-    citiesUpdated = citiesUpdated.filter(
-      (city: DataCitiesModel) => city.state_code === state_code
-    );
-    setCities(
-      citiesUpdated
-        .slice()
-        .sort((a, b) => a.description.localeCompare(b.description))
-    );
-    setIsLoadingCities(false);
-  }
-
-  async function getSpecialities() {
-    const response = await getAllSpecialties();
-    const specialtiesUpdated = response.data.data as DataSpecialtiesModel[];
-    setSpecialties(
-      specialtiesUpdated
-        .slice()
-        .sort((a, b) => a.description.localeCompare(b.description))
-    );
-  }
-
-  async function getUnits() {
-    const response = await getAllUnits();
-    const unitsUpdated = response.data.data as DataUnitsModel[];
-    setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
-  }
-
-  const handleStateCode = (selectedStateCode: any) => {
-    getCities(selectedStateCode.toString());
-  };
 
   return (
     <React.Fragment>
       <MenuTop />
-      <div className={styles.bodyNewSpecialist}>
-        <div className={styles.headerNewSpecialist}>
+      <div className={styles.bodyViewUser}>
+        <div className={styles.headerViewUser}>
           <SmallMediumText
-            text={Strings.insertSpecialist}
+            text={Strings.myData}
             bold={true}
             color={Colors.gray90}
             style={{ lineHeight: '5px' }}
           />
         </div>
-        <div className={styles.formNewSpecialist}>
+        <div className={styles.formViewUser}>
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderCPF}
@@ -120,7 +90,7 @@ export default function EditSpecialistPage() {
               control={control}
               error={errors.cpf?.message}
               containerStyle={{ width: '20%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
             />
             <InputForm
               placeholder={Strings.placeholderName}
@@ -128,16 +98,16 @@ export default function EditSpecialistPage() {
               name="name"
               control={control}
               containerStyle={{ width: '42.5%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               error={errors.name?.message}
             />
             <InputForm
-              placeholder={Strings.placeholderResponsable}
+              placeholder={Strings.placeholderProfile}
               type="text"
               name="profile"
               control={control}
               containerStyle={{ width: '32.5%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               error={errors.responsible?.message}
             />
           </div>
@@ -147,7 +117,7 @@ export default function EditSpecialistPage() {
               type="email"
               name="email"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               containerStyle={{ width: '65%' }}
               error={errors.email?.message}
             />
@@ -158,7 +128,7 @@ export default function EditSpecialistPage() {
               control={control}
               mask={'phone'}
               containerStyle={{ width: '15%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               error={errors.phonePrimary?.message}
             />
             <InputForm
@@ -168,7 +138,7 @@ export default function EditSpecialistPage() {
               control={control}
               mask={'phone'}
               containerStyle={{ width: '15%' }}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               error={errors.phoneSecondary?.message}
             />
           </div>
@@ -180,7 +150,7 @@ export default function EditSpecialistPage() {
               mask={'cep'}
               maxLength={9}
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               error={errors.zipCode?.message}
             />
             <InputForm
@@ -188,7 +158,7 @@ export default function EditSpecialistPage() {
               type="text"
               name="street"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               error={errors.street?.message}
             />
             <InputForm
@@ -196,7 +166,7 @@ export default function EditSpecialistPage() {
               type="text"
               name="number"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               error={errors.number?.message}
             />
             <InputForm
@@ -204,7 +174,7 @@ export default function EditSpecialistPage() {
               type="text"
               name="block"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               error={errors.block?.message}
             />
             <InputForm
@@ -212,7 +182,7 @@ export default function EditSpecialistPage() {
               type="text"
               name="lot"
               control={control}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
               error={errors.lot?.message}
             />
             <InputForm
@@ -221,50 +191,35 @@ export default function EditSpecialistPage() {
               name="complement"
               control={control}
               error={errors.complement?.message}
-              style={{ height: '40px', padding: '22px' }}
+              className={styles.inputViewUser}
             />
           </div>
           <div style={{ marginBottom: '2vh', width: '100%' }}>
             <div
               style={{ marginBottom: '1vh', width: '100%' }}
-              className={styles.newSpecialistDataGeografic}
+              className={styles.viewUserDataGeografic}
             >
-              <SelectForm
-                control={control}
-                name="state"
-                data={states}
-                error={errors.state?.message}
-                onSelectChange={handleStateCode}
-                containerStyle={{ width: '50%' }}
-              />
-              <SelectForm
+              <InputForm
                 control={control}
                 name="citieCode"
-                data={cities !== null ? cities : null}
-                isLoading={isLoadingCities}
+                placeholder={Strings.placeholderCity}
                 error={errors.city?.message}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '30%' }}
+                className={styles.inputViewUser}
               />
               <SelectForm
                 control={control}
                 name="status"
                 data={statusGeneral}
                 error={errors.status?.message}
-                containerStyle={{ width: '50%' }}
-              />
-              <SelectForm
-                control={control}
-                name="speciality"
-                data={specialties !== null ? specialties : null}
-                error={errors.speciality?.message}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '40%' }}
               />
               <div style={{ height: '40px', minWidth: '20%' }}>
-                <Button type="cancel" title={Strings.resetPasswordSpecialist} />
+                <Button type="cancel" title={Strings.resetPasswordUser} />
               </div>
             </div>
           </div>
-          <div>
+          {/* <div>
             <div className={styles.divTableLinkedUnits}>
               <table className={styles.tableLinkedUnits}>
                 <thead>
@@ -298,20 +253,20 @@ export default function EditSpecialistPage() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> */}
         </div>
-        <div className={styles.footerNewSpecialist}>
-          <div className={styles.btnSaveNewSpecialist}>
+        <div className={styles.footerViewUser}>
+          <div className={styles.btnSaveViewUser}>
             <Button
               type="secondary"
               title={Strings.save}
               // onClick={handleSubmit(onSubmit)}
             />
           </div>
-          <div className={styles.btnCancelNewSpecialist}>
+          <div className={styles.btnCancelViewUser}>
             <Button
               type="cancel"
-              title={Strings.cancel}
+              title={Strings.goBack}
               onClick={() => {
                 router.back();
               }}
@@ -319,11 +274,6 @@ export default function EditSpecialistPage() {
           </div>
         </div>
       </div>
-      <ModalSuccess
-        show={showModalSuccess}
-        onHide={() => setShowModalSuccess(false)}
-        message={Strings.messageSuccessInsertSpecialist}
-      />
     </React.Fragment>
   );
 }

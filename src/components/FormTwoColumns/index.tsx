@@ -92,7 +92,7 @@ export function FormTwoColumns({
 
   async function adptedDataSpecialist(data: any) {
     data.forEach((element: DataSpecialistsModel) => {
-      element.units.forEach((unit: DataUnitsModel) => {
+      element.units.forEach((unit: DataUnitsModel | any) => {
         const dataAdapted = {
           firstId: element.id,
           secondId: unit.id,

@@ -1,4 +1,4 @@
-.bodyNewSpecialist {
+.bodyNewUser {
     width: 90%;
     height: 75%;
     display: flex;
@@ -13,7 +13,7 @@
     border-radius: 9px;
 }
 
-.headerNewSpecialist {
+.headerNewUser {
     width: 100%;
     height: 5vh;
     display: flex;
@@ -25,7 +25,7 @@
     margin-bottom: 2vh;
 }
 
-.formNewSpecialist {
+.formNewUser {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -33,7 +33,7 @@
     padding: 0 2%;
 }
 
-.formNewSpecialist>div {
+.formNewUser>div {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -42,7 +42,7 @@
     padding: 0;
 }
 
-.linksSpecialist {
+.linksUser {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -51,7 +51,7 @@
     margin: 3% 0;
 }
 
-.newSpecialistDataGeografic {
+.newUserDataGeografic {
     margin-bottom: 2vh;
     width: 100%;
     display: flex;
@@ -60,8 +60,8 @@
     justify-content: space-between;
 }
 
-.newSpecialistDataGeografic select {
-    height: 45px;
+.newUserDataGeografic select {
+    height: 40px;
     border: 1px solid #E5E5E5;
     border-radius: 5px;
     padding: 1% 5%;
@@ -69,13 +69,13 @@
     color: #8C8E90;
 }
 
-.newSpecialistDataGeografic select:active, .newSpecialistDataGeografic select:focus {
+.newUserDataGeografic select:active, .newUserDataGeografic select:focus {
     border: 1px solid #A1E2A5;
     box-shadow: 0px 3px 6px #A1C9A47F;
     outline: none;
 }
 
-.footerNewSpecialist {
+.footerNewUser {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -85,11 +85,11 @@
     padding: 1.5vh 2% 0 2%;
 }
 
-.btnSaveNewSpecialist {
+.btnSaveNewUser {
     margin-right: 3%;
 }
 
-.btnSaveNewSpecialist, .btnCancelNewSpecialist {
+.btnSaveNewUser, .btnCancelNewUser {
     width: 10% !important;
     height: 40px;
 }
@@ -153,11 +153,14 @@
     color: #A1E2A5 !important;
 }
 
+.inputNewUser{
+    height: 40px !important;
+    padding: 20px !important;
+}
+
 @media screen and (max-height: 981px) and (min-height: 740px) {
-    .divTableLinkedUnits {
-        height: 20vh;
-    }
-    .tableLinkedUnits tbody tr{
-        height: 30px;
+    .bodyNewUser {
+        height: 79%;
+        margin: 2.5vh 5%;
     }
 }
