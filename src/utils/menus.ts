@@ -177,14 +177,14 @@ export const menusAdmin: MenuModel[] = [
     link: '/admin/units/list',
     internalMenus: null
   },
-  {
-    idMenu: 2,
-    title: 'Perfil de Acesso',
-    image: null,
-    alternativeImage: null,
-    link: '/admin/roles/new',
-    internalMenus: null
-  },
+  // {
+  //   idMenu: 2,
+  //   title: 'Perfil de Acesso',
+  //   image: null,
+  //   alternativeImage: null,
+  //   link: '/admin/roles/new',
+  //   internalMenus: null
+  // },
   {
     idMenu: 3,
     title: 'Usuários',

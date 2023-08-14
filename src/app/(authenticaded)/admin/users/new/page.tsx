@@ -19,11 +19,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
-import { DataRolesModel } from 'models/DataRolesModel';
 import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
+import { DataUserModel } from 'models/DataUserModel';
 import { getAllCities } from 'services/cities';
-import { getAllRoles } from 'services/roles';
 import { getAllStates } from 'services/states';
 import { getAllUnits } from 'services/units';
 import { createUser } from 'services/users';
@@ -37,7 +36,7 @@ export default function NewUserPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
-  const [roles, setRoles] = React.useState<any>(null);
+  // const [roles, setRoles] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
@@ -54,7 +53,7 @@ export default function NewUserPage() {
   React.useEffect(() => {
     getStates();
     getUnits();
-    getRoles();
+    // getRoles();
   }, []);
 
   async function getStates() {
@@ -84,11 +83,11 @@ export default function NewUserPage() {
     setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
   }
 
-  async function getRoles() {
-    const response = await getAllRoles();
-    const rolesUpdated = response.data.data as DataRolesModel[];
-    setRoles(rolesUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
-  }
+  // async function getRoles() {
+  //   const response = await getAllRoles();
+  //   const rolesUpdated = response.data.data as DataRolesModel[];
+  //   setRoles(rolesUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
+  // }
 
   const handleStateCode = (selectedStateCode: any) => {
     getCities(selectedStateCode.toString());
@@ -103,8 +102,9 @@ export default function NewUserPage() {
   };
 
   async function onSubmit(data: DataProps) {
+    const status = Number(data.status) - 1;
     try {
-      const newUser = {
+      const newUser: DataUserModel = {
         cpf: data.cpf.toString(),
         name: data.name.toString(),
         email: data.email.toString(),
@@ -117,9 +117,9 @@ export default function NewUserPage() {
         block: data.block.toString(),
         lot: data.lot.toString(),
         complement: data.complement.toString(),
-        unit: selectedUnits,
-        status: Number(data.status),
-        profile: data.profile
+        units: selectedUnits,
+        status: status
+        // profile: 1
       };
 
       const response = await createUser(newUser);
@@ -130,7 +130,7 @@ export default function NewUserPage() {
         }, 3000);
       }
     } catch (error) {
-      console.log('Erro ao criar usuario!' + error);
+      // console.log('Erro ao criar usuario!' + error);
     }
   }
 
@@ -156,7 +156,7 @@ export default function NewUserPage() {
               maxLength={14}
               control={control}
               error={errors.cpf?.message}
-              containerStyle={{ width: '20%' }}
+              containerStyle={{ width: '25%' }}
               className={styles.inputNewUser}
             />
             <InputForm
@@ -164,17 +164,17 @@ export default function NewUserPage() {
               type="text"
               name="name"
               control={control}
-              containerStyle={{ width: '42.5%' }}
+              containerStyle={{ width: '70%' }}
               className={styles.inputNewUser}
               error={errors.name?.message}
             />
-            <SelectForm
+            {/* <SelectForm
               name="profile"
               control={control}
               containerStyle={{ width: '32.5%' }}
               data={roles}
               error={errors.profile?.message}
-            />
+            /> */}
           </div>
           <div style={{ marginBottom: '3vh' }}>
             <InputForm

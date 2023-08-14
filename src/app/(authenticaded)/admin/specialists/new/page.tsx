@@ -19,10 +19,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
 import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
+import { createSpecialist } from 'services/specialists';
 import { getAllSpecialties } from 'services/specialties';
 import { getAllStates } from 'services/states';
 import { getAllUnits } from 'services/units';
@@ -41,10 +43,11 @@ export default function NewSpecialistPage() {
     React.useState<boolean>(false);
   const router = useRouter();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
+  const [selectedUnits, setSelectedUnits] = React.useState<number[]>([]);
 
   const {
     control,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -97,6 +100,43 @@ export default function NewSpecialistPage() {
     getCities(selectedStateCode.toString());
   };
 
+  const handleCheckboxChange = (unitId: number) => {
+    if (selectedUnits.includes(unitId)) {
+      setSelectedUnits(selectedUnits.filter((id) => id !== unitId));
+    } else {
+      setSelectedUnits([...selectedUnits, unitId]);
+    }
+  };
+
+  async function onSubmit(data: DataProps) {
+    const status = Number(data.status) - 1;
+    const newSpecialist: DataSpecialistsModel = {
+      cpf: data.cpf.toString(),
+      name: data.name.toString(),
+      email: data.email.toString(),
+      phone_primary: data.phonePrimary.toString(),
+      phone_secondary: data.phoneSecondary.toString(),
+      zip_code: data.zipCode.toString(),
+      street: data.street.toString(),
+      number: data.number.toString(),
+      block: data.block?.toString(),
+      lot: data.lot?.toString(),
+      complement: data.complement?.toString(),
+      citie_code: data.citieCode.toString(),
+      status: status,
+      specialties: Number(data.speciality),
+      units: selectedUnits
+    };
+
+    const response = await createSpecialist(newSpecialist);
+    if (response !== null) {
+      setShowModalSuccess(true);
+      setTimeout(() => {
+        router.back();
+      }, 3500);
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -119,7 +159,7 @@ export default function NewSpecialistPage() {
               maxLength={14}
               control={control}
               error={errors.cpf?.message}
-              containerStyle={{ width: '20%' }}
+              containerStyle={{ width: '25%' }}
               style={{ height: '40px', padding: '22px' }}
             />
             <InputForm
@@ -127,11 +167,11 @@ export default function NewSpecialistPage() {
               type="text"
               name="name"
               control={control}
-              containerStyle={{ width: '42.5%' }}
+              containerStyle={{ width: '70%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.name?.message}
             />
-            <InputForm
+            {/* <InputForm
               placeholder={Strings.placeholderResponsable}
               type="text"
               name="profile"
@@ -139,7 +179,7 @@ export default function NewSpecialistPage() {
               containerStyle={{ width: '32.5%' }}
               style={{ height: '40px', padding: '22px' }}
               error={errors.responsible?.message}
-            />
+            /> */}
           </div>
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
@@ -283,6 +323,8 @@ export default function NewSpecialistPage() {
                             <input
                               type="checkbox"
                               className={styles.checkbox}
+                              checked={selectedUnits.includes(unit.id!)}
+                              onChange={() => handleCheckboxChange(unit.id!)}
                             />
                           </label>
                         </td>
@@ -305,7 +347,7 @@ export default function NewSpecialistPage() {
             <Button
               type="secondary"
               title={Strings.save}
-              // onClick={handleSubmit(onSubmit)}
+              onClick={handleSubmit(onSubmit)}
             />
           </div>
           <div className={styles.btnCancelNewSpecialist}>

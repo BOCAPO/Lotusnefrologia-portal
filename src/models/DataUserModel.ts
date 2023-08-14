@@ -15,7 +15,7 @@ export type DataUserModel = {
   lot: string;
   password?: string;
   complement: string | null;
-  unit: number[] | DataUnitsModel[];
+  units: number[] | DataUnitsModel[];
   status: number;
   email_verified_at?: string | null;
   created_at?: string;

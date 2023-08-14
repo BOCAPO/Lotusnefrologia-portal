@@ -8,6 +8,7 @@ import { Button } from 'components/Button';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
 import { SelectForm } from 'components/SelectForm';
+import { SpinnerLoading } from 'components/Spinner';
 import { SmallMediumText } from 'components/Text';
 
 import styles from './userview.module.css';
@@ -29,10 +30,10 @@ type DataProps = {
 export default function ViewUserPage() {
   const router = useRouter();
   const idUser = Prefs.getIdUser();
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   const {
     control,
-    // handleSubmit,
     setValue,
     formState: { errors }
   } = useForm<DataProps>({
@@ -49,7 +50,6 @@ export default function ViewUserPage() {
     if (dataUser !== null) {
       setValue('cpf', dataUser.cpf);
       setValue('name', dataUser.name);
-      // setValue('profile', dataUser.profile);
       setValue('email', dataUser.email);
       setValue('phonePrimary', dataUser.phone_primary);
       setValue('phoneSecondary', dataUser.phone_secondary);
@@ -65,228 +65,235 @@ export default function ViewUserPage() {
       setValue('citieCode', dataUser.citie_code);
       setValue('status', dataUser.status);
     }
+    setLoading(false);
   }
 
   return (
     <React.Fragment>
       <MenuTop />
-      <div className={styles.bodyViewUser}>
-        <div className={styles.headerViewUser}>
-          <SmallMediumText
-            text={Strings.myData}
-            bold={true}
-            color={Colors.gray90}
-            style={{ lineHeight: '5px' }}
-          />
-        </div>
-        <div className={styles.formViewUser}>
-          <div style={{ marginBottom: '3vh' }}>
-            <InputForm
-              placeholder={Strings.placeholderCPF}
-              type="text"
-              name="cpf"
-              mask={'cpfCnpj'}
-              maxLength={14}
-              readonly={true}
-              control={control}
-              error={errors.cpf?.message}
-              containerStyle={{ width: '20%' }}
-              className={styles.inputViewUser}
-            />
-            <InputForm
-              placeholder={Strings.placeholderName}
-              type="text"
-              name="name"
-              readonly={true}
-              control={control}
-              containerStyle={{ width: '42.5%' }}
-              className={styles.inputViewUser}
-              error={errors.name?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderProfile}
-              type="text"
-              name="profile"
-              readonly={true}
-              control={control}
-              containerStyle={{ width: '32.5%' }}
-              className={styles.inputViewUser}
-              error={errors.responsible?.message}
+      {loading ? (
+        <SpinnerLoading />
+      ) : (
+        <div className={styles.bodyViewUser}>
+          <div className={styles.headerViewUser}>
+            <SmallMediumText
+              text={Strings.myData}
+              bold={true}
+              color={Colors.gray90}
+              style={{ lineHeight: '5px' }}
             />
           </div>
-          <div style={{ marginBottom: '3vh' }}>
-            <InputForm
-              placeholder={Strings.placeholderEmail}
-              type="email"
-              name="email"
-              readonly={true}
-              control={control}
-              className={styles.inputViewUser}
-              containerStyle={{ width: '65%' }}
-              error={errors.email?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderPhonePrimay}
-              type="text"
-              name="phonePrimary"
-              control={control}
-              mask={'phone'}
-              readonly={true}
-              containerStyle={{ width: '15%' }}
-              className={styles.inputViewUser}
-              error={errors.phonePrimary?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderPhoneSecondary}
-              type="text"
-              name="phoneSecondary"
-              control={control}
-              mask={'phone'}
-              readonly={true}
-              containerStyle={{ width: '15%' }}
-              className={styles.inputViewUser}
-              error={errors.phoneSecondary?.message}
-            />
-          </div>
-          <div style={{ marginBottom: '3vh' }}>
-            <InputForm
-              placeholder={Strings.placeholderZipCode}
-              type="text"
-              name="zipCode"
-              mask={'cep'}
-              maxLength={9}
-              readonly={true}
-              control={control}
-              className={styles.inputViewUser}
-              error={errors.zipCode?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderStreet}
-              type="text"
-              name="street"
-              readonly={true}
-              control={control}
-              className={styles.inputViewUser}
-              error={errors.street?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderNumber}
-              type="text"
-              name="number"
-              readonly={true}
-              control={control}
-              className={styles.inputViewUser}
-              error={errors.number?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderBlock}
-              type="text"
-              readonly={true}
-              name="block"
-              control={control}
-              className={styles.inputViewUser}
-              error={errors.block?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderLot}
-              type="text"
-              readonly={true}
-              name="lot"
-              control={control}
-              className={styles.inputViewUser}
-              error={errors.lot?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderComplement}
-              type="text"
-              name="complement"
-              readonly={true}
-              control={control}
-              error={errors.complement?.message}
-              className={styles.inputViewUser}
-            />
-          </div>
-          <div style={{ marginBottom: '2vh', width: '100%' }}>
-            <div
-              style={{ marginBottom: '1vh', width: '100%' }}
-              className={styles.viewUserDataGeografic}
-            >
+          <div className={styles.formViewUser}>
+            <div style={{ marginBottom: '3vh' }}>
               <InputForm
-                control={control}
-                name="citieCode"
-                placeholder={Strings.placeholderCity}
+                placeholder={Strings.placeholderCPF}
+                type="text"
+                name="cpf"
+                mask={'cpfCnpj'}
+                maxLength={14}
                 readonly={true}
-                error={errors.city?.message}
-                containerStyle={{ width: '30%' }}
+                control={control}
+                error={errors.cpf?.message}
+                containerStyle={{ width: '20%' }}
                 className={styles.inputViewUser}
               />
-              <SelectForm
+              <InputForm
+                placeholder={Strings.placeholderName}
+                type="text"
+                name="name"
+                readonly={true}
                 control={control}
-                name="status"
-                data={statusGeneral}
-                error={errors.status?.message}
-                containerStyle={{ width: '40%' }}
+                containerStyle={{ width: '42.5%' }}
+                className={styles.inputViewUser}
+                error={errors.name?.message}
               />
-              <div style={{ height: '40px', minWidth: '20%' }}>
-                <Button type="cancel" title={Strings.resetPasswordUser} />
+              <InputForm
+                placeholder={Strings.placeholderProfile}
+                type="text"
+                name="profile"
+                readonly={true}
+                control={control}
+                containerStyle={{ width: '32.5%' }}
+                className={styles.inputViewUser}
+                error={errors.responsible?.message}
+              />
+            </div>
+            <div style={{ marginBottom: '3vh' }}>
+              <InputForm
+                placeholder={Strings.placeholderEmail}
+                type="email"
+                name="email"
+                readonly={true}
+                control={control}
+                className={styles.inputViewUser}
+                containerStyle={{ width: '65%' }}
+                error={errors.email?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderPhonePrimay}
+                type="text"
+                name="phonePrimary"
+                control={control}
+                mask={'phone'}
+                readonly={true}
+                containerStyle={{ width: '15%' }}
+                className={styles.inputViewUser}
+                error={errors.phonePrimary?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderPhoneSecondary}
+                type="text"
+                name="phoneSecondary"
+                control={control}
+                mask={'phone'}
+                readonly={true}
+                containerStyle={{ width: '15%' }}
+                className={styles.inputViewUser}
+                error={errors.phoneSecondary?.message}
+              />
+            </div>
+            <div style={{ marginBottom: '3vh' }}>
+              <InputForm
+                placeholder={Strings.placeholderZipCode}
+                type="text"
+                name="zipCode"
+                mask={'cep'}
+                maxLength={9}
+                readonly={true}
+                control={control}
+                className={styles.inputViewUser}
+                error={errors.zipCode?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderStreet}
+                type="text"
+                name="street"
+                readonly={true}
+                control={control}
+                className={styles.inputViewUser}
+                error={errors.street?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderNumber}
+                type="text"
+                name="number"
+                readonly={true}
+                control={control}
+                className={styles.inputViewUser}
+                error={errors.number?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderBlock}
+                type="text"
+                readonly={true}
+                name="block"
+                control={control}
+                className={styles.inputViewUser}
+                error={errors.block?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderLot}
+                type="text"
+                readonly={true}
+                name="lot"
+                control={control}
+                className={styles.inputViewUser}
+                error={errors.lot?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderComplement}
+                type="text"
+                name="complement"
+                readonly={true}
+                control={control}
+                error={errors.complement?.message}
+                className={styles.inputViewUser}
+              />
+            </div>
+            <div style={{ marginBottom: '2vh', width: '100%' }}>
+              <div
+                style={{ marginBottom: '1vh', width: '100%' }}
+                className={styles.viewUserDataGeografic}
+              >
+                <InputForm
+                  control={control}
+                  name="citieCode"
+                  placeholder={Strings.placeholderCity}
+                  readonly={true}
+                  error={errors.city?.message}
+                  containerStyle={{ width: '30%' }}
+                  className={styles.inputViewUser}
+                />
+                <SelectForm
+                  control={control}
+                  name="status"
+                  data={statusGeneral}
+                  error={errors.status?.message}
+                  containerStyle={{ width: '40%' }}
+                />
+                <div style={{ height: '40px', minWidth: '20%' }}>
+                  <Button type="cancel" title={Strings.resetPasswordUser} />
+                </div>
               </div>
             </div>
-          </div>
-          {/* <div>
-            <div className={styles.divTableLinkedUnits}>
-              <table className={styles.tableLinkedUnits}>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>{Strings.linkedUnits}</th>
-                    <th>{Strings.status}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {units !== null && units.length > 0 ? (
-                    units.map((unit: DataUnitsModel) => (
-                      <tr key={unit.id}>
-                        <td>
-                          <label className={styles.checkboxContainer}>
-                            <input
-                              type="checkbox"
-                              className={styles.checkbox}
-                            />
-                          </label>
-                        </td>
-                        <td>{unit.name}</td>
-                        <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
-                      </tr>
-                    ))
-                  ) : (
+            {/* <div>
+              <div className={styles.divTableLinkedUnits}>
+                <table className={styles.tableLinkedUnits}>
+                  <thead>
                     <tr>
-                      <td colSpan={3}>Nenhuma unidade vinculada</td>
+                      <th></th>
+                      <th>{Strings.linkedUnits}</th>
+                      <th>{Strings.status}</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {units !== null && units.length > 0 ? (
+                      units.map((unit: DataUnitsModel) => (
+                        <tr key={unit.id}>
+                          <td>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type="checkbox"
+                                className={styles.checkbox}
+                              />
+                            </label>
+                          </td>
+                          <td>{unit.name}</td>
+                          <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={3}>Nenhuma unidade vinculada</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div> */}
+          </div>
+          <div className={styles.footerViewUser}>
+            <div className={styles.btnSaveViewUser}>
+              <Button
+                type="secondary"
+                title={Strings.edit}
+                onClick={() => {
+                  router.push(`/personal/mydata/edit/${idUser}}`);
+                }}
+              />
             </div>
-          </div> */}
-        </div>
-        <div className={styles.footerViewUser}>
-          <div className={styles.btnSaveViewUser}>
-            <Button
-              type="secondary"
-              title={Strings.edit}
-              // onClick={handleSubmit(onSubmit)}
-            />
-          </div>
-          <div className={styles.btnCancelViewUser}>
-            <Button
-              type="cancel"
-              title={Strings.goBack}
-              onClick={() => {
-                router.push('/home');
-              }}
-            />
+            <div className={styles.btnCancelViewUser}>
+              <Button
+                type="cancel"
+                title={Strings.goBack}
+                onClick={() => {
+                  router.push('/home');
+                }}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </React.Fragment>
   );
 }

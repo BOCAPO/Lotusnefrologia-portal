@@ -1,4 +1,4 @@
-import { deleteJson, getJson, postJson } from '../http';
+import { deleteJson, getJson, postJson, putJson } from '../http';
 
 import { DataPatientsModel } from 'models/DataPatientsModel';
 
@@ -16,4 +16,12 @@ export async function getPatientsPerPage(page: number) {
 
 export async function deletePatient(id: number) {
   return await deleteJson(`/patients/${id}`);
+}
+
+export async function getPatientById(id: number) {
+  return await getJson(`/patients/${id}`);
+}
+
+export async function updatePatient(id: number, patient: DataPatientsModel) {
+  return await putJson(`/patients/${id}`, patient);
 }

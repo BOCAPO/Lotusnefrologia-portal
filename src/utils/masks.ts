@@ -1,5 +1,5 @@
 export const cpfCnpjMask = (value: string) => {
-  if (value.length > 13) {
+  if (value.length > 14) {
     return cnpjMask(value);
   } else {
     return cpfMask(value);

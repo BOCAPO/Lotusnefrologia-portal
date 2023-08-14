@@ -2,7 +2,7 @@ import { DataSpecialtiesModel } from './DataSpecialtiesModel';
 import { DataUnitsModel } from './DataUnitsModel';
 
 export type DataSpecialistsModel = {
-  id: number;
+  id?: number;
   cpf: string;
   name: string;
   email: string;
@@ -12,14 +12,13 @@ export type DataSpecialistsModel = {
   citie_code: string;
   street: string;
   number: string;
-  block: string;
-  lot: string;
-  complement: string | null;
-  password: string | null;
+  block?: string;
+  lot?: string;
+  complement?: string | null;
   status: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
-  units: DataUnitsModel[];
-  specialties: DataSpecialtiesModel[];
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
+  units: number[] | DataUnitsModel[];
+  specialties: number | DataSpecialtiesModel;
 };
