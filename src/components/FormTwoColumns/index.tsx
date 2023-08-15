@@ -205,7 +205,7 @@ export function FormTwoColumns({
                 : response?.current_page === undefined
                 ? 'Carregando...'
                 : `Exibindo ${response?.current_page} de ${Number(
-                    response?.links.length
+                    response?.last_page
                   )}`
             }
             color={Colors.gray70}

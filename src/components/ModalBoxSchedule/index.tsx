@@ -100,7 +100,7 @@ export default function ModalBoxSchedule({
       selectedUnit
     );
     const responseHours = response.data[0] as ResponseSchedulesModel;
-    setHours(responseHours.schedules);
+    setHours(responseHours?.schedules);
   }
 
   const handleGetUnit = (selectedUnitCode: any) => {

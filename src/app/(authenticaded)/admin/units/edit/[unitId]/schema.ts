@@ -18,7 +18,7 @@ export const schema = Yup.object({
   // zipCode: Yup.string().required(Strings.schemaZipCodeRequired).max(9),
   // street: Yup.string().required(Strings.schemaStreetRequired).max(100),
   // number: Yup.string().required(Strings.schemaNumberRequired).max(10),
-  block: Yup.string().max(10),
-  lot: Yup.string().max(10),
-  complement: Yup.string().max(100)
+  // block: Yup.string().max(10),
+  // lot: Yup.string().max(10),
+  // complement: Yup.string().max(100)
 });
