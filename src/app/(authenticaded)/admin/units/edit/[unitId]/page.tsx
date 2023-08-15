@@ -21,12 +21,9 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { DataCitiesModel } from 'models/DataCitiesModel';
-import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
-import { getAllCities } from 'services/cities';
-import { getAllStates } from 'services/states';
-import { createUnit, getUnitsById } from 'services/units';
+import { getCep } from 'services/cep';
+import { getUnitsById, updateUnitById } from 'services/units';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -34,13 +31,11 @@ type DataProps = {
 };
 
 export default function EditUnitPage() {
-  const [states, setStates] = React.useState<any>(null);
-  const [cities, setCities] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
   const params = useParams();
-  const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
+  const [cep, setCep] = React.useState('');
   const [loading, setLoading] = React.useState<boolean>(true);
 
   const {
@@ -53,15 +48,20 @@ export default function EditUnitPage() {
   });
 
   React.useEffect(() => {
-    getStates();
     getUnitPerId();
   }, [params?.unitId]);
 
-  async function getStates() {
-    const response = await getAllStates();
-    const statesUpdated = response.data.data as DataStatesModel[];
-    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
-  }
+  React.useEffect(() => {
+    if (cep.length === 9) {
+      const responseCEP = getCep(cep.replace('-', ''));
+      responseCEP.then((response) => {
+        if (response !== null) {
+          setValue('citieCode', response.city);
+          setValue('state', response.state);
+        }
+      });
+    }
+  }, [cep]);
 
   async function getUnitPerId() {
     const response = await getUnitsById(Number(params?.unitId));
@@ -88,25 +88,6 @@ export default function EditUnitPage() {
     setLoading(false);
   }
 
-  async function getCities(state_code: string) {
-    setIsLoadingCities(true);
-    const response = await getAllCities();
-    let citiesUpdated = response.data.data as DataCitiesModel[];
-    citiesUpdated = citiesUpdated.filter(
-      (city: DataCitiesModel) => city.state_code === state_code
-    );
-    setCities(
-      citiesUpdated
-        .slice()
-        .sort((a, b) => a.description.localeCompare(b.description))
-    );
-    setIsLoadingCities(false);
-  }
-
-  const handleStateCode = (selectedStateCode: any) => {
-    getCities(selectedStateCode.toString());
-  };
-
   async function onSubmit(data: DataProps) {
     const editUnit: DataUnitsModel = {
       cnpj: data.cnpj.toString(),
@@ -122,18 +103,21 @@ export default function EditUnitPage() {
       number: data.number.toString(),
       block: data.block.toString(),
       lot: data.lot.toString(),
-      citie_code: data.citieCode.toString(),
-      complement: data.complement.toString(),
-      facebook_link: data.linkFacebook.toString(),
-      instagram_link: data.linkInstagram.toString(),
+      citie_code: data.citieCode?.toString(),
+      complement: data.complement?.toString(),
+      facebook_link: data.linkFacebook?.toString(),
+      instagram_link: data.linkInstagram?.toString(),
       site_link: data.linkSite.toString(),
       status: Number(data.status) - 1
     };
 
     try {
-      const response = await createUnit(editUnit);
+      const response = await updateUnitById(Number(params?.unitId), editUnit);
       if (response !== null) {
         setShowModalSuccess(true);
+        setTimeout(() => {
+          router.back();
+        }, 3000);
       }
     } catch (error) {
       // console.log('Erro ao criar unidade!' + error);
@@ -250,6 +234,7 @@ export default function EditUnitPage() {
                 name="zipCode"
                 mask={'cep'}
                 maxLength={9}
+                getValue={setCep}
                 control={control}
                 containerStyle={{ width: '15%' }}
                 className={styles.inputEditUnit}
@@ -306,28 +291,30 @@ export default function EditUnitPage() {
                   style={{ width: '100%' }}
                   className={styles.EditUnitDataGeografic}
                 >
-                  <SelectForm
+                  <InputForm
+                    placeholder={Strings.placeholderState}
                     control={control}
                     name="state"
-                    data={states}
+                    readonly={true}
                     error={errors.state?.message}
-                    onSelectChange={handleStateCode}
-                    containerStyle={{ width: '50%' }}
+                    className={styles.inputEditUnit}
+                    containerStyle={{ width: '30%' }}
                   />
-                  <SelectForm
+                  <InputForm
+                    placeholder={Strings.placeholderCity}
+                    readonly={true}
                     control={control}
                     name="citieCode"
-                    data={cities !== null ? cities : null}
-                    isLoading={isLoadingCities}
                     error={errors.city?.message}
-                    containerStyle={{ width: '50%' }}
+                    className={styles.inputEditUnit}
+                    containerStyle={{ width: '30%' }}
                   />
                   <SelectForm
                     control={control}
                     name="status"
                     data={statusGeneral}
                     error={errors.status?.message}
-                    containerStyle={{ width: '50%' }}
+                    containerStyle={{ width: '30%' }}
                   />
                 </div>
                 <div className={styles.linksUnit}>
@@ -415,7 +402,7 @@ export default function EditUnitPage() {
       <ModalSuccess
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
-        message={Strings.messageSuccessInsertUnit}
+        message={Strings.messageSuccessUpdateUnit}
       />
     </React.Fragment>
   );

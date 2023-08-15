@@ -10,6 +10,10 @@ export async function getSpecialistsPerPage(page: number) {
   return await getJson(`/specialists?page=${page}`);
 }
 
+export async function getSpecialistsWithoutPagination() {
+  return await getJson('/specialists?page=false');
+}
+
 export async function deleteSpecialist(id: number) {
   return await deleteJson(`/specialists/${id}`);
 }

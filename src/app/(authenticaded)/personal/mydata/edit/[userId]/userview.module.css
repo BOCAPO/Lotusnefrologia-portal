@@ -161,6 +161,9 @@
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .footerViewUser {
-        margin-top: 18vh;
+        margin-top: 0vh;
+    }
+    .bodyViewUser{
+        height: 78%;
     }
 }

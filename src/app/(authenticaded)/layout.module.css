@@ -60,7 +60,7 @@
 }
 
 .buttonsHeader {
-    width: 30%;
+    width: 20%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -108,6 +108,6 @@
         padding: 0 5%;
     }
     .buttonsHeader{
-        width: 40%;
+        width: 30%;
     }
 }

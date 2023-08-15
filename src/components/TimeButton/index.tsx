@@ -9,18 +9,24 @@ interface TimeButtonProps {
   endTime: string;
   periodicity: number;
   onTimeSelect: (selectedTime: []) => void;
+  selectedDate?: string;
 }
 
 export function TimeButton({
   startTime,
   endTime,
   periodicity,
+  selectedDate,
   onTimeSelect
 }: TimeButtonProps) {
   const generateTimeButtons = () => {
     const startTimeParts = startTime.split(':').map(Number);
     const endTimeParts = endTime.split(':').map(Number);
     const [hoursSelected, setHoursSelected] = React.useState<any>([]);
+
+    React.useEffect(() => {
+      setHoursSelected([]);
+    }, [selectedDate]);
 
     const startDate = new Date();
     startDate.setHours(startTimeParts[0], startTimeParts[1], 0, 0);

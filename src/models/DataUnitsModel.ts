@@ -1,5 +1,5 @@
 export type DataUnitsModel = {
-  id?: number | null;
+  id?: number;
   cnpj: string;
   name: string;
   responsible: string;

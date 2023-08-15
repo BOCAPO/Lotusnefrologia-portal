@@ -162,9 +162,7 @@ export function Table({
             isLoading
               ? 'Carregando...'
               : `Exibindo ${response?.current_page} de ${Number(
-                  Number(response?.links.length) > 1
-                    ? Number(response?.links.length) / 2
-                    : Number(response?.links.length)
+                  Number(response?.last_page)
                 )}`
           }
           color={Colors.gray70}

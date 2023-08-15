@@ -93,6 +93,10 @@ export default function ScalePage(): JSX.Element {
   function handleItemSelection(firstId: any, secondId: any) {
     setSelectedSpecialistId(firstId);
     setSelectedUnitId(secondId);
+    setVisibleDatesHours(false);
+    setSelectedDate('');
+    setSelectedTime([]);
+    setQuantitySelectedTime(0);
     const listSpecalist = data?.data;
     setNameSelectedSpecialist(
       listSpecalist?.filter(
@@ -138,6 +142,8 @@ export default function ScalePage(): JSX.Element {
 
   const handleDateSelect = (selectedDate: string) => {
     setSelectedDate(selectedDate);
+    setSelectedTime([]);
+    setQuantitySelectedTime(0);
   };
 
   const handleTimeSelect = (selectedTime: []) => {
@@ -169,7 +175,7 @@ export default function ScalePage(): JSX.Element {
       setVisibleDatesHours(false);
       setTimeout(() => {
         setShowModalSuccess(false);
-      }, 2500);
+      }, 3000);
     }
   }
 
@@ -311,6 +317,7 @@ export default function ScalePage(): JSX.Element {
                         startTime={startTime}
                         endTime={endTime}
                         onTimeSelect={handleTimeSelect}
+                        selectedDate={selectedDate}
                       />
                     </div>
                   </React.Fragment>
@@ -329,10 +336,10 @@ export default function ScalePage(): JSX.Element {
                     title={Strings.cancel}
                     type="cancel"
                     onClick={() => {
-                      setSelectedSpecialistId('');
                       setVisibleDatesHours(false);
-                      setNameSelectedSpecialist('');
-                      setNameSelectedUnit('');
+                      setSelectedDate('');
+                      setSelectedTime([]);
+                      setQuantitySelectedTime(0);
                     }}
                   />
                 </div>
