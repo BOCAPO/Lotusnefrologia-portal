@@ -25,23 +25,24 @@ export default function SchedulesPage(): JSX.Element {
   const [patients, setPatients] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
   const [tags, setTags] = React.useState<any>(null);
-  const [data, setData] = React.useState<any>(null);
+  // const [data, setData] = React.useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
-    getAppointments();
+    // getAppointments();
     getSpecialists();
     getAppointmentTags();
     getPatients();
     getUnits();
   }, []);
 
-  async function getAppointments() {
-    // const response = await getAllAppointmentsWithSchedule('');
-    const dataUpdated = response.data as ResponseGetModel;
-    setData(dataUpdated);
-    setLoading(false);
-  }
+  // async function getAppointments() {
+  //   // const response = await getAllAppointmentsWithSchedule('');
+  //   const dataUpdated = response.data as ResponseGetModel;
+  //   setData(dataUpdated);
+  //   setLoading(false);
+  // }
 
   async function getAppointmentTags() {
     const response = await getAllAppointmensTags();
@@ -95,7 +96,7 @@ export default function SchedulesPage(): JSX.Element {
         <div className={styles.tableHistory}>
           <Table
             headers={Strings.headersHistory}
-            response={data}
+            // response={data}
             isLoading={loading}
             headersResponse={Strings.headersHistoryResponse}
           />
