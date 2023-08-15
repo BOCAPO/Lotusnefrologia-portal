@@ -37,6 +37,11 @@ export default function EditUnitPage() {
   const params = useParams();
   const [cep, setCep] = React.useState('');
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [latitude, setLatitude] = React.useState<string>('');
+  const [longitude, setLongitude] = React.useState<string>('');
+  const [linkFacebook, setLinkFacebook] = React.useState<string>('');
+  const [linkInstagram, setLinkInstagram] = React.useState<string>('');
+  const [linkSite, setLinkSite] = React.useState<string>('');
 
   const {
     control,
@@ -84,6 +89,12 @@ export default function EditUnitPage() {
     setValue('linkInstagram', unit.instagram_link!);
     setValue('linkSite', unit.site_link!);
     setValue('status', unit.status + 1);
+
+    setLatitude(unit.latitude);
+    setLongitude(unit.longitude);
+    setLinkFacebook(unit.facebook_link!);
+    setLinkInstagram(unit.instagram_link!);
+    setLinkSite(unit.site_link!);
 
     setLoading(false);
   }
@@ -209,6 +220,7 @@ export default function EditUnitPage() {
                 containerStyle={{ width: '12%' }}
                 className={styles.inputEditUnit}
                 error={errors.latitude?.message}
+                getValue={setLatitude}
               />
               <InputForm
                 placeholder={Strings.placeholderLongitude}
@@ -218,8 +230,12 @@ export default function EditUnitPage() {
                 containerStyle={{ width: '12%' }}
                 className={styles.inputEditUnit}
                 error={errors.longitude?.message}
+                getValue={setLongitude}
               />
-              <Link href="/admin/units" target="_blank">
+              <Link
+                href={`https://www.google.com/maps?q=${latitude},${longitude}`}
+                target="_blank"
+              >
                 <Icon
                   typeIcon={TypeIcon.ExternalLink}
                   color={Colors.greenDark}
@@ -326,12 +342,15 @@ export default function EditUnitPage() {
                     containerStyle={{ width: '95%' }}
                     className={styles.inputEditUnit}
                     error={errors.linkFacebook?.message}
+                    getValue={setLinkFacebook}
                   />
-                  <Icon
-                    typeIcon={TypeIcon.ExternalLink}
-                    color={Colors.greenDark}
-                    size={20}
-                  />
+                  <Link href={linkFacebook} target="_blank">
+                    <Icon
+                      typeIcon={TypeIcon.ExternalLink}
+                      color={Colors.greenDark}
+                      size={20}
+                    />
+                  </Link>
                 </div>
                 <div className={styles.linksUnit}>
                   <InputForm
@@ -342,8 +361,9 @@ export default function EditUnitPage() {
                     containerStyle={{ width: '95%' }}
                     className={styles.inputEditUnit}
                     error={errors.linkInstagram?.message}
+                    getValue={setLinkInstagram}
                   />
-                  <Link href="/admin/units" target="_blank">
+                  <Link href={linkInstagram} target="_blank">
                     <Icon
                       typeIcon={TypeIcon.ExternalLink}
                       color={Colors.greenDark}
@@ -360,12 +380,15 @@ export default function EditUnitPage() {
                     containerStyle={{ width: '95%' }}
                     className={styles.inputEditUnit}
                     error={errors.linkSite?.message}
+                    getValue={setLinkSite}
                   />
-                  <Icon
-                    typeIcon={TypeIcon.ExternalLink}
-                    color={Colors.greenDark}
-                    size={20}
-                  />
+                  <Link href={linkSite} target="_blank">
+                    <Icon
+                      typeIcon={TypeIcon.ExternalLink}
+                      color={Colors.greenDark}
+                      size={20}
+                    />
+                  </Link>
                 </div>
               </div>
               <div style={{ width: '43%', marginLeft: '2%', height: '100%' }}>

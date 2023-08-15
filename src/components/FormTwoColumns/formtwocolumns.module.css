@@ -84,7 +84,7 @@
 }
 
 .tableScale tbody tr:hover {
-    background-color: #A1E2A5;
+    background-color: #A1E2A5 !important;
 }
 
 .tableScale thead tr th{

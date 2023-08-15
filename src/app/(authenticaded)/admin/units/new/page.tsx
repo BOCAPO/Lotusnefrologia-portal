@@ -39,6 +39,11 @@ export default function NewUnitPage() {
     React.useState<boolean>(false);
   const router = useRouter();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
+  const [latitude, setLatitude] = React.useState<string>('');
+  const [longitude, setLongitude] = React.useState<string>('');
+  const [linkFacebook, setLinkFacebook] = React.useState<string>('');
+  const [linkInstagram, setLinkInstagram] = React.useState<string>('');
+  const [linkSite, setLinkSite] = React.useState<string>('');
 
   const {
     control,
@@ -195,6 +200,7 @@ export default function NewUnitPage() {
               containerStyle={{ width: '12%' }}
               className={styles.inputNewUnit}
               error={errors.latitude?.message}
+              getValue={setLatitude}
             />
             <InputForm
               placeholder={Strings.placeholderLongitude}
@@ -204,8 +210,12 @@ export default function NewUnitPage() {
               containerStyle={{ width: '12%' }}
               className={styles.inputNewUnit}
               error={errors.longitude?.message}
+              getValue={setLongitude}
             />
-            <Link href="/admin/units" target="_blank">
+            <Link
+              href={`https://www.google.com/maps?q=${latitude},${longitude}`}
+              target="_blank"
+            >
               <Icon
                 typeIcon={TypeIcon.ExternalLink}
                 color={Colors.greenDark}
@@ -309,12 +319,15 @@ export default function NewUnitPage() {
                   containerStyle={{ width: '95%' }}
                   className={styles.inputNewUnit}
                   error={errors.linkFacebook?.message}
+                  getValue={setLinkFacebook}
                 />
-                <Icon
-                  typeIcon={TypeIcon.ExternalLink}
-                  color={Colors.greenDark}
-                  size={20}
-                />
+                <Link href={linkFacebook} target="_blank">
+                  <Icon
+                    typeIcon={TypeIcon.ExternalLink}
+                    color={Colors.greenDark}
+                    size={20}
+                  />
+                </Link>
               </div>
               <div className={styles.linksUnit}>
                 <InputForm
@@ -325,8 +338,9 @@ export default function NewUnitPage() {
                   containerStyle={{ width: '95%' }}
                   className={styles.inputNewUnit}
                   error={errors.linkInstagram?.message}
+                  getValue={setLinkInstagram}
                 />
-                <Link href="/admin/units" target="_blank">
+                <Link href={linkInstagram} target="_blank">
                   <Icon
                     typeIcon={TypeIcon.ExternalLink}
                     color={Colors.greenDark}
@@ -343,12 +357,15 @@ export default function NewUnitPage() {
                   containerStyle={{ width: '95%' }}
                   className={styles.inputNewUnit}
                   error={errors.linkSite?.message}
+                  getValue={setLinkSite}
                 />
-                <Icon
-                  typeIcon={TypeIcon.ExternalLink}
-                  color={Colors.greenDark}
-                  size={20}
-                />
+                <Link href={linkSite} target="_blank">
+                  <Icon
+                    typeIcon={TypeIcon.ExternalLink}
+                    color={Colors.greenDark}
+                    size={20}
+                  />
+                </Link>
               </div>
             </div>
             <div style={{ width: '43%', marginLeft: '2%', height: '100%' }}>

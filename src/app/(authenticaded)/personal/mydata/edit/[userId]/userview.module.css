@@ -81,7 +81,7 @@
     flex-direction: row;
     border-top: 0.5px solid #D0D1D5;
     height: 7vh;
-    margin-top: 30vh;
+    margin-top: 0vh;
     width: 100%;
     padding: 1.5vh 2% 0 2%;
 }
@@ -97,7 +97,7 @@
 
 .divTableLinkedUnits {
     width: 30% !important;
-    height: 25vh;
+    height: 30vh;
     margin-bottom: 2vh;
     display: flex;
     align-items: flex-start !important;
