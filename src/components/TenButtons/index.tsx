@@ -1,5 +1,7 @@
 import React from 'react';
 
+import CalendarButton from 'components/CalendarButton';
+
 import styles from './tenbuttons.module.css';
 
 import { addDays, format } from 'date-fns';
@@ -17,6 +19,11 @@ function TenButtons({ onDateSelect }: TenButtonsProps) {
     const handleDateClick = (date: string) => {
       setSelectedDate(date);
       onDateSelect(date); // Chama o callback passando a data selecionada
+    };
+
+    const handleDateCalendar = (date: string) => {
+      setSelectedDate(format(new Date(date), 'yyyy-MM-dd'));
+      onDateSelect(format(new Date(date), 'yyyy-MM-dd'));
     };
 
     for (let i = 0; i < 10; i++) {
@@ -67,6 +74,9 @@ function TenButtons({ onDateSelect }: TenButtonsProps) {
         </button>
       );
     }
+    buttons.push(
+      <CalendarButton key={11} onSelectedDateCalendar={handleDateCalendar} />
+    );
 
     return buttons;
   };
