@@ -104,4 +104,7 @@
     .footerNewPatient{
         margin-top: 20vh;
     }
+    .bodyNewPatient{
+        height: 78%;
+    }
 }

@@ -13,6 +13,7 @@ import { Colors } from 'configs/Colors_default';
 import { deletePatient } from 'services/patients';
 import { deleteSpecialist } from 'services/specialists';
 import { deleteUnit } from 'services/units';
+import { deleteUser } from 'services/users';
 
 type Props = {
   message: string;
@@ -44,6 +45,9 @@ export default function ModalOptions({
       case 'patient':
         await callDeletePatient();
         break;
+      case 'user':
+        await callDeleteUser();
+        break;
       default:
         break;
     }
@@ -60,6 +64,9 @@ export default function ModalOptions({
         router.push(`edit/${JSON.parse(item).id}`);
         break;
       case 'patient':
+        router.push(`edit/${JSON.parse(item).id}`);
+        break;
+      case 'user':
         router.push(`edit/${JSON.parse(item).id}`);
         break;
       default:
@@ -88,6 +95,12 @@ export default function ModalOptions({
     }
   }
 
+  async function callDeleteUser() {
+    const response = await deleteUser(JSON.parse(item).id);
+    if (response !== null) {
+      onHide();
+    }
+  }
   return (
     <Modal
       {...props}

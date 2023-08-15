@@ -104,6 +104,9 @@ export default function NewUnitPage() {
       const response = await createUnit(newUnit);
       if (response !== null) {
         setShowModalSuccess(true);
+        setTimeout(() => {
+          router.back();
+        }, 2500);
       }
     } catch (error) {
       // console.log('Erro ao criar unidade!' + error);
@@ -279,7 +282,7 @@ export default function NewUnitPage() {
                   data={states}
                   error={errors.state?.message}
                   onSelectChange={handleStateCode}
-                  containerStyle={{ width: '50%' }}
+                  containerStyle={{ width: '30%' }}
                 />
                 <SelectForm
                   control={control}
@@ -287,14 +290,14 @@ export default function NewUnitPage() {
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
                   error={errors.city?.message}
-                  containerStyle={{ width: '50%' }}
+                  containerStyle={{ width: '30%' }}
                 />
                 <SelectForm
                   control={control}
                   name="status"
                   data={statusGeneral}
                   error={errors.status?.message}
-                  containerStyle={{ width: '50%' }}
+                  containerStyle={{ width: '30%' }}
                 />
               </div>
               <div className={styles.linksUnit}>

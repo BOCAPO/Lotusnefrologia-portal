@@ -155,9 +155,12 @@
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .divTableLinkedUnits {
-        height: 20vh;
+        height: 24vh;
     }
     .tableLinkedUnits tbody tr{
         height: 30px;
+    }
+    .bodyEditSpecialist{
+        height: 78%;
     }
 }

@@ -97,25 +97,30 @@
     margin-bottom: 3.5vh;
 }
 
-.inputEditUnit{
+.inputEditUnit {
     height: 40px;
     padding: 20px;
 }
 
 @media screen and (max-height: 1080px) and (min-height: 982px) {
-    .footerEditUnit{
+    .footerEditUnit {
         margin-top: 9.5vh;
     }
-    .marginBotton{
+
+    .marginBotton {
         margin-bottom: 2.5vh;
     }
 }
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
-    .footerEditUnit{
+    .footerEditUnit {
         margin-top: 1vh;
     }
-    .marginBotton{
+
+    .marginBotton {
         margin-bottom: 2vh;
+    }
+    .bodyEditUnit {
+        height: 80%;
     }
 }

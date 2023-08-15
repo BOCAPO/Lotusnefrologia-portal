@@ -15,8 +15,7 @@ import { Colors } from 'configs/Colors_default';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 import {
-  getAllAppointmensTags,
-  getAllAppointments
+  getAllAppointmensTags
 } from 'services/appointments';
 import { getPatientsWithoutPagination } from 'services/patients';
 import { getSpecialistsWithoutPagination } from 'services/specialists';
@@ -40,7 +39,7 @@ export default function SchedulesPage(): JSX.Element {
   }, []);
 
   async function getAppointments() {
-    const response = await getAllAppointments();
+    // const response = await getAllAppointmentsWithSchedule('');
     const dataUpdated = response.data as ResponseGetModel;
     setData(dataUpdated);
     setLoading(false);

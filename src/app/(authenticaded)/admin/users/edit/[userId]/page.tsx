@@ -294,7 +294,7 @@ export default function EditUserPage() {
                 data={states}
                 error={errors.state?.message}
                 onSelectChange={handleStateCode}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '25%' }}
               />
               <SelectForm
                 control={control}
@@ -302,14 +302,14 @@ export default function EditUserPage() {
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
                 error={errors.city?.message}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '25%' }}
               />
               <SelectForm
                 control={control}
                 name="status"
                 data={statusGeneral}
                 error={errors.status?.message}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '25%' }}
               />
               <div style={{ height: '40px', minWidth: '20%' }}>
                 <Button type="cancel" title={Strings.resetPasswordUser} />

@@ -163,4 +163,8 @@
     .footerViewUser {
         margin-top: 18vh;
     }
+
+    .bodyViewUser{
+        height: 78%;
+    }
 }
