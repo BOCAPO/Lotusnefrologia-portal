@@ -10,6 +10,8 @@ interface TimeButtonProps {
   periodicity: number;
   onTimeSelect: (selectedTime: []) => void;
   selectedDate?: string;
+  hourInitialBlocked?: string;
+  hourFinalBlocked?: string;
 }
 
 export function TimeButton({
@@ -17,6 +19,8 @@ export function TimeButton({
   endTime,
   periodicity,
   selectedDate,
+  hourInitialBlocked,
+  hourFinalBlocked,
   onTimeSelect
 }: TimeButtonProps) {
   const generateTimeButtons = () => {
@@ -53,6 +57,23 @@ export function TimeButton({
       }
     }
 
+    function isSecondTimeGreaterThanFirst(
+      initialTime: string,
+      secondTime: string
+    ): boolean {
+      const [firstHours, firstMinutes] =
+        initialTime.length !== 0 ? initialTime.split(':').map(Number) : [];
+      const [secondHours, secondMinutes] =
+        secondTime.length !== 0 ? secondTime.split(':').map(Number) : [];
+
+      if (secondHours > firstHours) {
+        return true;
+      } else if (secondHours === firstHours && secondMinutes > firstMinutes) {
+        return true;
+      }
+      return false;
+    }
+
     while (currentTime <= endDate) {
       const formattedTime = currentTime.toLocaleTimeString('pt-BR', {
         hour: '2-digit',
@@ -70,6 +91,16 @@ export function TimeButton({
               : '#F2F2F2',
             color: hoursSelected.includes(formattedTime) ? '#fff' : '#000'
           }}
+          disabled={
+            isSecondTimeGreaterThanFirst(
+              hourInitialBlocked || '00:00',
+              formattedTime
+            ) &&
+            isSecondTimeGreaterThanFirst(
+              formattedTime,
+              hourFinalBlocked || '00:00'
+            )
+          }
         >
           <p>{formattedTime}</p>
         </button>

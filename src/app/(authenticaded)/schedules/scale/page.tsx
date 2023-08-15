@@ -24,7 +24,11 @@ import { Colors } from 'configs/Colors_default';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { NewScheduleModel } from 'models/NewScheduleModel';
-import { createSchedule } from 'services/schedules';
+import { ResponseSchedulesModel } from 'models/ResponseSchedulesModel';
+import {
+  createSchedule,
+  getHoursBySpecialistAndDateAndUnit
+} from 'services/schedules';
 import { getAllSpecialists, getSpecialistsPerPage } from 'services/specialists';
 import { getAllUnits } from 'services/units';
 import { intervalSchedule } from 'utils/enums';
@@ -54,6 +58,10 @@ export default function ScalePage(): JSX.Element {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [hoursBloqued, setHoursBloqued] = React.useState<any>([]);
+  const [blockedHourInitial, setBlockedHourInitial] = React.useState<any>([]);
+  const [blockedHourFinal, setBlockedHourFinal] = React.useState<any>([]);
   const [page, setPage] = React.useState<number>(1);
   const {
     control,
@@ -144,7 +152,23 @@ export default function ScalePage(): JSX.Element {
     setSelectedDate(selectedDate);
     setSelectedTime([]);
     setQuantitySelectedTime(0);
+
+    getSchedulesBlocked(selectedDate);
   };
+
+  async function getSchedulesBlocked(selectedDate: string) {
+    const response = await getHoursBySpecialistAndDateAndUnit(
+      Number(selectedSpectialistId),
+      selectedDate,
+      Number(selectedUnitId)
+    );
+    const responseHours = response.data[0] as ResponseSchedulesModel;
+    setBlockedHourInitial(responseHours?.schedules[0].start);
+    setBlockedHourFinal(
+      responseHours?.schedules[Number(responseHours?.schedules.length) - 1].end
+    );
+    setHoursBloqued(responseHours?.schedules);
+  }
 
   const handleTimeSelect = (selectedTime: []) => {
     setSelectedTime(selectedTime);
@@ -318,6 +342,8 @@ export default function ScalePage(): JSX.Element {
                         endTime={endTime}
                         onTimeSelect={handleTimeSelect}
                         selectedDate={selectedDate}
+                        hourInitialBlocked={blockedHourInitial}
+                        hourFinalBlocked={blockedHourFinal}
                       />
                     </div>
                   </React.Fragment>

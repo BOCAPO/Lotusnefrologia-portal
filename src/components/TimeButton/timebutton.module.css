@@ -28,6 +28,12 @@
     cursor: pointer;
 }
 
+.btnTimeButton:disabled {
+    background-color: #ffa5a5 !important;
+    color: #444444;
+    cursor: not-allowed;
+}
+
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .btnTimeButton {
         height: 40px;
