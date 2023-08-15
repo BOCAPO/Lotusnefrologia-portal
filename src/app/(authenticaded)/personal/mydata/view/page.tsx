@@ -63,7 +63,7 @@ export default function ViewUserPage() {
         dataUser.complement !== null ? dataUser.complement : ''
       );
       setValue('citieCode', dataUser.citie_code);
-      setValue('status', dataUser.status);
+      setValue('status', dataUser.status + 1);
     }
     setLoading(false);
   }

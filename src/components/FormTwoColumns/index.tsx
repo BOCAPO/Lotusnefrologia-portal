@@ -39,12 +39,14 @@ export function FormTwoColumns({
   const [selectedOption, setSelectedOption] = React.useState<
     string | undefined
   >(response?.links[0]?.label);
-  const [selectedRowId, setSelectedRowId] = React.useState<any>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
 
   function handleRowClick(event: React.MouseEvent<HTMLTableRowElement>) {
     const firstId = event.currentTarget.getAttribute('data-user-first-id');
-    setSelectedRowId(firstId);
     const secondId = event.currentTarget.getAttribute('data-user-second-id');
+    const index = event.currentTarget.getAttribute('data-user-index');
+    setSelectedIndex(Number(index));
+
     if (
       firstId !== undefined &&
       onItemClick !== undefined &&
@@ -164,12 +166,12 @@ export function FormTwoColumns({
                   onClick={handleRowClick}
                   data-user-first-id={row.firstId}
                   data-user-second-id={row.secondId}
+                  data-user-index={index}
                   style={{
                     cursor: 'pointer',
                     background:
-                      selectedRowId === row.firstId
-                        ? Colors.greenLight
-                        : Colors.white
+                      selectedIndex == index ? Colors.greenDark : Colors.white,
+                    color: selectedIndex == index ? Colors.white : Colors.gray90
                   }}
                 >
                   <td className={styles.rows}>{row.firstColumn}</td>

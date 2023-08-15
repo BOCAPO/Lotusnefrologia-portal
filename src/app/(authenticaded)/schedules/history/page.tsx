@@ -14,9 +14,7 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
-import {
-  getAllAppointmensTags
-} from 'services/appointments';
+import { getAllAppointmensTags } from 'services/appointments';
 import { getPatientsWithoutPagination } from 'services/patients';
 import { getSpecialistsWithoutPagination } from 'services/specialists';
 import { getAllUnits } from 'services/units';
