@@ -235,7 +235,7 @@ export default function EditSpecialistPage() {
                 data={states}
                 error={errors.state?.message}
                 onSelectChange={handleStateCode}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '19%' }}
               />
               <SelectForm
                 control={control}
@@ -243,23 +243,23 @@ export default function EditSpecialistPage() {
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
                 error={errors.city?.message}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '19%' }}
               />
               <SelectForm
                 control={control}
                 name="status"
                 data={statusGeneral}
                 error={errors.status?.message}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '19%' }}
               />
               <SelectForm
                 control={control}
                 name="speciality"
                 data={specialties !== null ? specialties : null}
                 error={errors.speciality?.message}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '19%' }}
               />
-              <div style={{ height: '40px', minWidth: '20%' }}>
+              <div style={{ height: '40px', minWidth: '19%' }}>
                 <Button type="cancel" title={Strings.resetPasswordSpecialist} />
               </div>
             </div>

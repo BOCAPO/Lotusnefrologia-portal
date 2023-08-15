@@ -13,3 +13,10 @@ export async function createAppointment(appointment: DataAppoitmensModel) {
 export async function getAllAppointmensTags() {
   return await getJson('/appointment-tags');
 }
+
+export async function getAllAppointmentsWithSchedule(date?: string) {
+  if (date) {
+    return await getJson(`/appointments/scheduled/${date}`);
+  }
+  return await getJson('/appointments/scheduled');
+}

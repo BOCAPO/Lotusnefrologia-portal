@@ -104,4 +104,7 @@
     .footerEditPatient{
         margin-top: 20vh;
     }
+    .bodyEditPatient{
+        height: 78%;
+    }
 }
