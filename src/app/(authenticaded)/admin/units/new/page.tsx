@@ -59,14 +59,16 @@ export default function NewUnitPage() {
 
   async function getStates() {
     const response = await getAllStates();
-    const statesUpdated = response.data.data as DataStatesModel[];
-    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
   }
 
   async function getCities(state_code: string) {
     setIsLoadingCities(true);
     const response = await getAllCities();
-    let citiesUpdated = response.data.data as DataCitiesModel[];
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
     citiesUpdated = citiesUpdated.filter(
       (city: DataCitiesModel) => city.state_code === state_code
     );
@@ -97,12 +99,14 @@ export default function NewUnitPage() {
       number: data.number.toString(),
       block: data.block.toString(),
       lot: data.lot.toString(),
-      citie_code: data.citieCode.toString(),
-      complement: data.complement.toString(),
-      facebook_link: data.linkFacebook.toString(),
-      instagram_link: data.linkInstagram.toString(),
+      city_code: data.cityCode.toString(),
+      complement: data.complement?.toString(),
+      facebook_link: data.linkFacebook?.toString(),
+      instagram_link: data.linkInstagram?.toString(),
       site_link: data.linkSite.toString(),
-      status: Number(data.status) - 1
+      status: Number(data.status) - 1,
+      city_name: null,
+      state_name: null
     };
 
     try {
@@ -296,7 +300,7 @@ export default function NewUnitPage() {
                 />
                 <SelectForm
                   control={control}
-                  name="citieCode"
+                  name="cityCode"
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
                   error={errors.city?.message}
