@@ -21,8 +21,11 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
-import { getCep } from 'services/cep';
+import { getAllCities } from 'services/cities';
+import { getAllStates } from 'services/states';
 import { getUnitsById, updateUnitById } from 'services/units';
 import { statusGeneral } from 'utils/enums';
 
@@ -31,16 +34,19 @@ type DataProps = {
 };
 
 export default function EditUnitPage() {
+  const [states, setStates] = React.useState<any>(null);
+  const [cities, setCities] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
   const params = useParams();
-  const [cep, setCep] = React.useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = React.useState<boolean>(true);
   const [latitude, setLatitude] = React.useState<string>('');
   const [longitude, setLongitude] = React.useState<string>('');
   const [linkFacebook, setLinkFacebook] = React.useState<string>('');
   const [linkInstagram, setLinkInstagram] = React.useState<string>('');
+  const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
   const [linkSite, setLinkSite] = React.useState<string>('');
 
   const {
@@ -53,24 +59,41 @@ export default function EditUnitPage() {
   });
 
   React.useEffect(() => {
+    getStates();
     getUnitPerId();
   }, [params?.unitId]);
 
-  React.useEffect(() => {
-    if (cep.length === 9) {
-      const responseCEP = getCep(cep.replace('-', ''));
-      responseCEP.then((response) => {
-        if (response !== null) {
-          setValue('citieCode', response.city);
-          setValue('state', response.state);
-        }
-      });
-    }
-  }, [cep]);
+  async function getStates() {
+    const response = await getAllStates();
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
+  }
+
+  async function getCities(state_code: string) {
+    setIsLoadingCities(true);
+    const response = await getAllCities();
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
+    citiesUpdated = citiesUpdated.filter(
+      (city: DataCitiesModel) => city.state_code === state_code
+    );
+    setCities(
+      citiesUpdated
+        .slice()
+        .sort((a, b) => a.description.localeCompare(b.description))
+    );
+    setIsLoadingCities(false);
+  }
+
+  const handleStateCode = (selectedStateCode: any) => {
+    getCities(selectedStateCode.toString());
+  };
 
   async function getUnitPerId() {
     const response = await getUnitsById(Number(params?.unitId));
     const unit = response.data as DataUnitsModel;
+    getCities(unit.city?.state_code !== undefined ? unit.city.state_code : '');
     setValue('cnpj', unit.cnpj);
     setValue('name', unit.name);
     setValue('responsible', unit.responsible);
@@ -84,6 +107,11 @@ export default function EditUnitPage() {
     setValue('number', unit.number);
     setValue('block', unit.block);
     setValue('lot', unit.lot);
+    setValue('cityCode', unit.city?.code !== undefined ? unit.city.code : '');
+    setValue(
+      'state',
+      unit.city?.state_code !== undefined ? unit.city.state_code : ''
+    );
     setValue('complement', unit.complement!);
     setValue('linkFacebook', unit.facebook_link!);
     setValue('linkInstagram', unit.instagram_link!);
@@ -114,12 +142,14 @@ export default function EditUnitPage() {
       number: data.number.toString(),
       block: data.block.toString(),
       lot: data.lot.toString(),
-      citie_code: data.citieCode?.toString(),
+      city_code: data.cityCode?.toString(),
       complement: data.complement?.toString(),
       facebook_link: data.linkFacebook?.toString(),
       instagram_link: data.linkInstagram?.toString(),
       site_link: data.linkSite.toString(),
-      status: Number(data.status) - 1
+      status: Number(data.status) - 1,
+      city_name: '',
+      state_name: ''
     };
 
     try {
@@ -250,7 +280,6 @@ export default function EditUnitPage() {
                 name="zipCode"
                 mask={'cep'}
                 maxLength={9}
-                getValue={setCep}
                 control={control}
                 containerStyle={{ width: '15%' }}
                 className={styles.inputEditUnit}
@@ -307,22 +336,20 @@ export default function EditUnitPage() {
                   style={{ width: '100%' }}
                   className={styles.EditUnitDataGeografic}
                 >
-                  <InputForm
-                    placeholder={Strings.placeholderState}
+                  <SelectForm
                     control={control}
                     name="state"
-                    readonly={true}
+                    data={states !== null ? states : null}
+                    onSelectChange={handleStateCode}
                     error={errors.state?.message}
-                    className={styles.inputEditUnit}
                     containerStyle={{ width: '30%' }}
                   />
-                  <InputForm
-                    placeholder={Strings.placeholderCity}
-                    readonly={true}
+                  <SelectForm
                     control={control}
-                    name="citieCode"
+                    name="cityCode"
+                    data={cities !== null ? cities : null}
+                    isLoading={isLoadingCities}
                     error={errors.city?.message}
-                    className={styles.inputEditUnit}
                     containerStyle={{ width: '30%' }}
                   />
                   <SelectForm

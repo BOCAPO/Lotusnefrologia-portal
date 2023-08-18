@@ -9,7 +9,7 @@ export type DataUnitsModel = {
   latitude: string;
   longitude: string;
   zip_code: string;
-  citie_code: string;
+  city_code: string;
   street: string;
   number: string;
   block: string;
@@ -22,4 +22,17 @@ export type DataUnitsModel = {
   created_at?: string;
   updated_at?: string;
   deleted_at?: string | null;
+  city_name: string | null;
+  state_name: string | null;
+  city?: {
+    code: string;
+    state_code: string;
+    description: string;
+    state: {
+      code: string;
+      UF: string;
+      description: string;
+      region: string;
+    };
+  };
 };

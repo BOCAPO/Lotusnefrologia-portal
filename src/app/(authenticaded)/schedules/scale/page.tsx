@@ -22,7 +22,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
-import { DataUnitsModel } from 'models/DataUnitsModel';
 import { NewScheduleModel } from 'models/NewScheduleModel';
 import { ResponseSchedulesModel } from 'models/ResponseSchedulesModel';
 import {
@@ -50,7 +49,6 @@ export default function ScalePage(): JSX.Element {
   const [endTime, setEndTime] = React.useState<string>('');
   const [nameSelectedSpecialist, setNameSelectedSpecialist] =
     React.useState<string>('');
-  const [nameSelectedUnit, setNameSelectedUnit] = React.useState<string>('');
   const [selectedDate, setSelectedDate] = React.useState<string>('');
   const [selectedTime, setSelectedTime] = React.useState<any>([]);
   const [quantitySelectedTime, setQuantitySelectedTime] =
@@ -109,13 +107,6 @@ export default function ScalePage(): JSX.Element {
     setNameSelectedSpecialist(
       listSpecalist?.filter(
         (element: DataSpecialistsModel) => element.id === Number(firstId)
-      )[0]?.name
-    );
-
-    const listUnits = units?.data;
-    setNameSelectedUnit(
-      listUnits?.filter(
-        (element: DataUnitsModel) => element.id === Number(secondId)
       )[0]?.name
     );
   }
@@ -237,15 +228,9 @@ export default function ScalePage(): JSX.Element {
           <div className={styles.titleScale}>
             <SmallMediumText
               text={
-                nameSelectedUnit === ''
-                  ? Strings.scheduleConfirmation +
-                    ': ' +
-                    `${nameSelectedSpecialist}`
-                  : Strings.scheduleConfirmation +
-                    ': ' +
-                    `${nameSelectedSpecialist}` +
-                    ' - ' +
-                    `${nameSelectedUnit}`
+                Strings.scheduleConfirmation +
+                ': ' +
+                `${nameSelectedSpecialist}`
               }
               style={{ textAlign: 'left', lineHeight: 2 }}
               bold={true}

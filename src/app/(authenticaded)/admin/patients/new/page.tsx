@@ -56,14 +56,16 @@ export default function NewPatientPage() {
 
   async function getStates() {
     const response = await getAllStates();
-    const statesUpdated = response.data.data as DataStatesModel[];
-    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
   }
 
   async function getCities(state_code: string) {
     setIsLoadingCities(true);
     const response = await getAllCities();
-    let citiesUpdated = response.data.data as DataCitiesModel[];
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
     citiesUpdated = citiesUpdated.filter(
       (city: DataCitiesModel) => city.state_code === state_code
     );
