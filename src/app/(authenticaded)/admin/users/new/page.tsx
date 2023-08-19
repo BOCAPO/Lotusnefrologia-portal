@@ -58,14 +58,16 @@ export default function NewUserPage() {
 
   async function getStates() {
     const response = await getAllStates();
-    const statesUpdated = response.data.data as DataStatesModel[];
-    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
   }
 
   async function getCities(state_code: string) {
     setIsLoadingCities(true);
     const response = await getAllCities();
-    let citiesUpdated = response.data.data as DataCitiesModel[];
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
     citiesUpdated = citiesUpdated.filter(
       (city: DataCitiesModel) => city.state_code === state_code
     );
@@ -83,12 +85,6 @@ export default function NewUserPage() {
     setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
   }
 
-  // async function getRoles() {
-  //   const response = await getAllRoles();
-  //   const rolesUpdated = response.data.data as DataRolesModel[];
-  //   setRoles(rolesUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
-  // }
-
   const handleStateCode = (selectedStateCode: any) => {
     getCities(selectedStateCode.toString());
   };
@@ -102,35 +98,30 @@ export default function NewUserPage() {
   };
 
   async function onSubmit(data: DataProps) {
-    const status = Number(data.status) - 1;
-    try {
-      const newUser: DataUserModel = {
-        cpf: data.cpf.toString(),
-        name: data.name.toString(),
-        email: data.email.toString(),
-        phone_primary: data.phonePrimary.toString(),
-        phone_secondary: data.phoneSecondary.toString(),
-        zip_code: data.zipCode.toString(),
-        citie_code: data.citieCode.toString(),
-        street: data.street.toString(),
-        number: data.number.toString(),
-        block: data.block?.toString(),
-        lot: data.lot?.toString(),
-        complement: data.complement?.toString(),
-        units: selectedUnits,
-        status: status
-        // profile: 1
-      };
+    const newUser: DataUserModel = {
+      cpf: data.cpf.toString(),
+      name: data.name.toString(),
+      email: data.email.toString(),
+      phone_primary: data.phonePrimary?.toString(),
+      phone_secondary: data.phoneSecondary?.toString(),
+      zip_code: data.zipCode?.toString(),
+      city_code: data.cityCode?.toString(),
+      street: data.street?.toString(),
+      number: data.number?.toString(),
+      block: data.block?.toString(),
+      lot: data.lot?.toString(),
+      complement: data.complement?.toString(),
+      units: selectedUnits,
+      status: Number(data.status) - 1
+      // profile: 1
+    };
 
-      const response = await createUser(newUser);
-      if (response !== null) {
-        setShowModalSuccess(true);
-        setTimeout(() => {
-          router.back();
-        }, 3000);
-      }
-    } catch (error) {
-      // console.log('Erro ao criar usuario!' + error);
+    const response = await createUser(newUser);
+    if (response !== null) {
+      setShowModalSuccess(true);
+      setTimeout(() => {
+        router.back();
+      }, 3000);
     }
   }
 
@@ -274,7 +265,7 @@ export default function NewUserPage() {
               />
               <SelectForm
                 control={control}
-                name="citieCode"
+                name="cityCode"
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
                 error={errors.city?.message}

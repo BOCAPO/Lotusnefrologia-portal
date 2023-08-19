@@ -73,6 +73,7 @@ export default function LoginPage() {
               maxLength={14}
               containerStyle={{ width: '100%' }}
               error={errors.login?.message?.toString()}
+              className={styles.inputLoginContent}
             />
           </div>
           <div className={styles.inputPassword}>
@@ -84,6 +85,7 @@ export default function LoginPage() {
               containerStyle={{ width: '100%' }}
               iconType={TypeIcon.Password}
               error={errors.password?.message?.toString()}
+              className={styles.inputLoginContent}
             />
           </div>
           <div className={styles.forgotPassword}>

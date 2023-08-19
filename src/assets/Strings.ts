@@ -19,12 +19,11 @@ export const Strings = {
     'Status'
   ],
   headersHistoryResponse: [
-    'name',
+    'patient',
     'cpf',
-    'date',
-    'date',
-    'hour',
-    'specialist',
+    'newDate',
+    'newTime',
+    'specialist_name',
     'specialty',
     'unit',
     'appointment_status'
@@ -180,5 +179,6 @@ export const Strings = {
   status: 'Status',
   linkedUnits: 'Unidades Vinculadas',
   headersResponseNewSpecialties: ['description', 'status'],
-  erase: 'Excluir'
+  erase: 'Excluir',
+  notInformed: 'Não Informado'
 };

@@ -6,6 +6,7 @@ import { DataSpecialtiesModel } from './DataSpecialtiesModel';
 import { DataStatesModel } from './DataStatesModel';
 import { DataUnitsModel } from './DataUnitsModel';
 import { LinksModel } from './LinksModel';
+import { ResponseAppointmentModel } from './ResponseAppointmentModel';
 
 export type ResponseGetModel = {
   current_page: number;
@@ -16,7 +17,8 @@ export type ResponseGetModel = {
     | DataPatientsModel[]
     | DataStatesModel[]
     | DataAppoitmentTag[]
-    | DataRolesModel[];
+    | DataRolesModel[]
+    | ResponseAppointmentModel;
   first_page_url: string;
   from: number;
   last_page: number;

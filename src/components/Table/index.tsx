@@ -74,9 +74,9 @@ export function Table({
         style={
           response !== undefined &&
           response?.data !== undefined &&
-          response?.data?.length > 0
+          response?.data?.length > 13
             ? { height: '82%' }
-            : { height: '90%' }
+            : { height: '100%' }
         }
       >
         {isLoading ? (

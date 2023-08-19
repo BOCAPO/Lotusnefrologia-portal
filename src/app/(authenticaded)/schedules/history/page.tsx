@@ -12,37 +12,58 @@ import styles from './history.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { format } from 'date-fns';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
-import { getAllAppointmensTags } from 'services/appointments';
+import { Prefs } from 'repository/Prefs';
+import {
+  getAllAppointmensTags,
+  getAllAppointmentsWithSchedule
+} from 'services/appointments';
 import { getPatientsWithoutPagination } from 'services/patients';
 import { getSpecialistsWithoutPagination } from 'services/specialists';
 import { getAllUnits } from 'services/units';
 
 export default function SchedulesPage(): JSX.Element {
   const [visible, setVisible] = React.useState(false);
+  const [data, setData] = React.useState<any>(null);
   const [specialists, setSpecialists] = React.useState<any>(null);
   const [patients, setPatients] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
   const [tags, setTags] = React.useState<any>(null);
-  // const [data, setData] = React.useState<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
-    // getAppointments();
+    getAppointments();
     getSpecialists();
     getAppointmentTags();
     getPatients();
     getUnits();
   }, []);
 
-  // async function getAppointments() {
-  //   // const response = await getAllAppointmentsWithSchedule('');
-  //   const dataUpdated = response.data as ResponseGetModel;
-  //   setData(dataUpdated);
-  //   setLoading(false);
-  // }
+  async function getAppointments() {
+    const response = await getAllAppointmentsWithSchedule('');
+    const dataUpdated = response.data as ResponseGetModel;
+    dataUpdated.data = dataUpdated?.data?.map((item: any) => {
+      item.cpf = item.patient.cpf;
+      item.patient = item.patient.name;
+      item.unit = item.unit.name;
+      item.newDate = format(new Date(item.time.slice(0, 10)), 'dd/MM/yyyy');
+      item.newTime = item.time.slice(11, 16);
+      return item;
+    });
+    dataUpdated.data = dataUpdated?.data?.slice().sort((a: any, b: any) => {
+      if (a.newDate < b.newDate) {
+        return -1;
+      }
+      if (a.newDate > b.newDate) {
+        return 1;
+      }
+      return 0;
+    });
+    setData(dataUpdated);
+    setLoading(false);
+  }
 
   async function getAppointmentTags() {
     const response = await getAllAppointmensTags();
@@ -62,9 +83,25 @@ export default function SchedulesPage(): JSX.Element {
   }
 
   async function getUnits() {
+    let unitsPermited = JSON.parse(Prefs.getUnits()!);
+    unitsPermited = unitsPermited!.map((item: DataUnitsModel) => item.id);
     const response = await getAllUnits();
     const unitsUpdated = response.data.data as DataUnitsModel[];
-    setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
+
+    const newUnitsPermitd: any = [];
+
+    unitsUpdated.map((item: any) => {
+      unitsPermited?.map((item2: any) => {
+        if (item.id === item2) {
+          newUnitsPermitd.push(item);
+        }
+      });
+    });
+    setUnits(
+      newUnitsPermitd.sort((a: DataUnitsModel, b: DataUnitsModel) =>
+        a.name.localeCompare(b.name)
+      )
+    );
   }
 
   return (
@@ -96,7 +133,7 @@ export default function SchedulesPage(): JSX.Element {
         <div className={styles.tableHistory}>
           <Table
             headers={Strings.headersHistory}
-            // response={data}
+            response={data}
             isLoading={loading}
             headersResponse={Strings.headersHistoryResponse}
           />

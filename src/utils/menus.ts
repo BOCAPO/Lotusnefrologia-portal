@@ -47,7 +47,7 @@ export const menusMain: MenuModel[] = [
         title: 'Consultas',
         image: null,
         alternativeImage: null,
-        link: '/schedules/consultations',
+        link: '/schedules/appointment',
         internalMenus: null
       },
       {
