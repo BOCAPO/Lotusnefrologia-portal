@@ -49,6 +49,8 @@ export default function EditPatientPage() {
     control,
     handleSubmit,
     setValue,
+    reset,
+    resetField,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -62,13 +64,45 @@ export default function EditPatientPage() {
 
   async function getStates() {
     const response = await getAllStates();
-    const statesUpdated = response.data.data as DataStatesModel[];
-    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
+  }
+
+  async function getCities(stateCode: string = '', city_code: string = '') {
+    setIsLoadingCities(true);
+    const response = await getAllCities();
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
+
+    if (stateCode === '' || stateCode === undefined || stateCode === null) {
+      const responseCity = citiesUpdated.find(
+        (item) => item.code === city_code
+      );
+      setValue(
+        'state',
+        responseCity !== undefined ? responseCity.state_code : ''
+      );
+      citiesUpdated = citiesUpdated.filter(
+        (city: DataCitiesModel) => city.state_code === responseCity?.state_code
+      );
+    } else {
+      citiesUpdated = citiesUpdated.filter(
+        (city: DataCitiesModel) => city.state_code === stateCode
+      );
+    }
+    setCities(
+      citiesUpdated
+        .slice()
+        .sort((a, b) => a.description.localeCompare(b.description))
+    );
+    setIsLoadingCities(false);
   }
 
   async function getPatientPerId() {
     const response = await getPatientById(Number(params?.patientId));
     const patient = response.data as DataPatientsModel;
+    getCities('', patient.city_code !== undefined ? patient.city_code : '');
     setValue('cpf', patient.cpf);
     setValue('name', patient.name);
     setValue('email', patient.email);
@@ -76,7 +110,7 @@ export default function EditPatientPage() {
     setValue('phoneSecondary', patient.phone_secondary);
     setValue('zipCode', patient.zip_code);
     setValue('birthDate', format(new Date(patient.birthday), 'yyyy-MM-dd'));
-    setValue('citieCode', patient.citie_code);
+    setValue('cityCode', patient.city_code);
     setValue('street', patient.street);
     setValue('number', patient.number);
     setValue('block', patient.block);
@@ -89,21 +123,6 @@ export default function EditPatientPage() {
     setLoading(false);
   }
 
-  async function getCities(state_code: string) {
-    setIsLoadingCities(true);
-    const response = await getAllCities();
-    let citiesUpdated = response.data.data as DataCitiesModel[];
-    citiesUpdated = citiesUpdated.filter(
-      (city: DataCitiesModel) => city.state_code === state_code
-    );
-    setCities(
-      citiesUpdated
-        .slice()
-        .sort((a, b) => a.description.localeCompare(b.description))
-    );
-    setIsLoadingCities(false);
-  }
-
   async function getUnits() {
     const response = await getAllUnits();
     const unitsUpdated = response.data.data as DataUnitsModel[];
@@ -111,6 +130,9 @@ export default function EditPatientPage() {
   }
 
   const handleStateCode = (selectedStateCode: any) => {
+    reset();
+    resetField('cityCode');
+    resetField('state');
     getCities(selectedStateCode.toString());
   };
 
@@ -125,7 +147,7 @@ export default function EditPatientPage() {
       phone_secondary: data.phoneSecondary.toString(),
       zip_code: data.zipCode.toString(),
       birthday: data.birthDate.toString(),
-      citie_code: data.citieCode.toString(),
+      city_code: data.cityCode.toString(),
       street: data.street.toString(),
       number: data.number.toString(),
       block: data.block?.toString(),
@@ -169,6 +191,7 @@ export default function EditPatientPage() {
                 type="text"
                 name="cpf"
                 mask={'cpfCnpj'}
+                readonly={true}
                 maxLength={14}
                 control={control}
                 error={errors.cpf?.message}
@@ -299,7 +322,7 @@ export default function EditPatientPage() {
                 />
                 <SelectForm
                   control={control}
-                  name="citieCode"
+                  name="cityCode"
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
                   error={errors.city?.message}

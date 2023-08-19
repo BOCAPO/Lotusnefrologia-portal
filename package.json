@@ -16,7 +16,6 @@
     "@types/react-dom": "18.2.7",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
-    "cep-promise": "^4.4.0",
     "date-fns": "^2.30.0",
     "eslint-config-next": "13.4.9",
     "moment": "^2.29.4",

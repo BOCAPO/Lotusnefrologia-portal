@@ -10,6 +10,7 @@ import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
 import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
+import { SpinnerLoading } from 'components/Spinner';
 import { SmallMediumText } from 'components/Text';
 
 import styles from './usersedit.module.css';
@@ -43,7 +44,6 @@ export default function EditUserPage() {
   const router = useRouter();
   const params = useParams();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
-  const [selectedUnits, setSelectedUnits] = React.useState<number[]>([]);
   const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
   const [loading, setLoading] = React.useState(true);
   const [quantityUnitsSelected, setQuantityUnitsSelected] = React.useState(0);
@@ -166,236 +166,240 @@ export default function EditUserPage() {
   return (
     <React.Fragment>
       <MenuTop />
-      <div className={styles.bodyNewUser}>
-        <div className={styles.headerNewUser}>
-          <SmallMediumText
-            text={Strings.insertUser}
-            bold={true}
-            color={Colors.gray90}
-            style={{ lineHeight: '5px' }}
-          />
-        </div>
-        <div className={styles.formNewUser}>
-          <div style={{ marginBottom: '3vh' }}>
-            <InputForm
-              placeholder={Strings.placeholderCPF}
-              type="text"
-              name="cpf"
-              mask={'cpfCnpj'}
-              readonly={true}
-              maxLength={14}
-              control={control}
-              error={errors.cpf?.message}
-              containerStyle={{ width: '25%' }}
-              className={styles.inputNewUser}
-            />
-            <InputForm
-              placeholder={Strings.placeholderName}
-              type="text"
-              name="name"
-              control={control}
-              containerStyle={{ width: '70%' }}
-              className={styles.inputNewUser}
-              error={errors.name?.message}
+      {loading ? (
+        <SpinnerLoading />
+      ) : (
+        <div className={styles.bodyNewUser}>
+          <div className={styles.headerNewUser}>
+            <SmallMediumText
+              text={Strings.insertUser}
+              bold={true}
+              color={Colors.gray90}
+              style={{ lineHeight: '5px' }}
             />
           </div>
-          <div style={{ marginBottom: '3vh' }}>
-            <InputForm
-              placeholder={Strings.placeholderEmail}
-              type="email"
-              name="email"
-              control={control}
-              className={styles.inputNewUser}
-              containerStyle={{ width: '65%' }}
-              error={errors.email?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderPhonePrimay}
-              type="text"
-              name="phonePrimary"
-              control={control}
-              mask={'phone'}
-              containerStyle={{ width: '15%' }}
-              className={styles.inputNewUser}
-              error={errors.phonePrimary?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderPhoneSecondary}
-              type="text"
-              name="phoneSecondary"
-              control={control}
-              mask={'phone'}
-              containerStyle={{ width: '15%' }}
-              className={styles.inputNewUser}
-              error={errors.phoneSecondary?.message}
-            />
-          </div>
-          <div style={{ marginBottom: '3vh' }}>
-            <InputForm
-              placeholder={Strings.placeholderZipCode}
-              type="text"
-              name="zipCode"
-              mask={'cep'}
-              maxLength={9}
-              containerStyle={{ width: '10%' }}
-              control={control}
-              className={styles.inputNewUser}
-              error={errors.zipCode?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderStreet}
-              type="text"
-              name="street"
-              control={control}
-              containerStyle={{ width: '30%' }}
-              className={styles.inputNewUser}
-              error={errors.street?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderNumber}
-              type="text"
-              name="number"
-              containerStyle={{ width: '10%' }}
-              control={control}
-              className={styles.inputNewUser}
-              error={errors.number?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderBlock}
-              type="text"
-              name="block"
-              containerStyle={{ width: '10%' }}
-              control={control}
-              className={styles.inputNewUser}
-              error={errors.block?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderLot}
-              type="text"
-              containerStyle={{ width: '10%' }}
-              name="lot"
-              control={control}
-              className={styles.inputNewUser}
-              error={errors.lot?.message}
-            />
-            <InputForm
-              placeholder={Strings.placeholderComplement}
-              type="text"
-              name="complement"
-              control={control}
-              error={errors.complement?.message}
-              className={styles.inputNewUser}
-            />
-          </div>
-          <div style={{ marginBottom: '2vh', width: '100%' }}>
-            <div
-              style={{ marginBottom: '1vh', width: '100%' }}
-              className={styles.newUserDataGeografic}
-            >
-              <SelectForm
+          <div className={styles.formNewUser}>
+            <div style={{ marginBottom: '3vh' }}>
+              <InputForm
+                placeholder={Strings.placeholderCPF}
+                type="text"
+                name="cpf"
+                mask={'cpfCnpj'}
+                readonly={true}
+                maxLength={14}
                 control={control}
-                name="state"
-                data={states}
-                error={errors.state?.message}
-                onSelectChange={handleStateCode}
+                error={errors.cpf?.message}
                 containerStyle={{ width: '25%' }}
+                className={styles.inputNewUser}
               />
-              <SelectForm
+              <InputForm
+                placeholder={Strings.placeholderName}
+                type="text"
+                name="name"
                 control={control}
-                name="cityCode"
-                data={cities !== null ? cities : null}
-                isLoading={isLoadingCities}
-                error={errors.city?.message}
-                containerStyle={{ width: '25%' }}
+                containerStyle={{ width: '70%' }}
+                className={styles.inputNewUser}
+                error={errors.name?.message}
               />
-              <SelectForm
+            </div>
+            <div style={{ marginBottom: '3vh' }}>
+              <InputForm
+                placeholder={Strings.placeholderEmail}
+                type="email"
+                name="email"
                 control={control}
-                name="status"
-                data={statusGeneral}
-                error={errors.status?.message}
-                containerStyle={{ width: '25%' }}
+                className={styles.inputNewUser}
+                containerStyle={{ width: '65%' }}
+                error={errors.email?.message}
               />
-              <div style={{ height: '40px', minWidth: '20%' }}>
-                <Button type="cancel" title={Strings.resetPasswordUser} />
+              <InputForm
+                placeholder={Strings.placeholderPhonePrimay}
+                type="text"
+                name="phonePrimary"
+                control={control}
+                mask={'phone'}
+                containerStyle={{ width: '15%' }}
+                className={styles.inputNewUser}
+                error={errors.phonePrimary?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderPhoneSecondary}
+                type="text"
+                name="phoneSecondary"
+                control={control}
+                mask={'phone'}
+                containerStyle={{ width: '15%' }}
+                className={styles.inputNewUser}
+                error={errors.phoneSecondary?.message}
+              />
+            </div>
+            <div style={{ marginBottom: '3vh' }}>
+              <InputForm
+                placeholder={Strings.placeholderZipCode}
+                type="text"
+                name="zipCode"
+                mask={'cep'}
+                maxLength={9}
+                containerStyle={{ width: '10%' }}
+                control={control}
+                className={styles.inputNewUser}
+                error={errors.zipCode?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderStreet}
+                type="text"
+                name="street"
+                control={control}
+                containerStyle={{ width: '30%' }}
+                className={styles.inputNewUser}
+                error={errors.street?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderNumber}
+                type="text"
+                name="number"
+                containerStyle={{ width: '10%' }}
+                control={control}
+                className={styles.inputNewUser}
+                error={errors.number?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderBlock}
+                type="text"
+                name="block"
+                containerStyle={{ width: '10%' }}
+                control={control}
+                className={styles.inputNewUser}
+                error={errors.block?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderLot}
+                type="text"
+                containerStyle={{ width: '10%' }}
+                name="lot"
+                control={control}
+                className={styles.inputNewUser}
+                error={errors.lot?.message}
+              />
+              <InputForm
+                placeholder={Strings.placeholderComplement}
+                type="text"
+                name="complement"
+                control={control}
+                error={errors.complement?.message}
+                className={styles.inputNewUser}
+              />
+            </div>
+            <div style={{ marginBottom: '2vh', width: '100%' }}>
+              <div
+                style={{ marginBottom: '1vh', width: '100%' }}
+                className={styles.newUserDataGeografic}
+              >
+                <SelectForm
+                  control={control}
+                  name="state"
+                  data={states}
+                  error={errors.state?.message}
+                  onSelectChange={handleStateCode}
+                  containerStyle={{ width: '25%' }}
+                />
+                <SelectForm
+                  control={control}
+                  name="cityCode"
+                  data={cities !== null ? cities : null}
+                  isLoading={isLoadingCities}
+                  error={errors.city?.message}
+                  containerStyle={{ width: '25%' }}
+                />
+                <SelectForm
+                  control={control}
+                  name="status"
+                  data={statusGeneral}
+                  error={errors.status?.message}
+                  containerStyle={{ width: '25%' }}
+                />
+                <div style={{ height: '40px', minWidth: '20%' }}>
+                  <Button type="cancel" title={Strings.resetPasswordUser} />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.divTableLinkedUnits}>
+                <table className={styles.tableLinkedUnits}>
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>{Strings.linkedUnits}</th>
+                      <th>{Strings.status}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {units !== null && units.length > 0 ? (
+                      units.map((unit: DataUnitsModel) => (
+                        <tr key={unit.id}>
+                          <td>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type="checkbox"
+                                className={styles.checkbox}
+                                checked={unitsSelected?.indexOf(unit.id) !== -1}
+                                onChange={() => {
+                                  if (unitsSelected?.includes(unit.id)) {
+                                    const unitsSelectedUpdated =
+                                      unitsSelected?.filter(
+                                        (unitSelected: number) =>
+                                          unitSelected !== unit.id
+                                      );
+                                    setUnitsSelected(unitsSelectedUpdated);
+                                    setQuantityUnitsSelected(
+                                      quantityUnitsSelected - 1
+                                    );
+                                  } else {
+                                    const unitsSelectedUpdated = unitsSelected;
+                                    unitsSelectedUpdated?.push(unit.id);
+                                    setUnitsSelected(unitsSelectedUpdated);
+                                    setQuantityUnitsSelected(
+                                      quantityUnitsSelected + 1
+                                    );
+                                  }
+                                }}
+                              />
+                            </label>
+                          </td>
+                          <td>{unit.name}</td>
+                          <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={3}>Nenhuma unidade vinculada</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-          <div>
-            <div className={styles.divTableLinkedUnits}>
-              <table className={styles.tableLinkedUnits}>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>{Strings.linkedUnits}</th>
-                    <th>{Strings.status}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {units !== null && units.length > 0 ? (
-                    units.map((unit: DataUnitsModel) => (
-                      <tr key={unit.id}>
-                        <td>
-                          <label className={styles.checkboxContainer}>
-                            <input
-                              type="checkbox"
-                              className={styles.checkbox}
-                              checked={unitsSelected?.indexOf(unit.id) !== -1}
-                              onChange={() => {
-                                if (unitsSelected?.includes(unit.id)) {
-                                  const unitsSelectedUpdated =
-                                    unitsSelected?.filter(
-                                      (unitSelected: number) =>
-                                        unitSelected !== unit.id
-                                    );
-                                  setUnitsSelected(unitsSelectedUpdated);
-                                  setQuantityUnitsSelected(
-                                    quantityUnitsSelected - 1
-                                  );
-                                } else {
-                                  const unitsSelectedUpdated = unitsSelected;
-                                  unitsSelectedUpdated?.push(unit.id);
-                                  setUnitsSelected(unitsSelectedUpdated);
-                                  setQuantityUnitsSelected(
-                                    quantityUnitsSelected + 1
-                                  );
-                                }
-                              }}
-                            />
-                          </label>
-                        </td>
-                        <td>{unit.name}</td>
-                        <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3}>Nenhuma unidade vinculada</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+          <div className={styles.footerNewUser}>
+            <div className={styles.btnSaveNewUser}>
+              <Button
+                type="secondary"
+                title={Strings.save}
+                onClick={handleSubmit(onSubmit)}
+              />
+            </div>
+            <div className={styles.btnCancelNewUser}>
+              <Button
+                type="cancel"
+                title={Strings.cancel}
+                onClick={() => {
+                  router.back();
+                }}
+              />
             </div>
           </div>
         </div>
-        <div className={styles.footerNewUser}>
-          <div className={styles.btnSaveNewUser}>
-            <Button
-              type="secondary"
-              title={Strings.save}
-              onClick={handleSubmit(onSubmit)}
-            />
-          </div>
-          <div className={styles.btnCancelNewUser}>
-            <Button
-              type="cancel"
-              title={Strings.cancel}
-              onClick={() => {
-                router.back();
-              }}
-            />
-          </div>
-        </div>
-      </div>
+      )}
       <ModalSuccess
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
