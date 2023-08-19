@@ -40,7 +40,6 @@ export default function EditUnitPage() {
     React.useState<boolean>(false);
   const router = useRouter();
   const params = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = React.useState<boolean>(true);
   const [latitude, setLatitude] = React.useState<string>('');
   const [longitude, setLongitude] = React.useState<string>('');

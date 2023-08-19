@@ -7,7 +7,7 @@ export type DataPatientsModel = {
   phone_secondary: string;
   birthday: string;
   zip_code: string;
-  citie_code: string;
+  city_code: string;
   street: string;
   number: string;
   block: string;

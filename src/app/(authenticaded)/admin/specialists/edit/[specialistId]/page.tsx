@@ -46,6 +46,8 @@ export default function EditSpecialistPage() {
   const router = useRouter();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
+  const [quantityUnitsSelected, setQuantityUnitsSelected] = React.useState(0);
 
   const {
     control,
@@ -66,11 +68,17 @@ export default function EditSpecialistPage() {
   async function getSpecialistPerId() {
     const response = await getSpecialistById(Number(params?.specialistId));
     const specialist = response.data as DataSpecialistsModel;
+    getCities(
+      '',
+      specialist.citie_code !== undefined ? specialist.citie_code : ''
+    );
+    getUnitsSelected(specialist);
     setValue('cpf', specialist.cpf);
     setValue('name', specialist.name);
     setValue('email', specialist.email);
     setValue('phonePrimary', specialist.phone_primary);
     setValue('phoneSecondary', specialist.phone_secondary);
+    setValue('citieCode', specialist.citie_code);
     setValue('zipCode', specialist.zip_code);
     setValue('street', specialist.street);
     setValue('number', specialist.number);
@@ -113,17 +121,33 @@ export default function EditSpecialistPage() {
 
   async function getStates() {
     const response = await getAllStates();
-    const statesUpdated = response.data.data as DataStatesModel[];
-    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
   }
 
-  async function getCities(state_code: string) {
+  async function getCities(stateCode: string = '', city_code: string = '') {
     setIsLoadingCities(true);
     const response = await getAllCities();
-    let citiesUpdated = response.data.data as DataCitiesModel[];
-    citiesUpdated = citiesUpdated.filter(
-      (city: DataCitiesModel) => city.state_code === state_code
-    );
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
+
+    if (stateCode === '' || stateCode === undefined || stateCode === null) {
+      const responseCity = citiesUpdated.find(
+        (item) => item.code === city_code
+      );
+      setValue(
+        'state',
+        responseCity !== undefined ? responseCity.state_code : ''
+      );
+      citiesUpdated = citiesUpdated.filter(
+        (city: DataCitiesModel) => city.state_code === responseCity?.state_code
+      );
+    } else {
+      citiesUpdated = citiesUpdated.filter(
+        (city: DataCitiesModel) => city.state_code === stateCode
+      );
+    }
     setCities(
       citiesUpdated
         .slice()
@@ -140,6 +164,26 @@ export default function EditSpecialistPage() {
         .slice()
         .sort((a, b) => a.description.localeCompare(b.description))
     );
+  }
+
+  async function getUnitsSelected(
+    data: DataSpecialistsModel[] | DataSpecialistsModel
+  ) {
+    if (Array.isArray(data)) {
+      const unitsSelectedUpdated = [...unitsSelected];
+      data.forEach((specialist: DataSpecialistsModel) => {
+        specialist.units.forEach((unit: any) => {
+          unitsSelectedUpdated.push(unit.id);
+        });
+      });
+      setUnitsSelected(unitsSelectedUpdated);
+    } else {
+      const unitsSelectedUpdated = [...unitsSelected];
+      data.units.forEach((unit: any) => {
+        unitsSelectedUpdated.push(unit.id);
+      });
+      setUnitsSelected(unitsSelectedUpdated);
+    }
   }
 
   async function getUnits() {
@@ -175,6 +219,7 @@ export default function EditSpecialistPage() {
                 name="cpf"
                 mask={'cpfCnpj'}
                 maxLength={14}
+                readonly={true}
                 control={control}
                 error={errors.cpf?.message}
                 containerStyle={{ width: '25%' }}
@@ -189,15 +234,6 @@ export default function EditSpecialistPage() {
                 style={{ height: '40px', padding: '22px' }}
                 error={errors.name?.message}
               />
-              {/* <InputForm
-                placeholder={Strings.placeholderResponsable}
-                type="text"
-                name="profile"
-                control={control}
-                containerStyle={{ width: '32.5%' }}
-                style={{ height: '40px', padding: '22px' }}
-                error={errors.responsible?.message}
-              /> */}
             </div>
             <div style={{ marginBottom: '3vh' }}>
               <InputForm
@@ -344,6 +380,27 @@ export default function EditSpecialistPage() {
                               <input
                                 type="checkbox"
                                 className={styles.checkbox}
+                                checked={unitsSelected?.indexOf(unit.id) !== -1}
+                                onChange={() => {
+                                  if (unitsSelected?.includes(unit.id)) {
+                                    const unitsSelectedUpdated =
+                                      unitsSelected?.filter(
+                                        (unitSelected: number) =>
+                                          unitSelected !== unit.id
+                                      );
+                                    setUnitsSelected(unitsSelectedUpdated);
+                                    setQuantityUnitsSelected(
+                                      quantityUnitsSelected - 1
+                                    );
+                                  } else {
+                                    const unitsSelectedUpdated = unitsSelected;
+                                    unitsSelectedUpdated?.push(unit.id);
+                                    setUnitsSelected(unitsSelectedUpdated);
+                                    setQuantityUnitsSelected(
+                                      quantityUnitsSelected + 1
+                                    );
+                                  }
+                                }}
                               />
                             </label>
                           </td>
