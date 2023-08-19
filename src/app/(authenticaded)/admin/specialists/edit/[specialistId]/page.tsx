@@ -26,9 +26,9 @@ import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { getSpecialistById, updateSpecialistById } from 'services/specialists';
-import { getAllSpecialties } from 'services/specialties';
+import { getSpecialtiesWithoutPagination } from 'services/specialties';
 import { getAllStates } from 'services/states';
-import { getAllUnits } from 'services/units';
+import { getAllUnitsWithoutPagination } from 'services/units';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -48,6 +48,9 @@ export default function EditSpecialistPage() {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
   const [quantityUnitsSelected, setQuantityUnitsSelected] = React.useState(0);
+  const [speciatiesSelected, setSpecialtiesSelected] = React.useState<any>([]);
+  const [quantitySpecialtiesSelected, setQuantitySpecialtiesSelected] =
+    React.useState(0);
 
   const {
     control,
@@ -73,6 +76,7 @@ export default function EditSpecialistPage() {
       specialist.citie_code !== undefined ? specialist.citie_code : ''
     );
     getUnitsSelected(specialist);
+    getSpecialtiesSelected(specialist);
     setValue('cpf', specialist.cpf);
     setValue('name', specialist.name);
     setValue('email', specialist.email);
@@ -92,6 +96,7 @@ export default function EditSpecialistPage() {
 
   async function onSubmit(data: DataProps) {
     const editSpecialist: DataSpecialistsModel = {
+      id: Number(params?.specialistId),
       cpf: data.cpf.toString(),
       name: data.name.toString(),
       email: data.email.toString(),
@@ -103,9 +108,9 @@ export default function EditSpecialistPage() {
       block: data.block.toString(),
       lot: data.lot.toString(),
       complement: data.complement.toString(),
-      units: [],
+      units: unitsSelected,
       citie_code: data.citieCode.toString(),
-      specialties: [],
+      specialties: speciatiesSelected,
       status: Number(data.status) - 1
     };
 
@@ -115,7 +120,9 @@ export default function EditSpecialistPage() {
     );
     if (response !== null) {
       setShowModalSuccess(true);
-      setTimeout(() => {}, 3000);
+      setTimeout(() => {
+        router.back();
+      }, 2500);
     }
   }
 
@@ -157,8 +164,9 @@ export default function EditSpecialistPage() {
   }
 
   async function getSpecialities() {
-    const response = await getAllSpecialties();
-    const specialtiesUpdated = response.data.data as DataSpecialtiesModel[];
+    const response = await getSpecialtiesWithoutPagination();
+    const specialtiesUpdated =
+      response.data as unknown as DataSpecialtiesModel[];
     setSpecialties(
       specialtiesUpdated
         .slice()
@@ -186,10 +194,30 @@ export default function EditSpecialistPage() {
     }
   }
 
+  async function getSpecialtiesSelected(
+    data: DataSpecialistsModel[] | DataSpecialistsModel
+  ) {
+    if (Array.isArray(data)) {
+      const specialtiesSelectedUpdated = [...speciatiesSelected];
+      data.forEach((specialist: DataSpecialistsModel) => {
+        specialist.specialties?.forEach((specialty: any) => {
+          specialtiesSelectedUpdated.push(specialty.id);
+        });
+      });
+      setSpecialtiesSelected(specialtiesSelectedUpdated);
+    } else {
+      const specialtiesSelectedUpdated = [...speciatiesSelected];
+      data.specialties?.forEach((specialty: any) => {
+        specialtiesSelectedUpdated.push(specialty.id);
+      });
+      setSpecialtiesSelected(specialtiesSelectedUpdated);
+    }
+  }
+
   async function getUnits() {
-    const response = await getAllUnits();
-    const unitsUpdated = response.data.data as DataUnitsModel[];
-    setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
+    const response = await getAllUnitsWithoutPagination();
+    const unitsUpdated = response.data as unknown as DataUnitsModel[];
+    setUnits(unitsUpdated);
   }
 
   const handleStateCode = (selectedStateCode: any) => {
@@ -329,7 +357,7 @@ export default function EditSpecialistPage() {
                   data={states}
                   error={errors.state?.message}
                   onSelectChange={handleStateCode}
-                  containerStyle={{ width: '19%' }}
+                  containerStyle={{ width: '25%' }}
                 />
                 <SelectForm
                   control={control}
@@ -337,22 +365,22 @@ export default function EditSpecialistPage() {
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
                   error={errors.city?.message}
-                  containerStyle={{ width: '19%' }}
+                  containerStyle={{ width: '25%' }}
                 />
                 <SelectForm
                   control={control}
                   name="status"
                   data={statusGeneral}
                   error={errors.status?.message}
-                  containerStyle={{ width: '19%' }}
+                  containerStyle={{ width: '25%' }}
                 />
-                <SelectForm
+                {/* <SelectForm
                   control={control}
                   name="speciality"
                   data={specialties !== null ? specialties : null}
                   error={errors.speciality?.message}
                   containerStyle={{ width: '19%' }}
-                />
+                /> */}
                 <div style={{ height: '40px', minWidth: '19%' }}>
                   <Button
                     type="cancel"
@@ -361,7 +389,7 @@ export default function EditSpecialistPage() {
                 </div>
               </div>
             </div>
-            <div>
+            <div className={styles.divMultiplesOptions}>
               <div className={styles.divTableLinkedUnits}>
                 <table className={styles.tableLinkedUnits}>
                   <thead>
@@ -406,6 +434,74 @@ export default function EditSpecialistPage() {
                           </td>
                           <td>{unit.name}</td>
                           <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={3}>Nenhuma unidade vinculada</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              <div className={styles.divTableLinkedUnits}>
+                <table className={styles.tableLinkedUnits}>
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>{Strings.pluralSpeciality}</th>
+                      <th>{Strings.status}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {specialties !== null && specialties.length > 0 ? (
+                      specialties.map((specialty: DataSpecialtiesModel) => (
+                        <tr key={specialty.id}>
+                          <td>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type="checkbox"
+                                className={styles.checkbox}
+                                checked={
+                                  speciatiesSelected?.indexOf(specialty.id) !==
+                                  -1
+                                }
+                                onChange={() => {
+                                  if (
+                                    speciatiesSelected?.includes(specialty.id)
+                                  ) {
+                                    const speciatiesSelectedUpdated =
+                                      speciatiesSelected?.filter(
+                                        (specialtySelected: number) =>
+                                          specialtySelected !== specialty.id
+                                      );
+                                    setSpecialtiesSelected(
+                                      speciatiesSelectedUpdated
+                                    );
+                                    setQuantitySpecialtiesSelected(
+                                      quantitySpecialtiesSelected - 1
+                                    );
+                                  } else {
+                                    const speciatiesSelectedUpdated =
+                                      speciatiesSelected;
+                                    speciatiesSelectedUpdated?.push(
+                                      specialty.id
+                                    );
+                                    setSpecialtiesSelected(
+                                      speciatiesSelectedUpdated
+                                    );
+                                    setQuantitySpecialtiesSelected(
+                                      quantitySpecialtiesSelected + 1
+                                    );
+                                  }
+                                }}
+                              />
+                            </label>
+                          </td>
+                          <td>{specialty.description}</td>
+                          <td>
+                            {specialty.status === 0 ? 'Ativo' : 'Inativo'}
+                          </td>
                         </tr>
                       ))
                     ) : (

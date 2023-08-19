@@ -79,6 +79,7 @@ export const Strings = {
   description: 'Descrição',
   pacient: 'Paciente',
   speciality: 'Especialidade',
+  pluralSpeciality: 'Especialidades',
   specialist: 'Especialista',
   date: 'Data',
   hour: 'Hora',

@@ -10,6 +10,10 @@ export async function getSpecialtiesPerPage(page: number) {
   return await getJson(`/specialties?page=${page}`);
 }
 
+export async function getSpecialtiesWithoutPagination() {
+  return await getJson('/specialties?page=false');
+}
+
 export async function getSpecialtyById(id: number) {
   return await getJson(`/specialties/${id}`);
 }

@@ -1,4 +1,4 @@
-import { deleteJson, getJson, postJson } from '../http';
+import { deleteJson, getJson, postJson, putJson } from '../http';
 
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 
@@ -30,5 +30,5 @@ export async function updateSpecialistById(
   id: number,
   specialist: DataSpecialistsModel
 ) {
-  return await postJson(`/specialists/${id}`, specialist);
+  return await putJson(`/specialists/${id}`, specialist);
 }
