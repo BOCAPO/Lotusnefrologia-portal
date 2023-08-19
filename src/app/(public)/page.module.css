@@ -43,6 +43,11 @@
   margin: 4vh 0;
 }
 
+.inputLoginContent{
+  padding: 5%;
+  font-size: 16px;
+}
+
 .inputPassword {
   margin: 4vh 0;
 }

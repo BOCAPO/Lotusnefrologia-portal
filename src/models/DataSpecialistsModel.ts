@@ -20,5 +20,5 @@ export type DataSpecialistsModel = {
   updated_at?: string;
   deleted_at?: string | null;
   units: number[] | DataUnitsModel[];
-  specialties: number | DataSpecialtiesModel;
+  specialties: number[] | DataSpecialtiesModel[] | null | [];
 };

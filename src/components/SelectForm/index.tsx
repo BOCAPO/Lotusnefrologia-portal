@@ -10,6 +10,7 @@ type Props = {
   data?: any;
   isLoading?: boolean;
   containerStyle?: React.CSSProperties;
+  item?: string;
   onSelectChange?: (_value: string) => void; // Adicione o tipo de callback aqui
   getValue?: (_text: string) => void;
 };
@@ -20,6 +21,7 @@ export function SelectForm({
   name,
   data,
   isLoading,
+  item,
   containerStyle,
   onSelectChange, // Receba o callback como uma prop
   getValue
@@ -48,7 +50,9 @@ export function SelectForm({
                   <option value="0">Carregando...</option>
                 ) : (
                   <>
-                    <option value="0">Selecione</option>
+                    <option value="0">
+                      Selecione {item !== undefined ? `${item}` : ''}
+                    </option>
                     {data &&
                       data.map((item: any) => (
                         <option

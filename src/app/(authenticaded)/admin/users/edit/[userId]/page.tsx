@@ -23,10 +23,11 @@ import { DataCitiesModel } from 'models/DataCitiesModel';
 import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
+import { Prefs } from 'repository/Prefs';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
 import { getAllUnits } from 'services/units';
-import { getUserById } from 'services/users';
+import { getUserById, updateUserById } from 'services/users';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -37,14 +38,16 @@ export default function EditUserPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
-  // const [roles, setRoles] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
   const params = useParams();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
   const [selectedUnits, setSelectedUnits] = React.useState<number[]>([]);
-  const [loadSelectedUnits, setLoadSelectedUnits] = React.useState<any>(null);
+  const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [quantityUnitsSelected, setQuantityUnitsSelected] = React.useState(0);
+
   const {
     control,
     handleSubmit,
@@ -55,44 +58,30 @@ export default function EditUserPage() {
   });
 
   React.useEffect(() => {
-    getStates();
     getUnits();
-    // getRoles();
-    getUserPerId();
+    getStates();
+    getUser();
   }, [params?.userId]);
 
   async function getStates() {
     const response = await getAllStates();
-    const statesUpdated = response.data.data as DataStatesModel[];
-    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
   }
 
-  async function getUserPerId() {
-    const response = await getUserById(Number(params?.userId));
-    const dataUser = response.data as DataUserModel;
-    setValue('cpf', dataUser.cpf);
-    setValue('name', dataUser.name);
-    // setValue('profile', dataUser.profile);
-    setValue('email', dataUser.email);
-    setValue('phonePrimary', dataUser.phone_primary);
-    setValue('phoneSecondary', dataUser.phone_secondary);
-    setValue('zipCode', dataUser.zip_code);
-    setValue('street', dataUser.street);
-    setValue('number', dataUser.number);
-    setValue('block', dataUser.block);
-    setValue('lot', dataUser.lot);
-    setValue('complement', dataUser.complement!);
-    setValue('citieCode', dataUser.citie_code!);
-    setValue('status', dataUser.status + 1);
-    // setLoadSelectedUnits(dataUser.unit);
-  }
-
-  async function getCities(state_code: string) {
+  async function getCities(city_code: string) {
     setIsLoadingCities(true);
     const response = await getAllCities();
-    let citiesUpdated = response.data.data as DataCitiesModel[];
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
+    const responseCity = citiesUpdated.find((item) => item.code === city_code);
+    setValue(
+      'state',
+      responseCity !== undefined ? responseCity.state_code : ''
+    );
     citiesUpdated = citiesUpdated.filter(
-      (city: DataCitiesModel) => city.state_code === state_code
+      (city: DataCitiesModel) => city.state_code === responseCity?.state_code
     );
     setCities(
       citiesUpdated
@@ -102,60 +91,76 @@ export default function EditUserPage() {
     setIsLoadingCities(false);
   }
 
+  async function getUser() {
+    const response = await getUserById(Number(params?.userId));
+    const dataUser = response.data as DataUserModel;
+    getCities(dataUser.city_code !== undefined ? dataUser.city_code : '');
+    getUnitsSelected();
+
+    if (dataUser !== null) {
+      setValue('cpf', dataUser.cpf);
+      setValue('name', dataUser.name);
+      setValue('email', dataUser.email);
+      setValue('phonePrimary', dataUser.phone_primary);
+      setValue('phoneSecondary', dataUser.phone_secondary);
+      setValue('zipCode', dataUser.zip_code);
+      setValue('street', dataUser.street);
+      setValue('number', dataUser.number);
+      setValue('block', dataUser.block!);
+      setValue('lot', dataUser.lot!);
+      setValue('complement', dataUser.complement!);
+      setValue('cityCode', dataUser.city_code);
+      setValue('status', dataUser.status + 1);
+      setUnitsSelected(dataUser.units);
+    }
+    setLoading(false);
+  }
+
   async function getUnits() {
     const response = await getAllUnits();
     const unitsUpdated = response.data.data as DataUnitsModel[];
     setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
   }
 
-  // async function getRoles() {
-  //   const response = await getAllRoles();
-  //   const rolesUpdated = response.data.data as DataRolesModel[];
-  //   setRoles(rolesUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
-  // }
-
   const handleStateCode = (selectedStateCode: any) => {
     getCities(selectedStateCode.toString());
   };
 
-  const handleCheckboxChange = (unitId: number) => {
-    if (selectedUnits.includes(unitId)) {
-      setSelectedUnits(selectedUnits.filter((id) => id !== unitId));
-    } else {
-      setSelectedUnits([...selectedUnits, unitId]);
-    }
-  };
+  async function getUnitsSelected() {
+    const unitsLinked = await Prefs.getUnits();
+    JSON.parse(unitsLinked!).forEach((unit: DataUnitsModel) => {
+      const unitsSelectedUpdated = unitsSelected;
+      unitsSelectedUpdated?.push(unit.id);
+      setUnitsSelected(unitsSelectedUpdated);
+    });
+  }
 
   async function onSubmit(data: DataProps) {
-    // const status = Number(data.status) - 1;
-    // try {
-    //   const newUser = {
-    //     cpf: data.cpf.toString(),
-    //     name: data.name.toString(),
-    //     email: data.email.toString(),
-    //     phone_primary: data.phonePrimary.toString(),
-    //     phone_secondary: data.phoneSecondary.toString(),
-    //     zip_code: data.zipCode.toString(),
-    //     citie_code: data.citieCode.toString(),
-    //     street: data.street.toString(),
-    //     number: data.number.toString(),
-    //     block: data.block.toString(),
-    //     lot: data.lot.toString(),
-    //     complement: data.complement.toString(),
-    //     unit: selectedUnits,
-    //     status: status,
-    //     profile: 1
-    //   };
-    //   const response = await createUser(newUser);
-    //   if (response !== null) {
-    //     setShowModalSuccess(true);
-    //     setTimeout(() => {
-    //       router.back();
-    //     }, 3000);
-    //   }
-    // } catch (error) {
-    //   // console.log('Erro ao criar usuario!' + error);
-    // }
+    const updateUser: DataUserModel = {
+      id: Number(params?.userId),
+      cpf: data.cpf.toString(),
+      name: data.name.toString(),
+      email: data.email.toString(),
+      phone_primary: data.phonePrimary.toString(),
+      phone_secondary: data.phoneSecondary.toString(),
+      zip_code: data.zipCode.toString(),
+      city_code: data.cityCode.toString(),
+      street: data.street.toString(),
+      number: data.number.toString(),
+      block: data.block.toString(),
+      lot: data.lot.toString(),
+      complement: data.complement.toString(),
+      status: Number(data.status) - 1,
+      units: unitsSelected
+    };
+
+    const response = await updateUserById(Number(params?.userId), updateUser);
+    if (response !== null) {
+      setShowModalSuccess(true);
+      setTimeout(() => {
+        router.back();
+      }, 3500);
+    }
   }
 
   return (
@@ -177,6 +182,7 @@ export default function EditUserPage() {
               type="text"
               name="cpf"
               mask={'cpfCnpj'}
+              readonly={true}
               maxLength={14}
               control={control}
               error={errors.cpf?.message}
@@ -192,13 +198,6 @@ export default function EditUserPage() {
               className={styles.inputNewUser}
               error={errors.name?.message}
             />
-            {/* <SelectForm
-              name="profile"
-              control={control}
-              containerStyle={{ width: '32.5%' }}
-              data={roles}
-              error={errors.profile?.message}
-            /> */}
           </div>
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
@@ -238,6 +237,7 @@ export default function EditUserPage() {
               name="zipCode"
               mask={'cep'}
               maxLength={9}
+              containerStyle={{ width: '10%' }}
               control={control}
               className={styles.inputNewUser}
               error={errors.zipCode?.message}
@@ -247,6 +247,7 @@ export default function EditUserPage() {
               type="text"
               name="street"
               control={control}
+              containerStyle={{ width: '30%' }}
               className={styles.inputNewUser}
               error={errors.street?.message}
             />
@@ -254,6 +255,7 @@ export default function EditUserPage() {
               placeholder={Strings.placeholderNumber}
               type="text"
               name="number"
+              containerStyle={{ width: '10%' }}
               control={control}
               className={styles.inputNewUser}
               error={errors.number?.message}
@@ -262,6 +264,7 @@ export default function EditUserPage() {
               placeholder={Strings.placeholderBlock}
               type="text"
               name="block"
+              containerStyle={{ width: '10%' }}
               control={control}
               className={styles.inputNewUser}
               error={errors.block?.message}
@@ -269,6 +272,7 @@ export default function EditUserPage() {
             <InputForm
               placeholder={Strings.placeholderLot}
               type="text"
+              containerStyle={{ width: '10%' }}
               name="lot"
               control={control}
               className={styles.inputNewUser}
@@ -298,7 +302,7 @@ export default function EditUserPage() {
               />
               <SelectForm
                 control={control}
-                name="citieCode"
+                name="cityCode"
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
                 error={errors.city?.message}
@@ -335,8 +339,27 @@ export default function EditUserPage() {
                             <input
                               type="checkbox"
                               className={styles.checkbox}
-                              checked={selectedUnits.includes(unit.id!)}
-                              onChange={() => handleCheckboxChange(unit.id!)}
+                              checked={unitsSelected?.indexOf(unit.id) !== -1}
+                              onChange={() => {
+                                if (unitsSelected?.includes(unit.id)) {
+                                  const unitsSelectedUpdated =
+                                    unitsSelected?.filter(
+                                      (unitSelected: number) =>
+                                        unitSelected !== unit.id
+                                    );
+                                  setUnitsSelected(unitsSelectedUpdated);
+                                  setQuantityUnitsSelected(
+                                    quantityUnitsSelected - 1
+                                  );
+                                } else {
+                                  const unitsSelectedUpdated = unitsSelected;
+                                  unitsSelectedUpdated?.push(unit.id);
+                                  setUnitsSelected(unitsSelectedUpdated);
+                                  setQuantityUnitsSelected(
+                                    quantityUnitsSelected + 1
+                                  );
+                                }
+                              }}
                             />
                           </label>
                         </td>

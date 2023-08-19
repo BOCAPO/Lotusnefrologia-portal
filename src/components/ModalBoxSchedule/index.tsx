@@ -58,6 +58,7 @@ export default function ModalBoxSchedule({
   const [selectedDate, setSelectedDate] = React.useState<string>('');
   const [hours, setHours] = React.useState<any>(null);
   const [selectedScheduleId, setSelectedScheduleId] = React.useState<number>(0);
+
   const {
     control,
     setValue,
@@ -167,6 +168,7 @@ export default function ModalBoxSchedule({
               width: '70%',
               height: '40px'
             }}
+            item="unidade"
             data={units}
             error={errors.descriptionRequired?.message?.toString()}
             onSelectChange={handleGetUnit}

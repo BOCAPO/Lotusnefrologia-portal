@@ -166,4 +166,8 @@
     .bodyViewUser{
         height: 78%;
     }
+
+    .divTableLinkedUnits{
+        height: 25vh;
+    }
 }

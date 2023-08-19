@@ -77,3 +77,9 @@
     cursor: pointer;
     filter: brightness(0.9);
 }
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .bodyHistory {
+        height: 78%;
+    }
+}

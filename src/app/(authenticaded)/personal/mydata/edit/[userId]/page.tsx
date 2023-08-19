@@ -12,18 +12,21 @@ import { SelectForm } from 'components/SelectForm';
 import { SpinnerLoading } from 'components/Spinner';
 import { SmallMediumText } from 'components/Text';
 
-import styles from './userview.module.css';
+import styles from './useredit.module.css';
 
 import { schema } from './schema';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 import { Prefs } from 'repository/Prefs';
-import { getCep } from 'services/cep';
+import { getAllCities } from 'services/cities';
+import { getAllStates } from 'services/states';
 import { getAllUnitsWithoutPagination } from 'services/units';
 import { getUserById, updateUserById } from 'services/users';
 import { statusGeneral } from 'utils/enums';
@@ -35,11 +38,13 @@ type DataProps = {
 export default function ViewUserPage() {
   const router = useRouter();
   const idUser = Prefs.getIdUser();
-  const [cep, setCep] = React.useState('');
+  const [states, setStates] = React.useState<any>(null);
+  const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
-  const [unitsSelected, setUnitsSelected] = React.useState<any>(null);
+  const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
+  const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
 
   const {
     control,
@@ -51,29 +56,20 @@ export default function ViewUserPage() {
   });
 
   React.useEffect(() => {
-    getUser();
     getUnits();
+    getStates();
+    getUser();
   }, [idUser]);
-
-  React.useEffect(() => {
-    if (cep.length === 9) {
-      const responseCEP = getCep(cep.replace('-', ''));
-      responseCEP.then((response) => {
-        if (response !== null) {
-          setValue('citieCode', response.city);
-          setValue('state', response.state);
-        }
-      });
-    }
-  }, [cep]);
 
   async function getUser() {
     const response = await getUserById(Number(idUser));
     const dataUser = response.data as DataUserModel;
+    getCities(dataUser.city_code !== undefined ? dataUser.city_code : '');
+    getUnitsSelected();
+
     if (dataUser !== null) {
       setValue('cpf', dataUser.cpf);
       setValue('name', dataUser.name);
-      // setValue('profile', dataUser.profile);
       setValue('email', dataUser.email);
       setValue('phonePrimary', dataUser.phone_primary);
       setValue('phoneSecondary', dataUser.phone_secondary);
@@ -83,11 +79,39 @@ export default function ViewUserPage() {
       setValue('block', dataUser.block!);
       setValue('lot', dataUser.lot!);
       setValue('complement', dataUser.complement!);
-      setValue('citieCode', dataUser.citie_code);
+      setValue('cityCode', dataUser.city_code);
       setValue('status', dataUser.status + 1);
       setUnitsSelected(dataUser.units);
     }
     setLoading(false);
+  }
+
+  async function getStates() {
+    const response = await getAllStates();
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
+  }
+
+  async function getCities(city_code: string) {
+    setIsLoadingCities(true);
+    const response = await getAllCities();
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
+    const responseCity = citiesUpdated.find((item) => item.code === city_code);
+    setValue(
+      'state',
+      responseCity !== undefined ? responseCity.state_code : ''
+    );
+    citiesUpdated = citiesUpdated.filter(
+      (city: DataCitiesModel) => city.state_code === responseCity?.state_code
+    );
+    setCities(
+      citiesUpdated
+        .slice()
+        .sort((a, b) => a.description.localeCompare(b.description))
+    );
+    setIsLoadingCities(false);
   }
 
   async function getUnits() {
@@ -98,17 +122,25 @@ export default function ViewUserPage() {
     }
   }
 
+  async function getUnitsSelected() {
+    const unitsLinked = await Prefs.getUnits();
+    JSON.parse(unitsLinked!).forEach((unit: DataUnitsModel) => {
+      const unitsSelectedUpdated = unitsSelected;
+      unitsSelectedUpdated?.push(unit.id);
+      setUnitsSelected(unitsSelectedUpdated);
+    });
+  }
+
   async function onSubmit(data: DataProps) {
     const updateUser: DataUserModel = {
       id: Number(idUser),
       cpf: data.cpf.toString(),
       name: data.name.toString(),
-      // profile: data.profile,
       email: data.email.toString(),
       phone_primary: data.phonePrimary.toString(),
       phone_secondary: data.phoneSecondary.toString(),
       zip_code: data.zipCode.toString(),
-      citie_code: data.citieCode.toString(),
+      city_code: data.cityCode.toString(),
       street: data.street.toString(),
       number: data.number.toString(),
       block: data.block.toString(),
@@ -126,6 +158,10 @@ export default function ViewUserPage() {
       }, 3500);
     }
   }
+
+  const handleStateCode = (selectedStateCode: any) => {
+    getCities(selectedStateCode.toString());
+  };
 
   return (
     <React.Fragment>
@@ -164,15 +200,6 @@ export default function ViewUserPage() {
                 className={styles.inputViewUser}
                 error={errors.name?.message}
               />
-              {/* <InputForm
-              placeholder={Strings.placeholderProfile}
-              type="text"
-              name="profile"
-              control={control}
-              containerStyle={{ width: '32.5%' }}
-              className={styles.inputViewUser}
-              error={errors.responsible?.message}
-            /> */}
             </div>
             <div style={{ marginBottom: '3vh' }}>
               <InputForm
@@ -212,8 +239,8 @@ export default function ViewUserPage() {
                 name="zipCode"
                 mask={'cep'}
                 maxLength={9}
+                containerStyle={{ width: '10%' }}
                 control={control}
-                getValue={setCep}
                 className={styles.inputViewUser}
                 error={errors.zipCode?.message}
               />
@@ -221,6 +248,7 @@ export default function ViewUserPage() {
                 placeholder={Strings.placeholderStreet}
                 type="text"
                 name="street"
+                containerStyle={{ width: '35%' }}
                 control={control}
                 className={styles.inputViewUser}
                 error={errors.street?.message}
@@ -229,6 +257,7 @@ export default function ViewUserPage() {
                 placeholder={Strings.placeholderNumber}
                 type="text"
                 name="number"
+                containerStyle={{ width: '10%' }}
                 control={control}
                 className={styles.inputViewUser}
                 error={errors.number?.message}
@@ -237,6 +266,7 @@ export default function ViewUserPage() {
                 placeholder={Strings.placeholderBlock}
                 type="text"
                 name="block"
+                containerStyle={{ width: '10%' }}
                 control={control}
                 className={styles.inputViewUser}
                 error={errors.block?.message}
@@ -245,6 +275,7 @@ export default function ViewUserPage() {
                 placeholder={Strings.placeholderLot}
                 type="text"
                 name="lot"
+                containerStyle={{ width: '10%' }}
                 control={control}
                 className={styles.inputViewUser}
                 error={errors.lot?.message}
@@ -263,23 +294,21 @@ export default function ViewUserPage() {
                 style={{ marginBottom: '1vh', width: '100%' }}
                 className={styles.viewUserDataGeografic}
               >
-                <InputForm
+                <SelectForm
                   control={control}
                   name="state"
-                  placeholder={Strings.placeholderState}
+                  data={states !== null ? states : null}
+                  onSelectChange={handleStateCode}
                   error={errors.state?.message}
-                  readonly={true}
                   containerStyle={{ width: '25%' }}
-                  className={styles.inputViewUser}
                 />
-                <InputForm
+                <SelectForm
                   control={control}
-                  name="citieCode"
-                  readonly={true}
-                  placeholder={Strings.placeholderCity}
+                  name="cityCode"
+                  data={cities !== null ? cities : null}
+                  isLoading={isLoadingCities}
                   error={errors.city?.message}
                   containerStyle={{ width: '25%' }}
-                  className={styles.inputViewUser}
                 />
                 <SelectForm
                   control={control}
@@ -315,6 +344,20 @@ export default function ViewUserPage() {
                                 checked={unitsSelected?.includes(
                                   unit.id !== undefined ? unit.id : 0
                                 )}
+                                onChange={() => {
+                                  if (unitsSelected?.includes(unit.id)) {
+                                    const unitsSelectedUpdated =
+                                      unitsSelected?.filter(
+                                        (unitSelected: number) =>
+                                          unitSelected !== unit.id
+                                      );
+                                    setUnitsSelected(unitsSelectedUpdated);
+                                  } else {
+                                    const unitsSelectedUpdated = unitsSelected;
+                                    unitsSelectedUpdated?.push(unit.id);
+                                    setUnitsSelected(unitsSelectedUpdated);
+                                  }
+                                }}
                               />
                             </label>
                           </td>

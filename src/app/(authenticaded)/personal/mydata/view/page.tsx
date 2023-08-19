@@ -18,8 +18,15 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataStatesModel } from 'models/DataStatesModel';
+import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
+import { ResponseGetModel } from 'models/ResponseGetModel';
 import { Prefs } from 'repository/Prefs';
+import { getAllCities } from 'services/cities';
+import { getAllStates } from 'services/states';
+import { getAllUnitsWithoutPagination } from 'services/units';
 import { getUserById } from 'services/users';
 import { statusGeneral } from 'utils/enums';
 
@@ -30,7 +37,12 @@ type DataProps = {
 export default function ViewUserPage() {
   const router = useRouter();
   const idUser = Prefs.getIdUser();
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [states, setStates] = React.useState<any>(null);
+  const [cities, setCities] = React.useState<any>(null);
+  const [units, setUnits] = React.useState<any>(null);
+  const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
 
   const {
     control,
@@ -41,12 +53,17 @@ export default function ViewUserPage() {
   });
 
   React.useEffect(() => {
+    getUnits();
+    getStates();
     getUser();
   }, [idUser]);
 
   async function getUser() {
     const response = await getUserById(Number(idUser));
     const dataUser = response.data as DataUserModel;
+    getCities(dataUser.city_code !== undefined ? dataUser.city_code : '');
+    getUnitsSelected();
+
     if (dataUser !== null) {
       setValue('cpf', dataUser.cpf);
       setValue('name', dataUser.name);
@@ -56,17 +73,64 @@ export default function ViewUserPage() {
       setValue('zipCode', dataUser.zip_code);
       setValue('street', dataUser.street);
       setValue('number', dataUser.number);
-      setValue('block', dataUser.block);
-      setValue('lot', dataUser.lot);
-      setValue(
-        'complement',
-        dataUser.complement !== null ? dataUser.complement : ''
-      );
-      setValue('citieCode', dataUser.citie_code);
+      setValue('block', dataUser.block!);
+      setValue('lot', dataUser.lot!);
+      setValue('complement', dataUser.complement!);
+      setValue('cityCode', dataUser.city_code);
       setValue('status', dataUser.status + 1);
+      setUnitsSelected(dataUser.units);
     }
     setLoading(false);
   }
+
+  async function getStates() {
+    const response = await getAllStates();
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
+  }
+
+  async function getCities(city_code: string) {
+    setIsLoadingCities(true);
+    const response = await getAllCities();
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
+    const responseCity = citiesUpdated.find((item) => item.code === city_code);
+    setValue(
+      'state',
+      responseCity !== undefined ? responseCity.state_code : ''
+    );
+    citiesUpdated = citiesUpdated.filter(
+      (city: DataCitiesModel) => city.state_code === responseCity?.state_code
+    );
+    setCities(
+      citiesUpdated
+        .slice()
+        .sort((a, b) => a.description.localeCompare(b.description))
+    );
+    setIsLoadingCities(false);
+  }
+
+  async function getUnits() {
+    const response = await getAllUnitsWithoutPagination();
+    const dataUnits = response.data as ResponseGetModel;
+    if (dataUnits !== null) {
+      setUnits(dataUnits);
+    }
+  }
+
+  async function getUnitsSelected() {
+    const unitsLinked = await Prefs.getUnits();
+    JSON.parse(unitsLinked!).forEach((unit: DataUnitsModel) => {
+      const unitsSelectedUpdated = unitsSelected;
+      unitsSelectedUpdated?.push(unit.id);
+      setUnitsSelected(unitsSelectedUpdated);
+    });
+  }
+
+  const handleStateCode = (selectedStateCode: any) => {
+    getCities(selectedStateCode.toString());
+  };
 
   return (
     <React.Fragment>
@@ -94,7 +158,7 @@ export default function ViewUserPage() {
                 readonly={true}
                 control={control}
                 error={errors.cpf?.message}
-                containerStyle={{ width: '20%' }}
+                containerStyle={{ width: '25%' }}
                 className={styles.inputViewUser}
               />
               <InputForm
@@ -103,19 +167,9 @@ export default function ViewUserPage() {
                 name="name"
                 readonly={true}
                 control={control}
-                containerStyle={{ width: '42.5%' }}
+                containerStyle={{ width: '65%' }}
                 className={styles.inputViewUser}
                 error={errors.name?.message}
-              />
-              <InputForm
-                placeholder={Strings.placeholderProfile}
-                type="text"
-                name="profile"
-                readonly={true}
-                control={control}
-                containerStyle={{ width: '32.5%' }}
-                className={styles.inputViewUser}
-                error={errors.responsible?.message}
               />
             </div>
             <div style={{ marginBottom: '3vh' }}>
@@ -215,28 +269,35 @@ export default function ViewUserPage() {
                 style={{ marginBottom: '1vh', width: '100%' }}
                 className={styles.viewUserDataGeografic}
               >
-                <InputForm
+                <SelectForm
                   control={control}
-                  name="citieCode"
-                  placeholder={Strings.placeholderCity}
-                  readonly={true}
+                  name="state"
+                  data={states !== null ? states : null}
+                  onSelectChange={handleStateCode}
+                  error={errors.state?.message}
+                  containerStyle={{ width: '25%' }}
+                />
+                <SelectForm
+                  control={control}
+                  name="cityCode"
+                  data={cities !== null ? cities : null}
+                  isLoading={isLoadingCities}
                   error={errors.city?.message}
-                  containerStyle={{ width: '30%' }}
-                  className={styles.inputViewUser}
+                  containerStyle={{ width: '25%' }}
                 />
                 <SelectForm
                   control={control}
                   name="status"
                   data={statusGeneral}
                   error={errors.status?.message}
-                  containerStyle={{ width: '40%' }}
+                  containerStyle={{ width: '25%' }}
                 />
                 <div style={{ height: '40px', minWidth: '20%' }}>
                   <Button type="cancel" title={Strings.resetPasswordUser} />
                 </div>
               </div>
             </div>
-            {/* <div>
+            <div>
               <div className={styles.divTableLinkedUnits}>
                 <table className={styles.tableLinkedUnits}>
                   <thead>
@@ -255,6 +316,23 @@ export default function ViewUserPage() {
                               <input
                                 type="checkbox"
                                 className={styles.checkbox}
+                                checked={unitsSelected?.includes(
+                                  unit.id !== undefined ? unit.id : 0
+                                )}
+                                onChange={() => {
+                                  if (unitsSelected?.includes(unit.id)) {
+                                    const unitsSelectedUpdated =
+                                      unitsSelected?.filter(
+                                        (unitSelected: number) =>
+                                          unitSelected !== unit.id
+                                      );
+                                    setUnitsSelected(unitsSelectedUpdated);
+                                  } else {
+                                    const unitsSelectedUpdated = unitsSelected;
+                                    unitsSelectedUpdated?.push(unit.id);
+                                    setUnitsSelected(unitsSelectedUpdated);
+                                  }
+                                }}
                               />
                             </label>
                           </td>
@@ -270,7 +348,7 @@ export default function ViewUserPage() {
                   </tbody>
                 </table>
               </div>
-            </div> */}
+            </div>
           </div>
           <div className={styles.footerViewUser}>
             <div className={styles.btnSaveViewUser}>

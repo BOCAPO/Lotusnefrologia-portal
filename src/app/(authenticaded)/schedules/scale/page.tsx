@@ -38,6 +38,7 @@ type DataProps = {
 
 export default function ScalePage(): JSX.Element {
   const [data, setData] = React.useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [units, setUnits] = React.useState<any>(null);
   const [selectedSpectialistId, setSelectedSpecialistId] =
     React.useState<string>('');
