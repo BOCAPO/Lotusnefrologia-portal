@@ -138,6 +138,7 @@ export default function NewUnitPage() {
           <div className={styles.marginBotton}>
             <InputForm
               placeholder={Strings.placeholderCNJP}
+              label={Strings.labelCNPJ}
               type="text"
               name="cnpj"
               mask={'cpfCnpj'}
@@ -149,6 +150,7 @@ export default function NewUnitPage() {
             />
             <InputForm
               placeholder={Strings.placeholderName}
+              label={Strings.labelName}
               type="text"
               name="name"
               control={control}
@@ -158,6 +160,7 @@ export default function NewUnitPage() {
             />
             <InputForm
               placeholder={Strings.placeholderResponsable}
+              label={Strings.labelResponsable}
               type="text"
               name="responsible"
               control={control}
@@ -169,6 +172,7 @@ export default function NewUnitPage() {
           <div className={styles.marginBotton}>
             <InputForm
               placeholder={Strings.placeholderEmail}
+              label={Strings.labelEmail}
               type="email"
               name="email"
               control={control}
@@ -177,7 +181,8 @@ export default function NewUnitPage() {
               error={errors.email?.message}
             />
             <InputForm
-              placeholder={Strings.placeholderPhonePrimay}
+              placeholder={Strings.placeholderPhonePrimary}
+              label={Strings.labelPhone}
               type="text"
               name="phonePrimary"
               control={control}
@@ -188,6 +193,7 @@ export default function NewUnitPage() {
             />
             <InputForm
               placeholder={Strings.placeholderPhoneSecondary}
+              label={Strings.labelPhone}
               type="text"
               name="phoneSecondary"
               control={control}
@@ -198,6 +204,7 @@ export default function NewUnitPage() {
             />
             <InputForm
               placeholder={Strings.placeholderLatitude}
+              label={Strings.labelLatitude}
               type="text"
               name="latitude"
               control={control}
@@ -208,6 +215,7 @@ export default function NewUnitPage() {
             />
             <InputForm
               placeholder={Strings.placeholderLongitude}
+              label={Strings.labelLongitude}
               type="text"
               name="longitude"
               control={control}
@@ -230,26 +238,29 @@ export default function NewUnitPage() {
           <div className={styles.marginBotton}>
             <InputForm
               placeholder={Strings.placeholderZipCode}
+              label={Strings.labelZipCode}
               type="text"
               name="zipCode"
               mask={'cep'}
               maxLength={9}
               control={control}
-              containerStyle={{ width: '15%' }}
+              containerStyle={{ width: '10%' }}
               className={styles.inputNewUnit}
               error={errors.zipCode?.message}
             />
             <InputForm
               placeholder={Strings.placeholderStreet}
+              label={Strings.labelStreet}
               type="text"
               name="street"
-              containerStyle={{ width: '20%' }}
+              containerStyle={{ width: '30%' }}
               control={control}
               className={styles.inputNewUnit}
               error={errors.street?.message}
             />
             <InputForm
               placeholder={Strings.placeholderNumber}
+              label={Strings.labelNumber}
               type="text"
               name="number"
               control={control}
@@ -259,6 +270,7 @@ export default function NewUnitPage() {
             />
             <InputForm
               placeholder={Strings.placeholderBlock}
+              label={Strings.labelBlock}
               type="text"
               name="block"
               control={control}
@@ -268,6 +280,7 @@ export default function NewUnitPage() {
             />
             <InputForm
               placeholder={Strings.placeholderLot}
+              label={Strings.labelLot}
               type="text"
               name="lot"
               control={control}
@@ -277,8 +290,10 @@ export default function NewUnitPage() {
             />
             <InputForm
               placeholder={Strings.placeholderComplement}
+              label={Strings.labelComplement}
               type="text"
               name="complement"
+              containerStyle={{ width: '20%' }}
               control={control}
               error={errors.complement?.message}
               className={styles.inputNewUnit}
@@ -292,6 +307,7 @@ export default function NewUnitPage() {
               >
                 <SelectForm
                   control={control}
+                  item={Strings.labelState}
                   name="state"
                   data={states}
                   error={errors.state?.message}
@@ -300,6 +316,7 @@ export default function NewUnitPage() {
                 />
                 <SelectForm
                   control={control}
+                  item={Strings.labelCity}
                   name="cityCode"
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
@@ -308,6 +325,7 @@ export default function NewUnitPage() {
                 />
                 <SelectForm
                   control={control}
+                  item={Strings.status}
                   name="status"
                   data={statusGeneral}
                   error={errors.status?.message}
@@ -317,6 +335,7 @@ export default function NewUnitPage() {
               <div className={styles.linksUnit}>
                 <InputForm
                   placeholder={Strings.placeholderLinkFacebook}
+                  label={Strings.labelLinkFacebook}
                   type="text"
                   name="linkFacebook"
                   control={control}
@@ -336,6 +355,7 @@ export default function NewUnitPage() {
               <div className={styles.linksUnit}>
                 <InputForm
                   placeholder={Strings.placeholderLinkInstagram}
+                  label={Strings.labelLinkInstagram}
                   type="text"
                   name="linkInstagram"
                   control={control}
@@ -355,6 +375,7 @@ export default function NewUnitPage() {
               <div className={styles.linksUnit}>
                 <InputForm
                   placeholder={Strings.placeholderLinkSite}
+                  label={Strings.labelLinkSite}
                   type="text"
                   name="linkSite"
                   control={control}

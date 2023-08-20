@@ -256,7 +256,8 @@ export default function ScalePage(): JSX.Element {
                   type="time"
                   containerStyle={{ width: '25%' }}
                   style={{ height: '40px' }}
-                  placeholder={Strings.date}
+                  placeholder={Strings.initialHour}
+                  label={Strings.initialHour}
                   error={errors.initialHour?.message?.toString()}
                   onBlur={handleInitialHourBlur}
                 />
@@ -265,7 +266,8 @@ export default function ScalePage(): JSX.Element {
                   name="finalHour"
                   type="time"
                   style={{ height: '40px' }}
-                  placeholder={Strings.hour}
+                  placeholder={Strings.finalHour}
+                  label={Strings.finalHour}
                   containerStyle={{ width: '25%' }}
                   error={errors.finalHour?.message?.toString()}
                   onBlur={handleEndHourBlur}
@@ -273,6 +275,7 @@ export default function ScalePage(): JSX.Element {
                 <SelectForm
                   control={control}
                   name="timeOfAttendance"
+                  item={Strings.interval}
                   containerStyle={{ width: '25%' }}
                   error={errors.timeOfAttendance?.message?.toString()}
                   data={intervalSchedule}

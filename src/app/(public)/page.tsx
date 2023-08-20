@@ -68,8 +68,9 @@ export default function LoginPage() {
             <InputForm
               control={control}
               name="login"
-              placeholder={Strings.login}
               mask="cpfCnpj"
+              label={Strings.placeholderCPF}
+              placeholder={Strings.placeholderCPF}
               maxLength={14}
               containerStyle={{ width: '100%' }}
               error={errors.login?.message?.toString()}
@@ -81,6 +82,7 @@ export default function LoginPage() {
               name="password"
               control={control}
               type="password"
+              label={Strings.password}
               placeholder={Strings.password}
               containerStyle={{ width: '100%' }}
               iconType={TypeIcon.Password}

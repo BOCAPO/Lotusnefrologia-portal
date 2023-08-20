@@ -183,9 +183,11 @@ export default function EditUnitPage() {
             <div className={styles.marginBotton}>
               <InputForm
                 placeholder={Strings.placeholderCNJP}
+                label={Strings.labelCNPJ}
                 type="text"
                 name="cnpj"
                 mask={'cpfCnpj'}
+                readonly={true}
                 maxLength={18}
                 control={control}
                 error={errors.cnpj?.message}
@@ -194,6 +196,7 @@ export default function EditUnitPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderName}
+                label={Strings.labelName}
                 type="text"
                 name="name"
                 control={control}
@@ -204,6 +207,7 @@ export default function EditUnitPage() {
               <InputForm
                 placeholder={Strings.placeholderResponsable}
                 type="text"
+                label={Strings.labelResponsable}
                 name="responsible"
                 control={control}
                 containerStyle={{ width: '32.5%' }}
@@ -215,6 +219,7 @@ export default function EditUnitPage() {
               <InputForm
                 placeholder={Strings.placeholderEmail}
                 type="email"
+                label={Strings.labelEmail}
                 name="email"
                 control={control}
                 className={styles.inputEditUnit}
@@ -222,7 +227,8 @@ export default function EditUnitPage() {
                 error={errors.email?.message}
               />
               <InputForm
-                placeholder={Strings.placeholderPhonePrimay}
+                placeholder={Strings.placeholderPhonePrimary}
+                label={Strings.labelPhone}
                 type="text"
                 name="phonePrimary"
                 control={control}
@@ -234,6 +240,7 @@ export default function EditUnitPage() {
               <InputForm
                 placeholder={Strings.placeholderPhoneSecondary}
                 type="text"
+                label={Strings.labelPhone}
                 name="phoneSecondary"
                 control={control}
                 mask={'phone'}
@@ -244,6 +251,7 @@ export default function EditUnitPage() {
               <InputForm
                 placeholder={Strings.placeholderLatitude}
                 type="text"
+                label={Strings.labelLatitude}
                 name="latitude"
                 control={control}
                 containerStyle={{ width: '12%' }}
@@ -254,6 +262,7 @@ export default function EditUnitPage() {
               <InputForm
                 placeholder={Strings.placeholderLongitude}
                 type="text"
+                label={Strings.labelLongitude}
                 name="longitude"
                 control={control}
                 containerStyle={{ width: '12%' }}
@@ -275,6 +284,7 @@ export default function EditUnitPage() {
             <div className={styles.marginBotton}>
               <InputForm
                 placeholder={Strings.placeholderZipCode}
+                label={Strings.labelZipCode}
                 type="text"
                 name="zipCode"
                 mask={'cep'}
@@ -290,11 +300,13 @@ export default function EditUnitPage() {
                 name="street"
                 containerStyle={{ width: '20%' }}
                 control={control}
+                label={Strings.labelStreet}
                 className={styles.inputEditUnit}
                 error={errors.street?.message}
               />
               <InputForm
                 placeholder={Strings.placeholderNumber}
+                label={Strings.labelNumber}
                 type="text"
                 name="number"
                 control={control}
@@ -305,6 +317,7 @@ export default function EditUnitPage() {
               <InputForm
                 placeholder={Strings.placeholderBlock}
                 type="text"
+                label={Strings.labelBlock}
                 name="block"
                 control={control}
                 containerStyle={{ width: '10%' }}
@@ -314,6 +327,7 @@ export default function EditUnitPage() {
               <InputForm
                 placeholder={Strings.placeholderLot}
                 type="text"
+                label={Strings.labelLot}
                 name="lot"
                 control={control}
                 containerStyle={{ width: '10%' }}
@@ -323,6 +337,7 @@ export default function EditUnitPage() {
               <InputForm
                 placeholder={Strings.placeholderComplement}
                 type="text"
+                label={Strings.labelComplement}
                 name="complement"
                 control={control}
                 error={errors.complement?.message}
@@ -337,6 +352,7 @@ export default function EditUnitPage() {
                 >
                   <SelectForm
                     control={control}
+                    item={Strings.labelState}
                     name="state"
                     data={states !== null ? states : null}
                     onSelectChange={handleStateCode}
@@ -345,6 +361,7 @@ export default function EditUnitPage() {
                   />
                   <SelectForm
                     control={control}
+                    item={Strings.labelCity}
                     name="cityCode"
                     data={cities !== null ? cities : null}
                     isLoading={isLoadingCities}
@@ -353,6 +370,7 @@ export default function EditUnitPage() {
                   />
                   <SelectForm
                     control={control}
+                    item={Strings.status}
                     name="status"
                     data={statusGeneral}
                     error={errors.status?.message}
@@ -362,6 +380,7 @@ export default function EditUnitPage() {
                 <div className={styles.linksUnit}>
                   <InputForm
                     placeholder={Strings.placeholderLinkFacebook}
+                    label={Strings.labelLinkFacebook}
                     type="text"
                     name="linkFacebook"
                     control={control}
@@ -382,6 +401,7 @@ export default function EditUnitPage() {
                   <InputForm
                     placeholder={Strings.placeholderLinkInstagram}
                     type="text"
+                    label={Strings.labelLinkInstagram}
                     name="linkInstagram"
                     control={control}
                     containerStyle={{ width: '95%' }}
@@ -401,6 +421,7 @@ export default function EditUnitPage() {
                   <InputForm
                     placeholder={Strings.placeholderLinkSite}
                     type="text"
+                    label={Strings.labelLinkSite}
                     name="linkSite"
                     control={control}
                     containerStyle={{ width: '95%' }}

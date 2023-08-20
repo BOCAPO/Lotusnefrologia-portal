@@ -25,9 +25,9 @@ import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { createSpecialist } from 'services/specialists';
-import { getAllSpecialties } from 'services/specialties';
+import { getSpecialtiesWithoutPagination } from 'services/specialties';
 import { getAllStates } from 'services/states';
-import { getAllUnits } from 'services/units';
+import { getAllUnitsWithoutPagination } from 'services/units';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -42,8 +42,12 @@ export default function NewSpecialistPage() {
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
+  const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
+  const [quantityUnitsSelected, setQuantityUnitsSelected] = React.useState(0);
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
-  const [selectedUnits, setSelectedUnits] = React.useState<number[]>([]);
+  const [speciatiesSelected, setSpecialtiesSelected] = React.useState<any>([]);
+  const [quantitySpecialtiesSelected, setQuantitySpecialtiesSelected] =
+    React.useState(0);
 
   const {
     control,
@@ -61,14 +65,16 @@ export default function NewSpecialistPage() {
 
   async function getStates() {
     const response = await getAllStates();
-    const statesUpdated = response.data.data as DataStatesModel[];
-    setStates(statesUpdated.slice().sort((a, b) => a.UF.localeCompare(b.UF)));
+    const statesUpdated = response.data as unknown as DataStatesModel;
+    setStates(
+      statesUpdated.sort((a, b) => a.description.localeCompare(b.description))
+    );
   }
 
   async function getCities(state_code: string) {
     setIsLoadingCities(true);
     const response = await getAllCities();
-    let citiesUpdated = response.data.data as DataCitiesModel[];
+    let citiesUpdated = response.data as unknown as DataCitiesModel[];
     citiesUpdated = citiesUpdated.filter(
       (city: DataCitiesModel) => city.state_code === state_code
     );
@@ -81,8 +87,9 @@ export default function NewSpecialistPage() {
   }
 
   async function getSpecialities() {
-    const response = await getAllSpecialties();
-    const specialtiesUpdated = response.data.data as DataSpecialtiesModel[];
+    const response = await getSpecialtiesWithoutPagination();
+    const specialtiesUpdated =
+      response.data as unknown as DataSpecialtiesModel[];
     setSpecialties(
       specialtiesUpdated
         .slice()
@@ -91,8 +98,8 @@ export default function NewSpecialistPage() {
   }
 
   async function getUnits() {
-    const response = await getAllUnits();
-    const unitsUpdated = response.data.data as DataUnitsModel[];
+    const response = await getAllUnitsWithoutPagination();
+    const unitsUpdated = response.data as unknown as DataUnitsModel[];
     setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
   }
 
@@ -100,16 +107,28 @@ export default function NewSpecialistPage() {
     getCities(selectedStateCode.toString());
   };
 
-  const handleCheckboxChange = (unitId: number) => {
-    if (selectedUnits.includes(unitId)) {
-      setSelectedUnits(selectedUnits.filter((id) => id !== unitId));
+  async function getUnitsSelected(
+    data: DataSpecialistsModel[] | DataSpecialistsModel | null = null
+  ) {
+    if (Array.isArray(data)) {
+      const unitsSelectedUpdated = [...unitsSelected];
+      data.forEach((specialist: DataSpecialistsModel) => {
+        specialist.units.forEach((unit: any) => {
+          unitsSelectedUpdated.push(unit.id);
+        });
+      });
+      setUnitsSelected(unitsSelectedUpdated);
     } else {
-      setSelectedUnits([...selectedUnits, unitId]);
+      const unitsSelectedUpdated = [...unitsSelected];
+      data?.units.forEach((unit: any) => {
+        unitsSelectedUpdated.push(unit.id);
+      });
+      setUnitsSelected(unitsSelectedUpdated);
     }
-  };
+  }
 
   async function onSubmit(data: DataProps) {
-    const status = Number(data.status) - 1;
+    getUnitsSelected();
     const newSpecialist: DataSpecialistsModel = {
       cpf: data.cpf.toString(),
       name: data.name.toString(),
@@ -123,9 +142,9 @@ export default function NewSpecialistPage() {
       lot: data.lot?.toString(),
       complement: data.complement?.toString(),
       citie_code: data.citieCode.toString(),
-      status: status,
-      specialties: Number(data.speciality),
-      units: selectedUnits
+      status: Number(data.status) - 1,
+      specialties: speciatiesSelected,
+      units: unitsSelected
     };
 
     const response = await createSpecialist(newSpecialist);
@@ -133,7 +152,7 @@ export default function NewSpecialistPage() {
       setShowModalSuccess(true);
       setTimeout(() => {
         router.back();
-      }, 3500);
+      }, 3000);
     }
   }
 
@@ -153,6 +172,7 @@ export default function NewSpecialistPage() {
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderCPF}
+              label={Strings.labelCPF}
               type="text"
               name="cpf"
               mask={'cpfCnpj'}
@@ -164,6 +184,7 @@ export default function NewSpecialistPage() {
             />
             <InputForm
               placeholder={Strings.placeholderName}
+              label={Strings.labelName}
               type="text"
               name="name"
               control={control}
@@ -171,19 +192,11 @@ export default function NewSpecialistPage() {
               style={{ height: '40px', padding: '22px' }}
               error={errors.name?.message}
             />
-            {/* <InputForm
-              placeholder={Strings.placeholderResponsable}
-              type="text"
-              name="profile"
-              control={control}
-              containerStyle={{ width: '32.5%' }}
-              style={{ height: '40px', padding: '22px' }}
-              error={errors.responsible?.message}
-            /> */}
           </div>
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderEmail}
+              label={Strings.labelEmail}
               type="email"
               name="email"
               control={control}
@@ -192,7 +205,8 @@ export default function NewSpecialistPage() {
               error={errors.email?.message}
             />
             <InputForm
-              placeholder={Strings.placeholderPhonePrimay}
+              placeholder={Strings.placeholderPhonePrimary}
+              label={Strings.labelPhone}
               type="text"
               name="phonePrimary"
               control={control}
@@ -202,6 +216,7 @@ export default function NewSpecialistPage() {
               error={errors.phonePrimary?.message}
             />
             <InputForm
+              label={Strings.labelPhone}
               placeholder={Strings.placeholderPhoneSecondary}
               type="text"
               name="phoneSecondary"
@@ -215,9 +230,11 @@ export default function NewSpecialistPage() {
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderZipCode}
+              label={Strings.labelZipCode}
               type="text"
               name="zipCode"
               mask={'cep'}
+              containerStyle={{ width: '10%' }}
               maxLength={9}
               control={control}
               style={{ height: '40px', padding: '22px' }}
@@ -225,15 +242,19 @@ export default function NewSpecialistPage() {
             />
             <InputForm
               placeholder={Strings.placeholderStreet}
+              label={Strings.labelStreet}
               type="text"
               name="street"
+              containerStyle={{ width: '30%' }}
               control={control}
               style={{ height: '40px', padding: '22px' }}
               error={errors.street?.message}
             />
             <InputForm
               placeholder={Strings.placeholderNumber}
+              label={Strings.labelNumber}
               type="text"
+              containerStyle={{ width: '10%' }}
               name="number"
               control={control}
               style={{ height: '40px', padding: '22px' }}
@@ -241,7 +262,9 @@ export default function NewSpecialistPage() {
             />
             <InputForm
               placeholder={Strings.placeholderBlock}
+              label={Strings.labelBlock}
               type="text"
+              containerStyle={{ width: '10%' }}
               name="block"
               control={control}
               style={{ height: '40px', padding: '22px' }}
@@ -249,7 +272,9 @@ export default function NewSpecialistPage() {
             />
             <InputForm
               placeholder={Strings.placeholderLot}
+              label={Strings.labelLot}
               type="text"
+              containerStyle={{ width: '10%' }}
               name="lot"
               control={control}
               style={{ height: '40px', padding: '22px' }}
@@ -257,7 +282,9 @@ export default function NewSpecialistPage() {
             />
             <InputForm
               placeholder={Strings.placeholderComplement}
+              label={Strings.labelComplement}
               type="text"
+              containerStyle={{ width: '20%' }}
               name="complement"
               control={control}
               error={errors.complement?.message}
@@ -272,32 +299,28 @@ export default function NewSpecialistPage() {
               <SelectForm
                 control={control}
                 name="state"
+                item={Strings.labelState}
                 data={states}
                 error={errors.state?.message}
                 onSelectChange={handleStateCode}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '25%' }}
               />
               <SelectForm
                 control={control}
+                item={Strings.labelCity}
                 name="citieCode"
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
                 error={errors.city?.message}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '25%' }}
               />
               <SelectForm
                 control={control}
+                item={Strings.status}
                 name="status"
                 data={statusGeneral}
                 error={errors.status?.message}
-                containerStyle={{ width: '50%' }}
-              />
-              <SelectForm
-                control={control}
-                name="speciality"
-                data={specialties !== null ? specialties : null}
-                error={errors.speciality?.message}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{ width: '15%' }}
               />
               <div style={{ height: '40px', minWidth: '20%' }}>
                 <Button type="cancel" title={Strings.resetPasswordSpecialist} />
@@ -323,13 +346,95 @@ export default function NewSpecialistPage() {
                             <input
                               type="checkbox"
                               className={styles.checkbox}
-                              checked={selectedUnits.includes(unit.id!)}
-                              onChange={() => handleCheckboxChange(unit.id!)}
+                              checked={unitsSelected?.indexOf(unit.id) !== -1}
+                              onChange={() => {
+                                if (unitsSelected?.includes(unit.id)) {
+                                  const unitsSelectedUpdated =
+                                    unitsSelected?.filter(
+                                      (unitSelected: number) =>
+                                        unitSelected !== unit.id
+                                    );
+                                  setUnitsSelected(unitsSelectedUpdated);
+                                  setQuantityUnitsSelected(
+                                    quantityUnitsSelected - 1
+                                  );
+                                } else {
+                                  const unitsSelectedUpdated = unitsSelected;
+                                  unitsSelectedUpdated?.push(unit.id);
+                                  setUnitsSelected(unitsSelectedUpdated);
+                                  setQuantityUnitsSelected(
+                                    quantityUnitsSelected + 1
+                                  );
+                                }
+                              }}
                             />
                           </label>
                         </td>
                         <td>{unit.name}</td>
                         <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={3}>Nenhuma unidade vinculada</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className={styles.divTableLinkedUnits}>
+              <table className={styles.tableLinkedUnits}>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>{Strings.pluralSpeciality}</th>
+                    <th>{Strings.status}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {specialties !== null && specialties.length > 0 ? (
+                    specialties.map((specialty: DataSpecialtiesModel) => (
+                      <tr key={specialty.id}>
+                        <td>
+                          <label className={styles.checkboxContainer}>
+                            <input
+                              type="checkbox"
+                              className={styles.checkbox}
+                              checked={
+                                speciatiesSelected?.indexOf(specialty.id) !== -1
+                              }
+                              onChange={() => {
+                                if (
+                                  speciatiesSelected?.includes(specialty.id)
+                                ) {
+                                  const speciatiesSelectedUpdated =
+                                    speciatiesSelected?.filter(
+                                      (specialtySelected: number) =>
+                                        specialtySelected !== specialty.id
+                                    );
+                                  setSpecialtiesSelected(
+                                    speciatiesSelectedUpdated
+                                  );
+                                  setQuantitySpecialtiesSelected(
+                                    quantitySpecialtiesSelected - 1
+                                  );
+                                } else {
+                                  const speciatiesSelectedUpdated =
+                                    speciatiesSelected;
+                                  speciatiesSelectedUpdated?.push(specialty.id);
+                                  setSpecialtiesSelected(
+                                    speciatiesSelectedUpdated
+                                  );
+                                  setQuantitySpecialtiesSelected(
+                                    quantitySpecialtiesSelected + 1
+                                  );
+                                }
+                              }}
+                            />
+                          </label>
+                        </td>
+                        <td>{specialty.description}</td>
+                        <td>{specialty.status === 0 ? 'Ativo' : 'Inativo'}</td>
                       </tr>
                     ))
                   ) : (

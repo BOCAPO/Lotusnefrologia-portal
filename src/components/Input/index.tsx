@@ -2,13 +2,11 @@ import React, { ChangeEvent } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 import { Icon, TypeIcon } from 'components/Icone';
-import { MediumText } from 'components/Text';
 
 import stylesCss from './input.module.css';
 
 import { styles } from './styles';
 
-import { Colors } from 'configs/Colors_default';
 import {
   cellPhoneMak,
   cepMask,
@@ -65,6 +63,7 @@ export function InputForm({
   readonly = false,
   getValue,
   control,
+  placeholder,
   style,
   type = 'text',
   ...rest
@@ -119,17 +118,17 @@ export function InputForm({
 
   return (
     <div style={containerStyle} className={stylesCss.container}>
-      {label && (
+      {/* {label && (
         <MediumText
           text={label}
           color={error ? Colors.redInvalid : Colors.gray90}
           bold={false}
         />
-      )}
+      )} */}
       <div
         style={{
           ...styles.inputContent,
-          ...(label && { marginTop: 12 }),
+          // ...(label && { marginTop: 12 }),
           ...(error && styles.inputContentError)
         }}
       >
@@ -148,18 +147,28 @@ export function InputForm({
             };
 
             return (
-              <input
-                ref={inputRef}
-                {...rest}
-                name={name}
-                maxLength={maxLength}
-                value={value}
-                readOnly={readonly}
-                style={style}
-                className={`${stylesCss.input} ${rest.className}`}
-                type={showInputContent ? type : 'password'}
-                onChange={handleChange}
-              />
+              <div className={stylesCss.inputGroup}>
+                <input
+                  ref={inputRef}
+                  {...rest}
+                  name={name}
+                  maxLength={maxLength}
+                  value={value}
+                  readOnly={readonly}
+                  style={style}
+                  placeholder={
+                    value === undefined || value === '' ? placeholder : ''
+                  }
+                  className={`${stylesCss.input} ${rest.className} ${stylesCss.custonInput}`}
+                  type={showInputContent ? type : 'password'}
+                  onChange={handleChange}
+                />
+                {value !== undefined && value !== '' && (
+                  <label htmlFor={name} className={stylesCss.inputLabel}>
+                    {label}
+                  </label>
+                )}
+              </div>
             );
           }}
         />

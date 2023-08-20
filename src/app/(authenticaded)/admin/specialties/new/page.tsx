@@ -160,10 +160,12 @@ export default function NewSpecialTyPage() {
                 containerStyle={{ width: '40%' }}
                 style={{ height: '40px' }}
                 placeholder={Strings.description}
+                label={Strings.description}
                 error={errors.specialty?.message?.toString()}
               />
               <SelectForm
                 control={control}
+                item={Strings.status}
                 name="status"
                 containerStyle={{ width: '25%' }}
                 error={errors.timeOfAttendance?.message?.toString()}

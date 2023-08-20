@@ -182,6 +182,7 @@ export default function EditUserPage() {
             <div style={{ marginBottom: '3vh' }}>
               <InputForm
                 placeholder={Strings.placeholderCPF}
+                label={Strings.labelCPF}
                 type="text"
                 name="cpf"
                 mask={'cpfCnpj'}
@@ -195,6 +196,7 @@ export default function EditUserPage() {
               <InputForm
                 placeholder={Strings.placeholderName}
                 type="text"
+                label={Strings.labelName}
                 name="name"
                 control={control}
                 containerStyle={{ width: '70%' }}
@@ -205,6 +207,7 @@ export default function EditUserPage() {
             <div style={{ marginBottom: '3vh' }}>
               <InputForm
                 placeholder={Strings.placeholderEmail}
+                label={Strings.labelEmail}
                 type="email"
                 name="email"
                 control={control}
@@ -213,8 +216,9 @@ export default function EditUserPage() {
                 error={errors.email?.message}
               />
               <InputForm
-                placeholder={Strings.placeholderPhonePrimay}
+                placeholder={Strings.placeholderPhonePrimary}
                 type="text"
+                label={Strings.labelPhone}
                 name="phonePrimary"
                 control={control}
                 mask={'phone'}
@@ -225,6 +229,7 @@ export default function EditUserPage() {
               <InputForm
                 placeholder={Strings.placeholderPhoneSecondary}
                 type="text"
+                label={Strings.labelPhone}
                 name="phoneSecondary"
                 control={control}
                 mask={'phone'}
@@ -236,6 +241,7 @@ export default function EditUserPage() {
             <div style={{ marginBottom: '3vh' }}>
               <InputForm
                 placeholder={Strings.placeholderZipCode}
+                label={Strings.labelZipCode}
                 type="text"
                 name="zipCode"
                 mask={'cep'}
@@ -247,6 +253,7 @@ export default function EditUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderStreet}
+                label={Strings.labelStreet}
                 type="text"
                 name="street"
                 control={control}
@@ -256,6 +263,7 @@ export default function EditUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderNumber}
+                label={Strings.labelNumber}
                 type="text"
                 name="number"
                 containerStyle={{ width: '10%' }}
@@ -265,6 +273,7 @@ export default function EditUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderBlock}
+                label={Strings.labelBlock}
                 type="text"
                 name="block"
                 containerStyle={{ width: '10%' }}
@@ -274,6 +283,7 @@ export default function EditUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderLot}
+                label={Strings.labelLot}
                 type="text"
                 containerStyle={{ width: '10%' }}
                 name="lot"
@@ -284,6 +294,8 @@ export default function EditUserPage() {
               <InputForm
                 placeholder={Strings.placeholderComplement}
                 type="text"
+                label={Strings.labelComplement}
+                containerStyle={{ width: '20%' }}
                 name="complement"
                 control={control}
                 error={errors.complement?.message}
@@ -298,12 +310,14 @@ export default function EditUserPage() {
                 <SelectForm
                   control={control}
                   name="state"
+                  item={Strings.labelState}
                   data={states}
                   error={errors.state?.message}
                   onSelectChange={handleStateCode}
                   containerStyle={{ width: '25%' }}
                 />
                 <SelectForm
+                  item={Strings.labelCity}
                   control={control}
                   name="cityCode"
                   data={cities !== null ? cities : null}
@@ -314,6 +328,7 @@ export default function EditUserPage() {
                 <SelectForm
                   control={control}
                   name="status"
+                  item={Strings.status}
                   data={statusGeneral}
                   error={errors.status?.message}
                   containerStyle={{ width: '25%' }}
