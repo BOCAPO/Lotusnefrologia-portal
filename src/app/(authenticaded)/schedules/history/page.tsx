@@ -27,6 +27,8 @@ import { getAllUnits } from 'services/units';
 export default function SchedulesPage(): JSX.Element {
   const [visible, setVisible] = React.useState(false);
   const [data, setData] = React.useState<any>(null);
+  const [quantityAppointments, setQuantityAppointments] =
+    React.useState<any>(0);
   const [specialists, setSpecialists] = React.useState<any>(null);
   const [patients, setPatients] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
@@ -39,11 +41,12 @@ export default function SchedulesPage(): JSX.Element {
     getAppointmentTags();
     getPatients();
     getUnits();
-  }, []);
+  }, [quantityAppointments]);
 
   async function getAppointments() {
     const response = await getAllAppointmentsWithSchedule('');
     const dataUpdated = response.data as ResponseGetModel;
+    setQuantityAppointments(dataUpdated?.data?.length);
     dataUpdated.data = dataUpdated?.data?.map((item: any) => {
       item.cpf = item.patient.cpf;
       item.patient = item.patient.name;
@@ -143,6 +146,7 @@ export default function SchedulesPage(): JSX.Element {
         show={visible}
         onHide={() => {
           setVisible(false);
+          setQuantityAppointments(quantityAppointments + 1);
         }}
         specialists={specialists !== null ? specialists : []}
         tags={tags !== null ? tags : []}
