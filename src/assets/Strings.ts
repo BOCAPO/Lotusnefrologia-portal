@@ -13,8 +13,8 @@ export const Strings = {
     'CPF',
     'Data',
     'Hora',
-    'Especialidade',
     'Especialista',
+    'Especialidade',
     'Unidade',
     'Status'
   ],
