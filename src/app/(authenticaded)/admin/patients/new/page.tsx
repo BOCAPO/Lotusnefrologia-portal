@@ -135,6 +135,7 @@ export default function NewPatientPage() {
               type="text"
               name="cpf"
               mask={'cpfCnpj'}
+              label={Strings.labelCPF}
               maxLength={14}
               control={control}
               error={errors.cpf?.message}
@@ -145,6 +146,7 @@ export default function NewPatientPage() {
               placeholder={Strings.placeholderName}
               type="text"
               name="name"
+              label={Strings.labelName}
               control={control}
               containerStyle={{ width: '40%' }}
               className={styles.inputNewPatient}
@@ -153,6 +155,7 @@ export default function NewPatientPage() {
             <SelectForm
               control={control}
               name="unit"
+              item={Strings.unity}
               data={units !== null ? units : null}
               error={errors.state?.message}
               containerStyle={{ width: '25%' }}
@@ -162,6 +165,7 @@ export default function NewPatientPage() {
             <InputForm
               placeholder={Strings.placeholderName}
               type="date"
+              label={Strings.labelBirthDate}
               name="birthDate"
               control={control}
               containerStyle={{ width: '22%' }}
@@ -172,15 +176,17 @@ export default function NewPatientPage() {
               placeholder={Strings.placeholderEmail}
               type="email"
               name="email"
+              label={Strings.labelEmail}
               control={control}
               className={styles.inputNewPatient}
               containerStyle={{ width: '40%' }}
               error={errors.email?.message}
             />
             <InputForm
-              placeholder={Strings.placeholderPhonePrimay}
+              placeholder={Strings.placeholderPhonePrimary}
               type="text"
               name="phonePrimary"
+              label={Strings.labelPhone}
               control={control}
               mask={'phone'}
               containerStyle={{ width: '15%' }}
@@ -190,6 +196,7 @@ export default function NewPatientPage() {
             <InputForm
               placeholder={Strings.placeholderPhoneSecondary}
               type="text"
+              label={Strings.labelPhone}
               name="phoneSecondary"
               control={control}
               mask={'phone'}
@@ -202,6 +209,8 @@ export default function NewPatientPage() {
             <InputForm
               placeholder={Strings.placeholderZipCode}
               type="text"
+              label={Strings.labelZipCode}
+              containerStyle={{ width: '10%' }}
               name="zipCode"
               mask={'cep'}
               maxLength={9}
@@ -212,6 +221,8 @@ export default function NewPatientPage() {
             <InputForm
               placeholder={Strings.placeholderStreet}
               type="text"
+              label={Strings.labelStreet}
+              containerStyle={{ width: '30%' }}
               name="street"
               control={control}
               className={styles.inputNewPatient}
@@ -219,7 +230,9 @@ export default function NewPatientPage() {
             />
             <InputForm
               placeholder={Strings.placeholderNumber}
+              label={Strings.labelNumber}
               type="text"
+              containerStyle={{ width: '10%' }}
               name="number"
               control={control}
               className={styles.inputNewPatient}
@@ -227,7 +240,9 @@ export default function NewPatientPage() {
             />
             <InputForm
               placeholder={Strings.placeholderBlock}
+              label={Strings.labelBlock}
               type="text"
+              containerStyle={{ width: '10%' }}
               name="block"
               control={control}
               className={styles.inputNewPatient}
@@ -235,7 +250,9 @@ export default function NewPatientPage() {
             />
             <InputForm
               placeholder={Strings.placeholderLot}
+              label={Strings.labelLot}
               type="text"
+              containerStyle={{ width: '10%' }}
               name="lot"
               control={control}
               className={styles.inputNewPatient}
@@ -243,8 +260,10 @@ export default function NewPatientPage() {
             />
             <InputForm
               placeholder={Strings.placeholderComplement}
+              label={Strings.labelComplement}
               type="text"
               name="complement"
+              containerStyle={{ width: '25%' }}
               control={control}
               error={errors.complement?.message}
               className={styles.inputNewPatient}
@@ -258,6 +277,7 @@ export default function NewPatientPage() {
               <SelectForm
                 control={control}
                 name="state"
+                item={Strings.labelState}
                 data={states}
                 error={errors.state?.message}
                 onSelectChange={handleStateCode}
@@ -265,6 +285,7 @@ export default function NewPatientPage() {
               />
               <SelectForm
                 control={control}
+                item={Strings.labelCity}
                 name="citieCode"
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
@@ -273,6 +294,7 @@ export default function NewPatientPage() {
               />
               <SelectForm
                 control={control}
+                item={Strings.status}
                 name="status"
                 data={statusGeneral}
                 error={errors.status?.message}

@@ -245,6 +245,7 @@ export default function EditSpecialistPage() {
                 placeholder={Strings.placeholderCPF}
                 type="text"
                 name="cpf"
+                label={Strings.labelCPF}
                 mask={'cpfCnpj'}
                 maxLength={14}
                 readonly={true}
@@ -255,6 +256,7 @@ export default function EditSpecialistPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderName}
+                label={Strings.labelName}
                 type="text"
                 name="name"
                 control={control}
@@ -266,6 +268,7 @@ export default function EditSpecialistPage() {
             <div style={{ marginBottom: '3vh' }}>
               <InputForm
                 placeholder={Strings.placeholderEmail}
+                label={Strings.labelEmail}
                 type="email"
                 name="email"
                 control={control}
@@ -274,7 +277,8 @@ export default function EditSpecialistPage() {
                 error={errors.email?.message}
               />
               <InputForm
-                placeholder={Strings.placeholderPhonePrimay}
+                placeholder={Strings.placeholderPhonePrimary}
+                label={Strings.labelPhone}
                 type="text"
                 name="phonePrimary"
                 control={control}
@@ -285,6 +289,7 @@ export default function EditSpecialistPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderPhoneSecondary}
+                label={Strings.labelPhone}
                 type="text"
                 name="phoneSecondary"
                 control={control}
@@ -297,9 +302,11 @@ export default function EditSpecialistPage() {
             <div style={{ marginBottom: '3vh' }}>
               <InputForm
                 placeholder={Strings.placeholderZipCode}
+                label={Strings.labelZipCode}
                 type="text"
                 name="zipCode"
                 mask={'cep'}
+                containerStyle={{ width: '10%' }}
                 maxLength={9}
                 control={control}
                 style={{ height: '40px', padding: '22px' }}
@@ -307,23 +314,29 @@ export default function EditSpecialistPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderStreet}
+                label={Strings.labelStreet}
                 type="text"
                 name="street"
+                containerStyle={{ width: '30%' }}
                 control={control}
                 style={{ height: '40px', padding: '22px' }}
                 error={errors.street?.message}
               />
               <InputForm
                 placeholder={Strings.placeholderNumber}
+                label={Strings.labelNumber}
                 type="text"
                 name="number"
+                containerStyle={{ width: '10%' }}
                 control={control}
                 style={{ height: '40px', padding: '22px' }}
                 error={errors.number?.message}
               />
               <InputForm
                 placeholder={Strings.placeholderBlock}
+                label={Strings.labelBlock}
                 type="text"
+                containerStyle={{ width: '10%' }}
                 name="block"
                 control={control}
                 style={{ height: '40px', padding: '22px' }}
@@ -331,6 +344,8 @@ export default function EditSpecialistPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderLot}
+                label={Strings.labelLot}
+                containerStyle={{ width: '10%' }}
                 type="text"
                 name="lot"
                 control={control}
@@ -339,8 +354,10 @@ export default function EditSpecialistPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderComplement}
+                label={Strings.labelComplement}
                 type="text"
                 name="complement"
+                containerStyle={{ width: '20%' }}
                 control={control}
                 error={errors.complement?.message}
                 style={{ height: '40px', padding: '22px' }}
@@ -353,6 +370,7 @@ export default function EditSpecialistPage() {
               >
                 <SelectForm
                   control={control}
+                  item={Strings.labelState}
                   name="state"
                   data={states}
                   error={errors.state?.message}
@@ -361,6 +379,7 @@ export default function EditSpecialistPage() {
                 />
                 <SelectForm
                   control={control}
+                  item={Strings.labelCity}
                   name="citieCode"
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
@@ -374,13 +393,6 @@ export default function EditSpecialistPage() {
                   error={errors.status?.message}
                   containerStyle={{ width: '25%' }}
                 />
-                {/* <SelectForm
-                  control={control}
-                  name="speciality"
-                  data={specialties !== null ? specialties : null}
-                  error={errors.speciality?.message}
-                  containerStyle={{ width: '19%' }}
-                /> */}
                 <div style={{ height: '40px', minWidth: '19%' }}>
                   <Button
                     type="cancel"

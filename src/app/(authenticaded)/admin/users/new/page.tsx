@@ -141,6 +141,7 @@ export default function NewUserPage() {
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderCPF}
+              label={Strings.labelCPF}
               type="text"
               name="cpf"
               mask={'cpfCnpj'}
@@ -152,6 +153,7 @@ export default function NewUserPage() {
             />
             <InputForm
               placeholder={Strings.placeholderName}
+              label={Strings.labelName}
               type="text"
               name="name"
               control={control}
@@ -159,17 +161,11 @@ export default function NewUserPage() {
               className={styles.inputNewUser}
               error={errors.name?.message}
             />
-            {/* <SelectForm
-              name="profile"
-              control={control}
-              containerStyle={{ width: '32.5%' }}
-              data={roles}
-              error={errors.profile?.message}
-            /> */}
           </div>
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderEmail}
+              label={Strings.labelEmail}
               type="email"
               name="email"
               control={control}
@@ -178,7 +174,8 @@ export default function NewUserPage() {
               error={errors.email?.message}
             />
             <InputForm
-              placeholder={Strings.placeholderPhonePrimay}
+              placeholder={Strings.placeholderPhonePrimary}
+              label={Strings.labelPhone}
               type="text"
               name="phonePrimary"
               control={control}
@@ -189,6 +186,7 @@ export default function NewUserPage() {
             />
             <InputForm
               placeholder={Strings.placeholderPhoneSecondary}
+              label={Strings.labelPhone}
               type="text"
               name="phoneSecondary"
               control={control}
@@ -201,9 +199,11 @@ export default function NewUserPage() {
           <div style={{ marginBottom: '3vh' }}>
             <InputForm
               placeholder={Strings.placeholderZipCode}
+              label={Strings.labelZipCode}
               type="text"
               name="zipCode"
               mask={'cep'}
+              containerStyle={{ width: '10%' }}
               maxLength={9}
               control={control}
               className={styles.inputNewUser}
@@ -211,8 +211,10 @@ export default function NewUserPage() {
             />
             <InputForm
               placeholder={Strings.placeholderStreet}
+              label={Strings.labelStreet}
               type="text"
               name="street"
+              containerStyle={{ width: '30%' }}
               control={control}
               className={styles.inputNewUser}
               error={errors.street?.message}
@@ -221,21 +223,27 @@ export default function NewUserPage() {
               placeholder={Strings.placeholderNumber}
               type="text"
               name="number"
+              label={Strings.labelNumber}
+              containerStyle={{ width: '10%' }}
               control={control}
               className={styles.inputNewUser}
               error={errors.number?.message}
             />
             <InputForm
               placeholder={Strings.placeholderBlock}
+              label={Strings.labelBlock}
               type="text"
               name="block"
+              containerStyle={{ width: '10%' }}
               control={control}
               className={styles.inputNewUser}
               error={errors.block?.message}
             />
             <InputForm
               placeholder={Strings.placeholderLot}
+              label={Strings.labelLot}
               type="text"
+              containerStyle={{ width: '10%' }}
               name="lot"
               control={control}
               className={styles.inputNewUser}
@@ -243,7 +251,9 @@ export default function NewUserPage() {
             />
             <InputForm
               placeholder={Strings.placeholderComplement}
+              label={Strings.labelComplement}
               type="text"
+              containerStyle={{ width: '20%' }}
               name="complement"
               control={control}
               error={errors.complement?.message}
@@ -257,6 +267,7 @@ export default function NewUserPage() {
             >
               <SelectForm
                 control={control}
+                item={Strings.labelState}
                 name="state"
                 data={states}
                 error={errors.state?.message}
@@ -265,6 +276,7 @@ export default function NewUserPage() {
               />
               <SelectForm
                 control={control}
+                item={Strings.labelCity}
                 name="cityCode"
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
@@ -273,6 +285,7 @@ export default function NewUserPage() {
               />
               <SelectForm
                 control={control}
+                item={Strings.status}
                 name="status"
                 data={statusGeneral}
                 error={errors.status?.message}

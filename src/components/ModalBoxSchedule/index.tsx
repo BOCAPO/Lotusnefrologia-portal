@@ -50,7 +50,6 @@ export default function ModalBoxSchedule({
   const [isLoadingSpecialties, setIsLoadingSpecialties] = React.useState(false);
   const [isVisibleListPatients, setIsVisibleListPatients] =
     React.useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [patient, setPatient] = React.useState<any>(null);
   const [filteredProducts, setFilteredProducts] = React.useState<any>(null);
   const [selectedUnit, setSelectedUnit] = React.useState<number>(0);
@@ -58,6 +57,7 @@ export default function ModalBoxSchedule({
   const [selectedDate, setSelectedDate] = React.useState<string>('');
   const [hours, setHours] = React.useState<any>(null);
   const [selectedScheduleId, setSelectedScheduleId] = React.useState<number>(0);
+  const [observation, setObservation] = React.useState<string>('');
 
   const {
     control,
@@ -130,7 +130,7 @@ export default function ModalBoxSchedule({
       specialty_id: 9,
       schedule_id: Number(selectedScheduleId),
       appointment_status: 1,
-      observation: 'Teste',
+      observation: observation,
       tag_id: '1',
       status: 0
     };
@@ -168,7 +168,7 @@ export default function ModalBoxSchedule({
               width: '70%',
               height: '40px'
             }}
-            item="unidade"
+            item={Strings.unity}
             data={units}
             error={errors.descriptionRequired?.message?.toString()}
             onSelectChange={handleGetUnit}
@@ -179,6 +179,7 @@ export default function ModalBoxSchedule({
           <InputForm
             control={control}
             placeholder={Strings.pacient}
+            label={Strings.pacient}
             type="text"
             containerStyle={{
               width: '100%',
@@ -259,6 +260,7 @@ export default function ModalBoxSchedule({
           <InputForm
             control={control}
             placeholder={Strings.date}
+            label={Strings.date}
             type="date"
             name="date"
             containerStyle={{
@@ -284,32 +286,18 @@ export default function ModalBoxSchedule({
               );
             })}
           </select>
-          {/* <select>
-            {isLoadingSpecialties ? (
-              <option value="">Carregando...</option>
-            ) : (
-              <>
-                <option value="">Selecione a especialidade</option>
-                {specialties &&
-                  specialties?.map((specialty: DataSpecialtiesModel) => {
-                    return (
-                      <option key={specialty.id} value={specialty.id}>
-                        {specialty.description}
-                      </option>
-                    );
-                  })}
-              </>
-            )}
-          </select> */}
         </div>
         <div className={styles.observation}>
           <textarea
-            placeholder="Observação"
+            placeholder={Strings.observation}
             className={styles.observationInput}
             name="observation"
             style={{
               width: '100%',
               fontSize: 12
+            }}
+            onChange={(event) => {
+              setObservation(event.target.value);
             }}
           ></textarea>
         </div>

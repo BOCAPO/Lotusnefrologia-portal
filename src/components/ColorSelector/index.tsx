@@ -6,6 +6,7 @@ import { DataAppoitmentTag } from 'models/DataAppoitmentTag';
 
 type Props = {
   colors: DataAppoitmentTag[];
+  tagSelected?: number;
 };
 
 function ColorSelector({ colors }: Props): JSX.Element {

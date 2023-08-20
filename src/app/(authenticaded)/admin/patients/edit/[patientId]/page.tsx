@@ -189,6 +189,7 @@ export default function EditPatientPage() {
               <InputForm
                 placeholder={Strings.placeholderCPF}
                 type="text"
+                label={Strings.labelCPF}
                 name="cpf"
                 mask={'cpfCnpj'}
                 readonly={true}
@@ -201,6 +202,7 @@ export default function EditPatientPage() {
               <InputForm
                 placeholder={Strings.placeholderName}
                 type="text"
+                label={Strings.labelName}
                 name="name"
                 control={control}
                 containerStyle={{ width: '40%' }}
@@ -209,6 +211,7 @@ export default function EditPatientPage() {
               />
               <SelectForm
                 control={control}
+                item={Strings.unity}
                 name="unit"
                 data={units !== null ? units : null}
                 error={errors.state?.message}
@@ -219,6 +222,7 @@ export default function EditPatientPage() {
               <InputForm
                 placeholder={Strings.placeholderName}
                 type="date"
+                label={Strings.labelBirthDate}
                 name="birthDate"
                 control={control}
                 containerStyle={{ width: '22%' }}
@@ -227,6 +231,7 @@ export default function EditPatientPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderEmail}
+                label={Strings.labelEmail}
                 type="email"
                 name="email"
                 control={control}
@@ -235,10 +240,11 @@ export default function EditPatientPage() {
                 error={errors.email?.message}
               />
               <InputForm
-                placeholder={Strings.placeholderPhonePrimay}
+                placeholder={Strings.placeholderPhonePrimary}
                 type="text"
                 name="phonePrimary"
                 control={control}
+                label={Strings.labelPhone}
                 mask={'phone'}
                 containerStyle={{ width: '15%' }}
                 className={styles.inputEditPatient}
@@ -248,6 +254,7 @@ export default function EditPatientPage() {
                 placeholder={Strings.placeholderPhoneSecondary}
                 type="text"
                 name="phoneSecondary"
+                label={Strings.labelPhone}
                 control={control}
                 mask={'phone'}
                 containerStyle={{ width: '15%' }}
@@ -257,6 +264,7 @@ export default function EditPatientPage() {
             </div>
             <div style={{ marginBottom: '3vh' }}>
               <InputForm
+                label={Strings.labelZipCode}
                 placeholder={Strings.placeholderZipCode}
                 type="text"
                 name="zipCode"
@@ -268,6 +276,7 @@ export default function EditPatientPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderStreet}
+                label={Strings.labelStreet}
                 type="text"
                 name="street"
                 control={control}
@@ -276,6 +285,7 @@ export default function EditPatientPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderNumber}
+                label={Strings.labelNumber}
                 type="text"
                 name="number"
                 control={control}
@@ -284,6 +294,7 @@ export default function EditPatientPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderBlock}
+                label={Strings.labelBlock}
                 type="text"
                 name="block"
                 control={control}
@@ -292,6 +303,7 @@ export default function EditPatientPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderLot}
+                label={Strings.labelLot}
                 type="text"
                 name="lot"
                 control={control}
@@ -300,6 +312,7 @@ export default function EditPatientPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderComplement}
+                label={Strings.labelComplement}
                 type="text"
                 name="complement"
                 control={control}
@@ -315,6 +328,7 @@ export default function EditPatientPage() {
                 <SelectForm
                   control={control}
                   name="state"
+                  item={Strings.labelState}
                   data={states}
                   error={errors.state?.message}
                   onSelectChange={handleStateCode}
@@ -322,6 +336,7 @@ export default function EditPatientPage() {
                 />
                 <SelectForm
                   control={control}
+                  item={Strings.labelCity}
                   name="cityCode"
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
@@ -330,6 +345,7 @@ export default function EditPatientPage() {
                 />
                 <SelectForm
                   control={control}
+                  item={Strings.status}
                   name="status"
                   data={statusGeneral}
                   error={errors.status?.message}
