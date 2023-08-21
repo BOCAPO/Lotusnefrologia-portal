@@ -108,6 +108,12 @@
         padding: 0 5%;
     }
     .buttonsHeader{
-        width: 35%;
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .buttonsHeader{
+        width: 50%;
     }
 }

@@ -69,7 +69,7 @@ export default function LoginPage() {
               control={control}
               name="login"
               mask="cpfCnpj"
-              label={Strings.placeholderCPF}
+              label={Strings.labelCPF}
               placeholder={Strings.placeholderCPF}
               maxLength={14}
               containerStyle={{ width: '100%' }}
