@@ -184,6 +184,7 @@ export default function ViewUserPage() {
                 placeholder={Strings.placeholderCPF}
                 type="text"
                 name="cpf"
+                label={Strings.labelCPF}
                 mask={'cpfCnpj'}
                 maxLength={14}
                 control={control}
@@ -193,6 +194,7 @@ export default function ViewUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderName}
+                label={Strings.labelName}
                 type="text"
                 name="name"
                 control={control}
@@ -204,6 +206,7 @@ export default function ViewUserPage() {
             <div style={{ marginBottom: '3vh' }}>
               <InputForm
                 placeholder={Strings.placeholderEmail}
+                label={Strings.labelEmail}
                 type="email"
                 name="email"
                 control={control}
@@ -212,7 +215,8 @@ export default function ViewUserPage() {
                 error={errors.email?.message}
               />
               <InputForm
-                placeholder={Strings.placeholderPhonePrimay}
+                placeholder={Strings.placeholderPhonePrimary}
+                label={Strings.labelPhone}
                 type="text"
                 name="phonePrimary"
                 control={control}
@@ -223,6 +227,7 @@ export default function ViewUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderPhoneSecondary}
+                label={Strings.labelPhone}
                 type="text"
                 name="phoneSecondary"
                 control={control}
@@ -237,6 +242,7 @@ export default function ViewUserPage() {
                 placeholder={Strings.placeholderZipCode}
                 type="text"
                 name="zipCode"
+                label={Strings.labelZipCode}
                 mask={'cep'}
                 maxLength={9}
                 containerStyle={{ width: '10%' }}
@@ -246,6 +252,7 @@ export default function ViewUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderStreet}
+                label={Strings.labelStreet}
                 type="text"
                 name="street"
                 containerStyle={{ width: '35%' }}
@@ -255,6 +262,7 @@ export default function ViewUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderNumber}
+                label={Strings.labelNumber}
                 type="text"
                 name="number"
                 containerStyle={{ width: '10%' }}
@@ -264,6 +272,7 @@ export default function ViewUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderBlock}
+                label={Strings.labelBlock}
                 type="text"
                 name="block"
                 containerStyle={{ width: '10%' }}
@@ -273,6 +282,7 @@ export default function ViewUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderLot}
+                label={Strings.labelLot}
                 type="text"
                 name="lot"
                 containerStyle={{ width: '10%' }}
@@ -282,6 +292,7 @@ export default function ViewUserPage() {
               />
               <InputForm
                 placeholder={Strings.placeholderComplement}
+                label={Strings.labelComplement}
                 type="text"
                 name="complement"
                 control={control}
@@ -297,6 +308,7 @@ export default function ViewUserPage() {
                 <SelectForm
                   control={control}
                   name="state"
+                  item={Strings.labelState}
                   data={states !== null ? states : null}
                   onSelectChange={handleStateCode}
                   error={errors.state?.message}
@@ -304,6 +316,7 @@ export default function ViewUserPage() {
                 />
                 <SelectForm
                   control={control}
+                  item={Strings.labelCity}
                   name="cityCode"
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
@@ -312,6 +325,7 @@ export default function ViewUserPage() {
                 />
                 <SelectForm
                   control={control}
+                  item={Strings.status}
                   name="status"
                   data={statusGeneral}
                   error={errors.status?.message}
