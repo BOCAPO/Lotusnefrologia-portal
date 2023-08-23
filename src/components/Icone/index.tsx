@@ -3,9 +3,11 @@
 import { PropsWithChildren, useState } from 'react';
 import {
   FiBell,
+  FiClock,
   FiExternalLink,
   FiEye,
   FiEyeOff,
+  FiMapPin,
   FiMoreVertical,
   FiPlus,
   FiSearch,
@@ -87,6 +89,14 @@ export const TypeIcon = {
   },
   Add: {
     icon: FiPlus,
+    alternativeIcon: null
+  },
+  Clock: {
+    icon: FiClock,
+    alternativeIcon: null
+  },
+  MapPin: {
+    icon: FiMapPin,
     alternativeIcon: null
   }
 };

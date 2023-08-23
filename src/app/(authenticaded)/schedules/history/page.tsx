@@ -114,7 +114,7 @@ export default function SchedulesPage(): JSX.Element {
         <div className={styles.headerHistory}>
           <div className={styles.btnAddSchedule}>
             <Button
-              title="Realizar Agendamento"
+              title={Strings.makeAppointment}
               type="secondary"
               onClick={() => {
                 setVisible(true);
@@ -122,7 +122,7 @@ export default function SchedulesPage(): JSX.Element {
             />
           </div>
           <div className={styles.searchBar}>
-            <input type="search" placeholder="Pesquisar" />
+            <input type="search" placeholder={Strings.search} />
             <div className={styles.iconSearch}>
               <Icon
                 typeIcon={TypeIcon.Search}

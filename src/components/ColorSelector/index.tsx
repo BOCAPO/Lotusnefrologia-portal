@@ -5,7 +5,7 @@ import styles from './colorselector.module.css'; // Estilos CSS
 import { DataAppoitmentTag } from 'models/DataAppoitmentTag';
 
 type Props = {
-  colors: DataAppoitmentTag[];
+  colors: DataAppoitmentTag[] | null;
   tagSelected?: number;
 };
 
