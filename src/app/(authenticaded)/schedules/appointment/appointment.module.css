@@ -3,12 +3,267 @@
     height: 75%;
     display: flex;
     margin: 3vh 5%;
-    flex-direction: column;
-    padding: 1% 5%;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
     background: #FFFFFF;
     overflow: hidden;
     position: relative;
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 9px;
+}
+
+.divListAppointments {
+    width: 60%;
+    padding: 2% 1%;
+}
+
+.btnNewAppointment{
+    height: 40px;
+    position: absolute;
+    top: 5vh;
+    left: 20%;
+}
+
+.divListAppointments ul {
+    border: none !important;
+    background-color: #F5F6FA !important;
+    width: 30%;
+    height: 40px;
+}
+
+.divListAppointments ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.divListAppointments ul li button {
+    border: none !important;
+    height: 32px;
+    width: 90%;
+    margin: 0% 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-family: 'Arial', sans-serif;
+    color: #212121;
+}
+
+.divListAppointments ul li button:focus, .divListAppointments ul li button:hover {
+    color: #A1C9A4 !important;
+}
+
+.itemListAppointments {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1% 2%;
+    border: 1px solid #EFEFEF;
+    border-radius: 3px;
+    margin-bottom: 2vh;
+}
+
+.itemListAppointmentsDate {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #EFEFEF;
+}
+
+.itemListAppointmentsHour {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.itemListAppointmentsHour div {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.itemListAppointmentsHour div p {
+    margin: 0 5%;
+}
+
+.itemListAppointmentSpecialist{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.itemListAppointmentSpecialist p{
+    margin: 1vh 0;
+}
+
+.divDetailsAppointment {
+    width: 40%;
+    height: 72vh;
+    padding: 2% 1%;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 0px 9px 9px 0px;
+}
+
+.divDetailsAppointment select {
+    height: 40px !important;
+}
+
+.divDetailsAppointment input {
+    height: 40px !important;
+    padding: 20px;
+}
+
+.internalDivDetailsAppointment {
+    width: 100%;
+    display: flex;
+    padding: 2%;
+    justify-content: space-between;
+}
+
+.btnsDetailsAppointments {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 2%;
+}
+
+.btnsDetailsAppointments button {
+    width: 100px !important;
+    min-width: 100px !important;
+    height: 36px !important;
+    margin: 0% 2%;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.textAreaDivDetailsAppointment {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 1vh;
+    border-radius: 6px;
+    padding: 3%;
+    border: 1px solid #E5E5E5;
+    resize: none;
+}
+
+.textAreaDivDetailsAppointment:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
+}
+
+.popoverContained {
+    width: 100px;
+    box-shadow: 0px 4px 8px #00000033;
+}
+
+.popoverOptions {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    cursor: pointer;
+}
+
+.popoverOptions div p {
+    margin: 0 5%;
+}
+
+.btnOptionsAppoitnment {
+    background-color: #EFEFEF !important;
+    border: none !important;
+    color: #212121 !important;
+    font-size: 12px !important;
+    font-family: 'Arial', sans-serif !important;
+    border-radius: 3px !important;
+    width: 80px !important;
+    height: 40px !important;
+}
+
+.btnOptionsAppoitnment:hover {
+    background-color: #CBEACF !important;
+}
+
+.btnOptionsAppoitnment:focus, .btnOptionsAppoitnment:active {
+    background-color: #A1C9A4 !important;
+    box-shadow: 0px 3px 6px #A1C9A47F !important;
+    outline: none !important;
+}
+
+.inputSearchAppointment {
+    width: 25%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    top: 5vh;
+    left: 30%;
+}
+
+.iconSearch {
+    position: absolute;
+    left: 2%;
+    top: 0.5vh;
+}
+
+.inputSearchAppointment input[type="search"] {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    border: none;
+    background: #F5F6FA;
+    padding: 0 10%;
+}
+
+.inputSearchAppointment input[type="search"]::placeholder {
+    color: #8C8E90;
+}
+
+.inputSearchAppointment input[type="search"]:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .bodyAppointments {
+        height: 78%;
+    }
+
+    .divListAppointments ul {
+        width: 35%;
+    }
+
+    .btnNewAppointment{
+        top: 6vh;
+        left: 25%;
+    }
+
+    .inputSearchAppointment{
+        top: 6vh;
+        left: 39%;
+        width: 20%;
+    }
+
+    .iconSearch{
+        top: 0.75vh;
+    }
+    
 }

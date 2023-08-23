@@ -59,6 +59,20 @@ export function SmallText(props: PropsVariation) {
   );
 }
 
+export function SmallText2(props: PropsVariation) {
+  return (
+    <Text
+      sizeFont={10}
+      lineHeight={10}
+      bold={props.bold}
+      text={props.text}
+      color={props.color}
+      style={props.style}
+      className={props.className}
+    />
+  );
+}
+
 export function LitteText(props: PropsVariation) {
   return (
     <Text
@@ -91,6 +105,20 @@ export function MediumText(props: PropsVariation) {
   return (
     <Text
       sizeFont={16}
+      lineHeight={18}
+      bold={props.bold}
+      text={props.text}
+      color={props.color}
+      className={props.className}
+      style={props.style}
+    />
+  );
+}
+
+export function MediumText2(props: PropsVariation) {
+  return (
+    <Text
+      sizeFont={18}
       lineHeight={18}
       bold={props.bold}
       text={props.text}

@@ -96,6 +96,7 @@ export const Strings = {
   cancel: 'Cancelar',
   edit: 'Editar',
   goBack: 'Voltar',
+  print: 'Imprimir',
   insertUnit: 'Cadastrar Unidade',
   insertUser: 'Cadastrar Usuário',
   insertSpecialist: 'Cadastrar Especialista',
@@ -206,5 +207,18 @@ export const Strings = {
   headersResponseNewSpecialties: ['description', 'status'],
   erase: 'Excluir',
   notInformed: 'Não Informado',
-  unity: 'Unidade'
+  unity: 'Unidade',
+  appointmentsConfirmed: 'Consultas confirmadas',
+  appointmentsDetailts: 'Detalhes do Agendamento',
+  placeholderPatient: 'Paciente',
+  labelPatient: 'Paciente',
+  placeholderDate: 'Data',
+  labelDate: 'Data',
+  placeholderHour: 'Horário',
+  labelHour: 'Horário',
+  aprove: 'Aprovar',
+  change: 'Alterar',
+  delete: 'Excluir',
+  makeAppointment: 'Realizar Agendamento',
+  noAppointments: 'Não há agendamentos'
 };

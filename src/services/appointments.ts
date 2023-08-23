@@ -20,3 +20,7 @@ export async function getAllAppointmentsWithSchedule(date?: string) {
   }
   return await getJson('/appointments/scheduled');
 }
+
+export async function getAppointmentsMaxDate(max: number = 30) {
+  return await getJson(`/appointments/history/${max}`);
+}
