@@ -54,10 +54,11 @@ export default function ModalBoxSchedule({
   const [filteredProducts, setFilteredProducts] = React.useState<any>(null);
   const [selectedUnit, setSelectedUnit] = React.useState<number>(0);
   const [selectedSpecialist, setSelectedSpecialist] = React.useState<number>(0);
-  const [selectedDate, setSelectedDate] = React.useState<string>('');
+  const [selectedSpecialty, setSelectedSpecialty] = React.useState<number>(0);
   const [hours, setHours] = React.useState<any>(null);
   const [selectedScheduleId, setSelectedScheduleId] = React.useState<number>(0);
   const [observation, setObservation] = React.useState<string>('');
+  const [selectedColor, setSelectedColor] = React.useState<string>('');
 
   const {
     control,
@@ -112,9 +113,12 @@ export default function ModalBoxSchedule({
     setSelectedSpecialist(selectedSpecialistCode);
   };
 
+  const handleGetSpecialty = (selectedSpecialtyCode: any) => {
+    setSelectedSpecialty(selectedSpecialtyCode);
+  };
+
   const handleDataSelected = (event: React.FocusEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setSelectedDate(value);
     if (selectedSpecialist !== 0 && value !== '') getHoursSchedule(value);
   };
 
@@ -122,26 +126,26 @@ export default function ModalBoxSchedule({
     setSelectedScheduleId(scheduleId);
   };
 
+  const handleColorChange = (selectedColor: any) => {
+    setSelectedColor(selectedColor);
+  };
+
   async function handleSubmitAppoitment(data: DataProps) {
     const newAppoitment = {
       specialist_id: Number(selectedSpecialist),
       patient_id: patient.id as number,
       unit_id: Number(selectedUnit),
-      specialty_id: 9,
+      specialty_id: selectedSpecialty,
       schedule_id: Number(selectedScheduleId),
       appointment_status: 1,
       observation: observation,
-      tag_id: '1',
+      tag_id: selectedColor,
       status: 0
     };
 
-    try {
-      const response = await createAppointment(newAppoitment);
-      if (response !== null) {
-        onHide();
-      }
-    } catch (error) {
-      //console.log('Error ao criar agendamento: ', error);
+    const response = await createAppointment(newAppoitment);
+    if (response !== null) {
+      onHide();
     }
   }
 
@@ -173,7 +177,7 @@ export default function ModalBoxSchedule({
             error={errors.descriptionRequired?.message?.toString()}
             onSelectChange={handleGetUnit}
           />
-          <ColorSelector colors={tags} />
+          <ColorSelector colors={tags} onColorChange={handleColorChange} />
         </div>
         <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
           <InputForm
@@ -238,7 +242,11 @@ export default function ModalBoxSchedule({
               );
             })}
           </select>
-          <select>
+          <select
+            onChange={(event) => {
+              handleGetSpecialty(event.target.value);
+            }}
+          >
             {isLoadingSpecialties ? (
               <option value="">Carregando...</option>
             ) : (

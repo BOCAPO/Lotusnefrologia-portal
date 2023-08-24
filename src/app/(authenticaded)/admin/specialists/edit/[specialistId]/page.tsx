@@ -73,7 +73,7 @@ export default function EditSpecialistPage() {
     const specialist = response.data as DataSpecialistsModel;
     getCities(
       '',
-      specialist.citie_code !== undefined ? specialist.citie_code : ''
+      specialist.city_code !== undefined ? specialist.city_code : ''
     );
     getUnitsSelected(specialist);
     getSpecialtiesSelected(specialist);
@@ -82,7 +82,7 @@ export default function EditSpecialistPage() {
     setValue('email', specialist.email);
     setValue('phonePrimary', specialist.phone_primary);
     setValue('phoneSecondary', specialist.phone_secondary);
-    setValue('citieCode', specialist.citie_code);
+    setValue('citieCode', specialist.city_code);
     setValue('zipCode', specialist.zip_code);
     setValue('street', specialist.street);
     setValue('number', specialist.number);
@@ -95,7 +95,7 @@ export default function EditSpecialistPage() {
   }
 
   async function onSubmit(data: DataProps) {
-    const editSpecialist: DataSpecialistsModel = {
+    const updateSpecialist: DataSpecialistsModel = {
       id: Number(params?.specialistId),
       cpf: data.cpf.toString(),
       name: data.name.toString(),
@@ -109,14 +109,14 @@ export default function EditSpecialistPage() {
       lot: data.lot.toString(),
       complement: data.complement.toString(),
       units: unitsSelected,
-      citie_code: data.citieCode.toString(),
+      city_code: data.citieCode.toString(),
       specialties: speciatiesSelected,
       status: Number(data.status) - 1
     };
 
     const response = await updateSpecialistById(
       Number(params?.specialistId),
-      editSpecialist
+      updateSpecialist
     );
     if (response !== null) {
       setShowModalSuccess(true);

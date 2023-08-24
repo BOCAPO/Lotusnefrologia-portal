@@ -33,11 +33,31 @@ export default function UsersListPage() {
     if (page === 1) {
       const response = await getAllUsers();
       const data = response.data as ResponseGetModel;
+      data.data = data.data.sort((a: any, b: any) => {
+        if (a.id < b.id) {
+          return -1;
+        }
+        if (a.id > b.id) {
+          return 1;
+        }
+        return 0;
+      });
+
       setData(data);
       setQuantityUsers(data.total);
     } else {
       const response = await getUsersPerPage(page);
       const data = response.data as ResponseGetModel;
+      data.data = data.data.sort((a: any, b: any) => {
+        if (a.id < b.id) {
+          return -1;
+        }
+        if (a.id > b.id) {
+          return 1;
+        }
+        return 0;
+      });
+
       setData(data);
       setQuantityUsers(data.total);
     }

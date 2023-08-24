@@ -220,5 +220,7 @@ export const Strings = {
   change: 'Alterar',
   delete: 'Excluir',
   makeAppointment: 'Realizar Agendamento',
-  noAppointments: 'Não há agendamentos'
+  noAppointmentsScheduled: 'Não há agendamentos agendados',
+  noAppointmentsPendent: 'Não há agendamentos Pendentes',
+  noAppointmentsCanceled: 'Não há agendamentos Cancelados'
 };

@@ -141,7 +141,7 @@ export default function NewSpecialistPage() {
       block: data.block?.toString(),
       lot: data.lot?.toString(),
       complement: data.complement?.toString(),
-      citie_code: data.citieCode.toString(),
+      city_code: data.citieCode.toString(),
       status: Number(data.status) - 1,
       specialties: speciatiesSelected,
       units: unitsSelected

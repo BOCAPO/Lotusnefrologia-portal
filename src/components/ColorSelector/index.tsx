@@ -7,10 +7,21 @@ import { DataAppoitmentTag } from 'models/DataAppoitmentTag';
 type Props = {
   colors: DataAppoitmentTag[] | null;
   tagSelected?: number;
+  onColorChange?: (selectedColor: string) => void;
 };
 
-function ColorSelector({ colors }: Props): JSX.Element {
-  const [selectedColor, setSelectedColor] = useState('');
+function ColorSelector({
+  colors,
+  tagSelected,
+  onColorChange
+}: Props): JSX.Element {
+  const [selectedColor, setSelectedColor] = useState(() => {
+    if (tagSelected !== undefined && colors) {
+      const selectedTag = colors.find((color) => color.id === tagSelected);
+      return selectedTag ? selectedTag.color : '';
+    }
+    return '';
+  });
   const [isVisibleSelector, setIsVisibleSelector] = useState(false);
   const colorOption: any[] = [];
 
@@ -22,7 +33,8 @@ function ColorSelector({ colors }: Props): JSX.Element {
   });
 
   const handleColorChange = (newColor: any) => {
-    setSelectedColor(newColor);
+    setSelectedColor(newColor.value);
+    onColorChange && onColorChange(newColor.id);
   };
 
   return (
@@ -55,7 +67,7 @@ function ColorSelector({ colors }: Props): JSX.Element {
                 selectedColor === color.value ? styles.selected : ''
               }`}
               onClick={() => {
-                handleColorChange(color.value);
+                handleColorChange(color);
                 setIsVisibleSelector(false);
               }}
             >
