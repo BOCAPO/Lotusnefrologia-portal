@@ -24,10 +24,9 @@ import { DataCitiesModel } from 'models/DataCitiesModel';
 import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
-import { Prefs } from 'repository/Prefs';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
-import { getAllUnits } from 'services/units';
+import { getAllUnitsWithoutPagination } from 'services/units';
 import { getUserById, updateUserById } from 'services/users';
 import { statusGeneral } from 'utils/enums';
 
@@ -91,11 +90,39 @@ export default function EditUserPage() {
     setIsLoadingCities(false);
   }
 
+  async function getUnits() {
+    const response = await getAllUnitsWithoutPagination();
+    const unitsUpdated = response.data as unknown as DataUnitsModel[];
+    setUnits(unitsUpdated);
+  }
+
+  const handleStateCode = (selectedStateCode: any) => {
+    getCities(selectedStateCode.toString());
+  };
+
+  async function getUnitsSelected(data: DataUserModel[] | DataUserModel) {
+    if (Array.isArray(data)) {
+      const unitsSelectedUpdated = [...unitsSelected];
+      data.forEach((specialist: DataUserModel) => {
+        specialist.units.forEach((unit: any) => {
+          unitsSelectedUpdated.push(unit.id);
+        });
+      });
+      setUnitsSelected(unitsSelectedUpdated);
+    } else {
+      const unitsSelectedUpdated = [...unitsSelected];
+      data.units.forEach((unit: any) => {
+        unitsSelectedUpdated.push(unit.id);
+      });
+      setUnitsSelected(unitsSelectedUpdated);
+    }
+  }
+
   async function getUser() {
     const response = await getUserById(Number(params?.userId));
     const dataUser = response.data as DataUserModel;
     getCities(dataUser.city_code !== undefined ? dataUser.city_code : '');
-    getUnitsSelected();
+    getUnitsSelected(dataUser);
 
     if (dataUser !== null) {
       setValue('cpf', dataUser.cpf);
@@ -111,28 +138,8 @@ export default function EditUserPage() {
       setValue('complement', dataUser.complement!);
       setValue('cityCode', dataUser.city_code);
       setValue('status', dataUser.status + 1);
-      setUnitsSelected(dataUser.units);
     }
     setLoading(false);
-  }
-
-  async function getUnits() {
-    const response = await getAllUnits();
-    const unitsUpdated = response.data.data as DataUnitsModel[];
-    setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
-  }
-
-  const handleStateCode = (selectedStateCode: any) => {
-    getCities(selectedStateCode.toString());
-  };
-
-  async function getUnitsSelected() {
-    const unitsLinked = await Prefs.getUnits();
-    JSON.parse(unitsLinked!).forEach((unit: DataUnitsModel) => {
-      const unitsSelectedUpdated = unitsSelected;
-      unitsSelectedUpdated?.push(unit.id);
-      setUnitsSelected(unitsSelectedUpdated);
-    });
   }
 
   async function onSubmit(data: DataProps) {
@@ -159,7 +166,7 @@ export default function EditUserPage() {
       setShowModalSuccess(true);
       setTimeout(() => {
         router.back();
-      }, 3500);
+      }, 2500);
     }
   }
 

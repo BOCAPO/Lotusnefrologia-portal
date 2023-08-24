@@ -24,7 +24,7 @@ import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
-import { getAllUnits } from 'services/units';
+import { getAllUnitsWithoutPagination } from 'services/units';
 import { createUser } from 'services/users';
 import { statusGeneral } from 'utils/enums';
 
@@ -80,8 +80,8 @@ export default function NewUserPage() {
   }
 
   async function getUnits() {
-    const response = await getAllUnits();
-    const unitsUpdated = response.data.data as DataUnitsModel[];
+    const response = await getAllUnitsWithoutPagination();
+    const unitsUpdated = response.data as unknown as DataUnitsModel[];
     setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
   }
 

@@ -7,10 +7,26 @@
     align-items: flex-start;
     justify-content: flex-start;
     background: #FFFFFF;
-    overflow: hidden;
+    overflow-x: hidden;
     position: relative;
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 9px;
+}
+
+.bodyAppointments::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: #00555B;
+    border-radius: 5px;
+}
+
+.bodyAppointments::-webkit-scrollbar-thumb {
+    background: #A1E2A5;
+    border-radius: 5px;
+}
+
+.bodyAppointments::-webkit-scrollbar-track {
+    border-radius: 5px;
 }
 
 .divListAppointments {
@@ -18,7 +34,7 @@
     padding: 2% 1%;
 }
 
-.btnNewAppointment{
+.btnNewAppointment {
     height: 40px;
     position: absolute;
     top: 5vh;
@@ -65,6 +81,7 @@
     border: 1px solid #EFEFEF;
     border-radius: 3px;
     margin-bottom: 2vh;
+    cursor: pointer;
 }
 
 .itemListAppointmentsDate {
@@ -77,7 +94,7 @@
 }
 
 .itemListAppointmentsHour {
-    width: 15%;
+    width: 25%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -97,14 +114,14 @@
     margin: 0 5%;
 }
 
-.itemListAppointmentSpecialist{
+.itemListAppointmentSpecialist {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.itemListAppointmentSpecialist p{
+.itemListAppointmentSpecialist p {
     margin: 1vh 0;
 }
 
@@ -117,7 +134,7 @@
 }
 
 .divDetailsAppointment select {
-    height: 40px !important;
+    height: 42px !important;
 }
 
 .divDetailsAppointment input {
@@ -170,6 +187,7 @@
 .popoverContained {
     width: 100px;
     box-shadow: 0px 4px 8px #00000033;
+    z-index: 9999;
 }
 
 .popoverOptions {
@@ -180,6 +198,10 @@
     justify-content: center;
     height: 25px;
     cursor: pointer;
+}
+
+.popoverOptions p{
+    background-color: #CBEACF;
 }
 
 .popoverOptions div p {
@@ -242,28 +264,35 @@
     outline: none;
 }
 
+.noAppointments {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20vh;
+}
+
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .bodyAppointments {
         height: 78%;
     }
 
     .divListAppointments ul {
-        width: 35%;
+        width: 37%;
     }
 
-    .btnNewAppointment{
+    .btnNewAppointment {
         top: 6vh;
         left: 25%;
     }
 
-    .inputSearchAppointment{
+    .inputSearchAppointment {
         top: 6vh;
         left: 39%;
         width: 20%;
     }
 
-    .iconSearch{
+    .iconSearch {
         top: 0.75vh;
     }
-    
+
 }
