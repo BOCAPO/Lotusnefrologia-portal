@@ -222,5 +222,6 @@ export const Strings = {
   makeAppointment: 'Realizar Agendamento',
   noAppointmentsScheduled: 'Não há agendamentos agendados',
   noAppointmentsPendent: 'Não há agendamentos Pendentes',
-  noAppointmentsCanceled: 'Não há agendamentos Cancelados'
+  noAppointmentsCanceled: 'Não há agendamentos Cancelados',
+  clear: 'Limpar'
 };

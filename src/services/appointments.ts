@@ -1,4 +1,4 @@
-import { getJson, postJson } from '../http';
+import { getJson, postJson, putJson } from '../http';
 
 import { DataAppoitmensModel } from 'models/DataAppoitmensModel';
 
@@ -23,4 +23,11 @@ export async function getAllAppointmentsWithSchedule(date?: string) {
 
 export async function getAppointmentsMaxDate(max: number = 30) {
   return await getJson(`/appointments/history/${max}`);
+}
+
+export async function updateAppointment(
+  id: number,
+  appointment: DataAppoitmensModel
+) {
+  return await putJson(`/appointments/${id}`, appointment);
 }

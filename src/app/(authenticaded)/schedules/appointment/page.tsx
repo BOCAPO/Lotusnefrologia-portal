@@ -1,9 +1,6 @@
 'use client';
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Overlay from 'react-bootstrap/Overlay';
-import Popover from 'react-bootstrap/Popover';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { useForm } from 'react-hook-form';
@@ -31,10 +28,12 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import { DataAppoitmensModel } from 'models/DataAppoitmensModel';
 import { ResponseSchedulesModel } from 'models/ResponseSchedulesModel';
 import {
   getAllAppointmensTags,
-  getAppointmentsMaxDate
+  getAppointmentsMaxDate,
+  updateAppointment
 } from 'services/appointments';
 import { getHoursBySpecialistAndDateAndUnit } from 'services/schedules';
 import { statusAppointment } from 'utils/enums';
@@ -57,17 +56,15 @@ export default function AppointmentsPage(): JSX.Element {
   const [hours, setHours] = React.useState<any>(null);
   const [itemSelected, setItemSelected] = React.useState<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [selectedScheduleId, setSelectedScheduleId] = React.useState<number>(0);
   const [optionsStatusAppointment, setOptionsStatusAppointment] =
     React.useState<any>(null);
+  const [selectedColor, setSelectedColor] = React.useState<string>('');
 
-  const handleClick = (event: any) => {
-    setShow(!show);
-    setTarget(event.target);
-  };
   const {
     control,
     setValue,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -106,6 +103,7 @@ export default function AppointmentsPage(): JSX.Element {
   }
 
   function getAppointment(item: any) {
+    console.log(item);
     setValue('patient', item.patient.name);
     setValue('status', item.appointment_status);
     setValue('specialist', item.specialist_name);
@@ -131,11 +129,12 @@ export default function AppointmentsPage(): JSX.Element {
 
   async function getHoursSchedule(date: string) {
     const response = await getHoursBySpecialistAndDateAndUnit(
-      itemSelected?.specialty_id,
+      itemSelected?.schecule?.specialist_id,
       date,
       itemSelected?.unit?.id
     );
     const responseHours = response.data[0] as ResponseSchedulesModel;
+    console.log(responseHours?.schedules);
     setHours(responseHours?.schedules);
   }
 
@@ -146,6 +145,7 @@ export default function AppointmentsPage(): JSX.Element {
   };
 
   const handleSelectStatus = (value: string) => {
+    console.log(value);
     switch (value) {
       case '1':
         setOptionsStatusAppointment('Agendado');
@@ -175,6 +175,49 @@ export default function AppointmentsPage(): JSX.Element {
     setItemSelected(null);
   };
 
+  const handleGetScheduleId = (scheduleId: any) => {
+    setSelectedScheduleId(scheduleId);
+  };
+
+  const handleColorChange = (selectedColor: any) => {
+    setSelectedColor(selectedColor);
+  };
+
+  async function handleCancelAppointment() {
+    itemSelected.appointment_status = 2;
+    itemSelected.observation = inputObservation;
+    const response = await updateAppointment(itemSelected.id, itemSelected);
+
+    if (response !== null) {
+      setQuantityAppointments(quantityAppointments - 1);
+      handleClean();
+    }
+  }
+
+  async function handleSaveAppointment() {
+    const objUpdateAppointment = {
+      specialist_id: itemSelected.schecule.specialist_id as number,
+      patient_id: itemSelected.patient.id as number,
+      unit_id: itemSelected.unit.id as number,
+      specialty_id: itemSelected.specialty_id as number,
+      schedule_id: selectedScheduleId as number,
+      appointment_status: Number(optionsStatusAppointment) - 1,
+      observation: inputObservation,
+      tag_id: selectedColor,
+      status: 0
+    } as DataAppoitmensModel;
+
+    const response = await updateAppointment(
+      itemSelected.id,
+      objUpdateAppointment
+    );
+
+    if (response !== null) {
+      setQuantityAppointments(quantityAppointments - 1);
+      handleClean();
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -199,7 +242,9 @@ export default function AppointmentsPage(): JSX.Element {
                 <SpinnerLoading />
               ) : data !== null &&
                 data.filter(
-                  (item: any) => item.appointment_status === 'Agendado'
+                  (item: any) =>
+                    item.appointment_status === 'Agendado' ||
+                    item.appointment_status === 'Reagendado'
                 ).length > 0 ? (
                 data?.map((item: any, index: number) => {
                   return (
@@ -254,6 +299,20 @@ export default function AppointmentsPage(): JSX.Element {
                       </div>
                       <div className={styles.itemListAppointmentSpecialist}>
                         <LitteText
+                          text={Strings.specialist}
+                          color={Colors.gray90}
+                          bold={false}
+                          style={{ lineHeight: '2px' }}
+                        />
+                        <LitteText
+                          text={Strings.speciality}
+                          color={Colors.gray90}
+                          bold={false}
+                          style={{ lineHeight: '2px' }}
+                        />
+                      </div>
+                      <div className={styles.itemListAppointmentSpecialist}>
+                        <LitteText
                           text={item.nameSpecialist}
                           color={Colors.gray90}
                           bold={false}
@@ -265,63 +324,6 @@ export default function AppointmentsPage(): JSX.Element {
                           bold={false}
                           style={{ lineHeight: '2px' }}
                         />
-                      </div>
-                      <div ref={ref}>
-                        <Button
-                          onClick={handleClick}
-                          className={styles.btnOptionsAppoitnment}
-                        >
-                          {Strings.edit}
-                        </Button>
-                        <Overlay
-                          show={show}
-                          target={target}
-                          placement="left"
-                          container={ref}
-                          containerPadding={20}
-                          onHide={() => setShow(false)}
-                          rootClose={true}
-                        >
-                          <Popover
-                            id="popover-contained"
-                            className={styles.popoverContained}
-                          >
-                            <Popover.Body>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.aprove}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.change}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.cancel}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.delete}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                            </Popover.Body>
-                          </Popover>
-                        </Overlay>
                       </div>
                     </div>
                   );
@@ -391,6 +393,20 @@ export default function AppointmentsPage(): JSX.Element {
                       </div>
                       <div className={styles.itemListAppointmentSpecialist}>
                         <LitteText
+                          text={Strings.specialist}
+                          color={Colors.gray90}
+                          bold={false}
+                          style={{ lineHeight: '2px' }}
+                        />
+                        <LitteText
+                          text={Strings.speciality}
+                          color={Colors.gray90}
+                          bold={false}
+                          style={{ lineHeight: '2px' }}
+                        />
+                      </div>
+                      <div className={styles.itemListAppointmentSpecialist}>
+                        <LitteText
                           text={item.nameSpecialist}
                           color={Colors.gray90}
                           bold={false}
@@ -402,63 +418,6 @@ export default function AppointmentsPage(): JSX.Element {
                           bold={false}
                           style={{ lineHeight: '2px' }}
                         />
-                      </div>
-                      <div ref={ref}>
-                        <Button
-                          onClick={handleClick}
-                          className={styles.btnOptionsAppoitnment}
-                        >
-                          {Strings.edit}
-                        </Button>
-                        <Overlay
-                          show={show}
-                          target={target}
-                          placement="bottom"
-                          container={ref}
-                          containerPadding={20}
-                          onHide={() => setShow(false)}
-                          rootClose={true}
-                        >
-                          <Popover
-                            id="popover-contained"
-                            className={styles.popoverContained}
-                          >
-                            <Popover.Body>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.aprove}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.change}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.cancel}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.delete}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                            </Popover.Body>
-                          </Popover>
-                        </Overlay>
                       </div>
                     </div>
                   );
@@ -528,6 +487,20 @@ export default function AppointmentsPage(): JSX.Element {
                       </div>
                       <div className={styles.itemListAppointmentSpecialist}>
                         <LitteText
+                          text={Strings.specialist}
+                          color={Colors.gray90}
+                          bold={false}
+                          style={{ lineHeight: '2px' }}
+                        />
+                        <LitteText
+                          text={Strings.speciality}
+                          color={Colors.gray90}
+                          bold={false}
+                          style={{ lineHeight: '2px' }}
+                        />
+                      </div>
+                      <div className={styles.itemListAppointmentSpecialist}>
+                        <LitteText
                           text={item.nameSpecialist}
                           color={Colors.gray90}
                           bold={false}
@@ -539,63 +512,6 @@ export default function AppointmentsPage(): JSX.Element {
                           bold={false}
                           style={{ lineHeight: '2px' }}
                         />
-                      </div>
-                      <div ref={ref}>
-                        <Button
-                          onClick={handleClick}
-                          className={styles.btnOptionsAppoitnment}
-                        >
-                          {Strings.edit}
-                        </Button>
-                        <Overlay
-                          show={show}
-                          target={target}
-                          placement="bottom"
-                          container={ref}
-                          containerPadding={20}
-                          onHide={() => setShow(false)}
-                          rootClose={true}
-                        >
-                          <Popover
-                            id="popover-contained"
-                            className={styles.popoverContained}
-                          >
-                            <Popover.Body>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.aprove}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.change}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.cancel}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                              <div className={styles.popoverOptions}>
-                                <LitteText
-                                  text={Strings.delete}
-                                  color={Colors.gray90}
-                                  bold={false}
-                                  style={{ lineHeight: '2px' }}
-                                />
-                              </div>
-                            </Popover.Body>
-                          </Popover>
-                        </Overlay>
                       </div>
                     </div>
                   );
@@ -700,14 +616,20 @@ export default function AppointmentsPage(): JSX.Element {
               onBlur={handleDataSelected}
             />
             {hours !== null ? (
-              <SelectForm
-                control={control}
-                name="hour"
-                item={Strings.hour}
-                containerStyle={{ width: '35%' }}
-                error={errors.hour?.message}
-                data={hours}
-              />
+              <select
+                onChange={(event) => {
+                  handleGetScheduleId(event.target.value);
+                }}
+              >
+                <option value="">Selecione o horário</option>
+                {hours?.map((item: any) => {
+                  return (
+                    <option key={item.id} value={item.id}>
+                      {item.start}
+                    </option>
+                  );
+                })}
+              </select>
             ) : (
               <InputForm
                 placeholder={Strings.placeholderHour}
@@ -720,7 +642,11 @@ export default function AppointmentsPage(): JSX.Element {
                 error={errors.date?.message}
               />
             )}
-            <ColorSelector colors={tags} />
+            <ColorSelector
+              colors={tags}
+              tagSelected={itemSelected?.tag_id}
+              onColorChange={handleColorChange}
+            />
           </div>
           <div className={styles.internalDivDetailsAppointment}>
             <textarea
@@ -733,10 +659,21 @@ export default function AppointmentsPage(): JSX.Element {
             />
           </div>
           <div className={styles.btnsDetailsAppointments}>
-            <ButtonPersonal title={Strings.save} type="secondary" />
+            <ButtonPersonal
+              title={Strings.save}
+              type="secondary"
+              onClick={handleSubmit(handleSaveAppointment)}
+            />
             <ButtonPersonal title={Strings.print} type="cancel" />
             <ButtonPersonal
               title={Strings.cancel}
+              type="secondary"
+              onClick={() => {
+                handleCancelAppointment();
+              }}
+            />
+            <ButtonPersonal
+              title={Strings.clear}
               type="cancel"
               onClick={() => {
                 handleClean();
