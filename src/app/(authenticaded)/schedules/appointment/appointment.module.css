@@ -200,7 +200,7 @@
     cursor: pointer;
 }
 
-.popoverOptions p{
+.popoverOptions p {
     background-color: #CBEACF;
 }
 
@@ -269,6 +269,22 @@
     align-items: center;
     justify-content: center;
     margin-top: 20vh;
+}
+
+.internalDivDetailsAppointment select {
+    width: 35%;
+    height: 40px;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
+    padding: 1% 2%;
+    font-size: 14px;
+    color: #8C8E90;
+}
+
+.internalDivDetailsAppointment select:active, .internalDivDetailsAppointment select:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
 }
 
 @media screen and (max-height: 981px) and (min-height: 740px) {

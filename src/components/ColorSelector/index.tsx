@@ -1,4 +1,6 @@
-import { useState } from 'react';
+'use client';
+
+import React, { useState } from 'react';
 
 import styles from './colorselector.module.css'; // Estilos CSS
 
@@ -24,6 +26,13 @@ function ColorSelector({
   });
   const [isVisibleSelector, setIsVisibleSelector] = useState(false);
   const colorOption: any[] = [];
+
+  React.useEffect(() => {
+    if (tagSelected !== undefined && colors) {
+      const selectedTag = colors.find((color) => color.id === tagSelected);
+      setSelectedColor(selectedTag ? selectedTag.color : '');
+    }
+  }, [tagSelected, colors]);
 
   colors?.map((color) => {
     colorOption.push({
