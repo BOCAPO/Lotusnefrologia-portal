@@ -44,9 +44,6 @@ type DataProps = {
 
 export default function AppointmentsPage(): JSX.Element {
   const [key, setKey] = React.useState('home');
-  const [show, setShow] = React.useState(false);
-  const [target, setTarget] = React.useState(null);
-  const ref = React.useRef(null);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<any>(null);
   const [quantityAppointments, setQuantityAppointments] =
@@ -103,7 +100,6 @@ export default function AppointmentsPage(): JSX.Element {
   }
 
   function getAppointment(item: any) {
-    console.log(item);
     setValue('patient', item.patient.name);
     setValue('status', item.appointment_status);
     setValue('specialist', item.specialist_name);
@@ -134,7 +130,6 @@ export default function AppointmentsPage(): JSX.Element {
       itemSelected?.unit?.id
     );
     const responseHours = response.data[0] as ResponseSchedulesModel;
-    console.log(responseHours?.schedules);
     setHours(responseHours?.schedules);
   }
 
@@ -145,7 +140,6 @@ export default function AppointmentsPage(): JSX.Element {
   };
 
   const handleSelectStatus = (value: string) => {
-    console.log(value);
     switch (value) {
       case '1':
         setOptionsStatusAppointment('Agendado');
