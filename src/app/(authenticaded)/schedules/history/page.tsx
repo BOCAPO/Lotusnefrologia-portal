@@ -13,6 +13,7 @@ import styles from './history.module.css';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { format } from 'date-fns';
+import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 import { Prefs } from 'repository/Prefs';
@@ -75,7 +76,16 @@ export default function SchedulesPage(): JSX.Element {
 
   async function getSpecialists() {
     const response = await getSpecialistsWithoutPagination();
-    const specialistsUpdated = response.data as ResponseGetModel;
+    let specialistsUpdated = response.data as unknown as DataSpecialistsModel[];
+    specialistsUpdated = specialistsUpdated.sort((a: any, b: any) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
     setSpecialists(specialistsUpdated);
   }
 

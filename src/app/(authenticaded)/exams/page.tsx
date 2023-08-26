@@ -12,6 +12,7 @@ import styles from './exams.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 import { getAllExams } from 'services/exams';
 import { getExamsTypesWithoutPagination } from 'services/examsTypes';
@@ -52,7 +53,16 @@ export default function ExamsPage(): JSX.Element {
 
   async function getSpecialists() {
     const response = await getSpecialistsWithoutPagination();
-    const specialistsUpdated = response.data as ResponseGetModel;
+    let specialistsUpdated = response.data as unknown as DataSpecialistsModel[];
+    specialistsUpdated = specialistsUpdated.sort((a: any, b: any) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
     setSpecialists(specialistsUpdated);
   }
 

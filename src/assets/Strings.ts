@@ -247,5 +247,8 @@ export const Strings = {
   import: 'Importar',
   selectOrDropFile: 'Selecione ou arraste o arquivo',
   noOneFileSelected: 'Nenhum arquivo selecionado',
-  typesFilesAccepted: 'Tipos de arquivos aceitos: pdf, jpg, jpeg, png'
+  typesFilesAccepted: 'Tipos de arquivos aceitos: pdf, jpg, jpeg, png',
+  appointmentConfirmed: 'Consulta foi confirmada com sucesso!',
+  appointmentCanceled: 'Consulta foi cancelada com sucesso!',
+  appointmentChanged: 'Consulta foi reagendada com sucesso!'
 };
