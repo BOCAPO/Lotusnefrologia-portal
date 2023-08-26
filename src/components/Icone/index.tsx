@@ -1,10 +1,10 @@
 'use client';
 
 import { PropsWithChildren, useState } from 'react';
-import { FaDownload } from 'react-icons/fa';
 import {
   FiBell,
   FiClock,
+  FiDownload,
   FiEdit,
   FiExternalLink,
   FiEye,
@@ -13,6 +13,7 @@ import {
   FiMoreVertical,
   FiPlus,
   FiSearch,
+  FiUpload,
   FiUser
 } from 'react-icons/fi';
 
@@ -102,11 +103,15 @@ export const TypeIcon = {
     alternativeIcon: null
   },
   Download: {
-    icon: FaDownload,
+    icon: FiDownload,
     alternativeIcon: null
   },
   Edit: {
     icon: FiEdit,
+    alternativeIcon: null
+  },
+  Upload: {
+    icon: FiUpload,
     alternativeIcon: null
   }
 };

@@ -2,7 +2,7 @@ import { DataExamsTypeModel } from './DataExamsTypeModel';
 import { DataPatientsModel } from './DataPatientsModel';
 
 export type DataExamsModel = {
-  id: number;
+  id?: number;
   patient_id: number;
   examType_id: number;
   date: string;

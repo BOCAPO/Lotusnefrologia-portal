@@ -135,7 +135,7 @@ export function TableExams({
                         size={20}
                         color={Colors.greenDark2}
                         callback={() => {
-                          console.log(row['id']);
+                          // console.log(row['id']);
                         }}
                       />
                     </td>

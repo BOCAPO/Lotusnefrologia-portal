@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
+import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form';
 
 import { Button } from 'components/Button';
+import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { SelectForm } from 'components/SelectForm';
 import { SmallMediumText } from 'components/Text';
@@ -15,9 +17,11 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataExamsModel } from 'models/DataExamsModel';
 import { DataExamsTypeModel } from 'models/DataExamsTypeModel';
 import { DataPatientsModel } from 'models/DataPatientsModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
+import { createExam } from 'services/exams';
 
 type Props = {
   onHide: () => void;
@@ -25,6 +29,7 @@ type Props = {
   specialists: DataSpecialistsModel[];
   patients: DataPatientsModel[];
   examsTypes: DataExamsTypeModel[];
+  onUpdate?: (value: number) => void;
 };
 
 type DataProps = {
@@ -36,6 +41,7 @@ export default function ModalBoxExams({
   specialists,
   patients,
   examsTypes,
+  onUpdate,
   ...props
 }: Props & { show: boolean }) {
   const [isVisibleListPatients, setIsVisibleListPatients] =
@@ -45,7 +51,28 @@ export default function ModalBoxExams({
   const [selectedSpecialist, setSelectedSpecialist] = React.useState<number>(0);
   const [selectedDate, setSelectedDate] = React.useState<string>('');
   const [selectedExameType, setSelectedExameType] = React.useState<number>(0);
+  const [files, setFiles] = React.useState([] as any);
 
+  const onDrop = (acceptedFiles: any) => {
+    setFiles(acceptedFiles);
+  };
+
+  const filesList = files.map((file: any) => (
+    <p key={file.name}>
+      {file.name} - {file.size} bytes
+    </p>
+  ));
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      'image/png': ['png'],
+      'image/jpeg': ['jpeg', 'jpg'],
+      'application/pdf': ['pdf'],
+      'application/msword': ['doc', 'docx']
+    },
+    maxFiles: 1
+  });
   const {
     control,
     setValue,
@@ -84,24 +111,66 @@ export default function ModalBoxExams({
     setSelectedExameType(selectedExameType);
   };
 
-  // async function handleSubmitAppoitment(data: DataProps) {
-  //   const newAppoitment = {
-  //     specialist_id: Number(selectedSpecialist),
-  //     patient_id: patient.id as number,
-  //     unit_id: Number(selectedUnit),
-  //     specialty_id: selectedSpecialty,
-  //     schedule_id: Number(selectedScheduleId),
-  //     appointment_status: 1,
-  //     observation: observation,
-  //     tag_id: selectedColor,
-  //     status: 0
-  //   };
+  const handleCleanAndHide = () => {
+    setSelectedDate('');
+    setSelectedSpecialist(0);
+    setSelectedExameType(0);
+    setPatient(null);
+    setValue('pacient', '');
+    setValue('date', '');
+    setValue('specialist', '');
+    setValue('exameType', '');
+    setFiles([]);
+    onHide();
+  };
+  const handleClean = () => {
+    setSelectedDate('');
+    setSelectedSpecialist(0);
+    setSelectedExameType(0);
+    setPatient(null);
+    setValue('pacient', '');
+    setValue('date', '');
+    setValue('specialist', '');
+    setValue('exameType', '');
+    setFiles([]);
+  };
 
-  //   const response = await createAppointment(newAppoitment);
-  //   if (response !== null) {
-  //     onHide();
-  //   }
-  // }
+  async function fileToDataURI(file: any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const dataURI = event?.target?.result;
+        resolve(dataURI);
+      };
+
+      reader.onerror = (event) => {
+        reject(event?.target?.error);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function onSubmit(data: DataProps) {
+    const fileBase64 = await fileToDataURI(files[0]);
+    const newExam = {
+      patient_id: patient.id as number,
+      examType_id: Number(selectedExameType),
+      specialist_id: Number(selectedSpecialist),
+      file_name: files[0].name,
+      date: selectedDate,
+      path: files[0].path,
+      extension: files[0].type,
+      file: fileBase64
+    } as DataExamsModel;
+
+    const response = await createExam(newExam);
+    if (response !== null) {
+      onUpdate && onUpdate(1);
+      handleCleanAndHide();
+    }
+  }
 
   return (
     <Modal
@@ -204,17 +273,50 @@ export default function ModalBoxExams({
             onSelectChange={handleGetExameType}
           />
         </div>
+        <div className={styles.containerDropzone}>
+          <section>
+            <div {...getRootProps({ className: 'dropzone' })}>
+              {filesList.length === 0 ? (
+                <React.Fragment>
+                  <Icon
+                    typeIcon={TypeIcon.Upload}
+                    size={30}
+                    color={Colors.greenDark2}
+                  />
+                  <input {...getInputProps()} />
+                  <p>{Strings.selectOrDropFile}</p>
+                  <p>{Strings.typesFilesAccepted}</p>
+                </React.Fragment>
+              ) : (
+                <div>{filesList}</div>
+              )}
+            </div>
+          </section>
+        </div>
 
         <div className={styles.boxScheduleBtns}>
           <div className={styles.btnDefault}>
             <Button
-              title={Strings.save}
+              title={Strings.import}
               type="secondary"
-              // onClick={handleSubmit(handleSubmitAppoitment)}
+              onClick={handleSubmit(onSubmit)}
             />
           </div>
           <div className={styles.btnDefault}>
-            <Button title={Strings.cancel} type="cancel" onClick={onHide} />
+            <Button
+              title={Strings.clear}
+              type="cancel"
+              onClick={() => {
+                handleClean();
+              }}
+            />
+          </div>
+          <div className={styles.btnDefault}>
+            <Button
+              title={Strings.cancel}
+              type="cancel"
+              onClick={() => handleCleanAndHide()}
+            />
           </div>
         </div>
       </Modal.Body>

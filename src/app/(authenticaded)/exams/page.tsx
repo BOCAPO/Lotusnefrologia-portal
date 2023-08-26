@@ -21,6 +21,7 @@ import { getSpecialistsWithoutPagination } from 'services/specialists';
 export default function ExamsPage(): JSX.Element {
   const [visible, setVisible] = React.useState(false);
   const [data, setData] = React.useState<any>(null);
+  const [quantityExams, setQuantityExams] = React.useState<number>(0);
   const [specialists, setSpecialists] = React.useState<any>(null);
   const [patients, setPatients] = React.useState<any>(null);
   const [examTypes, setExamTypes] = React.useState<any>(null);
@@ -31,7 +32,7 @@ export default function ExamsPage(): JSX.Element {
     getSpecialists();
     getPatients();
     getExamTypes();
-  }, []);
+  }, [quantityExams]);
 
   async function getExams() {
     const response = await getAllExams();
@@ -45,6 +46,7 @@ export default function ExamsPage(): JSX.Element {
       return item;
     });
     setData(dataUpdated);
+    setQuantityExams(dataUpdated?.data?.length);
     setIsLoading(false);
   }
 
@@ -63,9 +65,12 @@ export default function ExamsPage(): JSX.Element {
   async function getExamTypes() {
     const response = await getExamsTypesWithoutPagination();
     const examsTypesUpdated = response.data as ResponseGetModel;
-    console.log('tipos de exames', examsTypesUpdated);
     setExamTypes(examsTypesUpdated);
   }
+
+  const handleOnUpdate = (value: number) => {
+    setQuantityExams(Number(quantityExams) + value);
+  };
 
   return (
     <React.Fragment>
@@ -108,6 +113,7 @@ export default function ExamsPage(): JSX.Element {
         specialists={specialists !== null ? specialists : []}
         patients={patients !== null ? patients : []}
         examsTypes={examTypes !== null ? examTypes : []}
+        onUpdate={handleOnUpdate}
       />
     </React.Fragment>
   );
