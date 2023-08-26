@@ -1,6 +1,6 @@
 .headBoxSchedule {
-    width: 25%;
-    margin: 0 37.5%;
+    width: 30%;
+    margin: 0 35%;
 }
 
 .modalBoxSchedule {
@@ -92,6 +92,7 @@
     width: 25%;
     height: 100%;
     cursor: pointer;
+    margin-right: 10%;
 }
 
 .btnDefault:first-child {
@@ -139,9 +140,34 @@
     padding: 20px !important;
 }
 
+.containerDropzone {
+    width: 100%;
+    height: 20vh;
+    margin: 2vh;
+    padding: 6vh 2% 2vh 2%;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+.ulZeroPadding {
+    padding-left: 0 !important;
+}
+
 @media screen and (max-height: 981px) and (min-height: 740px) {
-    .btnDefault:first-child {
-        margin-right: 30% !important;
+    .headBoxSchedule {
+        width: 40%;
+        margin: 0 30%;
+    }
+    
+    
+    .btnDefault {
+        margin-right: 25% !important;
+        width: 10% !important;
     }
 
     .listPatients {

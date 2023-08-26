@@ -10,6 +10,10 @@ export async function createAppointment(appointment: DataAppoitmensModel) {
   return await postJson('/appointments', appointment);
 }
 
+export async function getAllAppointmentsWithoutPagination() {
+  return await getJson('/appointments?page=false');
+}
+
 export async function getAllAppointmensTags() {
   return await getJson('/appointment-tags');
 }

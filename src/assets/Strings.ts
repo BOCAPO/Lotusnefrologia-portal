@@ -239,9 +239,13 @@ export const Strings = {
   makeAppointment: 'Realizar Agendamento',
   noAppointmentsScheduled: 'Não há agendamentos agendados',
   noAppointmentsPendent: 'Não há agendamentos Pendentes',
+  noAppointmentsConfirmed: 'Não há agendamentos Confirmados',
   noAppointmentsCanceled: 'Não há agendamentos Cancelados',
   clear: 'Limpar',
   insertExam: 'Cadastrar Exame',
   type: 'Tipo',
-  import: 'Importar'
+  import: 'Importar',
+  selectOrDropFile: 'Selecione ou arraste o arquivo',
+  noOneFileSelected: 'Nenhum arquivo selecionado',
+  typesFilesAccepted: 'Tipos de arquivos aceitos: pdf, jpg, jpeg, png'
 };

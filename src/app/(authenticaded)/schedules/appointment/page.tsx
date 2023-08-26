@@ -10,6 +10,7 @@ import ColorSelector from 'components/ColorSelector';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import Modal from 'components/ModalBoxSchedule';
 import { SelectForm } from 'components/SelectForm';
 import { SpinnerLoading } from 'components/Spinner';
 import {
@@ -29,13 +30,19 @@ import { Colors } from 'configs/Colors_default';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { DataAppoitmensModel } from 'models/DataAppoitmensModel';
+import { DataUnitsModel } from 'models/DataUnitsModel';
+import { ResponseGetModel } from 'models/ResponseGetModel';
 import { ResponseSchedulesModel } from 'models/ResponseSchedulesModel';
+import { Prefs } from 'repository/Prefs';
 import {
   getAllAppointmensTags,
-  getAppointmentsMaxDate,
+  getAllAppointmentsWithoutPagination,
   updateAppointment
 } from 'services/appointments';
+import { getPatientsWithoutPagination } from 'services/patients';
 import { getHoursBySpecialistAndDateAndUnit } from 'services/schedules';
+import { getSpecialistsWithoutPagination } from 'services/specialists';
+import { getAllUnits } from 'services/units';
 import { statusAppointment } from 'utils/enums';
 
 type DataProps = {
@@ -44,8 +51,11 @@ type DataProps = {
 
 export default function AppointmentsPage(): JSX.Element {
   const [key, setKey] = React.useState('home');
+  const [visible, setVisible] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [data, setData] = React.useState<any>(null);
+  const [dataAppointments, setDataAppointments] = React.useState<any>(null);
+  const [dataCancel, setDataCancel] = React.useState<any>(null);
+  const [dataConfirmed, setDataConfirmed] = React.useState<any>(null);
   const [quantityAppointments, setQuantityAppointments] =
     React.useState<any>(0);
   const [inputObservation, setInputObservation] = React.useState<string>('');
@@ -57,6 +67,9 @@ export default function AppointmentsPage(): JSX.Element {
   const [optionsStatusAppointment, setOptionsStatusAppointment] =
     React.useState<any>(null);
   const [selectedColor, setSelectedColor] = React.useState<string>('');
+  const [specialists, setSpecialists] = React.useState<any>(null);
+  const [patients, setPatients] = React.useState<any>(null);
+  const [units, setUnits] = React.useState<any>(null);
 
   const {
     control,
@@ -68,8 +81,11 @@ export default function AppointmentsPage(): JSX.Element {
   });
 
   React.useEffect(() => {
-    getAppointmentMax();
+    getAllAppointments();
     getAppointmentTags();
+    getSpecialists();
+    getPatients();
+    getUnits();
   }, [quantityAppointments]);
 
   async function getAppointmentTags() {
@@ -77,48 +93,104 @@ export default function AppointmentsPage(): JSX.Element {
     setTags(response.data.data);
   }
 
-  async function getAppointmentMax() {
-    const response = await getAppointmentsMaxDate();
-    if (Array.isArray(response?.data)) {
-      const dataUpdated = response.data.map((item: any) => {
-        item.idAppointment = item.id;
-        item.nameSpecialist = item.specialist_name;
-        item.nameSpecialty = item.specialty || 'No Specialty';
-        item.unityName = item.unit.name;
-        item.newDate = format(new Date(item.time.slice(0, 10)), 'dd');
-        item.dayOfWeek = format(new Date(item.time.slice(0, 10)), 'EEE', {
-          locale: ptBR
-        }).slice(0, 3);
-        item.statTime = item.schecule.start.slice(0, 5);
-        item.endTime = item.schecule.end.slice(0, 5);
-        return item;
-      });
-      setQuantityAppointments(dataUpdated.length);
-      setData(dataUpdated);
-      setLoading(false);
+  async function getAllAppointments() {
+    const response = await getAllAppointmentsWithoutPagination();
+    let dataUpdated: any = [];
+    if (Array.isArray(response.data)) {
+      response?.data?.map((item) => {
+        dataUpdated.push(item);
+      }) as unknown as DataAppoitmensModel[];
     }
+
+    dataUpdated = dataUpdated.map((item: any) => {
+      item.idAppointment = item.id;
+      item.nameSpecialist = item.specialist_name || 'Não informado';
+      item.nameSpecialty = item.specialty || 'Não informada';
+      item.unityName = item.unit.name;
+      item.newDate = format(new Date(item.schedule.date), 'dd');
+      item.dayOfWeek = format(new Date(item.schedule.date), 'EEE', {
+        locale: ptBR
+      }).slice(0, 3);
+      item.statTime = item.schedule.start;
+      item.endTime = item.schedule.end;
+      return item;
+    });
+    let dataStatusAppointment = dataUpdated.filter(
+      (item: any) => item.appointment_status === 0
+    );
+
+    let dataStatusCancel = dataUpdated.filter(
+      (item: any) => item.appointment_status === 2
+    );
+
+    let dataStatusConfirmed = dataUpdated.filter(
+      (item: any) => item.appointment_status === 4
+    );
+
+    dataStatusAppointment = dataStatusAppointment.sort((a: any, b: any) => {
+      return a.schedule.date > b.schedule.date ? 1 : -1;
+    });
+
+    dataStatusCancel = dataStatusCancel.sort((a: any, b: any) => {
+      return a.schedule.date > b.schedule.date ? 1 : -1;
+    });
+
+    dataStatusConfirmed = dataStatusConfirmed.sort((a: any, b: any) => {
+      return a.schedule.date > b.schedule.date ? 1 : -1;
+    });
+    setQuantityAppointments(dataStatusAppointment.length);
+    setDataAppointments(dataStatusAppointment);
+    setDataCancel(dataStatusCancel);
+    setDataConfirmed(dataStatusConfirmed);
+    setLoading(false);
+  }
+
+  async function getSpecialists() {
+    const response = await getSpecialistsWithoutPagination();
+    const specialistsUpdated = response.data as ResponseGetModel;
+    setSpecialists(specialistsUpdated);
+  }
+
+  async function getPatients() {
+    const response = await getPatientsWithoutPagination();
+    const patientsUpdated = response.data as ResponseGetModel;
+    setPatients(patientsUpdated);
+  }
+
+  async function getUnits() {
+    let unitsPermited = JSON.parse(Prefs.getUnits()!);
+    unitsPermited = unitsPermited!.map((item: DataUnitsModel) => item.id);
+    const response = await getAllUnits();
+    const unitsUpdated = response.data.data as DataUnitsModel[];
+
+    const newUnitsPermitd: any = [];
+
+    unitsUpdated.map((item: any) => {
+      unitsPermited?.map((item2: any) => {
+        if (item.id === item2) {
+          newUnitsPermitd.push(item);
+        }
+      });
+    });
+    setUnits(
+      newUnitsPermitd.sort((a: DataUnitsModel, b: DataUnitsModel) =>
+        a.name.localeCompare(b.name)
+      )
+    );
   }
 
   function getAppointment(item: any) {
     setValue('patient', item.patient.name);
-    setValue('status', item.appointment_status);
-    setValue('specialist', item.specialist_name);
+    setValue('status', item.appointment_status + 1);
+    setValue('specialist', item.specialist_name || 'Não informado');
     setValue('observation', item.observation);
-    setValue('date', format(new Date(item.time.slice(0, 10)), 'yyyy-MM-dd'));
-    const inputTime = item.time.slice(11, 22);
+    setValue('date', format(new Date(item.schedule.date), 'yyyy-MM-dd'));
+    const inputTime = item.schedule.start;
     const [hour, minutes] = inputTime.split(':').slice(0, 2);
     const formattedTime = format(new Date().setHours(hour, minutes), 'HH:mm');
     setValue('hour', formattedTime);
     setValue('unity', item.unit.name);
     setValue('specialty', item.specialty);
-    setValue(
-      'status',
-      item.appointment_status === 'Agendado'
-        ? 1
-        : item.appointment_status === 'Pendente'
-        ? 2
-        : 3
-    );
     setInputObservation(item?.observation?.length > 0 ? item.observation : '');
     setItemSelected(item);
   }
@@ -234,13 +306,11 @@ export default function AppointmentsPage(): JSX.Element {
             <Tab eventKey="home" title="Agendadas">
               {loading ? (
                 <SpinnerLoading />
-              ) : data !== null &&
-                data.filter(
-                  (item: any) =>
-                    item.appointment_status === 'Agendado' ||
-                    item.appointment_status === 'Reagendado'
+              ) : dataAppointments !== null &&
+                dataAppointments.filter(
+                  (item: any) => item.appointment_status == 0
                 ).length > 0 ? (
-                data?.map((item: any, index: number) => {
+                dataAppointments?.map((item: any, index: number) => {
                   return (
                     <div
                       className={styles.itemListAppointments}
@@ -333,16 +403,22 @@ export default function AppointmentsPage(): JSX.Element {
                 </div>
               )}
             </Tab>
-            <Tab eventKey="profile" title="Pendentes">
+            <Tab eventKey="profile" title="Confirmado">
               {loading ? (
                 <SpinnerLoading />
-              ) : data !== null &&
-                data.filter(
-                  (item: any) => item.appointment_status === 'Pendente'
-                ).length > 0 ? (
-                data?.map((item: any, index: number) => {
+              ) : dataConfirmed !== null &&
+                dataConfirmed.filter((item: any) => {
+                  item.appointment_status === 4;
+                }).length > 0 ? (
+                dataConfirmed?.map((item: any, index: number) => {
                   return (
-                    <div className={styles.itemListAppointments} key={index}>
+                    <div
+                      className={styles.itemListAppointments}
+                      key={index}
+                      onClick={() => {
+                        getAppointment(item);
+                      }}
+                    >
                       <div className={styles.itemListAppointmentsDate}>
                         <SmallText2
                           text={item.dayOfWeek}
@@ -419,7 +495,7 @@ export default function AppointmentsPage(): JSX.Element {
               ) : (
                 <div className={styles.noAppointments}>
                   <MediumText2
-                    text={Strings.noAppointmentsPendent}
+                    text={Strings.noAppointmentsConfirmed}
                     color={Colors.gray90}
                     bold={false}
                     style={{ lineHeight: '2px' }}
@@ -430,13 +506,18 @@ export default function AppointmentsPage(): JSX.Element {
             <Tab eventKey="contact" title="Canceladas">
               {loading ? (
                 <SpinnerLoading />
-              ) : data !== null &&
-                data.filter(
-                  (item: any) => item.appointment_status === 'Cancelado'
-                ).length > 0 ? (
-                data?.map((item: any, index: number) => {
+              ) : dataCancel !== null &&
+                dataCancel.filter((item: any) => item.appointment_status === 2)
+                  .length > 0 ? (
+                dataCancel?.map((item: any, index: number) => {
                   return (
-                    <div className={styles.itemListAppointments} key={index}>
+                    <div
+                      className={styles.itemListAppointments}
+                      key={index}
+                      onClick={() => {
+                        getAppointment(item);
+                      }}
+                    >
                       <div className={styles.itemListAppointmentsDate}>
                         <SmallText2
                           text={item.dayOfWeek}
@@ -523,7 +604,13 @@ export default function AppointmentsPage(): JSX.Element {
             </Tab>
           </Tabs>
           <div className={styles.btnNewAppointment}>
-            <ButtonPersonal title={Strings.makeAppointment} type="secondary" />
+            <ButtonPersonal
+              title={Strings.makeAppointment}
+              type="secondary"
+              onClick={() => {
+                setVisible(true);
+              }}
+            />
           </div>
           <div className={styles.inputSearchAppointment}>
             <input type="search" placeholder={Strings.search} />
@@ -676,6 +763,17 @@ export default function AppointmentsPage(): JSX.Element {
           </div>
         </div>
       </div>
+      <Modal
+        show={visible}
+        onHide={() => {
+          setVisible(false);
+          setQuantityAppointments(quantityAppointments + 1);
+        }}
+        specialists={specialists !== null ? specialists : []}
+        tags={tags !== null ? tags : []}
+        patients={patients !== null ? patients : []}
+        units={units !== null ? units : []}
+      />
     </React.Fragment>
   );
 }
