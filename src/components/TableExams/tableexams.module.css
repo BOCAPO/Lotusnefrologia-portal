@@ -1,0 +1,80 @@
+.containerTable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100% - 13vh);
+  min-height: 50vh;
+  overflow: hidden scroll;
+  scroll-behavior: auto;
+}
+
+.containerTable::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: #00555B;
+  border-radius: 5px;
+}
+
+.containerTable::-webkit-scrollbar-thumb{
+  background: #A1E2A5;
+  border-radius: 5px;
+}
+
+.containerTable::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+.table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: table;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.headers {
+  border-bottom: 1px solid #e0e0e0;
+  color: #212121;
+  height: 50px;
+  font: normal normal bold 12px/14px Arial;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.03333em;
+  text-align: left;
+}
+
+.rows {
+  font: normal normal normal 12px/14px Arial;
+  height: 45px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.footer {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.footer select {
+  height: 30px;
+  width: 75px;
+  border: 0.5px solid #D0D1D5;
+  border-radius: 5px;
+  background: #F6FAFD;
+  text-align: center;
+  font: normal normal normal 12px/14px Arial;
+  color: #6F6D79;
+  opacity: 0.8;
+}
+
+.table tbody tr:hover {
+  background-color: #A1E2A5;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+  .containerTable {
+      margin-top: 2vh;
+  }
+}

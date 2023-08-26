@@ -67,20 +67,20 @@ export const menusMain: MenuModel[] = [
     alternativeImage: LogoExamsAlternative,
     link: null,
     internalMenus: [
-      {
-        idMenu: 12,
-        title: 'Cadastrar Exames',
-        image: null,
-        alternativeImage: null,
-        link: '/exams/register',
-        internalMenus: null
-      },
+      // {
+      //   idMenu: 12,
+      //   title: 'Cadastrar Exames',
+      //   image: null,
+      //   alternativeImage: null,
+      //   link: '/exams/register',
+      //   internalMenus: null
+      // },
       {
         idMenu: 13,
         title: 'Consultar de Exames',
         image: null,
         alternativeImage: null,
-        link: '/exams/consult',
+        link: '/exams',
         internalMenus: null
       }
     ]
