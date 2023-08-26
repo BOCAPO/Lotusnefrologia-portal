@@ -11,6 +11,7 @@ import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
 import Modal from 'components/ModalBoxSchedule';
+import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import { SpinnerLoading } from 'components/Spinner';
 import {
@@ -30,6 +31,7 @@ import { Colors } from 'configs/Colors_default';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { DataAppoitmensModel } from 'models/DataAppoitmensModel';
+import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 import { ResponseSchedulesModel } from 'models/ResponseSchedulesModel';
@@ -70,6 +72,9 @@ export default function AppointmentsPage(): JSX.Element {
   const [specialists, setSpecialists] = React.useState<any>(null);
   const [patients, setPatients] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
+  const [showModalSuccess, setShowModalSuccess] =
+    React.useState<boolean>(false);
+  const [messageSuccess, setMessageSuccess] = React.useState<string>('');
 
   const {
     control,
@@ -104,8 +109,8 @@ export default function AppointmentsPage(): JSX.Element {
 
     dataUpdated = dataUpdated.map((item: any) => {
       item.idAppointment = item.id;
-      item.nameSpecialist = item.specialist_name || 'Não informado';
-      item.nameSpecialty = item.specialty || 'Não informada';
+      item.nameSpecialist = item.specialist.name || 'Não informado';
+      item.nameSpecialty = item.specialty.description || 'Não informada';
       item.unityName = item.unit.name;
       item.newDate = format(new Date(item.schedule.date), 'dd');
       item.dayOfWeek = format(new Date(item.schedule.date), 'EEE', {
@@ -120,11 +125,11 @@ export default function AppointmentsPage(): JSX.Element {
     );
 
     let dataStatusCancel = dataUpdated.filter(
-      (item: any) => item.appointment_status === 2
+      (item: any) => item.appointment_status === 1
     );
 
     let dataStatusConfirmed = dataUpdated.filter(
-      (item: any) => item.appointment_status === 4
+      (item: any) => item.appointment_status === 3
     );
 
     dataStatusAppointment = dataStatusAppointment.sort((a: any, b: any) => {
@@ -147,7 +152,16 @@ export default function AppointmentsPage(): JSX.Element {
 
   async function getSpecialists() {
     const response = await getSpecialistsWithoutPagination();
-    const specialistsUpdated = response.data as ResponseGetModel;
+    let specialistsUpdated = response.data as unknown as DataSpecialistsModel[];
+    specialistsUpdated = specialistsUpdated.sort((a: any, b: any) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
     setSpecialists(specialistsUpdated);
   }
 
@@ -190,7 +204,7 @@ export default function AppointmentsPage(): JSX.Element {
     const formattedTime = format(new Date().setHours(hour, minutes), 'HH:mm');
     setValue('hour', formattedTime);
     setValue('unity', item.unit.name);
-    setValue('specialty', item.specialty);
+    setValue('specialty', item.specialty.description);
     setInputObservation(item?.observation?.length > 0 ? item.observation : '');
     setItemSelected(item);
   }
@@ -214,16 +228,16 @@ export default function AppointmentsPage(): JSX.Element {
   const handleSelectStatus = (value: string) => {
     switch (value) {
       case '1':
-        setOptionsStatusAppointment('Agendado');
+        setOptionsStatusAppointment(1);
         break;
       case '2':
-        setOptionsStatusAppointment('Cancelado');
+        setOptionsStatusAppointment(2);
         break;
       case '3':
-        setOptionsStatusAppointment('Realizado');
+        setOptionsStatusAppointment(3);
         break;
       default:
-        setOptionsStatusAppointment('Confirmado');
+        setOptionsStatusAppointment(4);
         break;
     }
   };
@@ -250,23 +264,33 @@ export default function AppointmentsPage(): JSX.Element {
   };
 
   async function handleCancelAppointment() {
-    itemSelected.appointment_status = 2;
-    itemSelected.observation = inputObservation;
-    const response = await updateAppointment(itemSelected.id, itemSelected);
+    if (itemSelected !== null) {
+      itemSelected.appointment_status = 1;
+      itemSelected.observation = inputObservation;
+      const response = await updateAppointment(itemSelected.id, itemSelected);
 
-    if (response !== null) {
-      setQuantityAppointments(quantityAppointments - 1);
-      handleClean();
+      if (response !== null) {
+        setQuantityAppointments(quantityAppointments - 1);
+        handleClean();
+        setMessageSuccess(Strings.appointmentCanceled);
+        setShowModalSuccess(true);
+        setTimeout(() => {
+          setShowModalSuccess(false);
+        }, 3000);
+      }
     }
   }
 
-  async function handleSaveAppointment() {
+  async function handleUpdateAppointment() {
     const objUpdateAppointment = {
-      specialist_id: itemSelected.schecule.specialist_id as number,
+      specialist_id: itemSelected.specialist.id as number,
       patient_id: itemSelected.patient.id as number,
       unit_id: itemSelected.unit.id as number,
       specialty_id: itemSelected.specialty_id as number,
-      schedule_id: selectedScheduleId as number,
+      schedule_id:
+        selectedScheduleId === 0
+          ? itemSelected.schedule.id
+          : selectedScheduleId,
       appointment_status: Number(optionsStatusAppointment) - 1,
       observation: inputObservation,
       tag_id: selectedColor,
@@ -279,8 +303,21 @@ export default function AppointmentsPage(): JSX.Element {
     );
 
     if (response !== null) {
+      if (Number(optionsStatusAppointment) === 4)
+        setMessageSuccess(Strings.appointmentConfirmed);
+
+      if (Number(optionsStatusAppointment) === 1)
+        setMessageSuccess(Strings.appointmentCanceled);
+
+      if (Number(optionsStatusAppointment) === 4 && selectedScheduleId !== 0)
+        setMessageSuccess(Strings.appointmentChanged);
+
       setQuantityAppointments(quantityAppointments - 1);
       handleClean();
+      setShowModalSuccess(true);
+      setTimeout(() => {
+        setShowModalSuccess(false);
+      }, 3000);
     }
   }
 
@@ -306,10 +343,7 @@ export default function AppointmentsPage(): JSX.Element {
             <Tab eventKey="home" title="Agendadas">
               {loading ? (
                 <SpinnerLoading />
-              ) : dataAppointments !== null &&
-                dataAppointments.filter(
-                  (item: any) => item.appointment_status == 0
-                ).length > 0 ? (
+              ) : dataAppointments !== null && dataAppointments.length > 0 ? (
                 dataAppointments?.map((item: any, index: number) => {
                   return (
                     <div
@@ -406,10 +440,7 @@ export default function AppointmentsPage(): JSX.Element {
             <Tab eventKey="profile" title="Confirmado">
               {loading ? (
                 <SpinnerLoading />
-              ) : dataConfirmed !== null &&
-                dataConfirmed.filter((item: any) => {
-                  item.appointment_status === 4;
-                }).length > 0 ? (
+              ) : dataConfirmed !== null && dataConfirmed.length > 0 ? (
                 dataConfirmed?.map((item: any, index: number) => {
                   return (
                     <div
@@ -506,9 +537,7 @@ export default function AppointmentsPage(): JSX.Element {
             <Tab eventKey="contact" title="Canceladas">
               {loading ? (
                 <SpinnerLoading />
-              ) : dataCancel !== null &&
-                dataCancel.filter((item: any) => item.appointment_status === 2)
-                  .length > 0 ? (
+              ) : dataCancel !== null && dataCancel.length > 0 ? (
                 dataCancel?.map((item: any, index: number) => {
                   return (
                     <div
@@ -743,7 +772,7 @@ export default function AppointmentsPage(): JSX.Element {
             <ButtonPersonal
               title={Strings.save}
               type="secondary"
-              onClick={handleSubmit(handleSaveAppointment)}
+              onClick={handleSubmit(handleUpdateAppointment)}
             />
             <ButtonPersonal title={Strings.print} type="cancel" />
             <ButtonPersonal
@@ -773,6 +802,14 @@ export default function AppointmentsPage(): JSX.Element {
         tags={tags !== null ? tags : []}
         patients={patients !== null ? patients : []}
         units={units !== null ? units : []}
+      />
+
+      <ModalSuccess
+        show={showModalSuccess}
+        onHide={() => {
+          setShowModalSuccess(false);
+        }}
+        message={messageSuccess}
       />
     </React.Fragment>
   );

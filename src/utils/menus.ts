@@ -77,7 +77,7 @@ export const menusMain: MenuModel[] = [
       // },
       {
         idMenu: 13,
-        title: 'Consultar de Exames',
+        title: 'Consulta de Exames',
         image: null,
         alternativeImage: null,
         link: '/exams',

@@ -129,16 +129,6 @@ export function TableExams({
                         )}
                       </td>
                     ))}
-                    <td className={styles.rows} style={{ cursor: 'pointer' }}>
-                      <Icon
-                        typeIcon={TypeIcon.Edit}
-                        size={20}
-                        color={Colors.greenDark2}
-                        callback={() => {
-                          // console.log(row['id']);
-                        }}
-                      />
-                    </td>
                   </tr>
                 ))
               ) : (
