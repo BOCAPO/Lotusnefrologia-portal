@@ -1,9 +1,11 @@
 'use client';
 
 import { PropsWithChildren, useState } from 'react';
+import { FaDownload } from 'react-icons/fa';
 import {
   FiBell,
   FiClock,
+  FiEdit,
   FiExternalLink,
   FiEye,
   FiEyeOff,
@@ -97,6 +99,14 @@ export const TypeIcon = {
   },
   MapPin: {
     icon: FiMapPin,
+    alternativeIcon: null
+  },
+  Download: {
+    icon: FaDownload,
+    alternativeIcon: null
+  },
+  Edit: {
+    icon: FiEdit,
     alternativeIcon: null
   }
 };

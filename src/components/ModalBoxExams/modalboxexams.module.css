@@ -1,0 +1,151 @@
+.headBoxSchedule {
+    width: 25%;
+    margin: 0 37.5%;
+}
+
+.modalBoxSchedule {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.modalBoxSchedule .modal-dialog .modal-content {
+    width: 700;
+    border-radius: 15px;
+    border: none;
+}
+
+.modalBoxSchedule .modal-dialog {
+    margin: 1.75rem calc((100% - 700)/2);
+}
+
+.containerBoxSchedule {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #21212169;
+    position: absolute;
+    top: 0;
+}
+
+.bodyBoxSchedule {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 30%;
+    height: 55vh;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 0 1%;
+}
+
+.twoColumns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.observation {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 3vh;
+}
+
+.observationInput {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 3vh;
+    border-radius: 6px;
+    padding: 3%;
+    border: 1px solid #E5E5E5;
+    resize: none;
+}
+
+.observationInput:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
+}
+
+.boxScheduleBtns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 40px;
+}
+
+.btnDefault {
+    width: 25%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.btnDefault:first-child {
+    margin-right: 10%;
+}
+
+.twoColumns select {
+    width: 45%;
+    height: 40px;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
+    padding: 1% 2%;
+    font-size: 14px;
+    color: #8C8E90;
+}
+
+.twoColumns select:active, .twoColumns select:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
+}
+
+.listPatients {
+    position: absolute;
+    width: 100%;
+    height: 32vh;
+    overflow-y: scroll;
+    z-index: 2;
+    background-color: #fff;
+    top: 15vh;
+    overflow: auto;
+}
+
+.patient {
+    cursor: pointer;
+    height: 25px;
+}
+
+.patient:hover {
+    background-color: #E5E5E5;
+}
+
+.inputNewAppointment {
+    height: 40px !important;
+    padding: 20px !important;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .btnDefault:first-child {
+        margin-right: 30% !important;
+    }
+
+    .listPatients {
+        top: 21vh;
+        height: 55%;
+    }
+}

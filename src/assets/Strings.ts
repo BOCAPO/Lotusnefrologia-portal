@@ -75,6 +75,23 @@ export const Strings = {
   headersScale: ['Especialista', 'Unidade'],
   headersSpecialty: ['Descrição', 'Status'],
   headersScaleResponse: ['name', 'unit'],
+  headersExams: [
+    'Data',
+    'Nome do Paciente',
+    'Especialista',
+    'Tipo de Exame',
+    'Anexo',
+    ''
+  ],
+  headersExamsResponse: [
+    'date',
+    'patientName',
+    'specialistName',
+    'exam_type',
+    'attachment',
+    'actions'
+  ],
+
   schedule: 'Agendamento',
   description: 'Descrição',
   pacient: 'Paciente',
@@ -223,5 +240,8 @@ export const Strings = {
   noAppointmentsScheduled: 'Não há agendamentos agendados',
   noAppointmentsPendent: 'Não há agendamentos Pendentes',
   noAppointmentsCanceled: 'Não há agendamentos Cancelados',
-  clear: 'Limpar'
+  clear: 'Limpar',
+  insertExam: 'Cadastrar Exame',
+  type: 'Tipo',
+  import: 'Importar'
 };
