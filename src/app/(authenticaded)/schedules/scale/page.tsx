@@ -58,12 +58,13 @@ export default function ScalePage(): JSX.Element {
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [hoursBloqued, setHoursBloqued] = React.useState<any>([]);
+  const [hoursBlocked, setHoursBlocked] = React.useState<any>([]);
   const [blockedHourInitial, setBlockedHourInitial] = React.useState<any>([]);
   const [blockedHourFinal, setBlockedHourFinal] = React.useState<any>([]);
   const [page, setPage] = React.useState<number>(1);
   const {
     control,
+    setValue,
     handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
@@ -159,7 +160,7 @@ export default function ScalePage(): JSX.Element {
     setBlockedHourFinal(
       responseHours?.schedules[Number(responseHours?.schedules.length) - 1].end
     );
-    setHoursBloqued(responseHours?.schedules);
+    setHoursBlocked(responseHours?.schedules);
   }
 
   const handleTimeSelect = (selectedTime: []) => {
@@ -170,6 +171,16 @@ export default function ScalePage(): JSX.Element {
   const handleSelectionPage = (selectedValue: string) => {
     setPage(parseInt(selectedValue));
   };
+
+  function handleCleanFields() {
+    setVisibleDatesHours(false);
+    setSelectedDate('');
+    setSelectedTime([]);
+    setQuantitySelectedTime(0);
+    setValue('initialHour', '');
+    setValue('finalHour', '');
+    setValue('timeOfAttendance', '');
+  }
 
   async function handleNewSchedule() {
     const newSchedule: NewScheduleModel = {
@@ -187,8 +198,8 @@ export default function ScalePage(): JSX.Element {
     const response = await createSchedule(newSchedule);
     if (response !== null) {
       setShowModalSuccess(true);
+      handleCleanFields();
       setSelectedSpecialistId('');
-      setVisibleDatesHours(false);
       setTimeout(() => {
         setShowModalSuccess(false);
       }, 3000);
@@ -351,10 +362,8 @@ export default function ScalePage(): JSX.Element {
                     title={Strings.cancel}
                     type="cancel"
                     onClick={() => {
-                      setVisibleDatesHours(false);
-                      setSelectedDate('');
-                      setSelectedTime([]);
-                      setQuantitySelectedTime(0);
+                      handleCleanFields();
+                      setSelectedSpecialistId('');
                     }}
                   />
                 </div>
