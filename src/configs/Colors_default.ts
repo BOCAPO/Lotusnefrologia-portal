@@ -4,6 +4,7 @@ export const Colors = {
   gray50: '#E5E5E5',
   gray60: '#8C8E90',
   gray70: '#6F6D79',
+  gray90: '#212121',
   black: '#000',
   greenDark: '#00555B',
   greenDark2: '#66999C',
@@ -27,7 +28,6 @@ export const Colors = {
     }
   },
   redInvalid: '#FF0000',
-  gray90: '#212121',
   input: {
     borderColor: '#A1E2A5'
   },

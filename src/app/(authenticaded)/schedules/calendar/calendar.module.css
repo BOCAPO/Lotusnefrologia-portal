@@ -4,7 +4,7 @@
     display: flex;
     margin: 3vh 5%;
     flex-direction: column;
-    padding: 1% 5%;
+    padding: 1% 1%;
     align-items: center;
     background: #FFFFFF;
     overflow: hidden;
@@ -13,20 +13,67 @@
     border-radius: 9px;
 }
 
-.allDayClassNames {
+.bodyCalendar>div {
     width: 100%;
-    height: 10vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
 }
 
-.viewClassNames {
-    width: 100%;
-    height: 66vh;
+.bodyCalendar>button {
+    background-color: #A1E2A5 !important;
+    color: #212121 !important;
+}
+
+.bodyCalendar a, .fc-button-primary {
+    text-decoration: none !important;
+    color: #212121 !important;
+}
+
+.dayHeaderClassNames, .weekNumberClassNames, .dayGridClassNames, .dayGridDayClassNames, .dayGridDayBgClassNames {
+    width: 100% !important;
+}
+
+.btnAddSchedule {
+    width: 10%;
+    height: 5vh;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.btnAddSchedule:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+.btnContainer {
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    padding: 0%;
+    margin-bottom: 2vh;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.fc-col-header-cell-cushion {
+    color: #212121 !important;
+}
+
+.fc .fc-daygrid-day-top a {
+    text-decoration: none !important;
+}
+
+.fc-daygrid-day-number {
+    color: #212121 !important;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .bodyCalendar {
+        height: 78%;
+    }
+
+    .btnContainer {
+        padding: 0% 1.5%;
+    }
 }
