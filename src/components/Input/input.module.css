@@ -22,7 +22,7 @@
     color: #FF0000;
     font-family: 'Arial', sans-serif;
     position: absolute;
-    top: 7vh;
+    top: 6vh;
     text-align: right;
 }
 
@@ -64,12 +64,23 @@
 
 .iconContainer {
     position: absolute;
-    top: 2vh;
+    top: 1.5vh;
     right: 3%;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 1440px) and (max-height: 643px) {
     .inputContent {
         height: 35px;
+    }
+
+    .messageError {
+        top: 7vh;
+    }
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .messageError {
+        top: 6.5vh;
     }
 }

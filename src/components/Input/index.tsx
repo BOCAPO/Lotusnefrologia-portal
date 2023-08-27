@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ChangeEvent } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
@@ -71,6 +73,8 @@ export function InputForm({
   const [showInputContent, setShowInputContent] = React.useState(
     type === 'password' ? false : true
   );
+
+  React;
 
   function showContent() {
     if (iconType !== TypeIcon.Password) return;
@@ -160,7 +164,13 @@ export function InputForm({
                     value === undefined || value === '' ? placeholder : ''
                   }
                   className={`${stylesCss.input} ${rest.className} ${stylesCss.custonInput}`}
-                  type={showInputContent ? type : 'password'}
+                  type={
+                    showInputContent && type === 'password'
+                      ? 'text'
+                      : showInputContent === false && type === 'password'
+                      ? 'password'
+                      : type
+                  }
                   onChange={handleChange}
                 />
                 {value !== undefined && value !== '' && (
@@ -175,11 +185,9 @@ export function InputForm({
         {Object.keys(iconType).length >= 1 && (
           <div className={stylesCss.iconContainer}>
             <Icon
-              typeIcon={iconType}
+              typeIcon={!showInputContent ? iconType : TypeIcon.PasswordOff}
               size={20}
-              callback={() => {
-                showContent;
-              }}
+              callback={showContent}
               color=""
             />
           </div>
