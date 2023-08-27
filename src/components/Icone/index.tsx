@@ -54,7 +54,7 @@ function getIcon(
   return (
     <typeIcon.icon
       name={
-        click || typeIcon.alternativeVersion == null
+        click || typeIcon.alternativeVersion !== null
           ? typeIcon.icon
           : typeIcon.alternativeIcon
       }
@@ -68,7 +68,11 @@ function getIcon(
 export const TypeIcon = {
   Password: {
     icon: FiEye,
-    alternativeIcon: FiEyeOff
+    alternativeIcon: null
+  },
+  PasswordOff: {
+    icon: FiEyeOff,
+    alternativeIcon: null
   },
   UserLogged: {
     icon: FiUser,
