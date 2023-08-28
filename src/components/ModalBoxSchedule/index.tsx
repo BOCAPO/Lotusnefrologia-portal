@@ -130,6 +130,22 @@ export default function ModalBoxSchedule({
     setSelectedColor(selectedColor);
   };
 
+  function handleClean() {
+    setSelectedUnit(0);
+    setSelectedSpecialist(0);
+    setSelectedSpecialty(0);
+    setSelectedScheduleId(0);
+    setObservation('');
+    setSelectedColor('');
+    setValue('pacient', '');
+    setValue('date', '');
+    setValue('unit', '');
+    setSpecialties(null);
+    setPatient(null);
+    setFilteredProducts(null);
+    setIsVisibleListPatients(false);
+    setHours(null);
+  }
   async function handleSubmitAppoitment(data: DataProps) {
     const newAppoitment = {
       specialist_id: Number(selectedSpecialist),
@@ -318,7 +334,14 @@ export default function ModalBoxSchedule({
             />
           </div>
           <div className={styles.btnDefault}>
-            <Button title={Strings.cancel} type="cancel" onClick={onHide} />
+            <Button
+              title={Strings.cancel}
+              type="cancel"
+              onClick={() => {
+                handleClean();
+                onHide();
+              }}
+            />
           </div>
         </div>
       </Modal.Body>
