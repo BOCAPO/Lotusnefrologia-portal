@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { Icon, TypeIcon } from 'components/Icone';
@@ -28,7 +27,6 @@ export function TableExams({
   onItemClick,
   onClick
 }: Props) {
-  const router = useRouter();
   const [keys, setKeys] = React.useState<string[] | undefined>([]);
   const [selectedOption, setSelectedOption] = React.useState<
     string | undefined
@@ -121,7 +119,7 @@ export function TableExams({
                             size={20}
                             color={Colors.greenDark2}
                             callback={() => {
-                              router.push(row[key]);
+                              window.open(row[key], '_blank');
                             }}
                           />
                         ) : (
