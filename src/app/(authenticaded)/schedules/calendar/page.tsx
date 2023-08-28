@@ -11,7 +11,6 @@ import styles from './calendar.module.css';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
-import timeGridPlugin from '@fullcalendar/timegrid';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataAppoitmensModel } from 'models/DataAppoitmensModel';
@@ -123,7 +122,6 @@ export default function CalendarPage(): JSX.Element {
   return (
     <React.Fragment>
       <MenuTop />
-
       <div className={styles.bodyCalendar}>
         {isLoading ? (
           <SpinnerLoading />
@@ -144,7 +142,7 @@ export default function CalendarPage(): JSX.Element {
             <FullCalendar
               themeSystem="bootstrap5"
               titleFormat={{ year: 'numeric', month: 'long' }}
-              plugins={[dayGridPlugin, timeGridPlugin]}
+              plugins={[dayGridPlugin]}
               height={'100%'}
               slotEventOverlap={true}
               slotMinTime={'08:00:00'}
@@ -169,8 +167,6 @@ export default function CalendarPage(): JSX.Element {
                 } as any
               }
               weekNumbers={true}
-              dayCount={7}
-              dayHeaders={true}
               dayMaxEventRows={true}
               dayMaxEvents={true}
               dayHeaderWillUnmount={(info: any) => {
@@ -191,7 +187,8 @@ export default function CalendarPage(): JSX.Element {
                   month: 'Mês',
                   week: 'Semana',
                   day: 'Dia',
-                  list: 'Lista'
+                  list: 'Lista',
+                  more: 'Mais'
                 } as any
               }
               slotLaneClassNames={styles.slotLaneClassNames}
@@ -206,7 +203,6 @@ export default function CalendarPage(): JSX.Element {
               }}
               timeHint="Horário disponível"
               slotLabelInterval={'00:30:00'}
-              allDaySlot={true}
               firstDay={0}
               displayEventTime={true}
               slotLabelDidMount={(info: any) => {
@@ -244,7 +240,14 @@ export default function CalendarPage(): JSX.Element {
               weekNumberClassNames={styles.weekNumberClassNames}
               nowIndicatorClassNames={styles.nowIndicatorClassNames}
               eventClassNames={styles.eventClassNames}
-              dayHeaderFormat={{ day: 'numeric', weekday: 'short' }}
+              monthStartFormat={
+                {
+                  month: 'long',
+                  year: 'numeric',
+                  day: 'numeric'
+                } as any
+              }
+              dayHeaderFormat={{ weekday: 'short' }}
               dayHeaderDidMount={(info: any) => {
                 const el = info.el;
                 el.style.backgroundColor = Colors.white;
