@@ -14,6 +14,7 @@ import {
   cepMask,
   cnpjMask,
   coinMask,
+  coinMaskIntl,
   cpfCnpjMask,
   cpfMask,
   dateMask,
@@ -30,7 +31,8 @@ type MaskProps =
   | 'phone'
   | 'cellPhone'
   | 'cep'
-  | 'onlyLetters';
+  | 'onlyLetters'
+  | 'coinMaskIntl';
 
 type Props = {
   control: Control;
@@ -46,6 +48,7 @@ type Props = {
   inputRef?: React.RefObject<HTMLInputElement>;
   className?: string;
   type?: string;
+  min?: number;
   style?: React.CSSProperties | undefined;
   readonly?: boolean;
   getValue?: (_text: string) => void;
@@ -59,6 +62,7 @@ export function InputForm({
   label,
   name,
   containerStyle = {},
+  min,
   inputRef,
   maxLength = 100,
   iconType = {},
@@ -102,6 +106,8 @@ export function InputForm({
         return onlyLetters(text);
       case 'coin':
         return coinMask(text, true);
+      case 'coinMaskIntl':
+        return coinMaskIntl(Number(text));
       default:
         text;
     }
@@ -122,17 +128,9 @@ export function InputForm({
 
   return (
     <div style={containerStyle} className={stylesCss.container}>
-      {/* {label && (
-        <MediumText
-          text={label}
-          color={error ? Colors.redInvalid : Colors.gray90}
-          bold={false}
-        />
-      )} */}
       <div
         style={{
           ...styles.inputContent,
-          // ...(label && { marginTop: 12 }),
           ...(error && styles.inputContentError)
         }}
       >
@@ -157,6 +155,7 @@ export function InputForm({
                   {...rest}
                   name={name}
                   maxLength={maxLength}
+                  min={min}
                   value={value}
                   readOnly={readonly}
                   style={style}

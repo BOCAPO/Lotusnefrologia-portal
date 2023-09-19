@@ -73,3 +73,10 @@ export function onlyLetters(value: string) {
     ''
   );
 }
+
+export function coinMaskIntl(value: number) {
+  return Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(value);
+}

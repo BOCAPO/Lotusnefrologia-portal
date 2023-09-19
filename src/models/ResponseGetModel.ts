@@ -1,5 +1,7 @@
 import { DataAppoitmentTag } from './DataAppoitmentTag';
+import { DataInvoicesModel } from './DataInvoicesModel';
 import { DataPatientsModel } from './DataPatientsModel';
+import { DataProductsModel } from './DataProductsModel';
 import { DataRolesModel } from './DataRolesModel';
 import { DataSpecialistsModel } from './DataSpecialistsModel';
 import { DataSpecialtiesModel } from './DataSpecialtiesModel';
@@ -18,6 +20,8 @@ export type ResponseGetModel = {
     | DataStatesModel[]
     | DataAppoitmentTag[]
     | DataRolesModel[]
+    | DataProductsModel[]
+    | DataInvoicesModel[]
     | ResponseAppointmentModel;
   first_page_url: string;
   from: number;

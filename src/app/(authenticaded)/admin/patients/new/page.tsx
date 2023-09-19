@@ -155,7 +155,7 @@ export default function NewPatientPage() {
             <SelectForm
               control={control}
               name="unit"
-              item={Strings.unity}
+              item={Strings.unit}
               data={units !== null ? units : null}
               error={errors.state?.message}
               containerStyle={{ width: '25%' }}

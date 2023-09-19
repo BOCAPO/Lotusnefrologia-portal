@@ -113,7 +113,7 @@ export const menusMain: MenuModel[] = [
         title: 'Cadastro de Nota Fiscal',
         image: null,
         alternativeImage: null,
-        link: '/nutrition/include-invoice',
+        link: '/nutrition/invoices',
         internalMenus: null
       },
       {

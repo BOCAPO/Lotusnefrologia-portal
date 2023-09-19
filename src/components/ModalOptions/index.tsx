@@ -21,6 +21,7 @@ type Props = {
   onHide: () => void;
   item: any;
   typeItem: string;
+  showEdit?: boolean;
   reset?: (status: boolean) => void;
 };
 
@@ -28,6 +29,7 @@ export default function ModalOptions({
   message,
   onHide,
   item,
+  showEdit = true,
   typeItem,
   reset,
   ...props
@@ -47,6 +49,9 @@ export default function ModalOptions({
         break;
       case 'user':
         await callDeleteUser();
+        break;
+      case 'invoice':
+        await callDeleteInvoice();
         break;
       default:
         break;
@@ -101,6 +106,14 @@ export default function ModalOptions({
       onHide();
     }
   }
+
+  async function callDeleteInvoice() {
+    const response = await deleteUser(JSON.parse(item).id);
+    if (response !== null) {
+      onHide();
+    }
+  }
+
   return (
     <Modal
       {...props}
@@ -126,15 +139,17 @@ export default function ModalOptions({
         />
       </Modal.Body>
       <div>
-        <div className={styles.footer}>
-          <Button
-            onClick={() => {
-              goEdit();
-            }}
-            title={Strings.edit}
-            type="secondary"
-          />
-        </div>
+        {showEdit && (
+          <div className={styles.footer}>
+            <Button
+              onClick={() => {
+                goEdit();
+              }}
+              title={Strings.edit}
+              type="secondary"
+            />
+          </div>
+        )}
         <div className={styles.footer}>
           <Button
             onClick={() => {

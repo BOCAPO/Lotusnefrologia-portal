@@ -149,15 +149,33 @@ function checkDateIsValid(date: string) {
   return dateIsValid;
 }
 
+function sanitizeData(data: string) {
+  if (data) return data.replace(/[^\d]+/g, '');
+  return data;
+}
+
+function convertInFloat(value: string) {
+  const cleanValue = value.replace(/[\sR$]+/g, '');
+  const withoutDots = cleanValue.replace(/\./g, '');
+  const normalizedValue = withoutDots.replace(/,/g, '.');
+  const floatValue = Number.parseFloat(normalizedValue).toFixed(2);
+
+  if (floatValue) return floatValue.toString();
+
+  return value;
+}
+
 export {
   checkCnpjIsValid,
   checkCpfIsValid,
   checkDateIsValid,
   checkDateIsValidAndGreaterToday,
+  convertInFloat,
   regexCellPhoneStructure,
   regexCepStructure,
   regexNotPermittedSpecialCharacters,
-  regexPhoneStructure
+  regexPhoneStructure,
+  sanitizeData
 };
 
 // Path: src\utils\formYupValidations.ts
