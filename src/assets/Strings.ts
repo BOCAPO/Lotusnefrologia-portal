@@ -74,6 +74,7 @@ export const Strings = {
   headersNewRole: ['Description', 'Status'],
   headersScale: ['Especialista', 'Unidade'],
   headersSpecialty: ['Descrição', 'Status'],
+  headersProducts: ['Descrição', 'Status'],
   headersScaleResponse: ['name', 'unit'],
   headersExams: [
     'Data',
@@ -91,9 +92,12 @@ export const Strings = {
     'attachment',
     'actions'
   ],
-
+  headersInvoice: ['Numero', 'Fornecedor', 'Emissão', 'Valor', 'Unidade'],
+  headersInvoiceResponse: ['number', 'supplier', 'date', 'amount', 'unit_name'],
   schedule: 'Agendamento',
+  insertNewInvoice: 'Cadastrar Nota Fiscal',
   description: 'Descrição',
+  descriptionOfProduct: 'Descrição do Produto',
   pacient: 'Paciente',
   speciality: 'Especialidade',
   pluralSpeciality: 'Especialidades',
@@ -117,6 +121,8 @@ export const Strings = {
   insertUnit: 'Cadastrar Unidade',
   insertUser: 'Cadastrar Usuário',
   insertSpecialist: 'Cadastrar Especialista',
+  insertProduct: 'Cadastro de Produtos',
+  insertInvoice: 'Cadastro de Notas Fiscais',
   updateSpecialist: 'Atualizar Especialista',
   updateUnit: 'Atualizar Unidade',
   updatePatient: 'Atualizar Paciente',
@@ -214,6 +220,12 @@ export const Strings = {
   messageSuccessUpdateSpecialty:
     'O cadastro da especialidade foi atualizado com sucesso.',
   messageSuccessUpdateRole: 'O cadastro do perfil foi atualizado com sucesso.',
+  messageSuccessInsertProduct:
+    'O cadastro do produto foi realizado com sucesso.',
+  messageSuccessUpdateProduct:
+    'O cadastro do produto foi atualizado com sucesso.',
+  messageSuccessDeleteProduct:
+    'O cadastro do produto foi excluído com sucesso.',
   selectDate: 'Selecione a data',
   hoursDisponibles: 'Horários disponíveis',
   resetPasswordSpecialist: 'Redefinir Senha do Especialista',
@@ -222,9 +234,10 @@ export const Strings = {
   status: 'Status',
   linkedUnits: 'Unidades Vinculadas',
   headersResponseNewSpecialties: ['description', 'status'],
+  headersResponseNewProducts: ['description', 'status'],
   erase: 'Excluir',
   notInformed: 'Não Informado',
-  unity: 'Unidade',
+  unit: 'Unidade',
   appointmentsConfirmed: 'Consultas confirmadas',
   appointmentsDetailts: 'Detalhes do Agendamento',
   placeholderPatient: 'Paciente',
@@ -250,5 +263,15 @@ export const Strings = {
   typesFilesAccepted: 'Tipos de arquivos aceitos: pdf, jpg, jpeg, png',
   appointmentConfirmed: 'Consulta foi confirmada com sucesso!',
   appointmentCanceled: 'Consulta foi cancelada com sucesso!',
-  appointmentChanged: 'Consulta foi reagendada com sucesso!'
+  appointmentChanged: 'Consulta foi reagendada com sucesso!',
+  supplier: 'Fornecedor',
+  invoice: 'Nota Fiscal',
+  series: 'Série',
+  amountTotal: 'Valor Total',
+  amountDiscount: 'Valor Desconto',
+  product: 'Produto',
+  quantity: 'QTDE',
+  typeOfUnity: 'UN',
+  items: 'Itens',
+  valueUnit: 'Vl. Unit. (R$)'
 };

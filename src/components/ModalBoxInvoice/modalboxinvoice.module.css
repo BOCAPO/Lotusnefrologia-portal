@@ -1,0 +1,192 @@
+.headBoxInvoice {
+    width: 50%;
+    margin: 0 25%;
+}
+
+.headBoxInvoice::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: #00555B;
+    border-radius: 5px;
+}
+
+.modalBoxInvoice > select {
+    height: 42px !important;
+}
+
+.headBoxInvoice::-webkit-scrollbar-thumb {
+    background: #A1E2A5;
+    border-radius: 5px;
+}
+
+.headBoxInvoice::-webkit-scrollbar-track {
+    border-radius: 5px;
+}
+
+.modalBoxInvoice {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.modalBoxInvoice .modal-dialog .modal-content {
+    width: 900px;
+    border-radius: 15px;
+    border: none;
+}
+
+.modalBoxInvoice .modal-dialog {
+    margin: 1.75rem calc((100% - 900px)/2);
+}
+
+.containerBoxInvoice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #21212169;
+    position: absolute;
+    top: 0;
+}
+
+.bodyBoxInvoice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 30%;
+    height: 55vh;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 0 1%;
+}
+
+.twoColumns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.columnProducts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.columnProductsInter{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin: 2vh 0;
+}
+
+.columnProductsInter select {
+    height: 42px !important;
+}
+
+
+.inputNewInvoice, .inputTypeNumberInvoice {
+    padding: 20px;
+}
+
+.boxInvoiceBtns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 40px;
+}
+
+.boxInvoiceAddItems {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    height: 40px;
+    margin: 2vh 0;
+}
+
+.boxInvoiceAddItems button {
+    width: 15%;
+    border: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 4%;
+    border-radius: 3px;
+    background-color: #CBEACF;
+    color: #212121;
+    font-size: 12px;
+}
+
+.boxInvoiceAddItems button:hover {
+    background-color: #12A49B;
+    color: #FFFFFF;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    cursor: pointer;
+}
+
+div.boxInvoiceAddItems button:hover svg path {
+    fill: #FFFFFF;
+}
+
+.btnDefault {
+    width: 25%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.btnDefault:first-child {
+    margin-right: 10%;
+}
+
+.twoColumns select {
+    width: 45%;
+    height: 40px;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
+    padding: 1% 2%;
+    font-size: 14px;
+    color: #8C8E90;
+}
+
+.twoColumns select:active, .twoColumns select:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
+}
+
+.hrInvoice {
+    width: 100%;
+    height: 1px;
+    background-color: #E5E5E5;
+    margin: 2% 0;
+}
+
+.inputTypeNumberInvoice::-webkit-outer-spin-button,
+.inputTypeNumberInvoice::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.inputTypeNumberInvoice {
+    -moz-appearance: textfield;
+}
+
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .btnDefault:first-child {
+        margin-right: 45% !important;
+    }
+}

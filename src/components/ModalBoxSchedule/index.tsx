@@ -188,7 +188,7 @@ export default function ModalBoxSchedule({
               width: '70%',
               height: '40px'
             }}
-            item={Strings.unity}
+            item={Strings.unit}
             data={units}
             error={errors.descriptionRequired?.message?.toString()}
             onSelectChange={handleGetUnit}

@@ -211,7 +211,7 @@ export default function EditPatientPage() {
               />
               <SelectForm
                 control={control}
-                item={Strings.unity}
+                item={Strings.unit}
                 name="unit"
                 data={units !== null ? units : null}
                 error={errors.state?.message}

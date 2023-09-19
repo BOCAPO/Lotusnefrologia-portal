@@ -32,7 +32,7 @@ export const styles = {
     border: 'none',
     borderRadius: '6px',
     fontSize: '18px',
-    minWidth: '150px',
+    minWidth: '155px',
     fontWeight: 'bold',
     fontFamily: Fonts.primary.regular,
     hover: {
@@ -46,7 +46,7 @@ export const styles = {
     height: '100%',
     maxHeight: '40px',
     border: 'none',
-    minWidth: '150px',
+    minWidth: '155px',
     borderRadius: '3px',
     fontFamily: Fonts.primary.regular,
     fontSize: '12px'
@@ -57,7 +57,7 @@ export const styles = {
     width: '100%',
     height: '100%',
     maxHeight: '40px',
-    minWidth: '150px',
+    minWidth: '155px',
     border: 'none',
     borderRadius: '3px',
     fontFamily: Fonts.primary.regular,

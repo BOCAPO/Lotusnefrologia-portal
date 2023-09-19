@@ -15,10 +15,10 @@ import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import { SpinnerLoading } from 'components/Spinner';
 import {
-  LitteText,
-  MediumText,
-  MediumText2,
-  SmallText2
+    LitteText,
+    MediumText,
+    MediumText2,
+    SmallText2
 } from 'components/Text';
 
 import styles from './appointment.module.css';
@@ -37,9 +37,9 @@ import { ResponseGetModel } from 'models/ResponseGetModel';
 import { ResponseSchedulesModel } from 'models/ResponseSchedulesModel';
 import { Prefs } from 'repository/Prefs';
 import {
-  getAllAppointmensTags,
-  getAllAppointmentsWithoutPagination,
-  updateAppointment
+    getAllAppointmensTags,
+    getAllAppointmentsWithoutPagination,
+    updateAppointment
 } from 'services/appointments';
 import { getPatientsWithoutPagination } from 'services/patients';
 import { getHoursBySpecialistAndDateAndUnit } from 'services/schedules';
@@ -664,8 +664,8 @@ export default function AppointmentsPage(): JSX.Element {
           </div>
           <div className={styles.internalDivDetailsAppointment}>
             <InputForm
-              placeholder={Strings.unity}
-              label={Strings.unity}
+              placeholder={Strings.unit}
+              label={Strings.unit}
               readonly={true}
               containerStyle={{ width: '65%' }}
               control={control}
