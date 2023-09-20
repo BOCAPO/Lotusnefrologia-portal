@@ -14,7 +14,9 @@ import styles from './invoiceslist.module.css';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { format } from 'date-fns';
+import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
+import { Prefs } from 'repository/Prefs';
 import { getAllInvoices, getInvoicesPerPage } from 'services/invoices';
 import { getProductsWithoutPagination } from 'services/products';
 import { getAllUnitsWithoutPagination } from 'services/units';
@@ -76,10 +78,32 @@ export default function ListInvoicesPage() {
     setLoading(false);
   }
 
+  // async function getUnits() {
+  //   const response = await getAllUnitsWithoutPagination();
+  //   const data = response.data as ResponseGetModel;
+  //   setUnits(data);
+  // }
+
   async function getUnits() {
+    let unitsPermited = JSON.parse(Prefs.getUnits()!);
+    unitsPermited = unitsPermited!.map((item: DataUnitsModel) => item.id);
     const response = await getAllUnitsWithoutPagination();
-    const data = response.data as ResponseGetModel;
-    setUnits(data);
+    const unitsUpdated = response.data as unknown as DataUnitsModel[];
+
+    const newUnitsPermitd: any = [];
+
+    unitsUpdated.map((item: any) => {
+      unitsPermited?.map((item2: any) => {
+        if (item.id === item2) {
+          newUnitsPermitd.push(item);
+        }
+      });
+    });
+    setUnits(
+      newUnitsPermitd.sort((a: DataUnitsModel, b: DataUnitsModel) =>
+        a.name.localeCompare(b.name)
+      )
+    );
   }
 
   async function getProducts() {

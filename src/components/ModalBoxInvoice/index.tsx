@@ -49,6 +49,8 @@ export default function ModalBoxInvoice({
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listProductsQuantity, setListProductsQuantity] =
     React.useState<any>(1);
+  const [amountTotal, setAmountTotal] = React.useState<any>(0);
+  let amount = 0;
 
   const {
     control,
@@ -85,6 +87,7 @@ export default function ModalBoxInvoice({
     setValue('unitValue', '');
     setValue('quantity', '');
     setValue('typeOfUnity', '');
+    setAmountTotal(0);
     for (let i = 0; i < listProductsQuantity; i++) {
       setValue(`product${i}`, '');
       setValue(`unitValue${i}`, '');
@@ -100,6 +103,16 @@ export default function ModalBoxInvoice({
       value: Number(valueProduct),
       un: valueUnit
     };
+    amount = amountTotal;
+    amount = amount + Number(valueProduct) * Number(quantityProduct);
+    setAmountTotal(amount);
+    setValue(
+      'amountTotal',
+      'R$ ' + amount.toFixed(2).toString().replace('.', ',')
+    );
+    setValueProduct(0);
+    setQuantityProduct(0);
+
     const updatedList = [...listProducts, newProduct];
     setListProducts(updatedList);
     setListProductsQuantity(listProductsQuantity + 1);
@@ -112,26 +125,6 @@ export default function ModalBoxInvoice({
     setListProducts(newList);
     setListProductsQuantity(listProductsQuantity - 1);
   }
-
-  // async function buildListProducts(data: DataProps) {
-  //   const listProducts: any[] = [];
-  //   const input = document.querySelector(`[name="product0"]`);
-  //   console.log(input);
-  //   for (let i = 0; i < listProductsQuantity; i++) {
-  //     const product_id = 'product' + i.toString();
-  //     const unitValue = 'unitValue' + i.toString();
-  //     const quantity = 'quantity' + i.toString();
-  //     const typeOfUnity = 'typeOfUnity' + i.toString();
-  //     // const product = {
-  //     //   product_id: get,
-  //     //   quantity: data.unitValue.toString(),
-  //     //   value: data.quantity + i.toString(),
-  //     //   un: data.typeOfUnity + i.toString()
-  //     // };
-  //     // listProducts.push(product);
-  //   }
-  //   return listProducts;
-  // }
 
   async function handleSubmitInvoice(data: DataProps) {
     let updatedList = await addNewProduct();
@@ -260,6 +253,7 @@ export default function ModalBoxInvoice({
             type="text"
             mask={'coin'}
             maxLength={18}
+            readonly={true}
             placeholder={Strings.amountTotal}
             label={Strings.amountTotal}
             containerStyle={{

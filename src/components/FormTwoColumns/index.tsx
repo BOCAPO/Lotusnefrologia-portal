@@ -10,6 +10,7 @@ import styles from './formtwocolumns.module.css';
 
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataDishesModel } from 'models/DataDishesModel';
 import { DataProductsModel } from 'models/DataProductsModel';
 import { DataRolesModel } from 'models/DataRolesModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
@@ -78,6 +79,9 @@ export function FormTwoColumns({
         case 'newProduct':
           adptedDataProducts(response?.data);
           break;
+        case 'newDishe':
+          adptedDataDishes(response?.data);
+          break;
         default:
           break;
       }
@@ -136,6 +140,18 @@ export function FormTwoColumns({
 
   async function adptedDataProducts(data: any) {
     data.forEach((element: DataProductsModel) => {
+      const dataAdapted = {
+        firstId: element.id,
+        secondId: element.id,
+        firstColumn: element.description,
+        secondColumn: element.status === 0 ? 'Ativo' : 'Inativo'
+      };
+      setDataAdapted((oldArray: any) => [...oldArray, dataAdapted]);
+    });
+  }
+
+  async function adptedDataDishes(data: any) {
+    data.forEach((element: DataDishesModel) => {
       const dataAdapted = {
         firstId: element.id,
         secondId: element.id,

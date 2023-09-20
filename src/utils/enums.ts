@@ -16,3 +16,8 @@ export const statusAppointment = [
   { id: 3, name: 'Realizado' },
   { id: 4, name: 'Confirmado' }
 ];
+
+export const typeOfDishe = [
+  { id: 1, name: 'Fixo' },
+  { id: 2, name: 'Variável' }
+];

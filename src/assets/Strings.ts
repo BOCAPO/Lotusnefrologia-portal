@@ -75,6 +75,7 @@ export const Strings = {
   headersScale: ['Especialista', 'Unidade'],
   headersSpecialty: ['Descrição', 'Status'],
   headersProducts: ['Descrição', 'Status'],
+  headersDishes: ['Descrição', 'Status'],
   headersScaleResponse: ['name', 'unit'],
   headersExams: [
     'Data',
@@ -235,6 +236,7 @@ export const Strings = {
   linkedUnits: 'Unidades Vinculadas',
   headersResponseNewSpecialties: ['description', 'status'],
   headersResponseNewProducts: ['description', 'status'],
+  headersResponseNewDished: ['description', 'status'],
   erase: 'Excluir',
   notInformed: 'Não Informado',
   unit: 'Unidade',
@@ -260,7 +262,8 @@ export const Strings = {
   import: 'Importar',
   selectOrDropFile: 'Selecione ou arraste o arquivo',
   noOneFileSelected: 'Nenhum arquivo selecionado',
-  typesFilesAccepted: 'Tipos de arquivos aceitos: pdf, jpg, jpeg, png',
+  typesFilesAcceptedExams: 'Tipos de arquivos aceitos: pdf, jpg, jpeg, png',
+  typesFilesAccpetedDishe: 'Extensões aceitas: jpg, jpeg, png',
   appointmentConfirmed: 'Consulta foi confirmada com sucesso!',
   appointmentCanceled: 'Consulta foi cancelada com sucesso!',
   appointmentChanged: 'Consulta foi reagendada com sucesso!',
@@ -273,5 +276,10 @@ export const Strings = {
   quantity: 'QTDE',
   typeOfUnity: 'UN',
   items: 'Itens',
-  valueUnit: 'Vl. Unit. (R$)'
+  valueUnit: 'Vl. Unit. (R$)',
+  new: 'Novo',
+  nameOfDishe: 'Nome do Prato',
+  disheCategory: 'Categoria do Prato',
+  typeOfDishe: 'Tipo do Prato',
+  kitcheOrders: 'Pedidos da Cozinha'
 };

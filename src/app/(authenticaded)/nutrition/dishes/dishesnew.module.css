@@ -1,4 +1,4 @@
-.bodyProducts {
+.bodyDishes {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -7,7 +7,7 @@
     margin: 0 5%;
 }
 
-.formInserProducts {
+.formInserDishes {
     width: 60%;
     height: 74vh;
     display: flex;
@@ -22,13 +22,13 @@
     border-radius: 9px;
 }
 
-.formInserProducts div {
+.formInserDishes div {
     width: 100%;
     display: flex;
     flex-direction: row;
 }
 
-.newProducts {
+.newDishes {
     width: 100%;
     height: 80%;
     display: flex;
@@ -36,51 +36,61 @@
     justify-content: space-around;
 }
 
-.newProducts select {
+.newDishes select, .secondLineNewDishes select  {
     width: 20%;
     height: 40px;
     border: 1px solid #E5E5E5;
     border-radius: 5px;
     padding: 1% 5%;
-    font-size: 16px;
+    font-size: 14px;
 }
 
-.newProducts select:active, .newProducts select:focus {
+.secondLineNewDishes {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 4vh;
+    justify-content: space-around;
+}
+
+.newDishes select:active, .newDishes select:focus {
     border: 1px solid #A1E2A5;
     box-shadow: 0px 3px 6px #A1C9A47F;
     outline: none;
 }
 
-.titleProducts {
+.titleDishes {
     height: 6vh;
     padding: 1vh 2% 0 2%;
     border-bottom: 0.5px solid #D0D1D5;
     margin-bottom: 2vh;
 }
 
-.bodySelectProducts {
+.bodySelectDishes {
     height: 60vh;
     display: flex;
     align-items: flex-start !important;
     justify-content: flex-start !important;
+    padding: 1vh 2% 0 2%;
 }
 
-.footerProducts {
+.footerDishes {
     border-top: 0.5px solid #D0D1D5;
     height: 7vh;
     width: 100%;
     padding: 2vh 2% 0 2%;
 }
 
-.btnSaveNewProducts, .btnDeleteNewProducts {
+.btnSaveNewDishes, .btnDeleteNewDishes {
     margin-right: 3%;
 }
 
-.btnSaveNewProducts, .btnCancelNewProducts, .btnDeleteNewProducts {
+.btnSaveNewDishes, .btnCancelNewDishes, .btnDeleteNewDishes {
     width: 15% !important;
 }
 
-.footerNewProducts {
+.footerNewDishes {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -90,12 +100,46 @@
     padding: 1.5vh 2% 0 2%;
 }
 
+.imgDishe {
+    width: 35% !important;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border: 1px solid #E5E5E5;
+    padding: 5% 3%;
+}
+
+.columnDishe{
+    display: flex;
+    flex-direction: column !important;
+}
+
+.textAreaDivDescriptionDishe {
+    width: 68% !important;
+    height: 160px;
+    font-size: 12px;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 1vh;
+    border-radius: 6px;
+    padding: 3%;
+    border: 1px solid #E5E5E5;
+    resize: none;
+}
+
+.textAreaDivDescriptionDishe:focus {
+    border: 1px solid #A1E2A5;
+    box-shadow: 0px 3px 6px #A1C9A47F;
+    outline: none;
+}
+
 @media screen and (max-height: 981px) and (min-height: 740px) {
-    .formInserProducts {
+    .formInserDishes {
         height: 77vh;
     }
 
-    .btnSaveNewProducts, .btnDeleteNewProducts {
+    .btnSaveNewDishes, .btnDeleteNewDishes {
         margin-right: 6%;
     }
 }
