@@ -1,4 +1,5 @@
 import { DataAppoitmentTag } from './DataAppoitmentTag';
+import { DataDishesModel } from './DataDishesModel';
 import { DataInvoicesModel } from './DataInvoicesModel';
 import { DataPatientsModel } from './DataPatientsModel';
 import { DataProductsModel } from './DataProductsModel';
@@ -22,6 +23,7 @@ export type ResponseGetModel = {
     | DataRolesModel[]
     | DataProductsModel[]
     | DataInvoicesModel[]
+    | DataDishesModel[]
     | ResponseAppointmentModel;
   first_page_url: string;
   from: number;

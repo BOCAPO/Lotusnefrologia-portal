@@ -1,10 +1,12 @@
 'use client';
 
 import React from 'react';
+import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form';
 
 import { Button } from 'components/Button';
 import { FormTwoColumns } from 'components/FormTwoColumns';
+import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
 import ModalSuccess from 'components/ModalSuccess';
@@ -18,16 +20,11 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { DataProductsModel } from 'models/DataProductsModel';
+import { DataDishesModel } from 'models/DataDishesModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
-import {
-  createProduct,
-  deleteProduct,
-  getAllProducts,
-  getProductsPerPage,
-  updateProduct
-} from 'services/products';
-import { statusGeneral } from 'utils/enums';
+import { getDishesCategoryWithoutPagination } from 'services/disheCategory';
+import { getAllDishes, getDishesPerPage } from 'services/dishes';
+import { statusGeneral, typeOfDishe } from 'utils/enums';
 
 type DataProps = {
   [name: string]: string | number;
@@ -35,32 +32,61 @@ type DataProps = {
 
 export default function NewDishePage() {
   const [data, setData] = React.useState<any>(null);
+  const [disheCategory, setDisheCategory] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [quantityDishes, setQuantityDishes] = React.useState<number>(0);
   const [page, setPage] = React.useState<number>(1);
   const [selectedDishe, setSelectedDishe] = React.useState<any>(null);
   const [message, setMessage] = React.useState<string>('');
+  const [activeForm, setActiveForm] = React.useState<boolean>(false);
+  const [files, setFiles] = React.useState([] as any);
+
+  const onDrop = (acceptedFiles: any) => {
+    setFiles(acceptedFiles);
+  };
+
+  const filesList = files.map((file: any) => (
+    <p key={file.name}>
+      {file.name} - {file.size} bytes
+    </p>
+  ));
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      'image/png': ['png'],
+      'image/jpeg': ['jpeg', 'jpg']
+    },
+    maxFiles: 1
+  });
 
   React.useEffect(() => {
     getDishes();
+    getDishesCategory();
   }, [quantityDishes, selectedDishe, page]);
 
   async function getDishes() {
     if (page === 1) {
       setData(null);
-      const response = await getAllProducts();
+      const response = await getAllDishes();
       const data = response.data as ResponseGetModel;
       setData(data);
       setQuantityDishes(data.total);
     } else {
       setData(null);
-      const response = await getProductsPerPage(page);
+      const response = await getDishesPerPage(page);
       const data = response.data as ResponseGetModel;
       setData(data);
       setQuantityDishes(data.total);
     }
     setLoading(false);
+  }
+
+  async function getDishesCategory() {
+    const response = await getDishesCategoryWithoutPagination();
+    const data = response.data as ResponseGetModel;
+    setDisheCategory(data);
   }
 
   const handleSelectionPage = (selectedValue: string) => {
@@ -76,13 +102,13 @@ export default function NewDishePage() {
     resolver: yupResolver(schema)
   });
 
-  async function deleteProductId() {
+  async function deleteDisheId() {
     const response = await deleteProduct(selectedDishe.id);
     if (response !== null) {
       setQuantityDishes(quantityDishes - 1);
       setMessage(Strings.messageSuccessDeleteProduct);
       setShowModalSuccess(true);
-      setValue('product', '');
+      setValue('dishe', '');
       setValue('status', 0);
       setTimeout(() => {
         setShowModalSuccess(false);
@@ -90,18 +116,35 @@ export default function NewDishePage() {
     }
   }
 
+  async function fileToDataURI(file: any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const dataURI = event?.target?.result;
+        resolve(dataURI);
+      };
+
+      reader.onerror = (event) => {
+        reject(event?.target?.error);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function onSubmit(data: DataProps) {
     const dataStatus = Number(data.status) - 1;
     let response = null;
     if (selectedDishe !== null) {
-      const newProduct: DataProductsModel = {
+      const newProduct: DataDishesModel = {
         description: data.product.toString(),
         status: Number(dataStatus)
       };
       response = await updateProduct(newProduct, selectedDishe.id);
       setMessage(Strings.messageSuccessUpdateProduct);
     } else {
-      const newProduct: DataProductsModel = {
+      const newProduct: DataDishesModel = {
         description: data.product.toString(),
         status: Number(dataStatus)
       };
@@ -120,32 +163,32 @@ export default function NewDishePage() {
   }
 
   function handleItemSelection(firstId: any) {
-    const dataProductSelected = data?.data?.filter(
-      (element: DataProductsModel) => element.id === Number(firstId)
+    const dataDisheSelected = data?.data?.filter(
+      (element: DataDishesModel) => element.id === Number(firstId)
     )[0];
 
-    setSelectedDishe(dataProductSelected);
-    setValue('product', dataProductSelected.description);
-    setValue('status', Number(dataProductSelected.status) + 1);
+    setSelectedDishe(dataDisheSelected);
+    setValue('product', dataDisheSelected.description);
+    setValue('status', Number(dataDisheSelected.status) + 1);
   }
 
   return (
     <React.Fragment>
       <MenuTop />
-      <div className={styles.bodyProducts}>
+      <div className={styles.bodyDishes}>
         <div style={{ width: '30%' }}>
           <FormTwoColumns
-            headers={Strings.headersProducts}
-            headersResponse={Strings.headersResponseNewProducts}
+            headers={Strings.headersDishes}
+            headersResponse={Strings.headersResponseNewDished}
             response={data}
             isLoading={loading}
-            type="newProduct"
+            type="newDishe"
             onClick={handleSelectionPage}
             onItemClick={handleItemSelection}
           />
         </div>
-        <div className={styles.formInserProducts}>
-          <div className={styles.titleProducts}>
+        <div className={styles.formInserDishes}>
+          <div className={styles.titleDishes}>
             <SmallMediumText
               text={Strings.insertProduct}
               style={{ textAlign: 'left', lineHeight: 2 }}
@@ -153,51 +196,104 @@ export default function NewDishePage() {
               color={Colors.gray90}
             />
           </div>
-          <div className={styles.bodySelectProducts}>
-            <div className={styles.newProducts}>
-              <InputForm
-                control={control}
-                name="product"
-                type="text"
-                containerStyle={{ width: '40%' }}
-                style={{ height: '40px' }}
-                placeholder={Strings.descriptionOfProduct}
-                label={Strings.description}
-                error={errors.product?.message?.toString()}
-              />
-              <SelectForm
-                control={control}
-                item={Strings.status}
-                name="status"
-                containerStyle={{ width: '25%' }}
-                error={errors.status?.message?.toString()}
-                data={statusGeneral}
-              />
-            </div>
+          <div className={styles.bodySelectDishes}>
+            {activeForm && (
+              <React.Fragment>
+                <div
+                  {...getRootProps({ className: 'dropzone' })}
+                  className={styles.imgDishe}
+                >
+                  {filesList.length === 0 ? (
+                    <React.Fragment>
+                      <Icon
+                        typeIcon={TypeIcon.Upload}
+                        size={30}
+                        color={Colors.greenDark2}
+                      />
+                      <input {...getInputProps()} />
+                      <p>{Strings.selectOrDropFile}</p>
+                      <p>{Strings.typesFilesAccpetedDishe}</p>
+                    </React.Fragment>
+                  ) : (
+                    <div>{filesList}</div>
+                  )}
+                </div>
+                <div className={styles.columnDishe}>
+                  <div className={styles.newDishes}>
+                    <InputForm
+                      control={control}
+                      name="name"
+                      type="text"
+                      containerStyle={{ width: '40%' }}
+                      style={{ height: '40px' }}
+                      placeholder={Strings.nameOfDishe}
+                      label={Strings.nameOfDishe}
+                      error={errors.name?.message?.toString()}
+                    />
+                    <SelectForm
+                      control={control}
+                      item={Strings.disheCategory}
+                      name="disheCategory"
+                      containerStyle={{ width: '25%' }}
+                      error={errors.disheCategory?.message?.toString()}
+                      data={disheCategory}
+                    />
+                    <SelectForm
+                      control={control}
+                      item={Strings.typeOfDishe}
+                      name="typeOfDishe"
+                      containerStyle={{ width: '25%' }}
+                      error={errors.typeOfDishe?.message?.toString()}
+                      data={typeOfDishe}
+                    />
+                  </div>
+                  <div className={styles.secondLineNewDishes}>
+                    <textarea
+                      name="description"
+                      placeholder={Strings.description}
+                      maxLength={200}
+                      className={styles.textAreaDivDescriptionDishe}
+                    />
+                    <SelectForm
+                      control={control}
+                      item={Strings.status}
+                      name="status"
+                      containerStyle={{ width: '25%' }}
+                      error={errors.status?.message?.toString()}
+                      data={statusGeneral}
+                    />
+                  </div>
+                </div>
+              </React.Fragment>
+            )}
           </div>
-          <div className={styles.footerNewProducts}>
-            <div className={styles.btnSaveNewProducts}>
-              <Button
-                type="secondary"
-                title={Strings.save}
-                onClick={handleSubmit(onSubmit)}
-              />
-            </div>
-            <div className={styles.btnDeleteNewProducts}>
-              <Button
-                type="secondary"
-                title={Strings.erase}
-                onClick={() => {
-                  deleteProductId();
-                }}
-              />
-            </div>
-            <div className={styles.btnCancelNewProducts}>
+          <div className={styles.footerNewDishes}>
+            {activeForm && (
+              <React.Fragment>
+                <div className={styles.btnSaveNewDishes}>
+                  <Button
+                    type="secondary"
+                    title={Strings.save}
+                    onClick={handleSubmit(onSubmit)}
+                  />
+                </div>
+                <div className={styles.btnDeleteNewDishes}>
+                  <Button
+                    type="secondary"
+                    title={Strings.erase}
+                    onClick={() => {
+                      deleteDisheId();
+                    }}
+                  />
+                </div>
+              </React.Fragment>
+            )}
+            <div className={styles.btnCancelNewDishes}>
               <Button
                 type="cancel"
-                title={Strings.cancel}
+                title={Strings.new}
                 onClick={() => {
-                  setSelectedDishe(null);
+                  setActiveForm(true);
                   setValue('product', '');
                   setValue('status', 0);
                 }}

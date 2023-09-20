@@ -285,7 +285,7 @@ export default function ModalBoxExams({
                   />
                   <input {...getInputProps()} />
                   <p>{Strings.selectOrDropFile}</p>
-                  <p>{Strings.typesFilesAccepted}</p>
+                  <p>{Strings.typesFilesAcceptedExams}</p>
                 </React.Fragment>
               ) : (
                 <div>{filesList}</div>

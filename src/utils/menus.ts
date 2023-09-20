@@ -97,7 +97,7 @@ export const menusMain: MenuModel[] = [
         title: 'Pedidos da Cozinha',
         image: null,
         alternativeImage: null,
-        link: '/nutrition/kitchen',
+        link: '/nutrition/orders',
         internalMenus: null
       },
       {
@@ -121,7 +121,7 @@ export const menusMain: MenuModel[] = [
         title: 'Cadastro de Cardápio',
         image: null,
         alternativeImage: null,
-        link: '/nutrition/include-menu',
+        link: '/nutrition/dishes',
         internalMenus: null
       },
       {
