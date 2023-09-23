@@ -75,7 +75,7 @@ export const Strings = {
   headersScale: ['Especialista', 'Unidade'],
   headersSpecialty: ['Descrição', 'Status'],
   headersProducts: ['Descrição', 'Status'],
-  headersDishes: ['Descrição', 'Status'],
+  headersDishes: ['Nome', 'Status'],
   headersScaleResponse: ['name', 'unit'],
   headersExams: [
     'Data',
@@ -223,10 +223,13 @@ export const Strings = {
   messageSuccessUpdateRole: 'O cadastro do perfil foi atualizado com sucesso.',
   messageSuccessInsertProduct:
     'O cadastro do produto foi realizado com sucesso.',
+  messageSuccessInsertDishe: 'O cadastro do prato foi realizado com sucesso.',
   messageSuccessUpdateProduct:
     'O cadastro do produto foi atualizado com sucesso.',
+  messageSuccesUpdateDishe: 'O cadastro do prato foi atualizado com sucesso.',
   messageSuccessDeleteProduct:
     'O cadastro do produto foi excluído com sucesso.',
+  messageSuccessDeleteDishe: 'O cadastro do prato foi excluído com sucesso.',
   selectDate: 'Selecione a data',
   hoursDisponibles: 'Horários disponíveis',
   resetPasswordSpecialist: 'Redefinir Senha do Especialista',
@@ -236,7 +239,7 @@ export const Strings = {
   linkedUnits: 'Unidades Vinculadas',
   headersResponseNewSpecialties: ['description', 'status'],
   headersResponseNewProducts: ['description', 'status'],
-  headersResponseNewDished: ['description', 'status'],
+  headersResponseNewDished: ['name', 'status'],
   erase: 'Excluir',
   notInformed: 'Não Informado',
   unit: 'Unidade',

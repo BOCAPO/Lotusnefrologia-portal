@@ -129,7 +129,7 @@ export const menusMain: MenuModel[] = [
         title: 'Planejar Cardápio',
         image: null,
         alternativeImage: null,
-        link: '/nutrition/plan-menu',
+        link: '/nutrition/menus',
         internalMenus: null
       }
     ]

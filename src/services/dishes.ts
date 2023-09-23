@@ -1,4 +1,4 @@
-import { deleteJson, getJson, postJson } from '../http';
+import { deleteJson, getJson, postJson, putJson } from '../http';
 
 import { DataDishesModel } from 'models/DataDishesModel';
 
@@ -12,6 +12,10 @@ export async function getDishesPerPage(page: number) {
 
 export async function createDishe(data: DataDishesModel) {
   return await postJson('/dishes', data);
+}
+
+export async function updateDishe(id: number, data: DataDishesModel) {
+  return await putJson(`/dishes/${id}`, data);
 }
 
 export async function deleteDishe(id: number) {

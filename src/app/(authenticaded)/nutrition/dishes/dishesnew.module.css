@@ -36,7 +36,7 @@
     justify-content: space-around;
 }
 
-.newDishes select, .secondLineNewDishes select  {
+.newDishes select, .secondLineNewDishes select {
     width: 20%;
     height: 40px;
     border: 1px solid #E5E5E5;
@@ -46,11 +46,12 @@
 }
 
 .secondLineNewDishes {
-    width: 100%;
+    width: 97.5% !important;
     height: 80%;
     display: flex;
     flex-direction: row;
     margin-top: 4vh;
+    margin-left: 1%;
     justify-content: space-around;
 }
 
@@ -108,20 +109,26 @@
     justify-content: center !important;
     align-items: center !important;
     border: 1px solid #E5E5E5;
-    padding: 5% 3%;
+    padding: 1%;
 }
 
-.columnDishe{
+.columnDishe {
     display: flex;
     flex-direction: column !important;
 }
 
+.divTextAreaDescriptionDishe{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .textAreaDivDescriptionDishe {
-    width: 68% !important;
+    width: 100%;
     height: 160px;
-    font-size: 12px;
+    font-size: 14px;
     font-family: 'Arial', sans-serif;
-    margin-bottom: 1vh;
+    margin: 0 5% 1vh 2%;
     border-radius: 6px;
     padding: 3%;
     border: 1px solid #E5E5E5;
