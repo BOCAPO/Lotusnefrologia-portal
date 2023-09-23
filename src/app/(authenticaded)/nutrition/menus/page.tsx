@@ -1,12 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useForm } from 'react-hook-form';
 
 import { Button } from 'components/Button';
+import DestinationList from 'components/DestinationListComponent';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import ModalSuccess from 'components/ModalSuccess';
+import { SelectForm } from 'components/SelectForm';
+import SourceList from 'components/SourceListComponent';
+import { SpinnerLoading } from 'components/Spinner';
 
 import styles from './menusnew.module.css';
 
@@ -15,6 +21,14 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { DataDishesModel } from 'models/DataDishesModel';
+import { DataMenuModel } from 'models/DataMenuModel';
+import { DataUnitsModel } from 'models/DataUnitsModel';
+import { Prefs } from 'repository/Prefs';
+import { getDishesWithoutPagination } from 'services/dishes';
+import { createMenu } from 'services/menu';
+import { getAllUnitsWithoutPagination } from 'services/units';
+import formatDate from 'utils/helpers';
 
 type DataProps = {
   [name: string]: string | number;
@@ -22,14 +36,121 @@ type DataProps = {
 
 export default function NewMenuPage(): JSX.Element {
   const [optionOrganizedBy, setOptionOrganizedBy] = React.useState<string>('');
+  const [showModalSuccess, setShowModalSuccess] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [units, setUnits] = React.useState<any>(null);
+  const [selectedUnit, setSelectedUnit] = React.useState<number>(0);
+  const [searchValue, setSearchValue] = useState<string>('');
   const {
     control,
     handleSubmit,
-    setValue,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
   });
+
+  const [sourceItems, setSourceItems] = useState<
+    { id: number; name: string; photo_path: string }[]
+  >([]);
+
+  React.useEffect(() => {
+    getDishes();
+    getUnits();
+  }, []);
+
+  async function getDishes() {
+    const response = await getDishesWithoutPagination();
+    const dishes = response.data as unknown as DataDishesModel[];
+    const noFixed = dishes.filter((dish) => dish.isFixed === false);
+    const fixed = dishes.filter((dish) => dish.isFixed === true);
+
+    const dishedsNoFixed = noFixed.map((dish) => ({
+      id: dish.id!,
+      name: dish.name!,
+      photo_path: dish.photo_path!
+    }));
+
+    const dishedsFixed = fixed.map((dish) => ({
+      id: dish.id!,
+      name: dish.name!,
+      photo_path: dish.photo_path!
+    }));
+
+    setSourceItems(dishedsNoFixed);
+    setDestinationItems(dishedsFixed);
+    setIsLoading(false);
+  }
+
+  async function getUnits() {
+    let unitsPermited = JSON.parse(Prefs.getUnits()!);
+    unitsPermited = unitsPermited!.map((item: DataUnitsModel) => item.id);
+    const response = await getAllUnitsWithoutPagination();
+    const unitsUpdated = response.data as unknown as DataUnitsModel[];
+    const newUnitsPermitd: any = [];
+    unitsUpdated.map((item: any) => {
+      unitsPermited?.map((item2: any) => {
+        if (item.id === item2) {
+          newUnitsPermitd.push(item);
+        }
+      });
+    });
+    setUnits(
+      newUnitsPermitd.sort((a: DataUnitsModel, b: DataUnitsModel) =>
+        a.name.localeCompare(b.name)
+      )
+    );
+  }
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleGetUnit = (selectedUnitCode: any) => {
+    setSelectedUnit(selectedUnitCode);
+  };
+
+  const filteredSourceItems = sourceItems.filter((item) =>
+    item.name.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
+  const [destinationItems, setDestinationItems] = useState<
+    { id: number; name: string; photo_path: string }[]
+  >([]);
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return; // Não houve mudança de posição
+
+    const source = [...sourceItems];
+    const destination = [...destinationItems];
+    const [movedItem] = source.splice(result.source.index, 1);
+    destination.splice(result.destination.index, 0, movedItem);
+
+    setSourceItems(source);
+    setDestinationItems(destination);
+  };
+
+  async function onSubmit(data: DataProps) {
+    const newMenu: DataMenuModel = {
+      start: data.startDate.toString(),
+      end: data.endDate.toString(),
+      unit_id: selectedUnit,
+      dishes: destinationItems.map((dish) => dish.id)
+    };
+
+    const response = await createMenu(newMenu);
+
+    if (response.status !== null) {
+      setMessage(Strings.messageSuccessfulMenuCreation);
+      setShowModalSuccess(true);
+      setTimeout(() => {
+        setShowModalSuccess(false);
+      }, 3000);
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -74,6 +195,7 @@ export default function NewMenuPage(): JSX.Element {
                 name="startDate"
                 error={errors.startDate?.message}
                 className={styles.inputDateMenu}
+                getValue={setStartDate}
               />
 
               {optionOrganizedBy === 'Semanal' ? (
@@ -87,11 +209,21 @@ export default function NewMenuPage(): JSX.Element {
                     name="endDate"
                     error={errors.startDate?.message}
                     className={styles.inputDateMenu}
+                    getValue={setEndDate}
                   />
                 </React.Fragment>
               ) : (
                 <></>
               )}
+              <SelectForm
+                control={control}
+                item={Strings.unit}
+                name="unit"
+                containerStyle={{ width: '100%', marginTop: '3vh' }}
+                error={errors.unit?.message?.toString()}
+                data={units}
+                onSelectChange={handleGetUnit}
+              />
             </div>
           </div>
         </div>
@@ -101,7 +233,12 @@ export default function NewMenuPage(): JSX.Element {
           </div>
           <div className="w-100 d-flex">
             <div className={styles.searchBar}>
-              <input type="search" placeholder={Strings.search} />
+              <input
+                type="search"
+                placeholder={Strings.search}
+                value={searchValue}
+                onChange={handleSearchChange}
+              />
               <div className={styles.iconSearch}>
                 <Icon
                   typeIcon={TypeIcon.Search}
@@ -112,7 +249,15 @@ export default function NewMenuPage(): JSX.Element {
               </div>
             </div>
             <div className="mx-5">
-              <p className={styles.subtitlePeriod}>{Strings.periodSelected}</p>
+              <p className={styles.subtitlePeriod}>
+                {optionOrganizedBy === 'Semanal'
+                  ? Strings.periodSelected +
+                    ': ' +
+                    formatDate(startDate) +
+                    ' - ' +
+                    formatDate(endDate)
+                  : Strings.daySelected + ': ' + formatDate(startDate)}
+              </p>
               <p className={styles.subtitlePeriod}>
                 <span>
                   {Strings.status}: <strong>{Strings.planning}</strong>
@@ -120,9 +265,59 @@ export default function NewMenuPage(): JSX.Element {
               </p>
             </div>
           </div>
-          <div></div>
+          {isLoading ? (
+            <SpinnerLoading />
+          ) : (
+            <React.Fragment>
+              <div className="d-flex w-100 mt-2">
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <div
+                    style={{ display: 'flex', flexDirection: 'row' }}
+                    className="w-100"
+                  >
+                    <SourceList items={filteredSourceItems} />
+                    <DestinationList items={destinationItems} />
+                  </div>
+                </DragDropContext>
+              </div>
+              <div className={styles.footerNewMenus}>
+                <React.Fragment>
+                  <div className={styles.btnSaveNewMenus}>
+                    <Button
+                      type="secondary"
+                      title={Strings.save}
+                      onClick={handleSubmit(onSubmit)}
+                    />
+                  </div>
+                  <div className={styles.btnDeleteNewMenus}>
+                    <Button
+                      type="secondary"
+                      title={Strings.clear}
+                      onClick={() => {
+                        // deleteDisheId();
+                      }}
+                    />
+                  </div>
+                </React.Fragment>
+                <div className={styles.btnCancelNewMenus}>
+                  <Button
+                    type="cancel"
+                    title={Strings.new}
+                    onClick={() => {
+                      // handleClean();
+                    }}
+                  />
+                </div>
+              </div>
+            </React.Fragment>
+          )}
         </div>
       </div>
+      <ModalSuccess
+        show={showModalSuccess}
+        onHide={() => setShowModalSuccess(false)}
+        message={message}
+      />
     </React.Fragment>
   );
 }
