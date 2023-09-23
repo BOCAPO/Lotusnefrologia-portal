@@ -125,7 +125,8 @@ export default function NewDishePage() {
     setValue('unit', 0);
     setValue('dishe', '');
     setValue('status', 0);
-    setFile('');
+    setFile('false');
+    handleImageUpload(null);
     setInputDescriptionDishe('');
     setSelectedUnit(0);
     setSelectedDisheCategory(0);
@@ -154,15 +155,21 @@ export default function NewDishePage() {
 
   async function onSubmit(data: DataProps) {
     let response = null;
+    const photo_change = file.indexOf('http') > -1 ? false : true;
+
     if (selectedDishe !== null) {
       const newDishe: Omit<DataDishesModel, 'id'> = {
-        unit_id: selectedUnit,
+        unit_id: selectedUnit === 0 ? selectedDishe.unit_id : selectedUnit,
         name: data.name.toString(),
-        category_id: selectedDisheCategory,
+        category_id:
+          selectedDisheCategory === 0
+            ? selectedDishe.category_id
+            : selectedDisheCategory,
         description: inputDescriptionDishe,
-        isFixed: data.isFixed === '1' ? true : false,
+        isFixed: data.typeOfDishe === '1' ? true : false,
         status: data.status === '1' ? true : false,
-        file: file.indexOf('http') !== -1 ? '' : file
+        file: file,
+        photo_change: photo_change
       };
       response = await updateDishe(selectedDishe.id, newDishe);
       setMessage(Strings.messageSuccesUpdateDishe);
@@ -172,7 +179,7 @@ export default function NewDishePage() {
         name: data.name.toString(),
         category_id: selectedDisheCategory,
         description: inputDescriptionDishe,
-        isFixed: data.isFixed === '1' ? true : false,
+        isFixed: data.typeOfDishe === '1' ? true : false,
         status: data.status === '1' ? true : false,
         file: file
       };

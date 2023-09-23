@@ -11,13 +11,13 @@ interface ImageInputProps {
 
 function ImageInput({ onImageUpload, imageUrl }: ImageInputProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [imageInputFile, setImageInputFile] = useState<string | null>(null);
+  const [imageInputFile, setImageInputFile] = useState<
+    string | null | undefined
+  >(null);
   const [fileTypeError, setFileTypeError] = useState<boolean>(false);
 
   useEffect(() => {
-    if (imageUrl) {
-      setImageInputFile(imageUrl);
-    }
+    setImageInputFile(imageUrl);
   }, [imageUrl]);
 
   const openFileSelector = () => {
@@ -61,6 +61,7 @@ function ImageInput({ onImageUpload, imageUrl }: ImageInputProps) {
           onClick={openFileSelector}
           alt="Image"
           className={styles.imgImageInput}
+          loading="lazy"
         />
       ) : !fileTypeError ? (
         <div className="d-flex flex-column">
