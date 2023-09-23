@@ -64,7 +64,7 @@
     border-radius: 4px;
     border: none;
     padding: 0 10%;
-    background: #CBEACF;
+    border: 1px solid #E5E5E5;
 }
 
 .searchBar {
@@ -126,6 +126,9 @@
     padding: 1.5vh 2% 0 2%;
 }
 
+.selectUnitMenu{
+    margin-top: 3vh;
+}
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .bodyFormFirstColumn button {
