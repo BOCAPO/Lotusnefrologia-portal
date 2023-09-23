@@ -67,12 +67,34 @@ export default function NewDishePage() {
       setData(null);
       const response = await getAllDishes();
       const data = response.data as ResponseGetModel;
+      let dataUpdated = data.data as DataDishesModel[];
+      dataUpdated = dataUpdated?.slice().sort((a: any, b: any) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+      data.data = dataUpdated;
       setData(data);
       setQuantityDishes(data.total);
     } else {
       setData(null);
       const response = await getDishesPerPage(page);
       const data = response.data as ResponseGetModel;
+      let dataUpdated = data.data as DataDishesModel[];
+      dataUpdated = dataUpdated?.slice().sort((a: any, b: any) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+      data.data = dataUpdated;
       setData(data);
       setQuantityDishes(data.total);
     }
@@ -166,8 +188,8 @@ export default function NewDishePage() {
             ? selectedDishe.category_id
             : selectedDisheCategory,
         description: inputDescriptionDishe,
-        isFixed: data.typeOfDishe === '1' ? true : false,
-        status: data.status === '1' ? true : false,
+        isFixed: data.typeOfDishe.toString() === '1' ? true : false,
+        status: data.status.toString() === '1' ? true : false,
         file: file,
         photo_change: photo_change
       };
