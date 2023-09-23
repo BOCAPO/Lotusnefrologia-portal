@@ -6,6 +6,10 @@ export async function getAllDishes() {
   return await getJson('/dishes');
 }
 
+export async function getDishesWithoutPagination() {
+  return await getJson('/dishes?page=false');
+}
+
 export async function getDishesPerPage(page: number) {
   return await getJson(`/dishes?page=${page}`);
 }

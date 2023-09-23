@@ -7,5 +7,6 @@ export type DataDishesModel = {
   isFixed: boolean;
   file: string;
   status: number | boolean;
+  photo_path?: string;
   photo_change?: boolean;
 };

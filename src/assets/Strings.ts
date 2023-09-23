@@ -232,6 +232,7 @@ export const Strings = {
   messageSuccessDeleteProduct:
     'O cadastro do produto foi excluído com sucesso.',
   messageSuccessDeleteDishe: 'O cadastro do prato foi excluído com sucesso.',
+  messageSuccessfulMenuCreation: 'Planejamento de cardápio criado com sucesso.',
   selectDate: 'Selecione a data',
   hoursDisponibles: 'Horários disponíveis',
   resetPasswordSpecialist: 'Redefinir Senha do Especialista',
@@ -289,7 +290,8 @@ export const Strings = {
   kitcheOrders: 'Pedidos da Cozinha',
   period: 'Período',
   organizedBy: 'Organizado por',
-  periodSelected: 'Período Selecionado:',
+  periodSelected: 'Período selecionado',
+  daySelected: 'Dia selecionado',
   planning: 'Planejando',
   planningOfTheMenu: 'Planejamento do Cardápio'
 };
