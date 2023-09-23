@@ -4,6 +4,8 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import styles from './imageinput.module.css';
 
+import NoImage from 'assets/images/image-not-available.jpg';
+
 interface ImageInputProps {
   onImageUpload: (imageDataUrl: string) => void;
   imageUrl?: string;
@@ -62,6 +64,10 @@ function ImageInput({ onImageUpload, imageUrl }: ImageInputProps) {
           alt="Image"
           className={styles.imgImageInput}
           loading="lazy"
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src = NoImage.toString();
+          }}
         />
       ) : !fileTypeError ? (
         <div className="d-flex flex-column">
