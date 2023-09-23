@@ -1,12 +1,11 @@
 'use client';
 
 import React from 'react';
-import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form';
 
 import { Button } from 'components/Button';
 import { FormTwoColumns } from 'components/FormTwoColumns';
-import { Icon, TypeIcon } from 'components/Icone';
+import ImageInput from 'components/ImageInput';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
 import ModalSuccess from 'components/ModalSuccess';
@@ -21,9 +20,18 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataDishesModel } from 'models/DataDishesModel';
+import { DataUnitsModel } from 'models/DataUnitsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
+import { Prefs } from 'repository/Prefs';
 import { getDishesCategoryWithoutPagination } from 'services/disheCategory';
-import { getAllDishes, getDishesPerPage } from 'services/dishes';
+import {
+  createDishe,
+  deleteDishe,
+  getAllDishes,
+  getDishesPerPage,
+  updateDishe
+} from 'services/dishes';
+import { getAllUnitsWithoutPagination } from 'services/units';
 import { statusGeneral, typeOfDishe } from 'utils/enums';
 
 type DataProps = {
@@ -33,6 +41,12 @@ type DataProps = {
 export default function NewDishePage() {
   const [data, setData] = React.useState<any>(null);
   const [disheCategory, setDisheCategory] = React.useState<any>(null);
+  const [selectedDisheCategory, setSelectedDisheCategory] =
+    React.useState<any>(0);
+  const [units, setUnits] = React.useState<any>(null);
+  const [selectedUnit, setSelectedUnit] = React.useState<number>(0);
+  const [inputDescriptionDishe, setInputDescriptionDishe] =
+    React.useState<string>('');
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [quantityDishes, setQuantityDishes] = React.useState<number>(0);
@@ -40,31 +54,13 @@ export default function NewDishePage() {
   const [selectedDishe, setSelectedDishe] = React.useState<any>(null);
   const [message, setMessage] = React.useState<string>('');
   const [activeForm, setActiveForm] = React.useState<boolean>(false);
-  const [files, setFiles] = React.useState([] as any);
-
-  const onDrop = (acceptedFiles: any) => {
-    setFiles(acceptedFiles);
-  };
-
-  const filesList = files.map((file: any) => (
-    <p key={file.name}>
-      {file.name} - {file.size} bytes
-    </p>
-  ));
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: {
-      'image/png': ['png'],
-      'image/jpeg': ['jpeg', 'jpg']
-    },
-    maxFiles: 1
-  });
+  const [file, setFile] = React.useState<string>('');
 
   React.useEffect(() => {
     getDishes();
     getDishesCategory();
-  }, [quantityDishes, selectedDishe, page]);
+    getUnits();
+  }, [quantityDishes, selectedDishe, page, activeForm]);
 
   async function getDishes() {
     if (page === 1) {
@@ -89,6 +85,26 @@ export default function NewDishePage() {
     setDisheCategory(data);
   }
 
+  async function getUnits() {
+    let unitsPermited = JSON.parse(Prefs.getUnits()!);
+    unitsPermited = unitsPermited!.map((item: DataUnitsModel) => item.id);
+    const response = await getAllUnitsWithoutPagination();
+    const unitsUpdated = response.data as unknown as DataUnitsModel[];
+    const newUnitsPermitd: any = [];
+    unitsUpdated.map((item: any) => {
+      unitsPermited?.map((item2: any) => {
+        if (item.id === item2) {
+          newUnitsPermitd.push(item);
+        }
+      });
+    });
+    setUnits(
+      newUnitsPermitd.sort((a: DataUnitsModel, b: DataUnitsModel) =>
+        a.name.localeCompare(b.name)
+      )
+    );
+  }
+
   const handleSelectionPage = (selectedValue: string) => {
     setPage(parseInt(selectedValue));
   };
@@ -102,60 +118,71 @@ export default function NewDishePage() {
     resolver: yupResolver(schema)
   });
 
+  function handleClean() {
+    setValue('name', '');
+    setValue('disheCategory', 0);
+    setValue('typeOfDishe', 0);
+    setValue('unit', 0);
+    setValue('dishe', '');
+    setValue('status', 0);
+    setFile('');
+    setInputDescriptionDishe('');
+    setSelectedUnit(0);
+    setSelectedDisheCategory(0);
+    setSelectedDishe(null);
+  }
+
   async function deleteDisheId() {
-    const response = await deleteProduct(selectedDishe.id);
+    const response = await deleteDishe(selectedDishe.id);
     if (response !== null) {
-      setQuantityDishes(quantityDishes - 1);
-      setMessage(Strings.messageSuccessDeleteProduct);
+      setMessage(Strings.messageSuccessDeleteDishe);
       setShowModalSuccess(true);
-      setValue('dishe', '');
-      setValue('status', 0);
+      handleClean();
       setTimeout(() => {
         setShowModalSuccess(false);
       }, 3500);
     }
   }
 
-  async function fileToDataURI(file: any) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+  const handleGetUnit = (selectedUnitCode: any) => {
+    setSelectedUnit(selectedUnitCode);
+  };
 
-      reader.onload = (event) => {
-        const dataURI = event?.target?.result;
-        resolve(dataURI);
-      };
-
-      reader.onerror = (event) => {
-        reject(event?.target?.error);
-      };
-
-      reader.readAsDataURL(file);
-    });
-  }
+  const handleGetDisheCategory = (selectedDisheCategoryCode: any) => {
+    setSelectedDisheCategory(selectedDisheCategoryCode);
+  };
 
   async function onSubmit(data: DataProps) {
-    const dataStatus = Number(data.status) - 1;
     let response = null;
     if (selectedDishe !== null) {
-      const newProduct: DataDishesModel = {
-        description: data.product.toString(),
-        status: Number(dataStatus)
+      const newDishe: Omit<DataDishesModel, 'id'> = {
+        unit_id: selectedUnit,
+        name: data.name.toString(),
+        category_id: selectedDisheCategory,
+        description: inputDescriptionDishe,
+        isFixed: data.isFixed === '1' ? true : false,
+        status: data.status === '1' ? true : false,
+        file: file.indexOf('http') !== -1 ? '' : file
       };
-      response = await updateProduct(newProduct, selectedDishe.id);
-      setMessage(Strings.messageSuccessUpdateProduct);
+      response = await updateDishe(selectedDishe.id, newDishe);
+      setMessage(Strings.messageSuccesUpdateDishe);
     } else {
       const newProduct: DataDishesModel = {
-        description: data.product.toString(),
-        status: Number(dataStatus)
+        unit_id: selectedUnit,
+        name: data.name.toString(),
+        category_id: selectedDisheCategory,
+        description: inputDescriptionDishe,
+        isFixed: data.isFixed === '1' ? true : false,
+        status: data.status === '1' ? true : false,
+        file: file
       };
-      response = await createProduct(newProduct);
-      setMessage(Strings.messageSuccessInsertProduct);
+      response = await createDishe(newProduct);
+      setMessage(Strings.messageSuccessInsertDishe);
     }
     if (response !== null) {
       setQuantityDishes(quantityDishes + 1);
       setShowModalSuccess(true);
-      setValue('product', '');
-      setValue('status', 0);
+      handleClean();
       setTimeout(() => {
         setShowModalSuccess(false);
       }, 2500);
@@ -167,10 +194,20 @@ export default function NewDishePage() {
       (element: DataDishesModel) => element.id === Number(firstId)
     )[0];
 
+    setActiveForm(true);
     setSelectedDishe(dataDisheSelected);
-    setValue('product', dataDisheSelected.description);
-    setValue('status', Number(dataDisheSelected.status) + 1);
+    setInputDescriptionDishe(dataDisheSelected?.description);
+    setValue('name', dataDisheSelected?.name);
+    setValue('disheCategory', dataDisheSelected?.category_id);
+    setValue('typeOfDishe', dataDisheSelected?.isFixed ? 1 : 2);
+    setValue('unit', dataDisheSelected?.unit_id);
+    setValue('status', dataDisheSelected?.status ? 1 : 2);
+    setFile(dataDisheSelected?.photo_path);
   }
+
+  const handleImageUpload = (imageDataUrl: any) => {
+    setFile(imageDataUrl);
+  };
 
   return (
     <React.Fragment>
@@ -199,24 +236,11 @@ export default function NewDishePage() {
           <div className={styles.bodySelectDishes}>
             {activeForm && (
               <React.Fragment>
-                <div
-                  {...getRootProps({ className: 'dropzone' })}
-                  className={styles.imgDishe}
-                >
-                  {filesList.length === 0 ? (
-                    <React.Fragment>
-                      <Icon
-                        typeIcon={TypeIcon.Upload}
-                        size={30}
-                        color={Colors.greenDark2}
-                      />
-                      <input {...getInputProps()} />
-                      <p>{Strings.selectOrDropFile}</p>
-                      <p>{Strings.typesFilesAccpetedDishe}</p>
-                    </React.Fragment>
-                  ) : (
-                    <div>{filesList}</div>
-                  )}
+                <div className={styles.imgDishe}>
+                  <ImageInput
+                    onImageUpload={handleImageUpload}
+                    imageUrl={file}
+                  />
                 </div>
                 <div className={styles.columnDishe}>
                   <div className={styles.newDishes}>
@@ -237,6 +261,7 @@ export default function NewDishePage() {
                       containerStyle={{ width: '25%' }}
                       error={errors.disheCategory?.message?.toString()}
                       data={disheCategory}
+                      onSelectChange={handleGetDisheCategory}
                     />
                     <SelectForm
                       control={control}
@@ -248,20 +273,37 @@ export default function NewDishePage() {
                     />
                   </div>
                   <div className={styles.secondLineNewDishes}>
-                    <textarea
-                      name="description"
-                      placeholder={Strings.description}
-                      maxLength={200}
-                      className={styles.textAreaDivDescriptionDishe}
-                    />
-                    <SelectForm
-                      control={control}
-                      item={Strings.status}
-                      name="status"
-                      containerStyle={{ width: '25%' }}
-                      error={errors.status?.message?.toString()}
-                      data={statusGeneral}
-                    />
+                    <div className={styles.divTextAreaDescriptionDishe}>
+                      <textarea
+                        name="description"
+                        placeholder={Strings.description}
+                        maxLength={200}
+                        className={styles.textAreaDivDescriptionDishe}
+                        value={inputDescriptionDishe!}
+                        onChange={(event) => {
+                          setInputDescriptionDishe(event.target.value);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <SelectForm
+                        control={control}
+                        item={Strings.unit}
+                        name="unit"
+                        containerStyle={{ width: '50%', marginRight: '8%' }}
+                        error={errors.unit?.message?.toString()}
+                        data={units}
+                        onSelectChange={handleGetUnit}
+                      />
+                      <SelectForm
+                        control={control}
+                        item={Strings.status}
+                        name="status"
+                        containerStyle={{ width: '50%' }}
+                        error={errors.status?.message?.toString()}
+                        data={statusGeneral}
+                      />
+                    </div>
                   </div>
                 </div>
               </React.Fragment>
@@ -294,8 +336,7 @@ export default function NewDishePage() {
                 title={Strings.new}
                 onClick={() => {
                   setActiveForm(true);
-                  setValue('product', '');
-                  setValue('status', 0);
+                  handleClean();
                 }}
               />
             </div>

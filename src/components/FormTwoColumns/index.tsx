@@ -155,8 +155,9 @@ export function FormTwoColumns({
       const dataAdapted = {
         firstId: element.id,
         secondId: element.id,
-        firstColumn: element.description,
-        secondColumn: element.status === 0 ? 'Ativo' : 'Inativo'
+        firstColumn: element.name,
+        secondColumn:
+          element.status === 0 || element.status === true ? 'Ativo' : 'Inativo'
       };
       setDataAdapted((oldArray: any) => [...oldArray, dataAdapted]);
     });
