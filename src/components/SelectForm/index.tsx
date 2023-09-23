@@ -8,6 +8,7 @@ type Props = {
   error?: string | null;
   name: string;
   data?: any;
+  className?: string;
   isLoading?: boolean;
   containerStyle?: React.CSSProperties;
   item?: string;
@@ -24,7 +25,8 @@ export function SelectForm({
   item,
   containerStyle,
   onSelectChange, // Receba o callback como uma prop
-  getValue
+  getValue,
+  ...rest
 }: Props) {
   return (
     <div style={containerStyle}>
@@ -42,7 +44,8 @@ export function SelectForm({
           return (
             <div style={{ width: '100%', display: 'flex' }}>
               <select
-                className={styles.selectGeneral}
+                {...rest}
+                className={`${styles.selectGeneral} ${rest.className}`}
                 onChange={handleChange}
                 value={value}
               >

@@ -43,9 +43,11 @@ export default function NewMenuPage(): JSX.Element {
   const [endDate, setEndDate] = useState<string>('');
   const [units, setUnits] = React.useState<any>(null);
   const [selectedUnit, setSelectedUnit] = React.useState<number>(0);
+  const [reFresh, setReFresh] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
   const {
     control,
+    setValue,
     handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
@@ -59,7 +61,7 @@ export default function NewMenuPage(): JSX.Element {
   React.useEffect(() => {
     getDishes();
     getUnits();
-  }, []);
+  }, [reFresh]);
 
   async function getDishes() {
     const response = await getDishesWithoutPagination();
@@ -111,6 +113,17 @@ export default function NewMenuPage(): JSX.Element {
   const handleGetUnit = (selectedUnitCode: any) => {
     setSelectedUnit(selectedUnitCode);
   };
+
+  function handleClean() {
+    setStartDate('');
+    setValue('startDate', '');
+    setValue('endDate', '');
+    setEndDate('');
+    setSelectedUnit(0);
+    setOptionOrganizedBy('');
+    setSelectedUnit(0);
+    setReFresh(!reFresh);
+  }
 
   const filteredSourceItems = sourceItems.filter((item) =>
     item.name.toLowerCase().includes(searchValue.toLowerCase())
@@ -220,6 +233,7 @@ export default function NewMenuPage(): JSX.Element {
                 item={Strings.unit}
                 name="unit"
                 containerStyle={{ width: '100%', marginTop: '3vh' }}
+                className={styles.selectUnitMenu}
                 error={errors.unit?.message?.toString()}
                 data={units}
                 onSelectChange={handleGetUnit}
@@ -294,7 +308,7 @@ export default function NewMenuPage(): JSX.Element {
                       type="secondary"
                       title={Strings.clear}
                       onClick={() => {
-                        // deleteDisheId();
+                        handleClean();
                       }}
                     />
                   </div>

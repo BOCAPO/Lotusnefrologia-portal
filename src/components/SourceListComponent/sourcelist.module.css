@@ -2,7 +2,7 @@
     display: flex;
     height: 50vh;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     width: 47.5%;
     margin-top: 20px;
@@ -11,6 +11,24 @@
     background-color: #F5F6FA;
     border: 1px dashed rgba(239, 239, 239, 0.205);
     border-radius: 9px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.containerSourceList::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: #00555B;
+    border-radius: 5px;
+}
+
+.containerSourceList::-webkit-scrollbar-thumb {
+    background: #A1E2A5;
+    border-radius: 5px;
+}
+
+.containerSourceList::-webkit-scrollbar-track {
+    border-radius: 5px;
 }
 
 .itemSourceList {
@@ -27,6 +45,7 @@
     width: 100%;
     height: 100%;
     max-height: 65px;
+    border-radius: 9px 0 0 9px;
 }
 
 .titleItem {
@@ -36,4 +55,10 @@
     color: #373432;
     line-height: 26px;
     margin: 0;
+}
+
+@media screen and (max-height: 981px) and (min-height: 740px) {
+    .containerSourceList{
+        height: 45vh;
+    }
 }
