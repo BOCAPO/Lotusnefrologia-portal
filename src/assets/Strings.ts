@@ -105,6 +105,8 @@ export const Strings = {
   specialist: 'Especialista',
   date: 'Data',
   hour: 'Hora',
+  startDate: 'Data Inicial',
+  endDate: 'Data Final',
   initialHour: 'Hora Inicial',
   finalHour: 'Hora Final',
   observation: 'Observação',
@@ -284,5 +286,10 @@ export const Strings = {
   nameOfDishe: 'Nome do Prato',
   disheCategory: 'Categoria do Prato',
   typeOfDishe: 'Tipo do Prato',
-  kitcheOrders: 'Pedidos da Cozinha'
+  kitcheOrders: 'Pedidos da Cozinha',
+  period: 'Período',
+  organizedBy: 'Organizado por',
+  periodSelected: 'Período Selecionado:',
+  planning: 'Planejando',
+  planningOfTheMenu: 'Planejamento do Cardápio'
 };
