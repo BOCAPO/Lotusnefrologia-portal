@@ -107,7 +107,14 @@ export default function EditPatientPage() {
     setValue('name', patient.name);
     setValue('email', patient.email);
     setValue('phonePrimary', patient.phone_primary);
-    setValue('phoneSecondary', patient.phone_secondary);
+    setValue(
+      'phoneSecondary',
+      patient.phone_secondary !== null &&
+        patient.phone_secondary !== undefined &&
+        patient.phone_secondary !== ''
+        ? patient.phone_secondary
+        : ''
+    );
     setValue('zipCode', patient.zip_code);
     setValue('birthDate', format(new Date(patient.birthday), 'yyyy-MM-dd'));
     setValue('cityCode', patient.city_code);
