@@ -234,7 +234,7 @@ export default function NewMenuPage(): JSX.Element {
               <div className={styles.w45Period}>
                 <Button
                   title="Semanal"
-                  type="primary"
+                  type="button"
                   onClick={() => {
                     setOptionOrganizedBy('Semanal');
                   }}

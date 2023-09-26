@@ -1,0 +1,11 @@
+.button:hover {
+    background-color: #A1C9A4 !important;
+    border: none !important;
+    color: white !important;
+}
+
+.button:focus, .button:active, .button:visited {
+    background-color: #00555B !important;
+    border: none !important;
+    color: white !important;
+}
