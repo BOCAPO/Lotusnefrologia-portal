@@ -256,7 +256,7 @@ export default function NewDishePage() {
         <div className={styles.formInserDishes}>
           <div className={styles.titleDishes}>
             <SmallMediumText
-              text={Strings.insertProduct}
+              text={Strings.insertMenu}
               style={{ textAlign: 'left', lineHeight: 2 }}
               bold={true}
               color={Colors.gray90}

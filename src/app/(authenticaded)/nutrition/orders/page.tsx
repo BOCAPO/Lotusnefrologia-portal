@@ -6,7 +6,12 @@ import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
 import ModalMaximizeOrders from 'components/ModalMaximizeOrders';
 import ModalOrderDetails from 'components/ModalOrderDetails';
-import { MediumText, MediumText2 } from 'components/Text';
+import {
+  LitteText,
+  MediumText,
+  MediumText2,
+  SmallMediumText
+} from 'components/Text';
 
 import styles from './orders.module.css';
 
@@ -178,7 +183,37 @@ export default function ListOrdersPage(): JSX.Element {
                         style={{ lineHeight: '5px' }}
                       />
                     </div>
-                    <div className="d-flex justify-content-around w-100 mt-4">
+                    <div
+                      className="d-flex w-100 my-5 flex-column"
+                      onClick={() => {
+                        setShowModalOrderDetails(true);
+                        setOrder(item);
+                      }}
+                    >
+                      <SmallMediumText
+                        text={Strings.orderDescription}
+                        color={Colors.greenLight3}
+                        bold={true}
+                        style={{ lineHeight: '5px' }}
+                      />
+                      {item?.dishes.map((dish, index) => (
+                        <div key={index} className={styles.divDishesOrder}>
+                          <LitteText
+                            text={dish.name}
+                            color={Colors.gray90}
+                            bold={false}
+                            style={{ lineHeight: '5px' }}
+                          />
+                          <LitteText
+                            text={Strings.oneX}
+                            color={Colors.gray90}
+                            bold={true}
+                            style={{ lineHeight: '5px' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="d-flex justify-content-around w-100">
                       <div
                         className={styles.divOrderDate}
                         onClick={() => {
@@ -251,7 +286,37 @@ export default function ListOrdersPage(): JSX.Element {
                         style={{ lineHeight: '5px' }}
                       />
                     </div>
-                    <div className="d-flex justify-content-around w-100 mt-4">
+                    <div
+                      className="d-flex w-100 my-5 flex-column"
+                      onClick={() => {
+                        setShowModalOrderDetails(true);
+                        setOrder(item);
+                      }}
+                    >
+                      <SmallMediumText
+                        text={Strings.orderDescription}
+                        color={Colors.greenLight3}
+                        bold={true}
+                        style={{ lineHeight: '5px' }}
+                      />
+                      {item?.dishes.map((dish, index) => (
+                        <div key={index} className={styles.divDishesOrder}>
+                          <LitteText
+                            text={dish.name}
+                            color={Colors.gray90}
+                            bold={false}
+                            style={{ lineHeight: '5px' }}
+                          />
+                          <LitteText
+                            text={Strings.oneX}
+                            color={Colors.gray90}
+                            bold={true}
+                            style={{ lineHeight: '5px' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="d-flex justify-content-around w-100">
                       <div
                         className={styles.divOrderDate}
                         onClick={() => {
@@ -324,7 +389,37 @@ export default function ListOrdersPage(): JSX.Element {
                         style={{ lineHeight: '5px' }}
                       />
                     </div>
-                    <div className="d-flex justify-content-around w-100 mt-4">
+                    <div
+                      className="d-flex w-100 my-5 flex-column"
+                      onClick={() => {
+                        setShowModalOrderDetails(true);
+                        setOrder(item);
+                      }}
+                    >
+                      <SmallMediumText
+                        text={Strings.orderDescription}
+                        color={Colors.greenLight3}
+                        bold={true}
+                        style={{ lineHeight: '5px' }}
+                      />
+                      {item?.dishes.map((dish, index) => (
+                        <div key={index} className={styles.divDishesOrder}>
+                          <LitteText
+                            text={dish.name}
+                            color={Colors.gray90}
+                            bold={false}
+                            style={{ lineHeight: '5px' }}
+                          />
+                          <LitteText
+                            text={Strings.oneX}
+                            color={Colors.gray90}
+                            bold={true}
+                            style={{ lineHeight: '5px' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="d-flex justify-content-around w-100">
                       <div
                         className={styles.divOrderDate}
                         onClick={() => {
@@ -399,7 +494,37 @@ export default function ListOrdersPage(): JSX.Element {
                       />
                     </div>
                     <div
-                      className="d-flex justify-content-around w-100 mt-4"
+                      className="d-flex w-100 my-5 flex-column"
+                      onClick={() => {
+                        setShowModalOrderDetails(true);
+                        setOrder(item);
+                      }}
+                    >
+                      <SmallMediumText
+                        text={Strings.orderDescription}
+                        color={Colors.greenLight3}
+                        bold={true}
+                        style={{ lineHeight: '5px' }}
+                      />
+                      {item?.dishes.map((dish, index) => (
+                        <div key={index} className={styles.divDishesOrder}>
+                          <LitteText
+                            text={dish.name}
+                            color={Colors.gray90}
+                            bold={false}
+                            style={{ lineHeight: '5px' }}
+                          />
+                          <LitteText
+                            text={Strings.oneX}
+                            color={Colors.gray90}
+                            bold={true}
+                            style={{ lineHeight: '5px' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div
+                      className="d-flex justify-content-around w-100"
                       onClick={() => {
                         setShowModalOrderDetails(true);
                         setOrder(item);

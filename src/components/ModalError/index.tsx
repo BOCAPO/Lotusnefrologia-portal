@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import Modal from 'react-bootstrap/Modal';
 
 import { Button } from 'components/Button';
@@ -16,11 +15,8 @@ type Props = {
 };
 
 export default function ModalError({ message, onHide, ...props }: Props) {
-  const router = useRouter();
-
   function goBack() {
     onHide();
-    router.back();
   }
 
   return (
@@ -29,18 +25,23 @@ export default function ModalError({ message, onHide, ...props }: Props) {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      className={styles.headSuccess}
+      className={styles.headError}
     >
-      <div className={styles.headerModalSuccess}>
+      <div className={styles.headerModalError}>
         <SmallMediumText
-          text={Strings.confirmation}
+          text={Strings.titleError}
           bold={true}
           color={Colors.gray90}
-          style={{ lineHeight: 0 }}
+          style={{ lineHeight: '1px' }}
         />
       </div>
-      <Modal.Body className={styles.modalSuccess}>
-        <LitteText text={message} color={Colors.gray90} bold={false} />
+      <Modal.Body className={styles.modalBodydError}>
+        <LitteText
+          text={message}
+          color={Colors.redInvalid}
+          bold={false}
+          style={{ lineHeight: '12px' }}
+        />
       </Modal.Body>
       <div className={styles.footer}>
         <Button
@@ -48,7 +49,7 @@ export default function ModalError({ message, onHide, ...props }: Props) {
             goBack();
           }}
           title={Strings.close}
-          type="secondary"
+          type="danger"
         />
       </div>
     </Modal>

@@ -9,6 +9,7 @@ import DestinationList from 'components/DestinationListComponent';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import ModalError from 'components/ModalError';
 import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import SourceList from 'components/SourceListComponent';
@@ -21,6 +22,7 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
+import { addDays } from 'date-fns';
 import { DataDishesModel } from 'models/DataDishesModel';
 import { DataMenuModel } from 'models/DataMenuModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
@@ -45,9 +47,11 @@ export default function NewMenuPage(): JSX.Element {
   const [selectedUnit, setSelectedUnit] = React.useState<number>(0);
   const [reFresh, setReFresh] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
+  const [showModalError, setShowModalError] = useState<boolean>(false);
   const {
     control,
     setValue,
+    getValues,
     handleSubmit,
     formState: { errors }
   } = useForm<DataProps>({
@@ -164,13 +168,65 @@ export default function NewMenuPage(): JSX.Element {
     }
   }
 
+  async function verifyDate() {
+    const today = new Date();
+    const dateSelectedStart = addDays(new Date(getValues('startDate')), 1);
+    const dateSelectedEnd = addDays(new Date(getValues('endDate')), 1);
+
+    if (!(dateSelectedStart >= today)) {
+      setValue('startDate', '');
+      setMessage(Strings.errorDateOld);
+      setShowModalError(true);
+      setTimeout(() => {
+        setShowModalError(false);
+      }, 3000);
+      return;
+    }
+
+    if (
+      getValues('endDate') != undefined &&
+      getValues('endDate') != null &&
+      getValues('endDate') != ''
+    ) {
+      if (!(dateSelectedEnd >= today)) {
+        setValue('endDate', '');
+        setMessage(Strings.errorDateOld);
+        setShowModalError(true);
+        setTimeout(() => {
+          setShowModalError(false);
+        }, 3000);
+        return;
+      }
+
+      if (dateSelectedEnd < dateSelectedStart) {
+        setValue('endDate', '');
+        setMessage(Strings.endDateCannotBeLessThanStartDate);
+        setShowModalError(true);
+        setTimeout(() => {
+          setShowModalError(false);
+        }, 3000);
+        return;
+      }
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
       <div className="d-flex">
         <div className={styles.bodyFormFirstColumn}>
           <p className={styles.titlePeriod}>{Strings.period}</p>
-          <div className="d-flex flex-column w-100 pt-5">
+          <div className="d-flex flex-column w-100">
+            <SelectForm
+              control={control}
+              item={Strings.unit}
+              name="unit"
+              containerStyle={{ width: '100%', marginBottom: '5vh' }}
+              className={styles.selectUnitMenu}
+              error={errors.unit?.message?.toString()}
+              data={units}
+              onSelectChange={handleGetUnit}
+            />
             <p className={styles.subtitlePeriod}>
               {Strings.organizedBy}: {optionOrganizedBy}
             </p>
@@ -209,6 +265,9 @@ export default function NewMenuPage(): JSX.Element {
                 error={errors.startDate?.message}
                 className={styles.inputDateMenu}
                 getValue={setStartDate}
+                onBlur={() => {
+                  verifyDate();
+                }}
               />
 
               {optionOrganizedBy === 'Semanal' ? (
@@ -223,21 +282,14 @@ export default function NewMenuPage(): JSX.Element {
                     error={errors.startDate?.message}
                     className={styles.inputDateMenu}
                     getValue={setEndDate}
+                    onBlur={() => {
+                      verifyDate();
+                    }}
                   />
                 </React.Fragment>
               ) : (
                 <></>
               )}
-              <SelectForm
-                control={control}
-                item={Strings.unit}
-                name="unit"
-                containerStyle={{ width: '100%', marginTop: '3vh' }}
-                className={styles.selectUnitMenu}
-                error={errors.unit?.message?.toString()}
-                data={units}
-                onSelectChange={handleGetUnit}
-              />
             </div>
           </div>
         </div>
@@ -330,6 +382,11 @@ export default function NewMenuPage(): JSX.Element {
       <ModalSuccess
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
+        message={message}
+      />
+      <ModalError
+        show={showModalError}
+        onHide={() => setShowModalError(false)}
         message={message}
       />
     </React.Fragment>

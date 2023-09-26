@@ -25,6 +25,11 @@ export const Colors = {
       greenLight: '#CBEACF',
       gray90: '#212121'
     },
+    danger: {
+      red: '#FF005C',
+      redInvalid: '#FF0000',
+      gray90: '#212121'
+    },
     cancel: {
       grayLight: '#EFEFEF'
     }

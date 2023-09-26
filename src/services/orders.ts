@@ -15,3 +15,7 @@ export async function getOrdersById(id: number) {
 export async function updateStatusOrder(id: number, status: number) {
   return await postJson(`/orders/change-status/${id}/${status}`, {});
 }
+
+export async function getHistoryOrderById(id: string) {
+  return await getJson(`/order-history/by-order/${id}`);
+}
