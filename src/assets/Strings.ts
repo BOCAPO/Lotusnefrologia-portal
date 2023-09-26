@@ -125,6 +125,7 @@ export const Strings = {
   insertUser: 'Cadastrar Usuário',
   insertSpecialist: 'Cadastrar Especialista',
   insertProduct: 'Cadastro de Produtos',
+  insertMenu: 'Cadastro de Cardápios',
   insertInvoice: 'Cadastro de Notas Fiscais',
   updateSpecialist: 'Atualizar Especialista',
   updateUnit: 'Atualizar Unidade',
@@ -303,5 +304,10 @@ export const Strings = {
   order: 'Pedido',
   oneX: 'x 1',
   expand: 'Expandir',
-  retract: 'Retrair'
+  retract: 'Retrair',
+  orderDescription: 'Descrição do Pedido',
+  errorDateOld: 'Data não pode ser menor que a data atual',
+  endDateCannotBeLessThanStartDate:
+    'Data final não pode ser menor que a inicial',
+  titleError: 'Erro identificado'
 };

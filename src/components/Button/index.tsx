@@ -27,6 +27,8 @@ export function Button({
       return styles.resetButton;
     } else if (type === 'primary') {
       return styles.primaryButton;
+    } else if (type === 'danger') {
+      return styles.dangerButton;
     } else {
       return styles.secondaryButton;
     }

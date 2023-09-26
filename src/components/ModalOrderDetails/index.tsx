@@ -1,4 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+'use client';
+
+import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 
 import { Icon, TypeIcon } from 'components/Icone';
@@ -10,6 +12,7 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { format } from 'date-fns';
 import { DataOrdersModel } from 'models/DataOrdersModel';
+import { getHistoryOrderById } from 'services/orders';
 
 type Props = {
   onHide: () => void;
@@ -22,6 +25,24 @@ export default function ModalOrderDetails({
   order,
   ...props
 }: Props & { show: boolean }) {
+  const [orderHistory, setOrderHistory] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    if (order !== null && order !== undefined) {
+      getHistoryOrder();
+    }
+  }, [order]);
+
+  async function getHistoryOrder() {
+    const response = await getHistoryOrderById(
+      order !== undefined && order ? order.id : ''
+    );
+    console.log('response', response.data);
+    if (response !== null) {
+      setOrderHistory(response.data);
+    }
+  }
+
   return (
     <Modal
       {...props}

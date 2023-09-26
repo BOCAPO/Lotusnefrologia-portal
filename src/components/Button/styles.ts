@@ -62,5 +62,17 @@ export const styles = {
     borderRadius: '3px',
     fontFamily: Fonts.primary.regular,
     fontSize: '12px'
+  },
+  dangerButton: {
+    backgroundColor: Colors.white,
+    color: Colors.redInvalid,
+    width: '100%',
+    height: '40px',
+    borderSize: '1px',
+    borderColor: Colors.redInvalid,
+    borderRadius: '6px',
+    minWidth: '155px',
+    fontWeight: 'bold',
+    fontFamily: Fonts.primary.regular
   }
 };

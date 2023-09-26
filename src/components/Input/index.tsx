@@ -48,7 +48,7 @@ type Props = {
   inputRef?: React.RefObject<HTMLInputElement>;
   className?: string;
   type?: string;
-  min?: number;
+  min?: number | string;
   style?: React.CSSProperties | undefined;
   readonly?: boolean;
   getValue?: (_text: string) => void;
