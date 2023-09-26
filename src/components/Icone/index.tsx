@@ -3,6 +3,8 @@
 import { PropsWithChildren, useState } from 'react';
 import {
   FiBell,
+  FiCalendar,
+  FiChevronRight,
   FiClock,
   FiDownload,
   FiEdit,
@@ -10,6 +12,8 @@ import {
   FiEye,
   FiEyeOff,
   FiMapPin,
+  FiMaximize2,
+  FiMinimize2,
   FiMoreVertical,
   FiPlus,
   FiSearch,
@@ -116,6 +120,22 @@ export const TypeIcon = {
   },
   Upload: {
     icon: FiUpload,
+    alternativeIcon: null
+  },
+  Calendar: {
+    icon: FiCalendar,
+    alternativeIcon: null
+  },
+  ArrowRight: {
+    icon: FiChevronRight,
+    alternativeIcon: null
+  },
+  Maximize: {
+    icon: FiMaximize2,
+    alternativeIcon: null
+  },
+  Minimize: {
+    icon: FiMinimize2,
     alternativeIcon: null
   }
 };

@@ -293,5 +293,15 @@ export const Strings = {
   periodSelected: 'Período selecionado',
   daySelected: 'Dia selecionado',
   planning: 'Planejando',
-  planningOfTheMenu: 'Planejamento do Cardápio'
+  planningOfTheMenu: 'Planejamento do Cardápio',
+  waiting: 'Aguardando',
+  noOrders: 'Não há pedidos',
+  inPreparing: 'Em preparo',
+  ready: 'Prontos',
+  delivered: 'Entregues',
+  orderDetails: 'Detalhes do Pedido',
+  order: 'Pedido',
+  oneX: 'x 1',
+  expand: 'Expandir',
+  retract: 'Retrair'
 };

@@ -11,7 +11,7 @@
     background-color: #F5F6FA;
     border: 1px dashed rgba(239, 239, 239, 0.205);
     border-radius: 9px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
