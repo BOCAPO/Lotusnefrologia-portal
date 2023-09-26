@@ -28,6 +28,7 @@ type Props = {
   show: boolean;
   units: DataUnitsModel[];
   products: DataProductsModel[];
+  onUpdate?: (value: number) => void;
 };
 
 type DataProps = {
@@ -38,6 +39,7 @@ export default function ModalBoxInvoice({
   onHide,
   units,
   products,
+  onUpdate,
   ...props
 }: Props & { show: boolean }) {
   const [selectedUnit, setSelectedUnit] = React.useState<number>(0);
@@ -61,7 +63,9 @@ export default function ModalBoxInvoice({
     resolver: yupResolver(schema)
   });
 
-  React.useEffect(() => {}, [listProductsQuantity]);
+  React.useEffect(() => {
+    setValue('amountDiscount', 'R$ 0,00');
+  }, [listProductsQuantity]);
 
   const handleGetUnit = (selectedUnitCode: any) => {
     setSelectedUnit(selectedUnitCode);
@@ -82,7 +86,7 @@ export default function ModalBoxInvoice({
     setValue('invoice', '');
     setValue('series', '');
     setValue('amountTotal', '');
-    setValue('amountDiscount', '');
+    setValue('amountDiscount', 'R$ 0,00');
     setValue('product', '');
     setValue('unitValue', '');
     setValue('quantity', '');
@@ -138,13 +142,20 @@ export default function ModalBoxInvoice({
       number: data.invoice.toString(),
       series: data.series.toString(),
       amount: convertInFloat(data.amountTotal.toString()),
-      discount: convertInFloat(data.amountDiscount.toString()),
+      discount:
+        data.amountDiscount === '' ||
+        data.amountDiscount === null ||
+        data.amountDiscount === undefined ||
+        data.amountDiscount === 'R$ 0,00'
+          ? '0'
+          : convertInFloat(data.amountDiscount.toString()),
       status: 0,
       products: updatedList
     };
     const response = await createInvoice(newInvoice);
     if (response !== null) {
       handleClean();
+      onUpdate && onUpdate(1);
       onHide();
     }
     setLoading(false);

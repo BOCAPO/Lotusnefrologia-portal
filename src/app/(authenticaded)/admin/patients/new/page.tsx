@@ -94,7 +94,9 @@ export default function NewPatientPage() {
       name: data.name.toString(),
       email: data.email.toString(),
       phone_primary: data.phonePrimary.toString(),
-      phone_secondary: data.phoneSecondary.toString(),
+      phone_secondary: data.phoneSecondary
+        ? data.phoneSecondary.toString()
+        : '',
       zip_code: data.zipCode.toString(),
       birthday: data.birthDate.toString(),
       city_code: data.citieCode.toString(),

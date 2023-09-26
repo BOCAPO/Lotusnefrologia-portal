@@ -4,7 +4,8 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 
 import { Icon, TypeIcon } from 'components/Icone';
-import { MediumText2 } from 'components/Text';
+import { SpinnerLoading } from 'components/Spinner';
+import { MediumText2, SmallMediumText } from 'components/Text';
 
 import styles from './modalorderdetails.module.css';
 
@@ -26,6 +27,7 @@ export default function ModalOrderDetails({
   ...props
 }: Props & { show: boolean }) {
   const [orderHistory, setOrderHistory] = React.useState<any>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     if (order !== null && order !== undefined) {
@@ -37,9 +39,9 @@ export default function ModalOrderDetails({
     const response = await getHistoryOrderById(
       order !== undefined && order ? order.id : ''
     );
-    console.log('response', response.data);
     if (response !== null) {
       setOrderHistory(response.data);
+      setIsLoading(false);
     }
   }
 
@@ -50,7 +52,10 @@ export default function ModalOrderDetails({
       centered
       show={props.show}
       className={styles.headBoxSchedule}
-      onHide={onHide}
+      onHide={() => {
+        onHide();
+        setIsLoading(true);
+      }}
     >
       <Modal.Header
         closeButton
@@ -122,6 +127,44 @@ export default function ModalOrderDetails({
             ))}
           </div>
         )}
+        <div className={styles.divOrdersTimeHistory}>
+          <div className={styles.divDishesOrderTitle}>
+            <MediumText2
+              text={Strings.timeLine}
+              color={Colors.greenLight3}
+              bold={true}
+              style={{ lineHeight: '5px' }}
+            />
+          </div>
+          {isLoading ? (
+            <SpinnerLoading />
+          ) : (
+            orderHistory?.map((history: any, index: number) => (
+              <div key={index} className="d-flex w-100 my-3">
+                <div className="d-flex justify-content-between w-100">
+                  <SmallMediumText
+                    text={history?.status_description}
+                    color={Colors.black}
+                    bold={true}
+                    style={{ lineHeight: '5px', margin: 0 }}
+                  />
+                  <SmallMediumText
+                    text={
+                      history?.duration === null ||
+                      history?.duration === '' ||
+                      history.duration === undefined
+                        ? 'Em curso'
+                        : history?.duration
+                    }
+                    color={Colors.gray55}
+                    bold={true}
+                    style={{ lineHeight: 0, margin: 0 }}
+                  />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </Modal.Body>
     </Modal>
   );
