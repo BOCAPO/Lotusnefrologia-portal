@@ -78,12 +78,6 @@ export default function ListInvoicesPage() {
     setLoading(false);
   }
 
-  // async function getUnits() {
-  //   const response = await getAllUnitsWithoutPagination();
-  //   const data = response.data as ResponseGetModel;
-  //   setUnits(data);
-  // }
-
   async function getUnits() {
     let unitsPermited = JSON.parse(Prefs.getUnits()!);
     unitsPermited = unitsPermited!.map((item: DataUnitsModel) => item.id);
@@ -126,6 +120,10 @@ export default function ListInvoicesPage() {
       setQuantityInvoices(quantityInvoices - 1);
     }
   }
+
+  const handleOnUpdate = (value: number) => {
+    setQuantityInvoices(quantityInvoices + value);
+  };
 
   return (
     <React.Fragment>
@@ -186,6 +184,7 @@ export default function ListInvoicesPage() {
         }}
         units={units}
         products={products}
+        onUpdate={handleOnUpdate}
       />
     </React.Fragment>
   );

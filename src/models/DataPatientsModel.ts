@@ -4,7 +4,7 @@ export type DataPatientsModel = {
   name: string;
   email: string;
   phone_primary: string;
-  phone_secondary: string;
+  phone_secondary?: string;
   birthday: string;
   zip_code: string;
   city_code: string;

@@ -187,6 +187,6 @@ div.boxInvoiceAddItems button:hover svg path {
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .btnDefault:first-child {
-        margin-right: 45% !important;
+        margin-right: 50% !important;
     }
 }

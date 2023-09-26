@@ -309,5 +309,6 @@ export const Strings = {
   errorDateOld: 'Data não pode ser menor que a data atual',
   endDateCannotBeLessThanStartDate:
     'Data final não pode ser menor que a inicial',
-  titleError: 'Erro identificado'
+  titleError: 'Erro identificado',
+  timeLine: 'Linha do Tempo'
 };
