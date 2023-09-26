@@ -21,3 +21,11 @@ export const typeOfDishe = [
   { id: 1, name: 'Fixo' },
   { id: 2, name: 'Variável' }
 ];
+
+export const statusOrders = [
+  { id: 0, status: 'Aguardando' },
+  { id: 1, status: 'Em preparo' },
+  { id: 2, status: 'Pronto' },
+  { id: 3, status: 'Entregue' },
+  { id: 4, status: 'Cancelado' }
+];

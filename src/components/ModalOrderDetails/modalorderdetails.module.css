@@ -1,6 +1,31 @@
+.headBoxSchedule {
+    width: 30%;
+    margin: 0 35%;
+}
+
+.modalBoxSchedule {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.modalBoxSchedule .modal-dialog .modal-content {
+    width: 700;
+    border-radius: 15px;
+    border: none;
+}
+
+.modalBoxSchedule .modal-dialog {
+    margin: 1.75rem calc((100% - 700)/2);
+}
+
 .bodyOrdersList {
     width: 90%;
-    height: 76%;
+    height: 75%;
     display: flex;
     margin: 3vh 5%;
     flex-direction: column;
@@ -30,15 +55,33 @@
     border-radius: 5px;
 }
 
+.modal-header {
+    border: none !important;
+    padding: 0;
+}
+
 .divTitleOrders {
     width: 100%;
     height: 10%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding: 0% 1%;
     margin-bottom: 1%;
+}
+
+.divOrdersDetails {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 5%;
+    margin-bottom: 1%;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 9px;
 }
 
 .divColumnsOrders {
@@ -72,7 +115,6 @@
     border-radius: 6px;
     margin: 0.7vh 0;
     padding: 5% 5% 0 5%;
-    cursor: pointer;
 }
 
 .divOrder p {
@@ -92,8 +134,8 @@
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    width: 50%;
-    cursor: pointer;
+    width: 30%;
+    margin-top: 1vh;
 }
 
 .divChangeStatus {
@@ -122,20 +164,22 @@
     color: #FFFFFF !important;
 }
 
-.btnExpand {
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+.divDishesOrderTitle {
+    width: 100%;
+    height: 100%;
     display: flex;
-    background-color: transparent;
-    justify-content: center;
-    align-items: center;
-    margin: 0 0 0 1%;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 3vh;
 }
 
-@media screen and (max-height: 981px) and (min-height: 740px) {
-    .bodyOrdersList{
-        height: 79%;
-    }
+.divDishesOrder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 3vh;
 }

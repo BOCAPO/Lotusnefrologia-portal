@@ -2,6 +2,7 @@ export const Colors = {
   white: '#fff',
   whiteSmoke: '#F5F6FA',
   gray50: '#E5E5E5',
+  gray55: '#B3B4B8',
   gray60: '#8C8E90',
   gray70: '#6F6D79',
   gray90: '#212121',
@@ -10,6 +11,7 @@ export const Colors = {
   greenDark2: '#66999C',
   greenLight: '#CBEACF',
   greenLight2: '#A1E2A5',
+  greenLight3: '#A1C9A4',
   button: {
     reset: {
       lightGray: '#EFEFEF',
