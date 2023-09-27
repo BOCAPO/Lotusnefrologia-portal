@@ -9,3 +9,13 @@
     border: none !important;
     color: white !important;
 }
+
+.secondaryButton:hover {
+    background-color: #00555B !important;
+    border: none !important;
+    color: white !important;
+}
+
+.cancelButton:hover{
+    filter: brightness(0.9);
+}

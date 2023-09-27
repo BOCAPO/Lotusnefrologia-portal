@@ -22,6 +22,8 @@ type Props = {
   item: any;
   typeItem: string;
   showEdit?: boolean;
+  showView?: boolean;
+  onReturnItem?: (item: any) => void;
   reset?: (status: boolean) => void;
 };
 
@@ -30,7 +32,9 @@ export default function ModalOptions({
   onHide,
   item,
   showEdit = true,
+  showView = false,
   typeItem,
+  onReturnItem,
   reset,
   ...props
 }: Props) {
@@ -121,6 +125,7 @@ export default function ModalOptions({
       aria-labelledby="contained-modal-title-vcenter"
       centered
       className={styles.headOptions}
+      onHide={onHide}
     >
       <div className={styles.headerModalOptions}>
         <SmallMediumText
@@ -150,6 +155,18 @@ export default function ModalOptions({
             />
           </div>
         )}
+        {showView && (
+          <div className={styles.footer}>
+            <Button
+              onClick={() => {
+                onReturnItem && onReturnItem(item);
+              }}
+              title={Strings.view}
+              type="secondary"
+            />
+          </div>
+        )}
+
         <div className={styles.footer}>
           <Button
             onClick={() => {

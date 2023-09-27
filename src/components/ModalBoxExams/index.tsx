@@ -179,6 +179,7 @@ export default function ModalBoxExams({
       centered
       show={props.show}
       className={styles.headBoxSchedule}
+      onHide={onHide}
     >
       <Modal.Body className={styles.modalBoxSchedule}>
         <SmallMediumText

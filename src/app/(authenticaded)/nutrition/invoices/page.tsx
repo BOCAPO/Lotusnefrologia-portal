@@ -26,6 +26,7 @@ export default function ListInvoicesPage() {
   const [units, setUnits] = React.useState<any>(null);
   const [products, setProducts] = React.useState<any>(null);
   const [quantityInvoices, setQuantityInvoices] = React.useState<number>(0);
+  const [invoiceRecovy, setInvoiceRecovery] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [page, setPage] = React.useState<number>(1);
   const [showBoxInvoice, setShowBoxInvoice] = React.useState<boolean>(false);
@@ -125,6 +126,12 @@ export default function ListInvoicesPage() {
     setQuantityInvoices(quantityInvoices + value);
   };
 
+  const handleReturnItem = (item: any) => {
+    setInvoiceRecovery(item);
+    setShowModalOptions(false);
+    setShowBoxInvoice(true);
+  };
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -175,7 +182,9 @@ export default function ListInvoicesPage() {
         item={selectedItem}
         typeItem="invoice"
         showEdit={false}
+        showView={true}
         reset={updateQuantityInvoices}
+        onReturnItem={handleReturnItem}
       />
       <ModalBoxInvoice
         show={showBoxInvoice}
@@ -185,6 +194,7 @@ export default function ListInvoicesPage() {
         units={units}
         products={products}
         onUpdate={handleOnUpdate}
+        invoice={invoiceRecovy}
       />
     </React.Fragment>
   );
