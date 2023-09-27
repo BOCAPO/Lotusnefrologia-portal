@@ -283,7 +283,7 @@ export const Strings = {
   quantity: 'QTDE',
   typeOfUnity: 'UN',
   items: 'Itens',
-  valueUnit: 'Vl. Unit. (R$)',
+  valueUnit: 'Vl. Unitário',
   new: 'Novo',
   nameOfDishe: 'Nome do Prato',
   disheCategory: 'Categoria do Prato',
@@ -310,5 +310,6 @@ export const Strings = {
   endDateCannotBeLessThanStartDate:
     'Data final não pode ser menor que a inicial',
   titleError: 'Erro identificado',
-  timeLine: 'Linha do Tempo'
+  timeLine: 'Linha do Tempo',
+  view: 'Visualizar'
 };

@@ -26,6 +26,7 @@ export default function ModalSuccess({ message, onHide, ...props }: Props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
       className={styles.headSuccess}
+      onHide={onHide}
     >
       <div className={styles.headerModalSuccess}>
         <SmallMediumText

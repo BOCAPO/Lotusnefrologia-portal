@@ -155,12 +155,14 @@ function sanitizeData(data: string) {
 }
 
 function convertInFloat(value: string) {
-  const cleanValue = value.replace(/[\sR$]+/g, '');
-  const withoutDots = cleanValue.replace(/\./g, '');
-  const normalizedValue = withoutDots.replace(/,/g, '.');
-  const floatValue = Number.parseFloat(normalizedValue).toFixed(2);
+  if (typeof value === 'string') {
+    const cleanValue = value.replace(/[\sR$]+/g, '');
+    const withoutDots = cleanValue.replace(/\./g, '');
+    const normalizedValue = withoutDots.replace(/,/g, '.');
+    const floatValue = Number.parseFloat(normalizedValue).toFixed(2);
 
-  if (floatValue) return floatValue.toString();
+    if (floatValue) return floatValue.toString();
+  }
 
   return value;
 }

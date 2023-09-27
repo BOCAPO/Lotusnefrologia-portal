@@ -17,13 +17,14 @@ import { schema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { DataProductsModel } from 'models/DataProductsModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { createInvoice } from 'services/invoices';
 import { convertInFloat, sanitizeData } from 'utils/formYupValidations';
 
 type Props = {
+  invoice?: any;
   onHide: () => void;
   show: boolean;
   units: DataUnitsModel[];
@@ -39,13 +40,15 @@ export default function ModalBoxInvoice({
   onHide,
   units,
   products,
+  invoice,
   onUpdate,
   ...props
 }: Props & { show: boolean }) {
   const [selectedUnit, setSelectedUnit] = React.useState<number>(0);
   const [selectedProduct, setSelectedProduct] = React.useState<number>(0);
   const [listProducts, setListProducts] = React.useState<any[]>([]);
-  const [valueProduct, setValueProduct] = React.useState<any>(0);
+  const [valueProduct, setValueProduct] = React.useState<any>('0');
+  const [editable, setEditable] = React.useState<boolean>(true);
   const [quantityProduct, setQuantityProduct] = React.useState<any>(0);
   const [valueUnit, setValueUnit] = React.useState<any>('');
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -64,8 +67,12 @@ export default function ModalBoxInvoice({
   });
 
   React.useEffect(() => {
+    if (invoice) {
+      setEditable(false);
+      loadValues();
+    }
     setValue('amountDiscount', 'R$ 0,00');
-  }, [listProductsQuantity]);
+  }, [listProductsQuantity, invoice]);
 
   const handleGetUnit = (selectedUnitCode: any) => {
     setSelectedUnit(selectedUnitCode);
@@ -74,6 +81,25 @@ export default function ModalBoxInvoice({
   const handleGetProduct = (selectedProductCode: any) => {
     setSelectedProduct(selectedProductCode);
   };
+
+  function loadValues() {
+    const jsonItem = JSON.parse(invoice);
+    setValue(
+      'date',
+      format(parse(jsonItem.date, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd')
+    );
+    setValue('unit', jsonItem.unit_id);
+    setValue('supplier', jsonItem.supplier);
+    setValue('cnpj', jsonItem.cnpj);
+    setValue('invoice', jsonItem.number);
+    setValue('series', jsonItem.series);
+    setValue('amountTotal', jsonItem.amount);
+    setValue('amountDiscount', jsonItem.discount);
+    // setValue('product', '');
+    // setValue('unitValue', '');
+    // setValue('quantity', '');
+    // setValue('typeOfUnity', '');
+  }
 
   function handleClean() {
     setSelectedUnit(0);
@@ -104,11 +130,12 @@ export default function ModalBoxInvoice({
     const newProduct = {
       product_id: Number(selectedProduct),
       quantity: Number(quantityProduct),
-      value: Number(valueProduct),
+      value: Number(convertInFloat(valueProduct)),
       un: valueUnit
     };
     amount = amountTotal;
-    amount = amount + Number(valueProduct) * Number(quantityProduct);
+    amount =
+      amount + Number(convertInFloat(valueProduct)) * Number(quantityProduct);
     setAmountTotal(amount);
     setValue(
       'amountTotal',
@@ -168,6 +195,7 @@ export default function ModalBoxInvoice({
       centered
       show={props.show}
       className={styles.headBoxInvoice}
+      onHide={onHide}
     >
       <Modal.Body className={styles.modalBoxInvoice}>
         <SmallMediumText
@@ -200,6 +228,7 @@ export default function ModalBoxInvoice({
               width: '70%',
               height: '40px'
             }}
+            readonly={!editable}
             className={styles.inputNewInvoice}
           />
           <InputForm
@@ -212,6 +241,7 @@ export default function ModalBoxInvoice({
               width: '25%',
               height: '40px'
             }}
+            readonly={!editable}
             className={styles.inputNewInvoice}
           />
         </div>
@@ -228,6 +258,7 @@ export default function ModalBoxInvoice({
               width: '60%',
               height: '40px'
             }}
+            readonly={!editable}
             className={styles.inputNewInvoice}
           />
           <InputForm
@@ -241,6 +272,7 @@ export default function ModalBoxInvoice({
               width: '15%',
               height: '40px'
             }}
+            readonly={!editable}
             className={styles.inputTypeNumberInvoice}
           />
           <InputForm
@@ -254,6 +286,7 @@ export default function ModalBoxInvoice({
               width: '15%',
               height: '40px'
             }}
+            readonly={!editable}
             className={styles.inputTypeNumberInvoice}
           />
         </div>
@@ -263,7 +296,6 @@ export default function ModalBoxInvoice({
             name="amountTotal"
             type="text"
             mask={'coin'}
-            maxLength={18}
             readonly={true}
             placeholder={Strings.amountTotal}
             label={Strings.amountTotal}
@@ -284,6 +316,7 @@ export default function ModalBoxInvoice({
               width: '25%',
               height: '40px'
             }}
+            readonly={!editable}
             className={styles.inputNewInvoice}
           />
         </div>
@@ -313,7 +346,8 @@ export default function ModalBoxInvoice({
                   <InputForm
                     control={control}
                     name={`unitValue${index}`}
-                    type="number"
+                    type="text"
+                    mask={'coin'}
                     min={1}
                     getValue={setValueProduct}
                     placeholder={Strings.valueUnit}
@@ -322,6 +356,7 @@ export default function ModalBoxInvoice({
                       width: '15%',
                       height: '40px'
                     }}
+                    readonly={!editable}
                     className={styles.inputTypeNumberInvoice}
                   />
                   <InputForm
@@ -336,6 +371,7 @@ export default function ModalBoxInvoice({
                       width: '12%',
                       height: '40px'
                     }}
+                    readonly={!editable}
                     className={styles.inputTypeNumberInvoice}
                   />
                   <InputForm
@@ -349,6 +385,7 @@ export default function ModalBoxInvoice({
                       width: '10%',
                       height: '40px'
                     }}
+                    readonly={!editable}
                     className={styles.inputNewInvoice}
                   />
                 </div>
@@ -356,36 +393,42 @@ export default function ModalBoxInvoice({
             ))
           )}
         </div>
-        <div className={styles.boxInvoiceAddItems}>
-          <button title={Strings.items} onClick={() => addNewProduct()}>
-            <Icon
-              typeIcon={TypeIcon.Add}
-              size={15}
-              color={Colors.gray90}
-              callback={() => {}}
-            />
-            Itens
-          </button>
-        </div>
-        <div className={styles.boxInvoiceBtns}>
-          <div className={styles.btnDefault}>
-            <Button
-              title={Strings.save}
-              type="secondary"
-              onClick={handleSubmit(handleSubmitInvoice)}
-            />
-          </div>
-          <div className={styles.btnDefault}>
-            <Button
-              title={Strings.cancel}
-              type="cancel"
-              onClick={() => {
-                handleClean();
-                onHide();
-              }}
-            />
-          </div>
-        </div>
+        {editable ? (
+          <React.Fragment>
+            <div className={styles.boxInvoiceAddItems}>
+              <button title={Strings.items} onClick={() => addNewProduct()}>
+                <Icon
+                  typeIcon={TypeIcon.Add}
+                  size={15}
+                  color={Colors.gray90}
+                  callback={() => {}}
+                />
+                Itens
+              </button>
+            </div>
+            <div className={styles.boxInvoiceBtns}>
+              <div className={styles.btnDefault}>
+                <Button
+                  title={Strings.save}
+                  type="secondary"
+                  onClick={handleSubmit(handleSubmitInvoice)}
+                />
+              </div>
+              <div className={styles.btnDefault}>
+                <Button
+                  title={Strings.cancel}
+                  type="cancel"
+                  onClick={() => {
+                    handleClean();
+                    onHide();
+                  }}
+                />
+              </div>
+            </div>
+          </React.Fragment>
+        ) : (
+          <></>
+        )}
       </Modal.Body>
     </Modal>
   );
