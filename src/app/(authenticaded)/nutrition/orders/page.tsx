@@ -170,7 +170,7 @@ export default function ListOrdersPage(): JSX.Element {
                 return (
                   <div key={index} className={styles.divOrder}>
                     <div
-                      className={styles.divOrderNumber}
+                      className={styles.divOrderNamePatient}
                       onClick={() => {
                         setShowModalOrderDetails(true);
                         setOrder(item);
@@ -184,7 +184,7 @@ export default function ListOrdersPage(): JSX.Element {
                       />
                     </div>
                     <div
-                      className="d-flex w-100 my-5 flex-column"
+                      className="d-flex w-100 mt-2 mb-3 flex-column"
                       onClick={() => {
                         setShowModalOrderDetails(true);
                         setOrder(item);
@@ -194,7 +194,7 @@ export default function ListOrdersPage(): JSX.Element {
                         text={Strings.orderDescription}
                         color={Colors.greenLight3}
                         bold={true}
-                        style={{ lineHeight: '5px' }}
+                        style={{ lineHeight: '5px', marginTop: '20px' }}
                       />
                       {item?.dishes.map((dish, index) => (
                         <div key={index} className={styles.divDishesOrder}>
@@ -287,7 +287,7 @@ export default function ListOrdersPage(): JSX.Element {
                       />
                     </div>
                     <div
-                      className="d-flex w-100 my-5 flex-column"
+                      className="d-flex w-100 mt-2 mb-3 flex-column"
                       onClick={() => {
                         setShowModalOrderDetails(true);
                         setOrder(item);
@@ -297,7 +297,7 @@ export default function ListOrdersPage(): JSX.Element {
                         text={Strings.orderDescription}
                         color={Colors.greenLight3}
                         bold={true}
-                        style={{ lineHeight: '5px' }}
+                        style={{ lineHeight: '5px', marginTop: '20px' }}
                       />
                       {item?.dishes.map((dish, index) => (
                         <div key={index} className={styles.divDishesOrder}>
@@ -390,7 +390,7 @@ export default function ListOrdersPage(): JSX.Element {
                       />
                     </div>
                     <div
-                      className="d-flex w-100 my-5 flex-column"
+                      className="d-flex w-100 mt-2 mb-3 flex-column"
                       onClick={() => {
                         setShowModalOrderDetails(true);
                         setOrder(item);
@@ -400,7 +400,7 @@ export default function ListOrdersPage(): JSX.Element {
                         text={Strings.orderDescription}
                         color={Colors.greenLight3}
                         bold={true}
-                        style={{ lineHeight: '5px' }}
+                        style={{ lineHeight: '5px', marginTop: '20px' }}
                       />
                       {item?.dishes.map((dish, index) => (
                         <div key={index} className={styles.divDishesOrder}>
@@ -494,7 +494,7 @@ export default function ListOrdersPage(): JSX.Element {
                       />
                     </div>
                     <div
-                      className="d-flex w-100 my-5 flex-column"
+                      className="d-flex w-100 mt-2 mb-3 flex-column"
                       onClick={() => {
                         setShowModalOrderDetails(true);
                         setOrder(item);
@@ -504,7 +504,7 @@ export default function ListOrdersPage(): JSX.Element {
                         text={Strings.orderDescription}
                         color={Colors.greenLight3}
                         bold={true}
-                        style={{ lineHeight: '5px' }}
+                        style={{ lineHeight: '5px', marginTop: '20px' }}
                       />
                       {item?.dishes.map((dish, index) => (
                         <div key={index} className={styles.divDishesOrder}>

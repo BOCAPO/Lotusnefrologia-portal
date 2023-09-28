@@ -25,7 +25,7 @@ import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { createPatient } from 'services/patients';
 import { getAllStates } from 'services/states';
-import { getAllUnits } from 'services/units';
+import { getAllUnitsWithoutPagination } from 'services/units';
 import { statusGeneral } from 'utils/enums';
 
 type DataProps = {
@@ -39,6 +39,7 @@ export default function NewPatientPage() {
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
 
   const {
@@ -78,9 +79,10 @@ export default function NewPatientPage() {
   }
 
   async function getUnits() {
-    const response = await getAllUnits();
-    const unitsUpdated = response.data.data as DataUnitsModel[];
+    const response = await getAllUnitsWithoutPagination();
+    const unitsUpdated = response.data as unknown as DataUnitsModel[];
     setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
+    setIsLoading(false);
   }
 
   const handleStateCode = (selectedStateCode: any) => {
@@ -157,6 +159,7 @@ export default function NewPatientPage() {
             <SelectForm
               control={control}
               name="unit"
+              isLoading={isLoading}
               item={Strings.unit}
               data={units !== null ? units : null}
               error={errors.state?.message}

@@ -78,6 +78,10 @@
     margin: 0;
 }
 
+.divOrderNamePatient {
+    margin-top: 1.5vh;
+}
+
 .divOrderStatus {
     display: flex;
     flex-direction: row;
@@ -150,7 +154,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    margin-top: 3vh;
+    margin-top: 2vh;
 }
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
