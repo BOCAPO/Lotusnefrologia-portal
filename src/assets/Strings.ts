@@ -97,6 +97,7 @@ export const Strings = {
   headersInvoiceResponse: ['number', 'supplier', 'date', 'amount', 'unit_name'],
   schedule: 'Agendamento',
   insertNewInvoice: 'Cadastrar Nota Fiscal',
+  description: 'Description',
   descriptionOfDishe: 'Descrição do prato',
   descriptionOfProduct: 'Descrição do Produto',
   pacient: 'Paciente',
