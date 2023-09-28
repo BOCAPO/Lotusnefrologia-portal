@@ -286,6 +286,7 @@ export default function NewDishePage() {
                     <SelectForm
                       control={control}
                       item={Strings.disheCategory}
+                      label={Strings.category}
                       name="disheCategory"
                       containerStyle={{ width: '25%' }}
                       error={errors.disheCategory?.message?.toString()}
@@ -295,6 +296,7 @@ export default function NewDishePage() {
                     <SelectForm
                       control={control}
                       item={Strings.typeOfDishe}
+                      label={Strings.typeOfDishe}
                       name="typeOfDishe"
                       containerStyle={{ width: '25%' }}
                       error={errors.typeOfDishe?.message?.toString()}
@@ -305,7 +307,7 @@ export default function NewDishePage() {
                     <div className={styles.divTextAreaDescriptionDishe}>
                       <textarea
                         name="description"
-                        placeholder={Strings.description}
+                        placeholder={Strings.descriptionOfDishe}
                         maxLength={200}
                         className={styles.textAreaDivDescriptionDishe}
                         value={inputDescriptionDishe!}
@@ -318,6 +320,7 @@ export default function NewDishePage() {
                       <SelectForm
                         control={control}
                         item={Strings.unit}
+                        label={Strings.unit}
                         name="unit"
                         containerStyle={{ width: '50%', marginRight: '8%' }}
                         error={errors.unit?.message?.toString()}
@@ -327,6 +330,7 @@ export default function NewDishePage() {
                       <SelectForm
                         control={control}
                         item={Strings.status}
+                        label={Strings.status}
                         name="status"
                         containerStyle={{ width: '50%' }}
                         error={errors.status?.message?.toString()}

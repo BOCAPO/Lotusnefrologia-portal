@@ -296,7 +296,7 @@ export default function NewMenuPage(): JSX.Element {
               <div className={styles.w45Period}>
                 <Button
                   title="Semanal"
-                  type="button"
+                  type={optionOrganizedBy === 'Semanal' ? 'primary' : 'button'}
                   onClick={() => {
                     setOptionOrganizedBy('Semanal');
                   }}
@@ -305,7 +305,7 @@ export default function NewMenuPage(): JSX.Element {
               <div className={styles.w45Period}>
                 <Button
                   title="Diário"
-                  type="button"
+                  type={optionOrganizedBy === 'Diário' ? 'primary' : 'button'}
                   onClick={() => {
                     setOptionOrganizedBy('Diário');
                   }}
@@ -329,7 +329,12 @@ export default function NewMenuPage(): JSX.Element {
                 getValue={setStartDate}
                 onBlur={() => {
                   verifyDate();
-                  optionOrganizedBy === 'Diário' ? verifyMenuByDay() : null;
+                  (optionOrganizedBy === 'Diário' &&
+                    startDate !== '' &&
+                    startDate !== null) ||
+                  startDate !== undefined
+                    ? verifyMenuByDay()
+                    : null;
                 }}
               />
 

@@ -71,7 +71,7 @@ export default function ModalBoxInvoice({
       setEditable(false);
       loadValues();
     } else {
-      handleClean();
+      setEditable(true);
     }
     setValue('amountDiscount', 'R$ 0,00');
   }, [listProductsQuantity, invoice]);
@@ -201,7 +201,10 @@ export default function ModalBoxInvoice({
       centered
       show={props.show}
       className={styles.headBoxInvoice}
-      onHide={onHide}
+      onHide={() => {
+        handleClean();
+        onHide();
+      }}
     >
       <Modal.Body className={styles.modalBoxInvoice}>
         <SmallMediumText
@@ -218,6 +221,7 @@ export default function ModalBoxInvoice({
               width: '100%',
               height: '40px'
             }}
+            label={Strings.unit}
             item={Strings.unit}
             data={units}
             onSelectChange={handleGetUnit}
@@ -343,6 +347,7 @@ export default function ModalBoxInvoice({
                       width: '55%',
                       height: '40px'
                     }}
+                    label={Strings.product}
                     item={Strings.product}
                     data={products}
                     onSelectChange={(selectedProductCode) =>

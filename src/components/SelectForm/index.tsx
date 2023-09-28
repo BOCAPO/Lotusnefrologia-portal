@@ -9,6 +9,7 @@ type Props = {
   name: string;
   data?: any;
   className?: string;
+  label?: string;
   isLoading?: boolean;
   containerStyle?: React.CSSProperties;
   item?: string;
@@ -22,6 +23,7 @@ export function SelectForm({
   error = null,
   name,
   data,
+  label,
   isLoading,
   item,
   containerStyle,
@@ -43,7 +45,10 @@ export function SelectForm({
           };
 
           return (
-            <div style={{ width: '100%', display: 'flex' }}>
+            <div
+              style={{ width: '100%', display: 'flex' }}
+              className={styles.selectGroup}
+            >
               <select
                 {...rest}
                 className={`${styles.selectGeneral} ${rest.className}`}
@@ -70,6 +75,11 @@ export function SelectForm({
                   </>
                 )}
               </select>
+              {value !== undefined && value !== '' && (
+                <label htmlFor={name} className={styles.selectLabel}>
+                  {label}
+                </label>
+              )}
             </div>
           );
         }}
