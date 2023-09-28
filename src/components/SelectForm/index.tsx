@@ -12,7 +12,8 @@ type Props = {
   isLoading?: boolean;
   containerStyle?: React.CSSProperties;
   item?: string;
-  onSelectChange?: (_value: string) => void; // Adicione o tipo de callback aqui
+  onSelectChange?: (_value: string) => void;
+  onBlur?: (event: React.FocusEvent<HTMLSelectElement>) => void;
   getValue?: (_text: string) => void;
 };
 

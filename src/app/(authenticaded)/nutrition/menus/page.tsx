@@ -23,12 +23,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { addDays } from 'date-fns';
-import { DataDishesModel } from 'models/DataDishesModel';
+import { DataDishesModel, DataDishesPerDayModel } from 'models/DataDishesModel';
 import { DataMenuModel } from 'models/DataMenuModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { Prefs } from 'repository/Prefs';
-import { getDishesWithoutPagination } from 'services/dishes';
-import { createMenu } from 'services/menu';
+import { getDishesByUnit } from 'services/dishes';
+import { createMenu, getMenuByDay } from 'services/menu';
 import { getAllUnitsWithoutPagination } from 'services/units';
 import formatDate from 'utils/helpers';
 
@@ -60,15 +60,20 @@ export default function NewMenuPage(): JSX.Element {
 
   const [sourceItems, setSourceItems] = useState<
     { id: number; name: string; photo_path: string }[]
-  >([]);
+  >([
+    {
+      id: Math.random() * 9999999999,
+      name: 'Selecione uma unidade',
+      photo_path: ''
+    }
+  ]);
 
   React.useEffect(() => {
-    getDishes();
     getUnits();
   }, [reFresh]);
 
-  async function getDishes() {
-    const response = await getDishesWithoutPagination();
+  async function getDishes(unit: number) {
+    const response = await getDishesByUnit(unit);
     const dishes = response.data as unknown as DataDishesModel[];
     const noFixed = dishes.filter((dish) => dish.isFixed === false);
     const fixed = dishes.filter((dish) => dish.isFixed === true);
@@ -108,6 +113,7 @@ export default function NewMenuPage(): JSX.Element {
         a.name.localeCompare(b.name)
       )
     );
+    setIsLoading(false);
   }
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,12 +125,15 @@ export default function NewMenuPage(): JSX.Element {
   };
 
   function handleClean() {
+    setValue('unit', 0);
     setStartDate('');
     setValue('startDate', '');
     setValue('endDate', '');
     setEndDate('');
     setSelectedUnit(0);
     setOptionOrganizedBy('');
+    setSourceItems([]);
+    setDestinationItems([]);
     setSelectedUnit(0);
     setReFresh(!reFresh);
   }
@@ -152,7 +161,12 @@ export default function NewMenuPage(): JSX.Element {
   async function onSubmit(data: DataProps) {
     const newMenu: DataMenuModel = {
       start: data.startDate.toString(),
-      end: data.endDate.toString(),
+      end:
+        data.endDate === '' ||
+        data.endDate === null ||
+        data.endDate === undefined
+          ? data.startDate.toString()
+          : data.endDate.toString(),
       unit_id: selectedUnit,
       dishes: destinationItems.map((dish) => dish.id)
     };
@@ -162,11 +176,19 @@ export default function NewMenuPage(): JSX.Element {
     if (response.status !== null) {
       setMessage(Strings.messageSuccessfulMenuCreation);
       setShowModalSuccess(true);
+      setReFresh(!reFresh);
+      handleClean();
       setTimeout(() => {
         setShowModalSuccess(false);
       }, 3000);
     }
   }
+
+  const handleUnitSelected = () => {
+    if (selectedUnit !== 0 && selectedUnit !== null) {
+      getDishes(selectedUnit);
+    }
+  };
 
   async function verifyDate() {
     const today = new Date();
@@ -210,6 +232,44 @@ export default function NewMenuPage(): JSX.Element {
     }
   }
 
+  async function verifyMenuByDay() {
+    const response = await getMenuByDay(startDate);
+    const menu = response.data as unknown as DataDishesPerDayModel[];
+    const dataUpdated = menu.filter(
+      (item: any) => item.unit_id == selectedUnit
+    );
+
+    const dishesFixedUpdated = dataUpdated.filter(
+      (dish: DataDishesPerDayModel) => {
+        return !destinationItems.some(
+          (item) => item.id === dish?.pivot.dishe_id
+        );
+      }
+    );
+
+    const dishesNoFixedUpdated = sourceItems.filter((item) => {
+      return !dataUpdated.some(
+        (dish: DataDishesPerDayModel) => dish?.pivot.dishe_id === item.id
+      );
+    });
+
+    const dishedsNoFixed = dishesNoFixedUpdated.map((dish: any) => ({
+      id: dish.id!,
+      name: dish.name!,
+      photo_path: dish.photo_path!
+    }));
+
+    const dishedsFixed = dishesFixedUpdated.map((dish: any) => ({
+      id: dish.id!,
+      name: dish.name!,
+      photo_path: dish.photo_path!
+    }));
+
+    setSourceItems(dishedsNoFixed);
+    setDestinationItems([...destinationItems, ...dishedsFixed]);
+    setReFresh(!reFresh);
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -226,6 +286,8 @@ export default function NewMenuPage(): JSX.Element {
               error={errors.unit?.message?.toString()}
               data={units}
               onSelectChange={handleGetUnit}
+              isLoading={isLoading}
+              onBlur={handleUnitSelected}
             />
             <p className={styles.subtitlePeriod}>
               {Strings.organizedBy}: {optionOrganizedBy}
@@ -267,6 +329,7 @@ export default function NewMenuPage(): JSX.Element {
                 getValue={setStartDate}
                 onBlur={() => {
                   verifyDate();
+                  optionOrganizedBy === 'Diário' ? verifyMenuByDay() : null;
                 }}
               />
 
@@ -370,7 +433,7 @@ export default function NewMenuPage(): JSX.Element {
                     type="cancel"
                     title={Strings.new}
                     onClick={() => {
-                      // handleClean();
+                      handleClean();
                     }}
                   />
                 </div>

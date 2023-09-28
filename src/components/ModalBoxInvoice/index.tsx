@@ -70,6 +70,8 @@ export default function ModalBoxInvoice({
     if (invoice) {
       setEditable(false);
       loadValues();
+    } else {
+      handleClean();
     }
     setValue('amountDiscount', 'R$ 0,00');
   }, [listProductsQuantity, invoice]);
@@ -95,10 +97,14 @@ export default function ModalBoxInvoice({
     setValue('series', jsonItem.series);
     setValue('amountTotal', jsonItem.amount);
     setValue('amountDiscount', jsonItem.discount);
-    // setValue('product', '');
-    // setValue('unitValue', '');
-    // setValue('quantity', '');
-    // setValue('typeOfUnity', '');
+    setListProducts(jsonItem.products);
+    setListProductsQuantity(jsonItem.products.length);
+    jsonItem.products.map((item: any, index: number) => {
+      setValue(`product${index}`, item.product_id);
+      setValue(`unitValue${index}`, Number(item.value).toFixed(2).toString());
+      setValue(`quantity${index}`, Number(item.quantity));
+      setValue(`typeOfUnity${index}`, item.un);
+    });
   }
 
   function handleClean() {

@@ -26,7 +26,7 @@ export default function ListInvoicesPage() {
   const [units, setUnits] = React.useState<any>(null);
   const [products, setProducts] = React.useState<any>(null);
   const [quantityInvoices, setQuantityInvoices] = React.useState<number>(0);
-  const [invoiceRecovy, setInvoiceRecovery] = React.useState<any>(null);
+  const [invoiceRecovery, setInvoiceRecovery] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [page, setPage] = React.useState<number>(1);
   const [showBoxInvoice, setShowBoxInvoice] = React.useState<boolean>(false);
@@ -143,6 +143,7 @@ export default function ListInvoicesPage() {
               type="secondary"
               onClick={() => {
                 setShowBoxInvoice(true);
+                setInvoiceRecovery(null);
               }}
             />
           </div>
@@ -153,7 +154,6 @@ export default function ListInvoicesPage() {
                 typeIcon={TypeIcon.Search}
                 size={20}
                 color={Colors.gray60}
-                callback={() => {}}
               />
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function ListInvoicesPage() {
         units={units}
         products={products}
         onUpdate={handleOnUpdate}
-        invoice={invoiceRecovy}
+        invoice={invoiceRecovery}
       />
     </React.Fragment>
   );

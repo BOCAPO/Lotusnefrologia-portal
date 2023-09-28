@@ -10,6 +10,10 @@ export async function getMenuPerPage(page: number) {
   return await getJson(`/menu?page=${page}`);
 }
 
+export async function getMenuByDay(day: string) {
+  return await getJson(`/menu/day/${day}`);
+}
+
 export async function getMenuById(id: number) {
   return await getJson(`/menu/${id}`);
 }

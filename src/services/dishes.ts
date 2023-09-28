@@ -14,6 +14,10 @@ export async function getDishesPerPage(page: number) {
   return await getJson(`/dishes?page=${page}`);
 }
 
+export async function getDishesByUnit(unit: number) {
+  return await getJson(`/dishes/by-unit/${unit}`);
+}
+
 export async function createDishe(data: DataDishesModel) {
   return await postJson('/dishes', data);
 }
