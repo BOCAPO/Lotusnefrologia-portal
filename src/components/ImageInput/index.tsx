@@ -59,13 +59,17 @@ function ImageInput({ onImageUpload, imageUrl }: ImageInputProps) {
     <div className={styles.containerImageInput}>
       {imageInputFile ? (
         <img
-          src={imageInputFile}
+          src={
+            imageInputFile === null || imageInputFile === ''
+              ? NoImage.toString()
+              : imageInputFile
+          }
           onClick={openFileSelector}
           alt="Image"
           className={styles.imgImageInput}
           loading="lazy"
           onError={({ currentTarget }) => {
-            currentTarget.onerror = null; // prevents looping
+            currentTarget.onerror = null;
             currentTarget.src = NoImage.toString();
           }}
         />

@@ -31,7 +31,11 @@ const SourceList: React.FC<SourceListProps> = ({ items }) => {
                   className={styles.itemSourceList}
                 >
                   <div className="w-25">
-                    <img src={item.photo_path} alt={item.name} />
+                    {item.photo_path !== null && item.photo_path !== '' ? (
+                      <img src={item.photo_path} alt={item.name} />
+                    ) : (
+                      <></>
+                    )}
                   </div>
                   <div className="w-75 d-flex justify-content-start align-items-center px-4">
                     <p className={styles.titleItem}>{item.name}</p>
