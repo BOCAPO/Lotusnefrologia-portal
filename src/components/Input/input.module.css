@@ -22,7 +22,7 @@
     color: #FF0000;
     font-family: 'Arial', sans-serif;
     position: absolute;
-    top: 6vh;
+    top: 4vh;
     text-align: right;
 }
 
@@ -81,6 +81,6 @@
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .messageError {
-        top: 6.5vh;
+        top: 6vh;
     }
 }

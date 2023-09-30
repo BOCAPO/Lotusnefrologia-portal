@@ -29,6 +29,7 @@ type Props = {
   show: boolean;
   units: DataUnitsModel[];
   products: DataProductsModel[];
+  onError?: (error: boolean) => void;
   onUpdate?: (value: number) => void;
 };
 
@@ -41,6 +42,7 @@ export default function ModalBoxInvoice({
   units,
   products,
   invoice,
+  onError,
   onUpdate,
   ...props
 }: Props & { show: boolean }) {
@@ -86,6 +88,7 @@ export default function ModalBoxInvoice({
 
   function loadValues() {
     const jsonItem = JSON.parse(invoice);
+    console.log(invoice);
     setValue(
       'date',
       format(parse(jsonItem.date, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd')
@@ -99,12 +102,14 @@ export default function ModalBoxInvoice({
     setValue('amountDiscount', jsonItem.discount);
     setListProducts(jsonItem.products);
     setListProductsQuantity(jsonItem.products.length);
+    console.log(jsonItem);
     jsonItem.products.map((item: any, index: number) => {
       setValue(`product${index}`, item.product_id);
       setValue(`unitValue${index}`, Number(item.value).toFixed(2).toString());
       setValue(`quantity${index}`, Number(item.quantity));
       setValue(`typeOfUnity${index}`, item.un);
     });
+    setLoading(false);
   }
 
   function handleClean() {
@@ -163,10 +168,17 @@ export default function ModalBoxInvoice({
     setListProductsQuantity(listProductsQuantity - 1);
   }
 
-  async function handleSubmitInvoice(data: DataProps) {
+  async function onSubmit(data: DataProps) {
     let updatedList = await addNewProduct();
     updatedList = updatedList.slice(1);
     setLoading(true);
+
+    if (updatedList.length === 0) {
+      onError && onError(true);
+      setLoading(false);
+      return;
+    }
+
     const newInvoice = {
       supplier: data.supplier.toString(),
       unit_id: Number(selectedUnit),
@@ -185,6 +197,7 @@ export default function ModalBoxInvoice({
       status: 0,
       products: updatedList
     };
+
     const response = await createInvoice(newInvoice);
     if (response !== null) {
       handleClean();
@@ -213,7 +226,7 @@ export default function ModalBoxInvoice({
           color={Colors.gray90}
           style={{ lineHeight: 2, textAlign: 'left', width: '100%' }}
         />
-        <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
+        <div className={styles.twoColumns} style={{ marginBottom: '25px' }}>
           <SelectForm
             control={control}
             name="unit"
@@ -225,9 +238,10 @@ export default function ModalBoxInvoice({
             item={Strings.unit}
             data={units}
             onSelectChange={handleGetUnit}
+            error={errors.unit?.message?.toString()}
           />
         </div>
-        <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
+        <div className={styles.twoColumns} style={{ marginBottom: '25px' }}>
           <InputForm
             control={control}
             name="supplier"
@@ -240,6 +254,7 @@ export default function ModalBoxInvoice({
             }}
             readonly={!editable}
             className={styles.inputNewInvoice}
+            error={errors.supplier?.message?.toString()}
           />
           <InputForm
             control={control}
@@ -253,9 +268,10 @@ export default function ModalBoxInvoice({
             }}
             readonly={!editable}
             className={styles.inputNewInvoice}
+            error={errors.date?.message?.toString()}
           />
         </div>
-        <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
+        <div className={styles.twoColumns} style={{ marginBottom: '25px' }}>
           <InputForm
             control={control}
             name="cnpj"
@@ -265,11 +281,12 @@ export default function ModalBoxInvoice({
             placeholder={Strings.placeholderCNJP}
             label={Strings.labelCNPJ}
             containerStyle={{
-              width: '60%',
+              width: '50%',
               height: '40px'
             }}
             readonly={!editable}
             className={styles.inputNewInvoice}
+            error={errors.cnpj?.message?.toString()}
           />
           <InputForm
             control={control}
@@ -279,11 +296,12 @@ export default function ModalBoxInvoice({
             placeholder={Strings.invoice}
             label={Strings.invoice}
             containerStyle={{
-              width: '15%',
+              width: '25%',
               height: '40px'
             }}
             readonly={!editable}
             className={styles.inputTypeNumberInvoice}
+            error={errors.invoice?.message?.toString()}
           />
           <InputForm
             control={control}
@@ -298,6 +316,7 @@ export default function ModalBoxInvoice({
             }}
             readonly={!editable}
             className={styles.inputTypeNumberInvoice}
+            error={errors.series?.message?.toString()}
           />
         </div>
         <div className={styles.twoColumns} style={{ marginBottom: '15px' }}>
@@ -422,7 +441,7 @@ export default function ModalBoxInvoice({
                 <Button
                   title={Strings.save}
                   type="secondary"
-                  onClick={handleSubmit(handleSubmitInvoice)}
+                  onClick={handleSubmit(onSubmit)}
                 />
               </div>
               <div className={styles.btnDefault}>
