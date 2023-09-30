@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from 'components/Button';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import ModalError from 'components/ModalError';
 import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import { SmallMediumText } from 'components/Text';
@@ -45,6 +46,8 @@ export default function NewSpecialistPage() {
   const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
   const [quantityUnitsSelected, setQuantityUnitsSelected] = React.useState(0);
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
+  const [showModalError, setShowModalError] = React.useState<boolean>(false);
+  const [message, setMessage] = React.useState<string>('');
   const [speciatiesSelected, setSpecialtiesSelected] = React.useState<any>([]);
   const [quantitySpecialtiesSelected, setQuantitySpecialtiesSelected] =
     React.useState(0);
@@ -129,12 +132,41 @@ export default function NewSpecialistPage() {
 
   async function onSubmit(data: DataProps) {
     getUnitsSelected();
+
+    if (
+      speciatiesSelected.lenght === 0 ||
+      speciatiesSelected === null ||
+      speciatiesSelected === undefined
+    ) {
+      setMessage(Strings.minimumOneSpeciality);
+      setShowModalError(true);
+      setTimeout(() => {
+        setShowModalError(false);
+      }, 3000);
+      return;
+    }
+
+    if (
+      unitsSelected.lenght === 0 ||
+      unitsSelected === null ||
+      unitsSelected === undefined
+    ) {
+      setMessage(Strings.minimumOneUnit);
+      setShowModalError(true);
+      setTimeout(() => {
+        setShowModalError(false);
+      }, 3000);
+      return;
+    }
+
     const newSpecialist: DataSpecialistsModel = {
       cpf: data.cpf.toString(),
       name: data.name.toString(),
       email: data.email.toString(),
       phone_primary: data.phonePrimary.toString(),
-      phone_secondary: data.phoneSecondary.toString(),
+      phone_secondary: data.phoneSecondary
+        ? data.phoneSecondary.toString()
+        : '',
       zip_code: data.zipCode.toString(),
       street: data.street.toString(),
       number: data.number.toString(),
@@ -178,7 +210,7 @@ export default function NewSpecialistPage() {
               mask={'cpfCnpj'}
               maxLength={14}
               control={control}
-              error={errors.cpf?.message}
+              error={errors.cpf?.message?.toString()}
               containerStyle={{ width: '25%' }}
               style={{ height: '40px', padding: '22px' }}
             />
@@ -190,7 +222,7 @@ export default function NewSpecialistPage() {
               control={control}
               containerStyle={{ width: '70%' }}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.name?.message}
+              error={errors.name?.message?.toString()}
             />
           </div>
           <div style={{ marginBottom: '3vh' }}>
@@ -202,7 +234,7 @@ export default function NewSpecialistPage() {
               control={control}
               style={{ height: '40px', padding: '22px' }}
               containerStyle={{ width: '65%' }}
-              error={errors.email?.message}
+              error={errors.email?.message?.toString()}
             />
             <InputForm
               placeholder={Strings.placeholderPhonePrimary}
@@ -213,7 +245,7 @@ export default function NewSpecialistPage() {
               mask={'phone'}
               containerStyle={{ width: '15%' }}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.phonePrimary?.message}
+              error={errors.phonePrimary?.message?.toString()}
             />
             <InputForm
               label={Strings.labelPhone}
@@ -224,7 +256,6 @@ export default function NewSpecialistPage() {
               mask={'phone'}
               containerStyle={{ width: '15%' }}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.phoneSecondary?.message}
             />
           </div>
           <div style={{ marginBottom: '3vh' }}>
@@ -238,7 +269,7 @@ export default function NewSpecialistPage() {
               maxLength={9}
               control={control}
               style={{ height: '40px', padding: '22px' }}
-              error={errors.zipCode?.message}
+              error={errors.zipCode?.message?.toString()}
             />
             <InputForm
               placeholder={Strings.placeholderStreet}
@@ -311,7 +342,7 @@ export default function NewSpecialistPage() {
                 name="citieCode"
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
-                error={errors.city?.message}
+                error={errors.citieCode?.message}
                 containerStyle={{ width: '25%' }}
               />
               <SelectForm
@@ -470,6 +501,11 @@ export default function NewSpecialistPage() {
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
         message={Strings.messageSuccessInsertSpecialist}
+      />
+      <ModalError
+        show={showModalError}
+        onHide={() => setShowModalError(false)}
+        message={message}
       />
     </React.Fragment>
   );

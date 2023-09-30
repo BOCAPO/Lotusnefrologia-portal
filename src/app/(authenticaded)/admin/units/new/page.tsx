@@ -9,6 +9,7 @@ import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import ModalError from 'components/ModalError';
 import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import { SmallMediumText } from 'components/Text';
@@ -44,6 +45,7 @@ export default function NewUnitPage() {
   const [linkFacebook, setLinkFacebook] = React.useState<string>('');
   const [linkInstagram, setLinkInstagram] = React.useState<string>('');
   const [linkSite, setLinkSite] = React.useState<string>('');
+  const [showModalError, setShowModalError] = React.useState<boolean>(false);
 
   const {
     control,
@@ -109,16 +111,14 @@ export default function NewUnitPage() {
       state_name: null
     };
 
-    try {
-      const response = await createUnit(newUnit);
-      if (response !== null) {
-        setShowModalSuccess(true);
-        setTimeout(() => {
-          router.back();
-        }, 2500);
-      }
-    } catch (error) {
-      // console.log('Erro ao criar unidade!' + error);
+    const response = await createUnit(newUnit);
+    if (response !== null) {
+      setShowModalSuccess(true);
+      setTimeout(() => {
+        router.back();
+      }, 2500);
+    } else {
+      setShowModalError(true);
     }
   }
 
@@ -310,6 +310,7 @@ export default function NewUnitPage() {
                   item={Strings.labelState}
                   name="state"
                   data={states}
+                  label={Strings.labelState}
                   error={errors.state?.message}
                   onSelectChange={handleStateCode}
                   containerStyle={{ width: '30%' }}
@@ -318,15 +319,17 @@ export default function NewUnitPage() {
                   control={control}
                   item={Strings.labelCity}
                   name="cityCode"
+                  label={Strings.labelCity}
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
-                  error={errors.city?.message}
+                  error={errors.cityCode?.message}
                   containerStyle={{ width: '30%' }}
                 />
                 <SelectForm
                   control={control}
                   item={Strings.status}
                   name="status"
+                  label={Strings.status}
                   data={statusGeneral}
                   error={errors.status?.message}
                   containerStyle={{ width: '30%' }}
@@ -427,6 +430,11 @@ export default function NewUnitPage() {
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
         message={Strings.messageSuccessInsertUnit}
+      />
+      <ModalError
+        show={showModalError}
+        onHide={() => setShowModalError(false)}
+        message={Strings.messageErrorInsertUnit}
       />
     </React.Fragment>
   );
