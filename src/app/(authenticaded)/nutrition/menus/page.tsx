@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useForm } from 'react-hook-form';
 
 import { Button } from 'components/Button';
@@ -41,6 +40,10 @@ export default function NewMenuPage(): JSX.Element {
   const [showModalSuccess, setShowModalSuccess] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [selectedItemsSource, setSelectedItemsSource] = useState<any[]>([]);
+  const [selectedItemsDestination, setSelectedItemsDestination] = useState<
+    any[]
+  >([]);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [units, setUnits] = React.useState<any>(null);
@@ -135,6 +138,8 @@ export default function NewMenuPage(): JSX.Element {
     setSourceItems([]);
     setDestinationItems([]);
     setSelectedUnit(0);
+    setSelectedItemsDestination([]);
+    setSelectedItemsSource([]);
     setReFresh(!reFresh);
   }
 
@@ -146,19 +151,52 @@ export default function NewMenuPage(): JSX.Element {
     { id: number; name: string; photo_path: string }[]
   >([]);
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return; // Não houve mudança de posição
-
-    const source = [...sourceItems];
-    const destination = [...destinationItems];
-    const [movedItem] = source.splice(result.source.index, 1);
-    destination.splice(result.destination.index, 0, movedItem);
-
-    setSourceItems(source);
-    setDestinationItems(destination);
+  const handleSelectedItemsChangeSource = (selectedItems: any[]) => {
+    setSelectedItemsSource(selectedItems);
   };
 
+  const handleSelectedItemsChangeDestination = (selectedItems: any[]) => {
+    setSelectedItemsDestination(selectedItems);
+  };
+
+  function handleSendDestinationAll() {
+    setDestinationItems([...destinationItems, ...sourceItems]);
+    setSourceItems([]);
+  }
+
+  function handleSendSourceAll() {
+    setSourceItems([...sourceItems, ...destinationItems]);
+    setDestinationItems([]);
+  }
+
+  function handleSendDestinationItems() {
+    const newDestinationItems = selectedItemsSource.filter(
+      (itemId) => !destinationItems.find((item) => item.id === itemId.id)
+    );
+
+    setDestinationItems([...destinationItems, ...newDestinationItems]);
+    setSourceItems(
+      sourceItems.filter((item) => !selectedItemsSource.includes(item))
+    );
+  }
+
+  function handleSendSourceItems() {
+    const newSourceItems = selectedItemsDestination.filter(
+      (itemId) => !sourceItems.includes(itemId)
+    );
+
+    setSourceItems([...sourceItems, ...newSourceItems]);
+
+    setDestinationItems(
+      destinationItems.filter(
+        (item) => !selectedItemsDestination.includes(item)
+      )
+    );
+  }
+
   async function onSubmit(data: DataProps) {
+    console.log(destinationItems);
+
     const newMenu: DataMenuModel = {
       start: data.startDate.toString(),
       end:
@@ -170,6 +208,8 @@ export default function NewMenuPage(): JSX.Element {
       unit_id: selectedUnit,
       dishes: destinationItems.map((dish) => dish.id)
     };
+
+    console.log(newMenu);
 
     const response = await createMenu(newMenu);
 
@@ -409,15 +449,61 @@ export default function NewMenuPage(): JSX.Element {
           ) : (
             <React.Fragment>
               <div className="d-flex w-100 mt-2">
-                <DragDropContext onDragEnd={onDragEnd}>
-                  <div
-                    style={{ display: 'flex', flexDirection: 'row' }}
-                    className="w-100"
-                  >
-                    <SourceList items={filteredSourceItems} />
-                    <DestinationList items={destinationItems} />
+                <div
+                  style={{ display: 'flex', flexDirection: 'row' }}
+                  className="w-100"
+                >
+                  <SourceList
+                    items={filteredSourceItems}
+                    onItemChange={handleSelectedItemsChangeSource}
+                  />
+                  <div className={styles.divBtnMoveItems}>
+                    <button>
+                      <Icon
+                        typeIcon={TypeIcon.ArrowRight}
+                        size={20}
+                        color={Colors.greenDark2}
+                        callback={() => {
+                          handleSendDestinationItems();
+                        }}
+                      />
+                    </button>
+                    <button>
+                      <Icon
+                        typeIcon={TypeIcon.DoubleArrowRight}
+                        size={20}
+                        color={Colors.greenDark2}
+                        callback={() => {
+                          handleSendDestinationAll();
+                        }}
+                      />
+                    </button>
+                    <button>
+                      <Icon
+                        typeIcon={TypeIcon.ArrowLeft}
+                        size={20}
+                        color={Colors.greenDark2}
+                        callback={() => {
+                          handleSendSourceItems();
+                        }}
+                      />
+                    </button>
+                    <button>
+                      <Icon
+                        typeIcon={TypeIcon.DoubleArrowLeft}
+                        size={20}
+                        color={Colors.greenDark2}
+                        callback={() => {
+                          handleSendSourceAll();
+                        }}
+                      />
+                    </button>
                   </div>
-                </DragDropContext>
+                  <DestinationList
+                    items={destinationItems}
+                    onItemChange={handleSelectedItemsChangeDestination}
+                  />
+                </div>
               </div>
               <div className={styles.footerNewMenus}>
                 <React.Fragment>

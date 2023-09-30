@@ -126,8 +126,37 @@
     padding: 1.5vh 2% 0 2%;
 }
 
-.selectUnitMenu{
+.selectUnitMenu {
     margin-top: 3vh;
+}
+
+.divBtnMoveItems {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    margin: 5% 0;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.divBtnMoveItems button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid #00555B;
+    height: 35px;
+    background-color: transparent;
+}
+
+.divBtnMoveItems button:hover {
+    background-color: #A1E2A5;
+    border: none;
+}
+
+.divBtnMoveItems button:hover svg {
+    color: #fff !important;
 }
 
 @media screen and (max-height: 981px) and (min-height: 740px) {

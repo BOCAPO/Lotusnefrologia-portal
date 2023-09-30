@@ -88,7 +88,6 @@ export default function ModalBoxInvoice({
 
   function loadValues() {
     const jsonItem = JSON.parse(invoice);
-    console.log(invoice);
     setValue(
       'date',
       format(parse(jsonItem.date, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd')
@@ -102,7 +101,6 @@ export default function ModalBoxInvoice({
     setValue('amountDiscount', jsonItem.discount);
     setListProducts(jsonItem.products);
     setListProductsQuantity(jsonItem.products.length);
-    console.log(jsonItem);
     jsonItem.products.map((item: any, index: number) => {
       setValue(`product${index}`, item.product_id);
       setValue(`unitValue${index}`, Number(item.value).toFixed(2).toString());

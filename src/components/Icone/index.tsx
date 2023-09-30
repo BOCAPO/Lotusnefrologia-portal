@@ -4,7 +4,10 @@ import { PropsWithChildren, useState } from 'react';
 import {
   FiBell,
   FiCalendar,
+  FiChevronLeft,
   FiChevronRight,
+  FiChevronsLeft,
+  FiChevronsRight,
   FiClock,
   FiDownload,
   FiEdit,
@@ -128,6 +131,18 @@ export const TypeIcon = {
   },
   ArrowRight: {
     icon: FiChevronRight,
+    alternativeIcon: null
+  },
+  ArrowLeft: {
+    icon: FiChevronLeft,
+    alternativeIcon: null
+  },
+  DoubleArrowRight: {
+    icon: FiChevronsRight,
+    alternativeIcon: null
+  },
+  DoubleArrowLeft: {
+    icon: FiChevronsLeft,
     alternativeIcon: null
   },
   Maximize: {
