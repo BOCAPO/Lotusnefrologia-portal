@@ -58,7 +58,6 @@ export default function ListInvoicesPage() {
         }).format(item.amount);
         return item;
       });
-      console.log(dataUpdated);
       setData(dataUpdated);
       setQuantityInvoices(data.total);
     } else {
