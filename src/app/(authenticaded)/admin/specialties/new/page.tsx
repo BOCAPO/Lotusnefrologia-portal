@@ -70,7 +70,6 @@ export default function NewSpecialTyPage() {
   const {
     control,
     handleSubmit,
-    resetField,
     setValue,
     formState: { errors }
   } = useForm<DataProps>({
@@ -109,8 +108,7 @@ export default function NewSpecialTyPage() {
     if (response !== null) {
       setQuantitySpecialties(quantitySpecialties + 1);
       setShowModalSuccess(true);
-      resetField('specialty');
-      resetField('status');
+      handleClean();
       setTimeout(() => {
         setShowModalSuccess(false);
       }, 2500);
@@ -125,6 +123,12 @@ export default function NewSpecialTyPage() {
     setSelectedSpecialty(dataSpecialtySelected);
     setValue('specialty', dataSpecialtySelected.description);
     setValue('status', Number(dataSpecialtySelected.status) + 1);
+  }
+
+  async function handleClean() {
+    setSelectedSpecialty(null);
+    setValue('specialty', '');
+    setValue('status', 0);
   }
 
   return (
@@ -169,7 +173,7 @@ export default function NewSpecialTyPage() {
                 label={Strings.status}
                 name="status"
                 containerStyle={{ width: '25%' }}
-                error={errors.timeOfAttendance?.message?.toString()}
+                error={errors.status?.message?.toString()}
                 data={statusGeneral}
               />
             </div>
@@ -188,6 +192,7 @@ export default function NewSpecialTyPage() {
                 title={Strings.erase}
                 onClick={() => {
                   deleteSpecialtyId();
+                  handleClean();
                 }}
               />
             </div>
@@ -196,9 +201,7 @@ export default function NewSpecialTyPage() {
                 type="cancel"
                 title={Strings.cancel}
                 onClick={() => {
-                  setSelectedSpecialty(null);
-                  setValue('specialty', '');
-                  setValue('status', 0);
+                  handleClean();
                 }}
               />
             </div>

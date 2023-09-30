@@ -113,7 +113,6 @@ export default function NewUserPage() {
       complement: data.complement?.toString(),
       units: selectedUnits,
       status: Number(data.status) - 1
-      // profile: 1
     };
 
     const response = await createUser(newUser);
@@ -270,6 +269,7 @@ export default function NewUserPage() {
                 item={Strings.labelState}
                 name="state"
                 data={states}
+                label={Strings.labelState}
                 error={errors.state?.message}
                 onSelectChange={handleStateCode}
                 containerStyle={{ width: '25%' }}
@@ -278,9 +278,10 @@ export default function NewUserPage() {
                 control={control}
                 item={Strings.labelCity}
                 name="cityCode"
+                label={Strings.labelCity}
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
-                error={errors.city?.message}
+                error={errors.cityCode?.message}
                 containerStyle={{ width: '25%' }}
               />
               <SelectForm

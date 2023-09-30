@@ -84,7 +84,7 @@ export default function LoginPage() {
               type="password"
               label={Strings.password}
               placeholder={Strings.password}
-              containerStyle={{ width: '100%' }}
+              containerStyle={{ width: '100%', marginBottom: '2vh' }}
               iconType={TypeIcon.Password}
               error={errors.password?.message?.toString()}
               className={styles.inputLoginContent}

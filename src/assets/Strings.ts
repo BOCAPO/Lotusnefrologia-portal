@@ -142,16 +142,17 @@ export const Strings = {
   search: 'Pesquisar',
   scheduleConfirmation: 'Confirmação de Agenda',
   selectSpecialist: 'Selecione o Especialista',
-  schemaRequiredInitialHour: 'Hora inicial é obrigatório',
-  schemaRequiredUnit: 'Unidade é obrigatório',
+  schemaRequiredInitialHour: 'Hora inicial é obrigatória',
+  schemaRequiredUnit: 'Unidade é obrigatória',
   schemaStatusRequired: 'Status é obrigatório',
-  schemaBirthDateRequired: 'Data de Nascimento é obrigatório',
-  schemaRequiredFinalHour: 'Hora final é obrigatório',
+  schemaBirthDateRequired: 'Data de Nascimento é obrigatória',
+  schemaRequiredFinalHour: 'Hora final é obrigatória',
   schemaRequiredInterval: 'Intervalo é obrigatório',
   schemaRequiredSupplier: 'Fornecedor é obrigatório',
   schemaRequiredDateInvoice: 'Data é obrigatório',
   schemaRequiredInvoice: 'Nota Fiscal é obrigatório',
   schemaSeriesRequired: 'Série é obrigatório',
+  schemaDescriptionRequired: 'Descrição é obrigatória',
   interval: 'Intervalo',
   timeOfAttendance: ['15 minutos', '30 minutos', '45 minutos', '1 hora'],
   placeholderCNJP: 'Digite o CNPJ somente números',
@@ -246,6 +247,7 @@ export const Strings = {
   messageErrorInsertPatient: 'Erro ao cadastrar paciente.',
   messageErrorInsertInvoiceWithoutProducts:
     'Insira pelo menos um produto para cadastrar a nota fiscal.',
+  messageErrorInsertUnit: 'Erro ao cadastrar unidade.',
   selectDate: 'Selecione a data',
   hoursDisponibles: 'Horários disponíveis',
   resetPasswordSpecialist: 'Redefinir Senha do Especialista',
@@ -324,5 +326,6 @@ export const Strings = {
     'Data final não pode ser menor que a inicial',
   titleError: 'Erro identificado',
   timeLine: 'Linha do Tempo',
-  view: 'Visualizar'
+  view: 'Visualizar',
+  minimumOneSpeciality: 'Selecione pelo menos uma especialidade'
 };

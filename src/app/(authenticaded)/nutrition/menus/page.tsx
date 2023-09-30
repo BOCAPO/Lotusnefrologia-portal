@@ -195,8 +195,6 @@ export default function NewMenuPage(): JSX.Element {
   }
 
   async function onSubmit(data: DataProps) {
-    console.log(destinationItems);
-
     const newMenu: DataMenuModel = {
       start: data.startDate.toString(),
       end:
@@ -208,8 +206,6 @@ export default function NewMenuPage(): JSX.Element {
       unit_id: selectedUnit,
       dishes: destinationItems.map((dish) => dish.id)
     };
-
-    console.log(newMenu);
 
     const response = await createMenu(newMenu);
 
