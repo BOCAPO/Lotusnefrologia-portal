@@ -327,5 +327,6 @@ export const Strings = {
   titleError: 'Erro identificado',
   timeLine: 'Linha do Tempo',
   view: 'Visualizar',
-  minimumOneSpeciality: 'Selecione pelo menos uma especialidade'
+  minimumOneSpeciality: 'Selecione pelo menos uma especialidade',
+  minimumOneUnit: 'Selecione pelo menos uma unidade'
 };
