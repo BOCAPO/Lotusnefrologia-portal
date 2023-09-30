@@ -168,6 +168,7 @@ export default function NewProductPage() {
               <SelectForm
                 control={control}
                 item={Strings.status}
+                label={Strings.status}
                 name="status"
                 containerStyle={{ width: '25%' }}
                 error={errors.status?.message?.toString()}

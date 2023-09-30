@@ -1,11 +1,11 @@
+import { Strings } from 'assets/Strings';
 import * as Yup from 'yup';
 
 export const schema = Yup.object({
-  // descricao: Yup.string().required(Strings.descriptionRequired),
-  // pacient: Yup.string().required(Strings.pacientRequired),
-  // speciality: Yup.string().required(Strings.specialityRequired),
-  // specialist: Yup.string().required(Strings.specialistRequired),
-  // date: Yup.string().required(Strings.dateRequired),
-  // hour: Yup.string().required(Strings.hourRequired),
-  // observation: Yup.string().max(255)
+  unit: Yup.string().required(Strings.schemaRequiredUnit),
+  supplier: Yup.string().required(Strings.schemaRequiredSupplier),
+  date: Yup.string().required(Strings.schemaRequiredDateInvoice),
+  cnpj: Yup.string().required(Strings.schemaRequiredCnpj),
+  invoice: Yup.string().required(Strings.schemaRequiredInvoice),
+  series: Yup.string().required(Strings.schemaSeriesRequired)
 });

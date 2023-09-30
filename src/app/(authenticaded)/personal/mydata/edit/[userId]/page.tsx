@@ -309,6 +309,7 @@ export default function ViewUserPage() {
                   control={control}
                   name="state"
                   item={Strings.labelState}
+                  label={Strings.labelState}
                   data={states !== null ? states : null}
                   onSelectChange={handleStateCode}
                   error={errors.state?.message}
@@ -318,6 +319,7 @@ export default function ViewUserPage() {
                   control={control}
                   item={Strings.labelCity}
                   name="cityCode"
+                  label={Strings.labelCity}
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
                   error={errors.city?.message}
@@ -327,6 +329,7 @@ export default function ViewUserPage() {
                   control={control}
                   item={Strings.status}
                   name="status"
+                  label={Strings.status}
                   data={statusGeneral}
                   error={errors.status?.message}
                   containerStyle={{ width: '25%' }}
@@ -358,20 +361,20 @@ export default function ViewUserPage() {
                                 checked={unitsSelected?.includes(
                                   unit.id !== undefined ? unit.id : 0
                                 )}
-                                onChange={() => {
-                                  if (unitsSelected?.includes(unit.id)) {
-                                    const unitsSelectedUpdated =
-                                      unitsSelected?.filter(
-                                        (unitSelected: number) =>
-                                          unitSelected !== unit.id
-                                      );
-                                    setUnitsSelected(unitsSelectedUpdated);
-                                  } else {
-                                    const unitsSelectedUpdated = unitsSelected;
-                                    unitsSelectedUpdated?.push(unit.id);
-                                    setUnitsSelected(unitsSelectedUpdated);
-                                  }
-                                }}
+                                // onChange={() => {
+                                //   if (unitsSelected?.includes(unit.id)) {
+                                //     const unitsSelectedUpdated =
+                                //       unitsSelected?.filter(
+                                //         (unitSelected: number) =>
+                                //           unitSelected !== unit.id
+                                //       );
+                                //     setUnitsSelected(unitsSelectedUpdated);
+                                //   } else {
+                                //     const unitsSelectedUpdated = unitsSelected;
+                                //     unitsSelectedUpdated?.push(unit.id);
+                                //     setUnitsSelected(unitsSelectedUpdated);
+                                //   }
+                                // }}
                               />
                             </label>
                           </td>

@@ -305,6 +305,11 @@ export default function NewDishePage() {
                   </div>
                   <div className={styles.secondLineNewDishes}>
                     <div className={styles.divTextAreaDescriptionDishe}>
+                      <label
+                        className={styles.divTextAreaDescriptionDisheLabel}
+                      >
+                        {Strings.description}
+                      </label>
                       <textarea
                         name="description"
                         placeholder={Strings.descriptionOfDishe}

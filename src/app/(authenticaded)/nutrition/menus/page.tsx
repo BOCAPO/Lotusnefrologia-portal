@@ -233,6 +233,8 @@ export default function NewMenuPage(): JSX.Element {
   }
 
   async function verifyMenuByDay() {
+    setSourceItems([]);
+    setDestinationItems([]);
     const response = await getMenuByDay(startDate);
     const menu = response.data as unknown as DataDishesPerDayModel[];
     const dataUpdated = menu.filter(
@@ -312,7 +314,7 @@ export default function NewMenuPage(): JSX.Element {
                 />
               </div>
             </div>
-            <div className="my-5">
+            <div className="my-4">
               <label>
                 {optionOrganizedBy === 'Semanal' ? (
                   <p className={styles.subtitlePeriod}>{Strings.startDate}</p>
@@ -359,6 +361,9 @@ export default function NewMenuPage(): JSX.Element {
                 <></>
               )}
             </div>
+          </div>
+          <div className="w-75">
+            <Button title="Buscar" type={'button'} onClick={() => {}} />
           </div>
         </div>
         <div className={styles.bodyFormSecondColumn}>

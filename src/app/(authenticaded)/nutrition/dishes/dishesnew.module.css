@@ -117,9 +117,10 @@
     flex-direction: column !important;
 }
 
-.divTextAreaDescriptionDishe{
+.divTextAreaDescriptionDishe {
     width: 100%;
     display: flex;
+    position: relative;
     flex-direction: column;
 }
 
@@ -139,6 +140,19 @@
     border: 1px solid #A1E2A5;
     box-shadow: 0px 3px 6px #A1C9A47F;
     outline: none;
+}
+
+.divTextAreaDescriptionDisheLabel {
+    position: absolute;
+    top: -8px;
+    left: 2px;
+    font-size: 12px;
+    color: #8C8E90;
+    font-family: 'Arial', sans-serif;
+    padding: 0 16px;
+    background-color: #fff;
+    z-index: 1;
+    transition: all 0.2s ease-in-out;
 }
 
 @media screen and (max-height: 981px) and (min-height: 740px) {

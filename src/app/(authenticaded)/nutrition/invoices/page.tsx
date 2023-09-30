@@ -6,6 +6,7 @@ import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
 import ModalBoxInvoice from 'components/ModalBoxInvoice';
+import ModalError from 'components/ModalError';
 import ModalOptions from 'components/ModalOptions';
 import { Table } from 'components/Table';
 
@@ -30,6 +31,7 @@ export default function ListInvoicesPage() {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [page, setPage] = React.useState<number>(1);
   const [showBoxInvoice, setShowBoxInvoice] = React.useState<boolean>(false);
+  const [showModalError, setShowModalError] = React.useState<boolean>(false);
   const [showModalOptions, setShowModalOptions] =
     React.useState<boolean>(false);
   const [selectedItem, setSelectedItem] = React.useState<any>(null);
@@ -56,6 +58,7 @@ export default function ListInvoicesPage() {
         }).format(item.amount);
         return item;
       });
+      console.log(dataUpdated);
       setData(dataUpdated);
       setQuantityInvoices(data.total);
     } else {
@@ -195,6 +198,16 @@ export default function ListInvoicesPage() {
         products={products}
         onUpdate={handleOnUpdate}
         invoice={invoiceRecovery}
+        onError={(error: boolean) => {
+          setShowModalError(error);
+        }}
+      />
+      <ModalError
+        show={showModalError}
+        onHide={() => {
+          setShowModalError(false);
+        }}
+        message={Strings.messageErrorInsertInvoiceWithoutProducts}
       />
     </React.Fragment>
   );

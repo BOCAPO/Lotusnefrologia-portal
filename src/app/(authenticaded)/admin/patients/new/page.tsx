@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from 'components/Button';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import ModalError from 'components/ModalError';
 import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import { SmallMediumText } from 'components/Text';
@@ -38,6 +39,8 @@ export default function NewPatientPage() {
   const [units, setUnits] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
+  const [showModalError, setShowModalError] = React.useState<boolean>(false);
+  const [message, setMessage] = React.useState<string>('');
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
@@ -117,6 +120,12 @@ export default function NewPatientPage() {
       setTimeout(() => {
         router.back();
       }, 3500);
+    } else {
+      setMessage(Strings.messageErrorInsertPatient);
+      setShowModalError(true);
+      setTimeout(() => {
+        setShowModalError(false);
+      }, 3500);
     }
   }
 
@@ -160,9 +169,10 @@ export default function NewPatientPage() {
               control={control}
               name="unit"
               isLoading={isLoading}
+              label={Strings.unit}
               item={Strings.unit}
               data={units !== null ? units : null}
-              error={errors.state?.message}
+              error={errors.unit?.message}
               containerStyle={{ width: '25%' }}
             />
           </div>
@@ -175,7 +185,7 @@ export default function NewPatientPage() {
               control={control}
               containerStyle={{ width: '22%' }}
               className={styles.inputNewPatient}
-              error={errors.name?.message}
+              error={errors.birthDate?.message}
             />
             <InputForm
               placeholder={Strings.placeholderEmail}
@@ -285,6 +295,7 @@ export default function NewPatientPage() {
                 item={Strings.labelState}
                 data={states}
                 error={errors.state?.message}
+                label={Strings.labelState}
                 onSelectChange={handleStateCode}
                 containerStyle={{ width: '25%' }}
               />
@@ -294,7 +305,8 @@ export default function NewPatientPage() {
                 name="citieCode"
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
-                error={errors.city?.message}
+                error={errors.citieCode?.message}
+                label={Strings.labelCity}
                 containerStyle={{ width: '25%' }}
               />
               <SelectForm
@@ -302,6 +314,7 @@ export default function NewPatientPage() {
                 item={Strings.status}
                 name="status"
                 data={statusGeneral}
+                label={Strings.status}
                 error={errors.status?.message}
                 containerStyle={{ width: '25%' }}
               />
@@ -334,6 +347,11 @@ export default function NewPatientPage() {
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
         message={Strings.messageSuccessInsertPatient}
+      />
+      <ModalError
+        show={showModalError}
+        onHide={() => setShowModalError(false)}
+        message={message}
       />
     </React.Fragment>
   );

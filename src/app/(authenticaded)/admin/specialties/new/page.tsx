@@ -166,6 +166,7 @@ export default function NewSpecialTyPage() {
               <SelectForm
                 control={control}
                 item={Strings.status}
+                label={Strings.status}
                 name="status"
                 containerStyle={{ width: '25%' }}
                 error={errors.timeOfAttendance?.message?.toString()}

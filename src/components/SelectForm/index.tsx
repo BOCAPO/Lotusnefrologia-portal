@@ -32,7 +32,7 @@ export function SelectForm({
   ...rest
 }: Props) {
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className={styles.container}>
       <Controller
         control={control}
         name={name}
@@ -84,7 +84,7 @@ export function SelectForm({
           );
         }}
       />
-      {error && <span className="text-red-500">{error}</span>}
+      {error && <p className={styles.messageError}>{error}</p>}
     </div>
   );
 }
