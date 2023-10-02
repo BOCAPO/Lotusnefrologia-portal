@@ -270,20 +270,16 @@ export default function NewMenuPage(): JSX.Element {
 
   async function verifyMenuByDay() {
     setSourceItems([]);
-    setDestinationItems([]);
+
+    setSelectedItemsSource([]);
+
     const response = await getMenuByDay(startDate);
     const menu = response.data as unknown as DataDishesPerDayModel[];
     const dataUpdated = menu.filter(
       (item: any) => item.unit_id == selectedUnit
     );
 
-    const dishesFixedUpdated = dataUpdated.filter(
-      (dish: DataDishesPerDayModel) => {
-        return !destinationItems.some(
-          (item) => item.id === dish?.pivot.dishe_id
-        );
-      }
-    );
+    const dishesFixedUpdated = dataUpdated;
 
     const dishesNoFixedUpdated = sourceItems.filter((item) => {
       return !dataUpdated.some(
@@ -304,8 +300,14 @@ export default function NewMenuPage(): JSX.Element {
     }));
 
     setSourceItems(dishedsNoFixed);
-    setDestinationItems([...destinationItems, ...dishedsFixed]);
-    setReFresh(!reFresh);
+    if (dishedsFixed.length > 0) {
+      setDestinationItems(dishedsFixed);
+    } else {
+      setReFresh(!reFresh);
+      setDestinationItems([]);
+      setSelectedItemsDestination([]);
+      getDishes(selectedUnit);
+    }
   }
 
   return (

@@ -350,7 +350,9 @@ export default function ViewUserPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {units !== null && units.length > 0 ? (
+                    {loading ? (
+                      <SpinnerLoading />
+                    ) : units !== null && units.length > 0 ? (
                       units?.map((unit: DataUnitsModel) => (
                         <tr key={unit.id}>
                           <td>
@@ -358,23 +360,10 @@ export default function ViewUserPage() {
                               <input
                                 type="checkbox"
                                 className={styles.checkbox}
+                                readOnly
                                 checked={unitsSelected?.includes(
                                   unit.id !== undefined ? unit.id : 0
                                 )}
-                                // onChange={() => {
-                                //   if (unitsSelected?.includes(unit.id)) {
-                                //     const unitsSelectedUpdated =
-                                //       unitsSelected?.filter(
-                                //         (unitSelected: number) =>
-                                //           unitSelected !== unit.id
-                                //       );
-                                //     setUnitsSelected(unitsSelectedUpdated);
-                                //   } else {
-                                //     const unitsSelectedUpdated = unitsSelected;
-                                //     unitsSelectedUpdated?.push(unit.id);
-                                //     setUnitsSelected(unitsSelectedUpdated);
-                                //   }
-                                // }}
                               />
                             </label>
                           </td>

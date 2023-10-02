@@ -10,6 +10,7 @@ type Props = {
   data?: any;
   className?: string;
   label?: string;
+  disabled?: boolean;
   isLoading?: boolean;
   containerStyle?: React.CSSProperties;
   item?: string;
@@ -24,6 +25,7 @@ export function SelectForm({
   name,
   data,
   label,
+  disabled = false,
   isLoading,
   item,
   containerStyle,
@@ -54,6 +56,7 @@ export function SelectForm({
                 className={`${styles.selectGeneral} ${rest.className}`}
                 onChange={handleChange}
                 value={value}
+                disabled={disabled}
               >
                 {isLoading ? (
                   <option value="0">Carregando...</option>
