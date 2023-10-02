@@ -284,16 +284,20 @@ export default function ViewUserPage() {
                   control={control}
                   name="state"
                   item={Strings.labelState}
+                  label={Strings.labelState}
                   data={states !== null ? states : null}
                   onSelectChange={handleStateCode}
+                  disabled={true}
                   error={errors.state?.message}
                   containerStyle={{ width: '25%' }}
                 />
                 <SelectForm
                   control={control}
                   name="cityCode"
+                  label={Strings.labelCity}
                   data={cities !== null ? cities : null}
                   item={Strings.labelCity}
+                  disabled={true}
                   isLoading={isLoadingCities}
                   error={errors.city?.message}
                   containerStyle={{ width: '25%' }}
@@ -301,8 +305,10 @@ export default function ViewUserPage() {
                 <SelectForm
                   control={control}
                   name="status"
+                  label={Strings.status}
                   item={Strings.status}
                   data={statusGeneral}
+                  disabled={true}
                   error={errors.status?.message}
                   containerStyle={{ width: '25%' }}
                 />
@@ -322,31 +328,20 @@ export default function ViewUserPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {units !== null && units.length > 0 ? (
-                      units.map((unit: DataUnitsModel) => (
+                    {loading ? (
+                      <SpinnerLoading />
+                    ) : units !== null && units.length > 0 ? (
+                      units?.map((unit: DataUnitsModel) => (
                         <tr key={unit.id}>
                           <td>
                             <label className={styles.checkboxContainer}>
                               <input
                                 type="checkbox"
                                 className={styles.checkbox}
+                                readOnly
                                 checked={unitsSelected?.includes(
                                   unit.id !== undefined ? unit.id : 0
                                 )}
-                                onChange={() => {
-                                  if (unitsSelected?.includes(unit.id)) {
-                                    const unitsSelectedUpdated =
-                                      unitsSelected?.filter(
-                                        (unitSelected: number) =>
-                                          unitSelected !== unit.id
-                                      );
-                                    setUnitsSelected(unitsSelectedUpdated);
-                                  } else {
-                                    const unitsSelectedUpdated = unitsSelected;
-                                    unitsSelectedUpdated?.push(unit.id);
-                                    setUnitsSelected(unitsSelectedUpdated);
-                                  }
-                                }}
                               />
                             </label>
                           </td>
