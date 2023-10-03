@@ -3,8 +3,10 @@ import React from 'react';
 
 import styles from './destinationlist.module.css';
 
+import { Strings } from 'assets/Strings';
+
 interface DestinationListProps {
-  items: { id: number; name: string; photo_path: string }[];
+  items: { id: number; name: string; photo_path: string; isFixed: boolean }[];
   onItemChange: (selectedItems: any[]) => void;
 }
 
@@ -41,7 +43,14 @@ const DestinationList: React.FC<DestinationListProps> = ({
               alt={item.name}
               style={{ marginRight: '5%' }}
             />
-            <p className={styles.titleItem}>{item.name}</p>
+            <div className="d-flex justify-content-around align-items-center w-75">
+              <p className={styles.titleItem}>{item.name}</p>
+              <p className={styles.titleItem}>
+                <strong>
+                  {item.isFixed ? Strings.isFixed : Strings.isNotFixed}
+                </strong>
+              </p>
+            </div>
           </div>
         ))}
     </div>

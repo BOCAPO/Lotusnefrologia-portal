@@ -184,6 +184,7 @@ export default function ViewUserPage() {
                 placeholder={Strings.placeholderCPF}
                 type="text"
                 name="cpf"
+                readonly
                 label={Strings.labelCPF}
                 mask={'cpfCnpj'}
                 maxLength={14}

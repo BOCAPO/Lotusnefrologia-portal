@@ -66,6 +66,8 @@
     color: #373432;
     line-height: 26px;
     margin: 0;
+    text-align: center;
+    margin-right: 10%;
 }
 
 @media screen and (max-height: 981px) and (min-height: 740px) {

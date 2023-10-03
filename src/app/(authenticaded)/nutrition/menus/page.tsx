@@ -62,14 +62,8 @@ export default function NewMenuPage(): JSX.Element {
   });
 
   const [sourceItems, setSourceItems] = useState<
-    { id: number; name: string; photo_path: string }[]
-  >([
-    {
-      id: Math.random() * 9999999999,
-      name: 'Selecione uma unidade',
-      photo_path: ''
-    }
-  ]);
+    { id: number; name: string; photo_path: string; isFixed: boolean }[]
+  >([]);
 
   React.useEffect(() => {
     getUnits();
@@ -84,13 +78,15 @@ export default function NewMenuPage(): JSX.Element {
     const dishedsNoFixed = noFixed.map((dish) => ({
       id: dish.id!,
       name: dish.name!,
-      photo_path: dish.photo_path!
+      photo_path: dish.photo_path!,
+      isFixed: dish.isFixed!
     }));
 
     const dishedsFixed = fixed.map((dish) => ({
       id: dish.id!,
       name: dish.name!,
-      photo_path: dish.photo_path!
+      photo_path: dish.photo_path!,
+      isFixed: dish.isFixed!
     }));
 
     setSourceItems(dishedsNoFixed);
@@ -148,7 +144,7 @@ export default function NewMenuPage(): JSX.Element {
   );
 
   const [destinationItems, setDestinationItems] = useState<
-    { id: number; name: string; photo_path: string }[]
+    { id: number; name: string; photo_path: string; isFixed: boolean }[]
   >([]);
 
   const handleSelectedItemsChangeSource = (selectedItems: any[]) => {
@@ -269,10 +265,6 @@ export default function NewMenuPage(): JSX.Element {
   }
 
   async function verifyMenuByDay() {
-    setSourceItems([]);
-
-    setSelectedItemsSource([]);
-
     const response = await getMenuByDay(startDate);
     const menu = response.data as unknown as DataDishesPerDayModel[];
     const dataUpdated = menu.filter(
@@ -280,23 +272,35 @@ export default function NewMenuPage(): JSX.Element {
     );
 
     const dishesFixedUpdated = dataUpdated;
-
-    const dishesNoFixedUpdated = sourceItems.filter((item) => {
+    const dishesNoFixedUpdatedSource = sourceItems.filter((item) => {
       return !dataUpdated.some(
         (dish: DataDishesPerDayModel) => dish?.pivot.dishe_id === item.id
       );
     });
 
-    const dishedsNoFixed = dishesNoFixedUpdated.map((dish: any) => ({
+    const dishesNoFixedUpdatedDestination = destinationItems.filter((item) => {
+      return !dataUpdated.some(
+        (dish: DataDishesPerDayModel) => dish?.pivot.dishe_id === item.id
+      );
+    });
+
+    const combinedDishesNoFixedUpdated = [
+      ...dishesNoFixedUpdatedSource,
+      ...dishesNoFixedUpdatedDestination
+    ];
+
+    const dishedsNoFixed = combinedDishesNoFixedUpdated.map((dish: any) => ({
       id: dish.id!,
       name: dish.name!,
-      photo_path: dish.photo_path!
+      photo_path: dish.photo_path!,
+      isFixed: dish.isFixed!
     }));
 
     const dishedsFixed = dishesFixedUpdated.map((dish: any) => ({
       id: dish.id!,
       name: dish.name!,
-      photo_path: dish.photo_path!
+      photo_path: dish.photo_path!,
+      isFixed: dish.isFixed!
     }));
 
     setSourceItems(dishedsNoFixed);

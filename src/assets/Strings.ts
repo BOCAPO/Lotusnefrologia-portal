@@ -328,5 +328,8 @@ export const Strings = {
   timeLine: 'Linha do Tempo',
   view: 'Visualizar',
   minimumOneSpeciality: 'Selecione pelo menos uma especialidade',
-  minimumOneUnit: 'Selecione pelo menos uma unidade'
+  minimumOneUnit: 'Selecione pelo menos uma unidade',
+  selectOneUnit: 'Selecione uma unidade',
+  isFixed: 'Fixo',
+  isNotFixed: 'Variável'
 };
