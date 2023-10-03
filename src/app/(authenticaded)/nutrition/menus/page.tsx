@@ -136,6 +136,7 @@ export default function NewMenuPage(): JSX.Element {
     setSelectedUnit(0);
     setSelectedItemsDestination([]);
     setSelectedItemsSource([]);
+
     setReFresh(!reFresh);
   }
 
@@ -158,27 +159,40 @@ export default function NewMenuPage(): JSX.Element {
   function handleSendDestinationAll() {
     setDestinationItems([...destinationItems, ...sourceItems]);
     setSourceItems([]);
+    // setSelectedItemsDestination([]);
   }
 
   function handleSendSourceAll() {
     setSourceItems([...sourceItems, ...destinationItems]);
     setDestinationItems([]);
+    // setSelectedItemsSource([]);
   }
 
   function handleSendDestinationItems() {
-    const newDestinationItems = selectedItemsSource.filter(
-      (itemId) => !destinationItems.find((item) => item.id === itemId.id)
+    const uniqueSelectedItemsSource = selectedItemsSource.filter(
+      (itemId, index, self) =>
+        self.findIndex((item) => item.id === itemId.id) === index
+    );
+
+    const newDestinationItems = uniqueSelectedItemsSource.filter(
+      (itemId) => !destinationItems.find((item) => item.id == itemId.id)
     );
 
     setDestinationItems([...destinationItems, ...newDestinationItems]);
     setSourceItems(
       sourceItems.filter((item) => !selectedItemsSource.includes(item))
     );
+    setSelectedItemsSource([]);
   }
 
   function handleSendSourceItems() {
-    const newSourceItems = selectedItemsDestination.filter(
-      (itemId) => !sourceItems.includes(itemId)
+    const uniqueSelectedItemsDestination = selectedItemsDestination.filter(
+      (itemId, index, self) =>
+        self.findIndex((item) => item.id === itemId.id) === index
+    );
+
+    const newSourceItems = uniqueSelectedItemsDestination.filter(
+      (itemId) => !sourceItems.find((item) => item.id == itemId.id)
     );
 
     setSourceItems([...sourceItems, ...newSourceItems]);
@@ -188,6 +202,8 @@ export default function NewMenuPage(): JSX.Element {
         (item) => !selectedItemsDestination.includes(item)
       )
     );
+
+    setSelectedItemsDestination([]);
   }
 
   async function onSubmit(data: DataProps) {
@@ -373,9 +389,8 @@ export default function NewMenuPage(): JSX.Element {
                 getValue={setStartDate}
                 onBlur={() => {
                   verifyDate();
-                  (optionOrganizedBy === 'Diário' &&
-                    startDate !== '' &&
-                    startDate !== null) ||
+                  (optionOrganizedBy === 'Diário' && startDate !== '') ||
+                  startDate !== null ||
                   startDate !== undefined
                     ? verifyMenuByDay()
                     : null;
