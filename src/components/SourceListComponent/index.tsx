@@ -3,8 +3,10 @@ import React from 'react';
 
 import styles from './sourcelist.module.css';
 
+import { Strings } from 'assets/Strings';
+
 interface SourceListProps {
-  items: { id: number; name: string; photo_path: string }[];
+  items: { id: number; name: string; photo_path: string; isFixed: boolean }[];
   onItemChange: (selectedItems: any[]) => void;
 }
 
@@ -22,7 +24,8 @@ const SourceList: React.FC<SourceListProps> = ({ items, onItemChange }) => {
 
   return (
     <div className={styles.containerSourceList}>
-      {items &&
+      {items?.length > 0 ? (
+        items &&
         items.map((item, index) => (
           <div key={index} className={styles.itemSourceList}>
             <input
@@ -42,9 +45,21 @@ const SourceList: React.FC<SourceListProps> = ({ items, onItemChange }) => {
             ) : (
               <div style={{ marginRight: '5%' }}></div>
             )}
-            <p className={styles.titleItem}>{item.name}</p>
+            <div className="d-flex justify-content-around align-items-center w-75">
+              <p className={styles.titleItem}>{item.name}</p>
+              <p className={styles.titleItem}>
+                <strong>
+                  {item.isFixed ? Strings.isFixed : Strings.isNotFixed}
+                </strong>
+              </p>
+            </div>
           </div>
-        ))}
+        ))
+      ) : (
+        <div className={styles.itemSourceList}>
+          <p className={styles.titleItem}>{Strings.selectOneUnit}</p>
+        </div>
+      )}
     </div>
   );
 };
