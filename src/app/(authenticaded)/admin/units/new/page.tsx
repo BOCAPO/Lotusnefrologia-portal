@@ -22,12 +22,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
-import { DataStatesModel } from 'models/DataStatesModel';
+import { DataStateModel, DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
 import { createUnit } from 'services/units';
 import { statusGeneral } from 'utils/enums';
+import { buscarInformacoesCEP } from 'utils/helpers';
 
 type DataProps = {
   [name: string]: string | number;
@@ -39,6 +40,7 @@ export default function NewUnitPage() {
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
+  const [cep, setCep] = React.useState<any>(null);
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
   const [latitude, setLatitude] = React.useState<string>('');
   const [longitude, setLongitude] = React.useState<string>('');
@@ -50,6 +52,7 @@ export default function NewUnitPage() {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -119,6 +122,20 @@ export default function NewUnitPage() {
       }, 2500);
     } else {
       setShowModalError(true);
+    }
+  }
+
+  async function getDataCEP(cep: string) {
+    const result = await buscarInformacoesCEP(cep);
+    if (result !== null) {
+      setValue('street', result.logradouro.toString());
+      states.filter((state: DataStateModel) => {
+        if (state.UF === result.uf) {
+          setValue('state', state.code);
+          getCities(state.code.toString());
+          setValue('cityCode', result.ibge);
+        }
+      });
     }
   }
 
@@ -247,6 +264,10 @@ export default function NewUnitPage() {
               containerStyle={{ width: '10%' }}
               className={styles.inputNewUnit}
               error={errors.zipCode?.message}
+              getValue={setCep}
+              onBlur={() => {
+                getDataCEP(cep);
+              }}
             />
             <InputForm
               placeholder={Strings.placeholderStreet}

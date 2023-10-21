@@ -22,7 +22,7 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
 import { DataRoomsModel } from 'models/DataRoomsModel';
-import { DataStatesModel } from 'models/DataStatesModel';
+import { DataStateModel, DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
 import { getAllRoomsWithoutPagination } from 'services/chat';
@@ -31,6 +31,7 @@ import { getAllStates } from 'services/states';
 import { getAllUnitsWithoutPagination } from 'services/units';
 import { getUserById, updateUserById } from 'services/users';
 import { statusGeneral } from 'utils/enums';
+import { buscarInformacoesCEP } from 'utils/helpers';
 
 type DataProps = {
   [name: string]: string | number;
@@ -43,6 +44,7 @@ export default function EditUserPage() {
   const [rooms, setRooms] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
+  const [cep, setCep] = React.useState<any>(null);
   const router = useRouter();
   const params = useParams();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
@@ -203,6 +205,20 @@ export default function EditUserPage() {
     }
   }
 
+  async function getDataCEP(cep: string) {
+    const result = await buscarInformacoesCEP(cep);
+    if (result !== null) {
+      setValue('street', result.logradouro.toString());
+      states.filter((state: DataStateModel) => {
+        if (state.UF === result.uf) {
+          setValue('state', state.code);
+          getCities(state.code.toString());
+          setValue('cityCode', result.ibge);
+        }
+      });
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -290,6 +306,10 @@ export default function EditUserPage() {
                 control={control}
                 className={styles.inputNewUser}
                 error={errors.zipCode?.message}
+                getValue={setCep}
+                onBlur={() => {
+                  getDataCEP(cep);
+                }}
               />
               <InputForm
                 placeholder={Strings.placeholderStreet}
@@ -355,6 +375,7 @@ export default function EditUserPage() {
                   error={errors.state?.message}
                   onSelectChange={handleStateCode}
                   containerStyle={{ width: '25%' }}
+                  disabled={true}
                 />
                 <SelectForm
                   item={Strings.labelCity}
@@ -364,6 +385,7 @@ export default function EditUserPage() {
                   isLoading={isLoadingCities}
                   error={errors.city?.message}
                   containerStyle={{ width: '25%' }}
+                  disabled={true}
                 />
                 <SelectForm
                   control={control}

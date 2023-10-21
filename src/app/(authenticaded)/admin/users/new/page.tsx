@@ -20,7 +20,7 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
 import { DataRoomsModel } from 'models/DataRoomsModel';
-import { DataStatesModel } from 'models/DataStatesModel';
+import { DataStateModel, DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
 import { getAllRoomsWithoutPagination } from 'services/chat';
@@ -29,6 +29,7 @@ import { getAllStates } from 'services/states';
 import { getAllUnitsWithoutPagination } from 'services/units';
 import { createUser } from 'services/users';
 import { statusGeneral } from 'utils/enums';
+import { buscarInformacoesCEP } from 'utils/helpers';
 
 type DataProps = {
   [name: string]: string | number;
@@ -39,6 +40,7 @@ export default function NewUserPage() {
   const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
   const [rooms, setRooms] = React.useState<any>(null);
+  const [cep, setCep] = React.useState<any>(null);
   // const [roles, setRoles] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
@@ -50,6 +52,7 @@ export default function NewUserPage() {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -148,6 +151,20 @@ export default function NewUserPage() {
     }
   }
 
+  async function getDataCEP(cep: string) {
+    const result = await buscarInformacoesCEP(cep);
+    if (result !== null) {
+      setValue('street', result.logradouro.toString());
+      states.filter((state: DataStateModel) => {
+        if (state.UF === result.uf) {
+          setValue('state', state.code);
+          getCities(state.code.toString());
+          setValue('cityCode', result.ibge);
+        }
+      });
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -230,6 +247,10 @@ export default function NewUserPage() {
               maxLength={9}
               control={control}
               className={styles.inputNewUser}
+              getValue={setCep}
+              onBlur={() => {
+                getDataCEP(cep);
+              }}
               error={errors.zipCode?.message}
             />
             <InputForm
@@ -294,6 +315,7 @@ export default function NewUserPage() {
                 name="state"
                 data={states}
                 label={Strings.labelState}
+                disabled={true}
                 error={errors.state?.message}
                 onSelectChange={handleStateCode}
                 containerStyle={{ width: '25%' }}
@@ -302,6 +324,7 @@ export default function NewUserPage() {
                 control={control}
                 item={Strings.labelCity}
                 name="cityCode"
+                disabled={true}
                 label={Strings.labelCity}
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}

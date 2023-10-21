@@ -21,13 +21,14 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
 import { DataPatientsModel } from 'models/DataPatientsModel';
-import { DataStatesModel } from 'models/DataStatesModel';
+import { DataStateModel, DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { createPatient } from 'services/patients';
 import { getAllStates } from 'services/states';
 import { getAllUnitsWithoutPagination } from 'services/units';
 import { statusGeneral } from 'utils/enums';
+import { buscarInformacoesCEP } from 'utils/helpers';
 
 type DataProps = {
   [name: string]: string | number;
@@ -37,6 +38,7 @@ export default function NewPatientPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
+  const [cep, setCep] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const [showModalError, setShowModalError] = React.useState<boolean>(false);
@@ -48,6 +50,7 @@ export default function NewPatientPage() {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -126,6 +129,20 @@ export default function NewPatientPage() {
       setTimeout(() => {
         setShowModalError(false);
       }, 3500);
+    }
+  }
+
+  async function getDataCEP(cep: string) {
+    const result = await buscarInformacoesCEP(cep);
+    if (result !== null) {
+      setValue('street', result.logradouro.toString());
+      states.filter((state: DataStateModel) => {
+        if (state.UF === result.uf) {
+          setValue('state', state.code);
+          getCities(state.code.toString());
+          setValue('citieCode', result.ibge);
+        }
+      });
     }
   }
 
@@ -232,6 +249,10 @@ export default function NewPatientPage() {
               control={control}
               className={styles.inputNewPatient}
               error={errors.zipCode?.message}
+              getValue={setCep}
+              onBlur={() => {
+                getDataCEP(cep);
+              }}
             />
             <InputForm
               placeholder={Strings.placeholderStreet}

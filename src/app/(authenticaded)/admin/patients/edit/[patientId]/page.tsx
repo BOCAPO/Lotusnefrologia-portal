@@ -22,13 +22,14 @@ import { Colors } from 'configs/Colors_default';
 import { format } from 'date-fns';
 import { DataCitiesModel } from 'models/DataCitiesModel';
 import { DataPatientsModel } from 'models/DataPatientsModel';
-import { DataStatesModel } from 'models/DataStatesModel';
+import { DataStateModel, DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { getPatientById, updatePatient } from 'services/patients';
 import { getAllStates } from 'services/states';
 import { getAllUnits } from 'services/units';
 import { statusGeneral } from 'utils/enums';
+import { buscarInformacoesCEP } from 'utils/helpers';
 
 type DataProps = {
   [name: string]: string | number;
@@ -38,6 +39,7 @@ export default function EditPatientPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
+  const [cep, setCep] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
@@ -176,6 +178,20 @@ export default function EditPatientPage() {
     }
   }
 
+  async function getDataCEP(cep: string) {
+    const result = await buscarInformacoesCEP(cep);
+    if (result !== null) {
+      setValue('street', result.logradouro.toString());
+      states.filter((state: DataStateModel) => {
+        if (state.UF === result.uf) {
+          setValue('state', state.code);
+          getCities(state.code.toString());
+          setValue('cityCode', result.ibge);
+        }
+      });
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -280,6 +296,10 @@ export default function EditPatientPage() {
                 control={control}
                 className={styles.inputEditPatient}
                 error={errors.zipCode?.message}
+                getValue={setCep}
+                onBlur={() => {
+                  getDataCEP(cep);
+                }}
               />
               <InputForm
                 placeholder={Strings.placeholderStreet}
@@ -339,6 +359,7 @@ export default function EditPatientPage() {
                   data={states}
                   error={errors.state?.message}
                   onSelectChange={handleStateCode}
+                  disabled={true}
                   containerStyle={{ width: '25%' }}
                 />
                 <SelectForm
@@ -346,6 +367,7 @@ export default function EditPatientPage() {
                   item={Strings.labelCity}
                   name="cityCode"
                   data={cities !== null ? cities : null}
+                  disabled={true}
                   isLoading={isLoadingCities}
                   error={errors.city?.message}
                   containerStyle={{ width: '25%' }}
