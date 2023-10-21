@@ -19,11 +19,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataRoomsModel } from 'models/DataRoomsModel';
 import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 import { Prefs } from 'repository/Prefs';
+import { getAllRoomsWithoutPagination } from 'services/chat';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
 import { getAllUnitsWithoutPagination } from 'services/units';
@@ -40,7 +42,9 @@ export default function ViewUserPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
+  const [rooms, setRooms] = React.useState<any>(null);
   const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
+  const [roomsSelected, setRoomsSelected] = React.useState<any>([]);
   const [loading, setLoading] = React.useState(true);
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
 
@@ -54,6 +58,7 @@ export default function ViewUserPage() {
 
   React.useEffect(() => {
     getUnits();
+    getAllRooms();
     getStates();
     getUser();
   }, [idUser]);
@@ -78,9 +83,19 @@ export default function ViewUserPage() {
       setValue('complement', dataUser.complement!);
       setValue('cityCode', dataUser.city_code);
       setValue('status', dataUser.status + 1);
+      setRoomsSelected(dataUser.rooms);
       setUnitsSelected(dataUser.units);
     }
     setLoading(false);
+  }
+
+  async function getAllRooms() {
+    const response = await getAllRoomsWithoutPagination();
+    const dataRooms = response.data as DataRoomsModel;
+
+    if (dataRooms !== null) {
+      setRooms(dataRooms);
+    }
   }
 
   async function getStates() {
@@ -347,6 +362,46 @@ export default function ViewUserPage() {
                           </td>
                           <td>{unit.name}</td>
                           <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={3}>Nenhuma unidade vinculada</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className={styles.divTableLinkedUnits}>
+                <table className={styles.tableLinkedUnits}>
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>{Strings.linkedUnits}</th>
+                      <th>{Strings.status}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <SpinnerLoading />
+                    ) : rooms !== null && rooms.length > 0 ? (
+                      rooms?.map((room: DataRoomsModel) => (
+                        <tr key={room.id}>
+                          <td>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type="checkbox"
+                                className={styles.checkbox}
+                                readOnly
+                                checked={roomsSelected?.includes(
+                                  room.id !== undefined ? room.id : 0
+                                )}
+                              />
+                            </label>
+                          </td>
+                          <td>{room.name}</td>
+                          <td>{room.status === '0' ? 'Ativo' : 'Inativo'}</td>
                         </tr>
                       ))
                     ) : (

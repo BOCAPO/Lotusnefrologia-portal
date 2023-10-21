@@ -20,6 +20,7 @@ import {
   FiMoreVertical,
   FiPlus,
   FiSearch,
+  FiSend,
   FiUpload,
   FiUser
 } from 'react-icons/fi';
@@ -151,6 +152,10 @@ export const TypeIcon = {
   },
   Minimize: {
     icon: FiMinimize2,
+    alternativeIcon: null
+  },
+  Send: {
+    icon: FiSend,
     alternativeIcon: null
   }
 };

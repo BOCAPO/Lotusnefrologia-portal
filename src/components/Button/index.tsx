@@ -31,6 +31,8 @@ export function Button({
       return styles.primaryButton;
     } else if (type === 'danger') {
       return styles.dangerButton;
+    } else if (type === 'onLine') {
+      return styles.onLineButton;
     } else {
       return styles.secondaryButton;
     }
@@ -47,6 +49,8 @@ export function Button({
       return stylesBtn.primaryButton;
     } else if (type === 'danger') {
       return stylesBtn.dangerButton;
+    } else if (type === 'onLine') {
+      return stylesBtn.onLineButton;
     } else {
       return stylesBtn.secondaryButton;
     }

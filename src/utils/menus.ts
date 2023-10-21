@@ -164,7 +164,24 @@ export const menusMain: MenuModel[] = [
     image: LogoChat,
     alternativeImage: LogoChatAlternative,
     link: null,
-    internalMenus: null
+    internalMenus: [
+      {
+        idMenu: 20,
+        title: 'Atendimento',
+        image: null,
+        alternativeImage: null,
+        link: '/chat/attendance',
+        internalMenus: null
+      },
+      {
+        idMenu: 21,
+        title: 'Histórico de Atendimento',
+        image: null,
+        alternativeImage: null,
+        link: '/chat/history',
+        internalMenus: null
+      }
+    ]
   }
 ];
 

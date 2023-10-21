@@ -331,5 +331,17 @@ export const Strings = {
   minimumOneUnit: 'Selecione pelo menos uma unidade',
   selectOneUnit: 'Selecione uma unidade',
   isFixed: 'Fixo',
-  isNotFixed: 'Variável'
+  isNotFixed: 'Variável',
+  chatAttendance: 'Para atender, você deve ficar online!',
+  stayOnLine: 'Ficar Online',
+  requestsAwaiting: 'Solicitações Aguardando',
+  toMeet: 'Atender',
+  attendenceThoughtChat: 'Atendimento via Chat',
+  online: 'Online',
+  transfer: 'Transferir',
+  finally: 'Finalizar',
+  writeMessage: 'Escreva uma mensagem',
+  noMessages: 'Não há mensagens',
+  attendRoom: 'Não há ninguém na espera para atendimento',
+  sendMessageError: 'Erro ao enviar mensagem'
 };

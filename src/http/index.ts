@@ -40,34 +40,16 @@ clientJson.interceptors.response.use(
     return Promise.resolve(response);
   },
   async (error) => {
-    let body = error.response;
-    const silent = error.config.silent as boolean;
+    const body = error.response;
 
-    if (error.response == undefined) {
-      toast.error(Strings.falhaRequest);
-      return Promise.reject(error);
-    } else if (body.status != undefined) {
+    if (body.status != undefined) {
       const status = body.status;
       if (status >= 500) {
-        if (!silent) {
-          toast.error(Strings.falhaRequest);
-        }
+        toast.error(Strings.falhaRequest);
 
         return Promise.reject(error);
       }
     }
-
-    body = body.data;
-    const ok = body.ok as boolean;
-
-    if (!ok) {
-      if (body.Msg_Erro != null) {
-        toast.error(body.Msg_Erro);
-      } else if (body.mensagem != null) {
-        toast.error(body.mensagem);
-      }
-    }
-    return Promise.reject(new Error(body.Msg_Erro));
   }
 );
 clientFormData.interceptors.response.use(
