@@ -9,6 +9,7 @@ export type TypesButton =
   | 'secondary'
   | 'danger'
   | 'success'
+  | 'onLine'
   | 'cancel';
 
 export const styles = {
@@ -55,8 +56,8 @@ export const styles = {
     backgroundColor: Colors.button.cancel.grayLight,
     color: Colors.button.secondary.gray90,
     width: '100%',
-    height: '100%',
-    maxHeight: '40px',
+    height: '50px',
+    maxHeight: '50px',
     minWidth: '155px',
     border: 'none',
     borderRadius: '3px',
@@ -74,5 +75,18 @@ export const styles = {
     minWidth: '155px',
     fontWeight: 'bold',
     fontFamily: Fonts.primary.regular
+  },
+  onLineButton: {
+    backgroundColor: Colors.button.onLine.greenLight2,
+    color: Colors.button.onLine.white,
+    width: '100%',
+    height: '50px',
+    maxheight: '50px',
+    border: 'none',
+    minWidth: '155px',
+    borderRadius: '3px',
+    fontFamily: Fonts.primary.regular,
+    fontSize: '15px',
+    fontWeight: 'bold'
   }
 };

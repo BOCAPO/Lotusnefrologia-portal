@@ -21,9 +21,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataRoomsModel } from 'models/DataRoomsModel';
 import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
+import { getAllRoomsWithoutPagination } from 'services/chat';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
 import { getAllUnitsWithoutPagination } from 'services/units';
@@ -38,14 +40,17 @@ export default function EditUserPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
+  const [rooms, setRooms] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
   const params = useParams();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
   const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
+  const [roomsSelected, setRoomsSelected] = React.useState<any>([]);
   const [loading, setLoading] = React.useState(true);
   const [quantityUnitsSelected, setQuantityUnitsSelected] = React.useState(0);
+  const [quantityRoomsSelected, setQuantityRoomsSelected] = React.useState(0);
 
   const {
     control,
@@ -60,6 +65,7 @@ export default function EditUserPage() {
     getUnits();
     getStates();
     getUser();
+    getAllRooms();
   }, [params?.userId]);
 
   async function getStates() {
@@ -93,7 +99,19 @@ export default function EditUserPage() {
   async function getUnits() {
     const response = await getAllUnitsWithoutPagination();
     const unitsUpdated = response.data as unknown as DataUnitsModel[];
-    setUnits(unitsUpdated);
+
+    if (unitsUpdated !== null) {
+      setUnits(unitsUpdated);
+    }
+  }
+
+  async function getAllRooms() {
+    const response = await getAllRoomsWithoutPagination();
+    const dataRooms = response.data as unknown as DataRoomsModel[];
+
+    if (dataRooms !== null) {
+      setRooms(dataRooms);
+    }
   }
 
   const handleStateCode = (selectedStateCode: any) => {
@@ -118,11 +136,25 @@ export default function EditUserPage() {
     }
   }
 
+  async function getRoomsSelected(data: DataUserModel[] | DataUserModel) {
+    if (Array.isArray(data)) {
+      const roomsSelectedUpdated = [...roomsSelected];
+      setRoomsSelected(roomsSelectedUpdated);
+    } else {
+      const roomsSelectedUpdated = [...unitsSelected];
+      data.rooms.forEach((room: any) => {
+        roomsSelectedUpdated.push(room.id);
+      });
+      setRoomsSelected(roomsSelectedUpdated);
+    }
+  }
+
   async function getUser() {
     const response = await getUserById(Number(params?.userId));
     const dataUser = response.data as DataUserModel;
     getCities(dataUser.city_code !== undefined ? dataUser.city_code : '');
     getUnitsSelected(dataUser);
+    getRoomsSelected(dataUser);
 
     if (dataUser !== null) {
       setValue('cpf', dataUser.cpf);
@@ -158,7 +190,8 @@ export default function EditUserPage() {
       lot: data.lot.toString(),
       complement: data.complement.toString(),
       status: Number(data.status) - 1,
-      units: unitsSelected
+      units: unitsSelected,
+      rooms: roomsSelected
     };
 
     const response = await updateUserById(Number(params?.userId), updateUser);
@@ -390,6 +423,61 @@ export default function EditUserPage() {
                           </td>
                           <td>{unit.name}</td>
                           <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={3}>Nenhuma unidade vinculada</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className={styles.divTableLinkedUnits}>
+                <table className={styles.tableLinkedUnits}>
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>{Strings.attendenceThoughtChat}</th>
+                      <th>{Strings.status}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rooms !== null && rooms.length > 0 ? (
+                      rooms.map((room: DataRoomsModel) => (
+                        <tr key={room.id}>
+                          <td>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type="checkbox"
+                                className={styles.checkbox}
+                                checked={roomsSelected?.indexOf(room.id) !== -1}
+                                onChange={() => {
+                                  if (roomsSelected?.includes(room.id)) {
+                                    const roomsSelectedUpdate =
+                                      roomsSelected?.filter(
+                                        (roomSelected: number) =>
+                                          roomSelected !== room.id
+                                      );
+                                    setRoomsSelected(roomsSelectedUpdate);
+                                    setQuantityRoomsSelected(
+                                      quantityRoomsSelected - 1
+                                    );
+                                  } else {
+                                    const roomsSelectedUpdate = roomsSelected;
+                                    roomsSelectedUpdate?.push(room.id);
+                                    setRoomsSelected(roomsSelectedUpdate);
+                                    setQuantityRoomsSelected(
+                                      quantityRoomsSelected + 1
+                                    );
+                                  }
+                                }}
+                              />
+                            </label>
+                          </td>
+                          <td>{room.name}</td>
+                          <td>{room.status === '0' ? 'Ativo' : 'Inativo'}</td>
                         </tr>
                       ))
                     ) : (

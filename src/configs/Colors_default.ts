@@ -32,6 +32,10 @@ export const Colors = {
     },
     cancel: {
       grayLight: '#EFEFEF'
+    },
+    onLine: {
+      greenLight2: '#A1E2A5',
+      white: '#fff'
     }
   },
   redInvalid: '#FF0000',

@@ -19,9 +19,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataRoomsModel } from 'models/DataRoomsModel';
 import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
+import { getAllRoomsWithoutPagination } from 'services/chat';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
 import { getAllUnitsWithoutPagination } from 'services/units';
@@ -36,12 +38,15 @@ export default function NewUserPage() {
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
+  const [rooms, setRooms] = React.useState<any>(null);
   // const [roles, setRoles] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
   const [selectedUnits, setSelectedUnits] = React.useState<number[]>([]);
+  const [selectedRooms, setSelectedRooms] = React.useState<number[]>([]);
+
   const {
     control,
     handleSubmit,
@@ -53,6 +58,7 @@ export default function NewUserPage() {
   React.useEffect(() => {
     getStates();
     getUnits();
+    getAllRooms();
     // getRoles();
   }, []);
 
@@ -85,6 +91,15 @@ export default function NewUserPage() {
     setUnits(unitsUpdated.slice().sort((a, b) => a.name.localeCompare(b.name)));
   }
 
+  async function getAllRooms() {
+    const response = await getAllRoomsWithoutPagination();
+    const dataRooms = response.data as unknown as DataRoomsModel[];
+
+    if (dataRooms !== null) {
+      setRooms(dataRooms);
+    }
+  }
+
   const handleStateCode = (selectedStateCode: any) => {
     getCities(selectedStateCode.toString());
   };
@@ -94,6 +109,14 @@ export default function NewUserPage() {
       setSelectedUnits(selectedUnits.filter((id) => id !== unitId));
     } else {
       setSelectedUnits([...selectedUnits, unitId]);
+    }
+  };
+
+  const handleCheckboxChangeRooms = (roomId: number) => {
+    if (selectedRooms.includes(roomId)) {
+      setSelectedRooms(selectedRooms.filter((id) => id !== roomId));
+    } else {
+      setSelectedRooms([...selectedRooms, roomId]);
     }
   };
 
@@ -112,6 +135,7 @@ export default function NewUserPage() {
       lot: data.lot?.toString(),
       complement: data.complement?.toString(),
       units: selectedUnits,
+      rooms: selectedRooms,
       status: Number(data.status) - 1
     };
 
@@ -328,6 +352,44 @@ export default function NewUserPage() {
                   ) : (
                     <tr>
                       <td colSpan={3}>Nenhuma unidade vinculada</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            <div className={styles.divTableLinkedUnits}>
+              <table className={styles.tableLinkedUnits}>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>{Strings.attendenceThoughtChat}</th>
+                    <th>{Strings.status}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rooms !== null && rooms.length > 0 ? (
+                    rooms.map((room: DataRoomsModel) => (
+                      <tr key={room.id}>
+                        <td>
+                          <label className={styles.checkboxContainer}>
+                            <input
+                              type="checkbox"
+                              className={styles.checkbox}
+                              checked={selectedRooms.includes(room.id!)}
+                              onChange={() =>
+                                handleCheckboxChangeRooms(room.id!)
+                              }
+                            />
+                          </label>
+                        </td>
+                        <td>{room.name}</td>
+                        <td>{room.status === '0' ? 'Ativo' : 'Inativo'}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={3}>Nenhuma sala vinculada</td>
                     </tr>
                   )}
                 </tbody>

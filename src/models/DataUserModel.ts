@@ -1,3 +1,4 @@
+import { DataRoomsModel } from './DataRoomsModel';
 import { DataUnitsModel } from './DataUnitsModel';
 
 export type DataUserModel = {
@@ -16,6 +17,7 @@ export type DataUserModel = {
   password?: string;
   complement: string | null;
   units: number[] | DataUnitsModel[];
+  rooms: number[] | DataRoomsModel[];
   status: number;
   email_verified_at?: string | null;
   created_at?: string;

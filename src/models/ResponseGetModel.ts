@@ -4,6 +4,7 @@ import { DataInvoicesModel } from './DataInvoicesModel';
 import { DataPatientsModel } from './DataPatientsModel';
 import { DataProductsModel } from './DataProductsModel';
 import { DataRolesModel } from './DataRolesModel';
+import { DataRoomsModel } from './DataRoomsModel';
 import { DataSpecialistsModel } from './DataSpecialistsModel';
 import { DataSpecialtiesModel } from './DataSpecialtiesModel';
 import { DataStatesModel } from './DataStatesModel';
@@ -24,6 +25,7 @@ export type ResponseGetModel = {
     | DataProductsModel[]
     | DataInvoicesModel[]
     | DataDishesModel[]
+    | DataRoomsModel[]
     | ResponseAppointmentModel;
   first_page_url: string;
   from: number;
