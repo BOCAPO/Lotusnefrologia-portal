@@ -4,7 +4,8 @@ const PrefKeys = {
   password: 'password',
   nameUser: 'nameUser',
   idUser: 'idUser',
-  units: 'units'
+  units: 'units',
+  rooms: 'rooms'
 };
 
 export const Prefs = {
@@ -20,6 +21,9 @@ export const Prefs = {
   setUnits(valor: string) {
     set(PrefKeys.units, valor);
   },
+  setRooms(valor: string) {
+    set(PrefKeys.rooms, valor);
+  },
   getToken() {
     return get(PrefKeys.token);
   },
@@ -31,6 +35,9 @@ export const Prefs = {
   },
   getUnits() {
     return get(PrefKeys.units);
+  },
+  getRooms() {
+    return get(PrefKeys.rooms);
   },
   clear() {
     localStorage.clear();

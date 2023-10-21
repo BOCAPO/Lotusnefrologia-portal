@@ -68,6 +68,7 @@ export default function ViewUserPage() {
     const dataUser = response.data as DataUserModel;
     getCities(dataUser.city_code !== undefined ? dataUser.city_code : '');
     getUnitsSelected();
+    getRoomsSelected();
 
     if (dataUser !== null) {
       setValue('cpf', dataUser.cpf);
@@ -85,6 +86,7 @@ export default function ViewUserPage() {
       setValue('status', dataUser.status + 1);
       setRoomsSelected(dataUser.rooms);
       setUnitsSelected(dataUser.units);
+      setRoomsSelected(dataUser.rooms);
     }
     setLoading(false);
   }
@@ -140,6 +142,15 @@ export default function ViewUserPage() {
       const unitsSelectedUpdated = unitsSelected;
       unitsSelectedUpdated?.push(unit.id);
       setUnitsSelected(unitsSelectedUpdated);
+    });
+  }
+
+  async function getRoomsSelected() {
+    const roomsLinked = await Prefs.getRooms();
+    JSON.parse(roomsLinked!).forEach((room: DataRoomsModel) => {
+      const roomsSelectedUpdated = roomsSelected;
+      roomsSelectedUpdated?.push(room.id);
+      setRoomsSelected(roomsSelectedUpdated);
     });
   }
 
