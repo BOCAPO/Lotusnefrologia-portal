@@ -324,7 +324,7 @@ export const Strings = {
   errorDateOld: 'Data não pode ser menor que a data atual',
   endDateCannotBeLessThanStartDate:
     'Data final não pode ser menor que a inicial',
-  titleError: 'Erro identificado',
+  titleError: 'Erro',
   timeLine: 'Linha do Tempo',
   view: 'Visualizar',
   minimumOneSpeciality: 'Selecione pelo menos uma especialidade',
@@ -343,6 +343,8 @@ export const Strings = {
   writeMessage: 'Escreva uma mensagem',
   noMessages: 'Não há mensagens',
   attendRoom: 'Não há ninguém na espera para atendimento',
+  successCloseRoom: 'Atendimento finalizado com sucesso!',
+
   sendMessageError: 'Erro ao enviar mensagem',
   messageErrorUpdateUnit: 'Erro ao atualizar unidade'
 };
