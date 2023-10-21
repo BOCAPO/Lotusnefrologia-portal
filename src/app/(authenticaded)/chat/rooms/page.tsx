@@ -7,6 +7,7 @@ import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
 import ModalError from 'components/ModalError';
+import ModalSuccess from 'components/ModalSuccess';
 import { LitteText, MediumText2 } from 'components/Text';
 
 import styles from './rooms.module.css';
@@ -30,6 +31,8 @@ export default function HomeChat(): JSX.Element {
   const [idRoom, setIdRoom] = React.useState(0);
   const [patient, setPatient] = React.useState<DataPatientsModel>();
   const [message, setMessage] = React.useState('');
+  const [messageSuccess, setMessageSuccess] = React.useState('');
+  const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [messageError, setMessageError] = React.useState('');
   const [showModalError, setShowModalError] = React.useState(false);
   const [messages, setMessages] = React.useState<
@@ -64,9 +67,13 @@ export default function HomeChat(): JSX.Element {
 
     const channel = pusher.subscribe(`${room}`);
     channel.bind('message', function (data: any) {
-      // allMessages.push(data);
       setTotalMessages(totalMessages + 1);
-      setMessages((prev) => [...prev, data]);
+      const allMessages = messages;
+      allMessages.push({
+        user: data.user,
+        message: data.message
+      });
+      setMessages(allMessages);
     });
 
     const channel2 = pusher.subscribe('waiting');
@@ -77,7 +84,7 @@ export default function HomeChat(): JSX.Element {
     return () => {
       pusher.unsubscribe(`${room}`);
     };
-  }, []);
+  }, [totalMessages]);
 
   useEffect(() => {
     scrollToBottom();
@@ -102,11 +109,14 @@ export default function HomeChat(): JSX.Element {
       setRoom(response.data.room_uuid as string);
       setIdRoom(response.data.id as number);
     } else {
-      setShowModalError(true);
-      setMessageError(Strings.attendRoom);
       setPatient(undefined);
       setRoom('');
       setIdRoom(0);
+      setShowModalError(true);
+      setMessageError(Strings.attendRoom);
+      setTimeout(() => {
+        setShowModalError(false);
+      }, 2500);
     }
   }
 
@@ -121,6 +131,13 @@ export default function HomeChat(): JSX.Element {
       setRooms(rooms - 1);
       setPatient(undefined);
       setRoom('');
+      setMessages([]);
+      setMessage('');
+      setMessageSuccess(Strings.successCloseRoom);
+      setShowModalSuccess(true);
+      setTimeout(() => {
+        setShowModalSuccess(false);
+      }, 2500);
     }
   }
 
@@ -136,6 +153,14 @@ export default function HomeChat(): JSX.Element {
     if (response) {
       setMessage('');
       setTotalMessages(totalMessages + 1);
+      if (messages.length === 0) {
+        const allMenssages = messages;
+        allMenssages.push({
+          user: Prefs.getNameUser()!,
+          message: message
+        });
+        setMessages(allMenssages);
+      }
       setLoading(false);
     } else {
       setMessageError(Strings.sendMessageError);
@@ -219,7 +244,10 @@ export default function HomeChat(): JSX.Element {
                         key={index}
                         className="list-group-item list-group-item-action py-3 lh-tight message"
                         style={{
-                          borderRadius: '10px 10px 0 10px',
+                          borderRadius:
+                            message.user === Prefs.getNameUser()
+                              ? '10px 10px 0 10px'
+                              : '10px 10px 10px 0',
                           marginBottom: '20px',
                           width: '60%',
                           padding: '3%',
@@ -299,6 +327,13 @@ export default function HomeChat(): JSX.Element {
           )}
         </div>
       </div>
+      <ModalSuccess
+        message={messageSuccess}
+        show={showModalSuccess}
+        onHide={() => {
+          setShowModalSuccess(false);
+        }}
+      />
       <ModalError
         message={messageError}
         show={showModalError}
