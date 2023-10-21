@@ -6,3 +6,10 @@ export type DataStatesModel = [
     region: string;
   }
 ];
+
+export type DataStateModel = {
+  code: number;
+  UF: string;
+  description: string;
+  region: string;
+};

@@ -22,7 +22,7 @@ import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
 import { DataSpecialistsModel } from 'models/DataSpecialistsModel';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
-import { DataStatesModel } from 'models/DataStatesModel';
+import { DataStateModel, DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { createSpecialist } from 'services/specialists';
@@ -30,6 +30,7 @@ import { getSpecialtiesWithoutPagination } from 'services/specialties';
 import { getAllStates } from 'services/states';
 import { getAllUnitsWithoutPagination } from 'services/units';
 import { statusGeneral } from 'utils/enums';
+import { buscarInformacoesCEP } from 'utils/helpers';
 
 type DataProps = {
   [name: string]: string | number;
@@ -40,6 +41,7 @@ export default function NewSpecialistPage() {
   const [cities, setCities] = React.useState<any>(null);
   const [specialties, setSpecialties] = React.useState<any>(null);
   const [units, setUnits] = React.useState<any>(null);
+  const [cep, setCep] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
   const router = useRouter();
@@ -55,6 +57,7 @@ export default function NewSpecialistPage() {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<DataProps>({
     resolver: yupResolver(schema)
@@ -188,6 +191,20 @@ export default function NewSpecialistPage() {
     }
   }
 
+  async function getDataCEP(cep: string) {
+    const result = await buscarInformacoesCEP(cep);
+    if (result !== null) {
+      setValue('street', result.logradouro.toString());
+      states.filter((state: DataStateModel) => {
+        if (state.UF === result.uf) {
+          setValue('state', state.code);
+          getCities(state.code.toString());
+          setValue('citieCode', result.ibge);
+        }
+      });
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -269,6 +286,10 @@ export default function NewSpecialistPage() {
               maxLength={9}
               control={control}
               style={{ height: '40px', padding: '22px' }}
+              getValue={setCep}
+              onBlur={() => {
+                getDataCEP(cep);
+              }}
               error={errors.zipCode?.message?.toString()}
             />
             <InputForm
@@ -332,6 +353,7 @@ export default function NewSpecialistPage() {
                 name="state"
                 item={Strings.labelState}
                 data={states}
+                disabled={true}
                 error={errors.state?.message}
                 onSelectChange={handleStateCode}
                 containerStyle={{ width: '25%' }}
@@ -340,6 +362,7 @@ export default function NewSpecialistPage() {
                 control={control}
                 item={Strings.labelCity}
                 name="citieCode"
+                disabled={true}
                 data={cities !== null ? cities : null}
                 isLoading={isLoadingCities}
                 error={errors.citieCode?.message}

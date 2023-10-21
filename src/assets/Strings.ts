@@ -343,5 +343,6 @@ export const Strings = {
   writeMessage: 'Escreva uma mensagem',
   noMessages: 'Não há mensagens',
   attendRoom: 'Não há ninguém na espera para atendimento',
-  sendMessageError: 'Erro ao enviar mensagem'
+  sendMessageError: 'Erro ao enviar mensagem',
+  messageErrorUpdateUnit: 'Erro ao atualizar unidade'
 };

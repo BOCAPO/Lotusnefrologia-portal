@@ -9,6 +9,7 @@ import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
 import { MenuTop } from 'components/MenuTop';
+import ModalError from 'components/ModalError';
 import ModalSuccess from 'components/ModalSuccess';
 import { SelectForm } from 'components/SelectForm';
 import { SpinnerLoading } from 'components/Spinner';
@@ -22,12 +23,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
-import { DataStatesModel } from 'models/DataStatesModel';
+import { DataStateModel, DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
 import { getUnitsById, updateUnitById } from 'services/units';
 import { statusGeneral } from 'utils/enums';
+import { buscarInformacoesCEP } from 'utils/helpers';
 
 type DataProps = {
   [name: string]: string | number;
@@ -38,7 +40,9 @@ export default function EditUnitPage() {
   const [cities, setCities] = React.useState<any>(null);
   const [showModalSuccess, setShowModalSuccess] =
     React.useState<boolean>(false);
+  const [showModalError, setShowModalError] = React.useState<boolean>(false);
   const router = useRouter();
+  const [cep, setCep] = React.useState<any>(null);
   const params = useParams();
   const [loading, setLoading] = React.useState<boolean>(true);
   const [latitude, setLatitude] = React.useState<string>('');
@@ -116,13 +120,11 @@ export default function EditUnitPage() {
     setValue('linkInstagram', unit.instagram_link!);
     setValue('linkSite', unit.site_link!);
     setValue('status', unit.status + 1);
-
     setLatitude(unit.latitude);
     setLongitude(unit.longitude);
     setLinkFacebook(unit.facebook_link!);
     setLinkInstagram(unit.instagram_link!);
     setLinkSite(unit.site_link!);
-
     setLoading(false);
   }
 
@@ -160,7 +162,24 @@ export default function EditUnitPage() {
         }, 3000);
       }
     } catch (error) {
-      // console.log('Erro ao criar unidade!' + error);
+      setShowModalError(true);
+      setTimeout(() => {
+        setShowModalError(false);
+      }, 3000);
+    }
+  }
+
+  async function getDataCEP(cep: string) {
+    const result = await buscarInformacoesCEP(cep);
+    if (result !== null) {
+      setValue('street', result.logradouro.toString());
+      states.filter((state: DataStateModel) => {
+        if (state.UF === result.uf) {
+          setValue('state', state.code);
+          getCities(state.code.toString());
+          setValue('cityCode', result.ibge);
+        }
+      });
     }
   }
 
@@ -293,6 +312,10 @@ export default function EditUnitPage() {
                 containerStyle={{ width: '15%' }}
                 className={styles.inputEditUnit}
                 error={errors.zipCode?.message}
+                getValue={setCep}
+                onBlur={() => {
+                  getDataCEP(cep);
+                }}
               />
               <InputForm
                 placeholder={Strings.placeholderStreet}
@@ -354,6 +377,7 @@ export default function EditUnitPage() {
                     control={control}
                     item={Strings.labelState}
                     name="state"
+                    disabled={true}
                     data={states !== null ? states : null}
                     onSelectChange={handleStateCode}
                     error={errors.state?.message}
@@ -363,6 +387,7 @@ export default function EditUnitPage() {
                     control={control}
                     item={Strings.labelCity}
                     name="cityCode"
+                    disabled={true}
                     data={cities !== null ? cities : null}
                     isLoading={isLoadingCities}
                     error={errors.city?.message}
@@ -473,6 +498,11 @@ export default function EditUnitPage() {
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
         message={Strings.messageSuccessUpdateUnit}
+      />
+      <ModalError
+        show={showModalError}
+        onHide={() => setShowModalError(false)}
+        message={Strings.messageErrorUpdateUnit}
       />
     </React.Fragment>
   );
