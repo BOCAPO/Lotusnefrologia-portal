@@ -20,11 +20,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataCitiesModel } from 'models/DataCitiesModel';
+import { DataRoomsModel } from 'models/DataRoomsModel';
 import { DataStatesModel } from 'models/DataStatesModel';
 import { DataUnitsModel } from 'models/DataUnitsModel';
 import { DataUserModel } from 'models/DataUserModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 import { Prefs } from 'repository/Prefs';
+import { getAllRoomsWithoutPagination } from 'services/chat';
 import { getAllCities } from 'services/cities';
 import { getAllStates } from 'services/states';
 import { getAllUnitsWithoutPagination } from 'services/units';
@@ -40,8 +42,13 @@ export default function ViewUserPage() {
   const idUser = Prefs.getIdUser();
   const [states, setStates] = React.useState<any>(null);
   const [cities, setCities] = React.useState<any>(null);
+  const [rooms, setRooms] = React.useState<any>(null);
+
   const [units, setUnits] = React.useState<any>(null);
   const [unitsSelected, setUnitsSelected] = React.useState<any>([]);
+  const [roomsSelected, setRoomsSelected] = React.useState<any>([]);
+  // const [quantityRoomsSelected, setQuantityRoomsSelected] = React.useState(0);
+
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [isLoadingCities, setIsLoadingCities] = React.useState<boolean>(false);
@@ -59,6 +66,7 @@ export default function ViewUserPage() {
     getUnits();
     getStates();
     getUser();
+    getAllRooms();
   }, [idUser]);
 
   async function getUser() {
@@ -66,6 +74,7 @@ export default function ViewUserPage() {
     const dataUser = response.data as DataUserModel;
     getCities(dataUser.city_code !== undefined ? dataUser.city_code : '');
     getUnitsSelected();
+    getRoomsSelected();
 
     if (dataUser !== null) {
       setValue('cpf', dataUser.cpf);
@@ -82,6 +91,7 @@ export default function ViewUserPage() {
       setValue('cityCode', dataUser.city_code);
       setValue('status', dataUser.status + 1);
       setUnitsSelected(dataUser.units);
+      setRoomsSelected(dataUser.rooms);
     }
     setLoading(false);
   }
@@ -131,6 +141,24 @@ export default function ViewUserPage() {
     });
   }
 
+  async function getRoomsSelected() {
+    const roomsLinked = await Prefs.getRooms();
+    JSON.parse(roomsLinked!).forEach((room: DataRoomsModel) => {
+      const roomsSelectedUpdated = roomsSelected;
+      roomsSelectedUpdated?.push(room.id);
+      setRoomsSelected(roomsSelectedUpdated);
+    });
+  }
+
+  async function getAllRooms() {
+    const response = await getAllRoomsWithoutPagination();
+    const dataRooms = response.data as unknown as DataRoomsModel[];
+
+    if (dataRooms !== null) {
+      setRooms(dataRooms);
+    }
+  }
+
   async function onSubmit(data: DataProps) {
     const updateUser: DataUserModel = {
       id: Number(idUser),
@@ -147,7 +175,8 @@ export default function ViewUserPage() {
       lot: data.lot.toString(),
       complement: data.complement.toString(),
       status: Number(data.status) - 1,
-      units: unitsSelected
+      units: unitsSelected,
+      rooms: roomsSelected
     };
 
     const response = await updateUserById(Number(idUser), updateUser);
@@ -370,6 +399,46 @@ export default function ViewUserPage() {
                           </td>
                           <td>{unit.name}</td>
                           <td>{unit.status === 0 ? 'Ativo' : 'Inativo'}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={3}>Nenhuma unidade vinculada</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className={styles.divTableLinkedUnits}>
+                <table className={styles.tableLinkedUnits}>
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>{Strings.attendenceThoughtChat}</th>
+                      <th>{Strings.status}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <SpinnerLoading />
+                    ) : rooms !== null && rooms.length > 0 ? (
+                      rooms?.map((room: DataRoomsModel) => (
+                        <tr key={room.id}>
+                          <td>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type="checkbox"
+                                className={styles.checkbox}
+                                readOnly
+                                checked={roomsSelected?.includes(
+                                  room.id !== undefined ? room.id : 0
+                                )}
+                              />
+                            </label>
+                          </td>
+                          <td>{room.name}</td>
+                          <td>{room.status === '0' ? 'Ativo' : 'Inativo'}</td>
                         </tr>
                       ))
                     ) : (

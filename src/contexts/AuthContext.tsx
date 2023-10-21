@@ -46,6 +46,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
           Prefs.setNameUser(usuario.name.toString());
           Prefs.setIdUser(usuario.id!.toString());
           Prefs.setUnits(JSON.stringify(usuario.units));
+          Prefs.setRooms(JSON.stringify(usuario.rooms));
           setIsLogged(true);
         }
         return token;

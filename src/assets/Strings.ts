@@ -344,7 +344,6 @@ export const Strings = {
   noMessages: 'Não há mensagens',
   attendRoom: 'Não há ninguém na espera para atendimento',
   successCloseRoom: 'Atendimento finalizado com sucesso!',
-
   sendMessageError: 'Erro ao enviar mensagem',
   messageErrorUpdateUnit: 'Erro ao atualizar unidade'
 };
