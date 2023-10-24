@@ -29,3 +29,7 @@ export async function updateDishe(id: number, data: DataDishesModel) {
 export async function deleteDishe(id: number) {
   return await deleteJson(`/dishes/${id}`);
 }
+
+export async function getSearchDishes(search: string) {
+  return await getJson(`/dishes?search=${search}`);
+}

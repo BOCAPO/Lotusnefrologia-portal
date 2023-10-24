@@ -84,7 +84,7 @@
     border-radius: 5px;
 }
 
-.message{
+.message {
     margin-top: 20px !important;
 }
 
@@ -130,6 +130,32 @@
 
 .formMessage form {
     width: 100%;
+}
+
+.bodyRoomsOpen {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+
+.boxRoomOpen {
+    border-bottom: 1px solid #B3B4B8;
+    padding: 2% 5%;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.boxRoomOpen:hover {
+    background-color: #CBEACF;
+}
+
+.boxRoomOpen:active, .boxRoomOpen:focus {
+    background-color: #A1E2A5;
 }
 
 @media screen and (max-height: 981px) and (min-height: 740px) {

@@ -14,20 +14,24 @@ import styles from './userslist.module.css';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { ResponseGetModel } from 'models/ResponseGetModel';
-import { getAllUsers, getUsersPerPage } from 'services/users';
+import { getAllUsers, getSearchedUsers, getUsersPerPage } from 'services/users';
 
 export default function UsersListPage() {
   const router = useRouter();
   const [data, setData] = React.useState<any>(null);
   const [quantityUsers, setQuantityUsers] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [search, setSearch] = React.useState<string>('');
   const [page, setPage] = React.useState<number>(1);
   const [showModalOptions, setShowModalOptions] =
     React.useState<boolean>(false);
   const [selectedItem, setSelectedItem] = React.useState<any>(null);
+
   React.useEffect(() => {
-    getUsers();
-  }, [quantityUsers, page]);
+    if (search === '') {
+      getUsers();
+    }
+  }, [quantityUsers, page, search]);
 
   async function getUsers() {
     if (page === 1) {
@@ -79,6 +83,22 @@ export default function UsersListPage() {
     }
   }
 
+  async function handleSearch(search: string, event?: any) {
+    if (event) {
+      event.preventDefault();
+    }
+    if (search === '') {
+      getUsers();
+    } else {
+      setLoading(true);
+      const response = await getSearchedUsers(search);
+      const data = response.data as ResponseGetModel;
+      setData(data);
+      setQuantityUsers(data.total);
+      setLoading(false);
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -94,13 +114,27 @@ export default function UsersListPage() {
             />
           </div>
           <div className={styles.searchBar}>
-            <input type="search" placeholder={Strings.search} />
+            <input
+              type="search"
+              placeholder={Strings.search}
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch(search, event);
+                }
+              }}
+            />
             <div className={styles.iconSearch}>
               <Icon
                 typeIcon={TypeIcon.Search}
                 size={20}
                 color={Colors.gray60}
-                callback={() => {}}
+                callback={() => {
+                  handleSearch(search);
+                }}
               />
             </div>
           </div>

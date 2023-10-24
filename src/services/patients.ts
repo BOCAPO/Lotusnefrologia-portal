@@ -29,3 +29,7 @@ export async function getPatientById(id: number) {
 export async function updatePatient(id: number, patient: DataPatientsModel) {
   return await putJson(`/patients/${id}`, patient);
 }
+
+export async function getSearchedPatients(search: string) {
+  return await getJson(`/patients?search=${search}`);
+}

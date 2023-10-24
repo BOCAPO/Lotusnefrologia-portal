@@ -21,3 +21,7 @@ export async function getMenuById(id: number) {
 export async function createMenu(menu: DataMenuModel) {
   return await postJson(`/menu`, menu);
 }
+
+export async function getSearchMenu(search: string) {
+  return await getJson(`/menu?search=${search}`);
+}

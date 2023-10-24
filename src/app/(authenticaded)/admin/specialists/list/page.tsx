@@ -15,7 +15,11 @@ import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { DataSpecialtiesModel } from 'models/DataSpecialtiesModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
-import { getAllSpecialists, getSpecialistsPerPage } from 'services/specialists';
+import {
+  getAllSpecialists,
+  getSearchedSpecialists,
+  getSpecialistsPerPage
+} from 'services/specialists';
 
 export default function SpecialistListPage() {
   const router = useRouter();
@@ -23,14 +27,17 @@ export default function SpecialistListPage() {
   const [quantitySpecialists, setQuantitySpecialists] =
     React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [search, setSearch] = React.useState<string>('');
   const [page, setPage] = React.useState<number>(1);
   const [showModalOptions, setShowModalOptions] =
     React.useState<boolean>(false);
   const [selectedItem, setSelectedItem] = React.useState<any>(null);
 
   React.useEffect(() => {
-    getSpecialist();
-  }, [quantitySpecialists, page]);
+    if (search === '') {
+      getSpecialist();
+    }
+  }, [quantitySpecialists, page, search]);
 
   async function getSpecialist() {
     let response: any;
@@ -69,6 +76,31 @@ export default function SpecialistListPage() {
     }
   }
 
+  async function handleSearch(search: string, event?: any) {
+    if (event) {
+      event.preventDefault();
+    }
+    if (search === '') {
+      getSpecialist();
+    } else {
+      setLoading(true);
+      const response = await getSearchedSpecialists(search);
+      const dataUpdated = response.data.data as ResponseGetModel[];
+      setQuantitySpecialists(response.data.total as number);
+      let specialties: string[] = [];
+      dataUpdated.map((element: any) => {
+        element.specialties.map((specialty: DataSpecialtiesModel) => {
+          specialties.push(specialty.description);
+        });
+        element.specialties = specialties.join(' | ');
+        specialties = [];
+      });
+      setData(response.data);
+      setQuantitySpecialists(data.total);
+      setLoading(false);
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -84,13 +116,27 @@ export default function SpecialistListPage() {
             />
           </div>
           <div className={styles.searchBar}>
-            <input type="search" placeholder={Strings.search} />
+            <input
+              type="search"
+              placeholder={Strings.search}
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch(search, event);
+                }
+              }}
+            />
             <div className={styles.iconSearch}>
               <Icon
                 typeIcon={TypeIcon.Search}
                 size={20}
                 color={Colors.gray60}
-                callback={() => {}}
+                callback={() => {
+                  handleSearch(search);
+                }}
               />
             </div>
           </div>

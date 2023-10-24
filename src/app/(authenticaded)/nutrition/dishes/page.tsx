@@ -29,6 +29,7 @@ import {
   deleteDishe,
   getAllDishes,
   getDishesPerPage,
+  getSearchDishes,
   updateDishe
 } from 'services/dishes';
 import { getAllUnitsWithoutPagination } from 'services/units';
@@ -54,47 +55,28 @@ export default function NewDishePage() {
   const [selectedDishe, setSelectedDishe] = React.useState<any>(null);
   const [message, setMessage] = React.useState<string>('');
   const [activeForm, setActiveForm] = React.useState<boolean>(false);
+  const [search, setSearch] = React.useState<string>('');
   const [file, setFile] = React.useState<string>('');
 
   React.useEffect(() => {
-    getDishes();
-    getDishesCategory();
-    getUnits();
-  }, [quantityDishes, selectedDishe, page, activeForm]);
+    if (search === '') {
+      getDishes();
+      getDishesCategory();
+      getUnits();
+    }
+  }, [quantityDishes, selectedDishe, page, activeForm, search]);
 
   async function getDishes() {
     if (page === 1) {
       setData(null);
       const response = await getAllDishes();
       const data = response.data as ResponseGetModel;
-      let dataUpdated = data.data as DataDishesModel[];
-      dataUpdated = dataUpdated?.slice().sort((a: any, b: any) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      data.data = dataUpdated;
       setData(data);
       setQuantityDishes(data.total);
     } else {
       setData(null);
       const response = await getDishesPerPage(page);
       const data = response.data as ResponseGetModel;
-      let dataUpdated = data.data as DataDishesModel[];
-      dataUpdated = dataUpdated?.slice().sort((a: any, b: any) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      data.data = dataUpdated;
       setData(data);
       setQuantityDishes(data.total);
     }
@@ -238,6 +220,25 @@ export default function NewDishePage() {
     setFile(imageDataUrl);
   };
 
+  async function handleSearch(search: string) {
+    if (search === '') {
+      getDishes();
+      getDishesCategory();
+      getUnits();
+    } else {
+      setSearch(search);
+    }
+  }
+
+  async function executeSearch(signal: boolean) {
+    if (signal) {
+      const response = await getSearchDishes(search);
+      const data = response.data as ResponseGetModel;
+      setData(data);
+      setQuantityDishes(data.total);
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -251,6 +252,8 @@ export default function NewDishePage() {
             type="newDishe"
             onClick={handleSelectionPage}
             onItemClick={handleItemSelection}
+            onSearch={handleSearch}
+            startSearch={executeSearch}
           />
         </div>
         <div className={styles.formInserDishes}>

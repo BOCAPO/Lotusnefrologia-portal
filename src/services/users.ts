@@ -25,3 +25,7 @@ export async function deleteUser(id: number) {
 export async function updateUserById(id: number, user: DataUserModel) {
   return await putJson(`/users/${id}`, user);
 }
+
+export async function getSearchedUsers(search: string) {
+  return await getJson(`/users?search=${search}`);
+}

@@ -21,6 +21,7 @@ import { Prefs } from 'repository/Prefs';
 import { getAllInvoices, getInvoicesPerPage } from 'services/invoices';
 import { getProductsWithoutPagination } from 'services/products';
 import { getAllUnitsWithoutPagination } from 'services/units';
+import { getSearchedUsers } from 'services/users';
 
 export default function ListInvoicesPage() {
   const [data, setData] = React.useState<any>(null);
@@ -32,15 +33,18 @@ export default function ListInvoicesPage() {
   const [page, setPage] = React.useState<number>(1);
   const [showBoxInvoice, setShowBoxInvoice] = React.useState<boolean>(false);
   const [showModalError, setShowModalError] = React.useState<boolean>(false);
+  const [search, setSearch] = React.useState<string>('');
   const [showModalOptions, setShowModalOptions] =
     React.useState<boolean>(false);
   const [selectedItem, setSelectedItem] = React.useState<any>(null);
 
   React.useEffect(() => {
-    getInvoices();
-    getUnits();
-    getProducts();
-  }, [quantityInvoices, page]);
+    if (search === '') {
+      getInvoices();
+      getUnits();
+      getProducts();
+    }
+  }, [quantityInvoices, page, search]);
 
   async function getInvoices() {
     if (page === 1) {
@@ -134,6 +138,38 @@ export default function ListInvoicesPage() {
     setShowBoxInvoice(true);
   };
 
+  async function handleSearch(search: string, event?: any) {
+    if (event) {
+      event.preventDefault();
+    }
+    if (search === '') {
+      getInvoices();
+      getUnits();
+      getProducts();
+    } else {
+      setLoading(true);
+      const response = await getSearchedUsers(search);
+      const data = response.data as ResponseGetModel;
+      const dataUpdated = data;
+      dataUpdated.data = dataUpdated.data.map((item: any) => {
+        item.unit_name = item.unit.name || 'Sem unidade';
+        item.number = item.number.toString();
+        item.supplier = item.supplier.toString();
+        item.date = format(new Date(item.date), 'dd/MM/yyyy');
+        item.amount = Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(item.amount);
+        return item;
+      });
+      setData(dataUpdated);
+      getUnits();
+      getProducts();
+      setQuantityInvoices(data.total);
+      setLoading(false);
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -150,12 +186,27 @@ export default function ListInvoicesPage() {
             />
           </div>
           <div className={styles.searchBar}>
-            <input type="search" placeholder={Strings.search} />
+            <input
+              type="search"
+              placeholder={Strings.search}
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch(search, event);
+                }
+              }}
+            />
             <div className={styles.iconSearch}>
               <Icon
                 typeIcon={TypeIcon.Search}
                 size={20}
                 color={Colors.gray60}
+                callback={() => {
+                  handleSearch(search);
+                }}
               />
             </div>
           </div>

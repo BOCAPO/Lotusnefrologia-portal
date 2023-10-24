@@ -25,3 +25,11 @@ export async function closeRoom(idRoom: number) {
 export async function authPusher() {
   return await postJson('/chat/auth', {});
 }
+
+export async function getHistoryMessages(idRoom: string) {
+  return await getJson(`/chat/messages/${idRoom}`);
+}
+
+export async function getOpenedRooms() {
+  return await getJson('/chat/opened-rooms');
+}

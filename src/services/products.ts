@@ -29,3 +29,7 @@ export async function updateProduct(product: DataProductsModel, id: number) {
 export async function deleteProduct(id: number) {
   return await deleteJson(`/products/${id}`);
 }
+
+export async function getSearchProducts(search: string) {
+  return await getJson(`/products?search=${search}`);
+}

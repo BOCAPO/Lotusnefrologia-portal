@@ -19,7 +19,8 @@ import { ResponseGetModel } from 'models/ResponseGetModel';
 import { Prefs } from 'repository/Prefs';
 import {
   getAllAppointmensTags,
-  getAllAppointmentsWithSchedule
+  getAllAppointmentsWithSchedule,
+  getSearchedAppointments
 } from 'services/appointments';
 import { getPatientsWithoutPagination } from 'services/patients';
 import { getSpecialistsWithoutPagination } from 'services/specialists';
@@ -32,17 +33,20 @@ export default function SchedulesPage(): JSX.Element {
     React.useState<any>(0);
   const [specialists, setSpecialists] = React.useState<any>(null);
   const [patients, setPatients] = React.useState<any>(null);
+  const [search, setSearch] = React.useState<string>('');
   const [units, setUnits] = React.useState<any>(null);
   const [tags, setTags] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
-    getAppointments();
+    if (search === '') {
+      getAppointments();
+    }
     getSpecialists();
     getAppointmentTags();
     getPatients();
     getUnits();
-  }, [quantityAppointments]);
+  }, [quantityAppointments, search]);
 
   async function getAppointments() {
     const response = await getAllAppointmentsWithSchedule('');
@@ -55,15 +59,6 @@ export default function SchedulesPage(): JSX.Element {
       item.newDate = format(new Date(item.time.slice(0, 10)), 'dd/MM/yyyy');
       item.newTime = item.time.slice(11, 16);
       return item;
-    });
-    dataUpdated.data = dataUpdated?.data?.slice().sort((a: any, b: any) => {
-      if (a.newDate < b.newDate) {
-        return -1;
-      }
-      if (a.newDate > b.newDate) {
-        return 1;
-      }
-      return 0;
     });
     setData(dataUpdated);
     setLoading(false);
@@ -117,6 +112,51 @@ export default function SchedulesPage(): JSX.Element {
     );
   }
 
+  async function handleSearch(search: string, event?: any) {
+    if (event) {
+      event.preventDefault();
+    }
+    if (search === '') {
+      getAppointments();
+    } else {
+      setLoading(true);
+      const response = await getSearchedAppointments(search);
+      const dataUpdated = response.data as ResponseGetModel;
+      setQuantityAppointments(dataUpdated?.data?.length);
+      dataUpdated.data = dataUpdated?.data?.map((item: any) => {
+        item.cpf = item.patient.cpf;
+        item.patient = item.patient.name;
+        item.unit = item.unit.name;
+        item.newDate = format(
+          new Date(item.schedule.time.slice(0, 10)),
+          'dd/MM/yyyy'
+        );
+        item.newTime = item.schedule.time.slice(11, 16);
+        item.specialist_name = item.specialist.name;
+        item.specialty = item.specialty.description;
+        switch (item.appointment_status) {
+          case 1:
+            item.appointment_status = 'Agendado';
+            break;
+          case 2:
+            item.appointment_status = 'Cancelado';
+            break;
+          case 3:
+            item.appointment_status = 'Realizado';
+            break;
+          case 4:
+            item.appointment_status = 'Confirmado';
+            break;
+          default:
+            break;
+        }
+        return item;
+      });
+      setData(dataUpdated);
+      setLoading(false);
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -132,13 +172,27 @@ export default function SchedulesPage(): JSX.Element {
             />
           </div>
           <div className={styles.searchBar}>
-            <input type="search" placeholder={Strings.search} />
+            <input
+              type="search"
+              placeholder={Strings.search}
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch(search, event);
+                }
+              }}
+            />
             <div className={styles.iconSearch}>
               <Icon
                 typeIcon={TypeIcon.Search}
                 size={20}
                 color={Colors.gray60}
-                callback={() => {}}
+                callback={() => {
+                  handleSearch(search);
+                }}
               />
             </div>
           </div>
