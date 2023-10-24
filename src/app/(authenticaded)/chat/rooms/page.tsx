@@ -177,6 +177,7 @@ export default function HomeChat(): JSX.Element {
       setMessage('');
       setMessageSuccess(Strings.successCloseRoom);
       setShowModalSuccess(true);
+      localStorage.removeItem(`send-message-${room}`);
       setTimeout(() => {
         setShowModalSuccess(false);
       }, 2500);
@@ -187,15 +188,27 @@ export default function HomeChat(): JSX.Element {
     e.preventDefault();
     setLoading(true);
     const newMessage = {
+      user: Prefs.getNameUser() !== undefined ? Prefs.getNameUser() : '',
       room: room,
       message: message
     } as DataMessagesModel;
 
     const response = await postNewMessage(newMessage);
-    setTotalMessages(totalMessages + 1);
     if (response !== undefined && response !== null) {
+      setTotalMessages(totalMessages + 1);
+      const sendMessage = localStorage.getItem(`send-message-${room}`);
+      if (sendMessage !== 'true') {
+        const allMessages = messages;
+        allMessages.push({
+          user: newMessage.user!,
+          message: newMessage.message,
+          sender_type: 'Attendant'
+        });
+        setMessages(allMessages);
+      }
       setLoading(false);
       setMessage('');
+      localStorage.setItem(`send-message-${room}`, 'true');
     } else {
       setMessageError(Strings.sendMessageError);
       setShowModalError(true);
