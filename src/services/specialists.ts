@@ -32,3 +32,7 @@ export async function updateSpecialistById(
 ) {
   return await putJson(`/specialists/${id}`, specialist);
 }
+
+export async function getSearchedSpecialists(search: string) {
+  return await getJson(`/specialists?search=${search}`);
+}

@@ -26,6 +26,8 @@ type Props = {
   isLoading?: boolean;
   onItemClick?: (firstId: any, secondId: any) => void;
   onClick?: (selectedValue: string) => void;
+  onSearch?: (search: string) => void;
+  startSearch?: (signal: boolean) => void;
   type?: string;
 };
 
@@ -35,9 +37,12 @@ export function FormTwoColumns({
   isLoading = true,
   type,
   onClick,
-  onItemClick
+  onItemClick,
+  onSearch,
+  startSearch
 }: Props): JSX.Element {
   const [dataAdapted, setDataAdapted] = React.useState<any>([]);
+  const [search, setSearch] = React.useState<string>('');
   const [selectedOption, setSelectedOption] = React.useState<
     string | undefined
   >(response?.links[0]?.label);
@@ -170,13 +175,25 @@ export function FormTwoColumns({
           placeholder={Strings.search}
           style={{ width: '100%' }}
           type="search"
+          value={search}
+          onChange={(event) => {
+            setSearch(event.target.value);
+            onSearch && onSearch(event.target.value);
+          }}
+          onKeyPress={(event) => {
+            if (event.key === 'Enter') {
+              startSearch && startSearch(true);
+            }
+          }}
         />
         <div className={styles.iconSearch}>
           <Icon
             typeIcon={TypeIcon.Search}
             size={20}
             color={Colors.gray60}
-            callback={() => {}}
+            callback={() => {
+              startSearch && startSearch(true);
+            }}
           />
         </div>
       </div>

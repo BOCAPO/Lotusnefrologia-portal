@@ -32,3 +32,7 @@ export async function updateInvoiceById(
 ) {
   return await putJson(`/invoices/${id}`, invoice);
 }
+
+export async function getSearchInvoices(search: string) {
+  return await getJson(`/invoices?search=${search}`);
+}

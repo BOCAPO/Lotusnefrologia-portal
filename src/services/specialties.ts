@@ -32,3 +32,7 @@ export async function updateSpecialty(
 export async function deleteSpecialty(id: number) {
   return await deleteJson(`/specialties/${id}`);
 }
+
+export async function getSpecialtiesBySearch(search: string) {
+  return await getJson(`/specialties?search=${search}`);
+}

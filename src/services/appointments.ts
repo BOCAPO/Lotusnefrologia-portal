@@ -35,3 +35,7 @@ export async function updateAppointment(
 ) {
   return await putJson(`/appointments/${id}`, appointment);
 }
+
+export async function getSearchedAppointments(search: string) {
+  return await getJson(`/appointments?search=${search}`);
+}

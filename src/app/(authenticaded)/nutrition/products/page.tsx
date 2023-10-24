@@ -25,6 +25,7 @@ import {
   deleteProduct,
   getAllProducts,
   getProductsPerPage,
+  getSearchProducts,
   updateProduct
 } from 'services/products';
 import { statusGeneral } from 'utils/enums';
@@ -36,6 +37,7 @@ type DataProps = {
 export default function NewProductPage() {
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
+  const [search, setSearch] = React.useState<string>('');
   const [data, setData] = React.useState<any>(null);
   const [quantityProducts, setQuantityProducts] = React.useState<number>(0);
   const [page, setPage] = React.useState<number>(1);
@@ -43,8 +45,10 @@ export default function NewProductPage() {
   const [message, setMessage] = React.useState<string>('');
 
   React.useEffect(() => {
-    getProducts();
-  }, [quantityProducts, selectedProduct, page]);
+    if (search === '') {
+      getProducts();
+    }
+  }, [quantityProducts, selectedProduct, page, search]);
 
   async function getProducts() {
     if (page === 1) {
@@ -129,6 +133,23 @@ export default function NewProductPage() {
     setValue('status', Number(dataProductSelected.status) + 1);
   }
 
+  async function handleSearch(search: string) {
+    if (search === '') {
+      getProducts();
+    } else {
+      setSearch(search);
+    }
+  }
+
+  async function executeSearch(signal: boolean) {
+    if (signal) {
+      const response = await getSearchProducts(search);
+      const data = response.data as ResponseGetModel;
+      setData(data);
+      setQuantityProducts(data.total);
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -142,6 +163,8 @@ export default function NewProductPage() {
             type="newProduct"
             onClick={handleSelectionPage}
             onItemClick={handleItemSelection}
+            onSearch={handleSearch}
+            startSearch={executeSearch}
           />
         </div>
         <div className={styles.formInserProducts}>

@@ -13,3 +13,7 @@ export async function getExamsPerPage(page: number) {
 export async function createExam(data: DataExamsModel) {
   return await postJson('/exams', data);
 }
+
+export async function getSearchExams(search: string) {
+  return await getJson(`/exams?search=${search}`);
+}

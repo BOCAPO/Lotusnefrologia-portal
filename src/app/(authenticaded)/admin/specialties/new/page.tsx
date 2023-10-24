@@ -24,6 +24,7 @@ import {
   createSpecialty,
   deleteSpecialty,
   getAllSpecialties,
+  getSpecialtiesBySearch,
   getSpecialtiesPerPage,
   updateSpecialty
 } from 'services/specialties';
@@ -37,14 +38,17 @@ export default function NewSpecialTyPage() {
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>(null);
+  const [search, setSearch] = React.useState<string>('');
   const [quantitySpecialties, setQuantitySpecialties] =
     React.useState<number>(0);
   const [page, setPage] = React.useState<number>(1);
   const [selectedSpecialty, setSelectedSpecialty] = React.useState<any>(null);
 
   React.useEffect(() => {
-    getSpecialties();
-  }, [quantitySpecialties, selectedSpecialty, page]);
+    if (search === '') {
+      getSpecialties();
+    }
+  }, [quantitySpecialties, selectedSpecialty, page, search]);
 
   async function getSpecialties() {
     if (page === 1) {
@@ -66,6 +70,23 @@ export default function NewSpecialTyPage() {
   const handleSelectionPage = (selectedValue: string) => {
     setPage(parseInt(selectedValue));
   };
+
+  async function handleSearch(search: string) {
+    if (search === '') {
+      getSpecialties();
+    } else {
+      setSearch(search);
+    }
+  }
+
+  async function executeSearch(signal: boolean) {
+    if (signal) {
+      const response = await getSpecialtiesBySearch(search);
+      const data = response.data as ResponseGetModel;
+      setData(data);
+      setQuantitySpecialties(data.total);
+    }
+  }
 
   const {
     control,
@@ -144,6 +165,8 @@ export default function NewSpecialTyPage() {
             type="newSpecialty"
             onClick={handleSelectionPage}
             onItemClick={handleItemSelection}
+            onSearch={handleSearch}
+            startSearch={executeSearch}
           />
         </div>
         <div className={styles.formInserSpecialty}>

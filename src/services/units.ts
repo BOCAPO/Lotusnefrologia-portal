@@ -29,3 +29,7 @@ export async function getUnitsById(id: number) {
 export async function updateUnitById(id: number, unit: DataUnitsModel) {
   return await putJson(`/units/${id}`, unit);
 }
+
+export async function getUnitsBySearch(search: string) {
+  return await getJson(`/units?search=${search}`);
+}
