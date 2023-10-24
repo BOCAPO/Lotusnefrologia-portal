@@ -326,13 +326,13 @@ export default function HomeChat(): JSX.Element {
                   />
                 </div>
                 <div className={styles.btnsChat}>
-                  <div>
+                  {/* <div>
                     <Button
                       title={Strings.transfer}
                       type="cancel"
                       onClick={() => {}}
                     />
-                  </div>
+                  </div> */}
                   <div>
                     <Button
                       title={Strings.finally}
