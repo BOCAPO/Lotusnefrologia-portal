@@ -33,3 +33,15 @@ export async function getHistoryMessages(idRoom: string) {
 export async function getOpenedRooms() {
   return await getJson('/chat/opened-rooms');
 }
+
+export async function getHistory() {
+  return await getJson('/chat');
+}
+
+export async function getHistoryPerPage(page: number) {
+  return await getJson(`/chat?page=${page}`);
+}
+
+export async function getSearchedHistory(search: string) {
+  return await getJson(`/chat?search=${search}`);
+}

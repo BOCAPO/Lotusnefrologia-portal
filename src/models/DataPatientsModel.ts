@@ -1,3 +1,5 @@
+import { DataUnitsModel } from './DataUnitsModel';
+
 export type DataPatientsModel = {
   id?: number;
   cpf: string;
@@ -18,5 +20,5 @@ export type DataPatientsModel = {
   created_at?: string;
   updated_at?: string;
   deleted_at?: string | null;
-  unit: number;
+  unit: number | DataUnitsModel[];
 };

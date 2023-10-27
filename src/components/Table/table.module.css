@@ -3,10 +3,10 @@
   flex-direction: column;
   width: 100%;
   height: calc(100% - 13vh);
-  min-height: 50vh;
   overflow: hidden scroll;
   scroll-behavior: auto;
   min-height: 60vh;
+  margin-top: 1vh;
 }
 
 .containerTable::-webkit-scrollbar {
@@ -77,5 +77,6 @@
 @media screen and (max-height: 981px) and (min-height: 740px) {
   .containerTable {
     min-height: 60vh;
+    margin-top: 1.5vh;
   }
 }
