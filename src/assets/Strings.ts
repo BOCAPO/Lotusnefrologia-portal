@@ -93,6 +93,24 @@ export const Strings = {
     'attachment',
     'actions'
   ],
+  headersHistoryChat: [
+    'Nome',
+    'CPF',
+    'Data',
+    'Hora',
+    'Fila',
+    'Analista',
+    'Unidade'
+  ],
+  headersHistoryChatResponse: [
+    'patientName',
+    'cpf',
+    'Date',
+    'Time',
+    'roomName',
+    'attendantName',
+    'unitName'
+  ],
   headersInvoice: ['Numero', 'Fornecedor', 'Emissão', 'Valor', 'Unidade'],
   headersInvoiceResponse: ['number', 'supplier', 'date', 'amount', 'unit_name'],
   schedule: 'Agendamento',
