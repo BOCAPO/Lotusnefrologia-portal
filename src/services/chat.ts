@@ -42,6 +42,10 @@ export async function getHistoryPerPage(page: number) {
   return await getJson(`/chat?page=${page}`);
 }
 
+export async function getHistoryWithoutPagination() {
+  return await getJson('/chat?page=false');
+}
+
 export async function getSearchedHistory(search: string) {
   return await getJson(`/chat?search=${search}`);
 }

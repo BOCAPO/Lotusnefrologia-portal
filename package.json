@@ -25,6 +25,7 @@
     "eslint-config-next": "13.4.9",
     "moment": "^2.29.4",
     "next": "^13.4.10",
+    "pdfmake": "^0.2.7",
     "pusher-js": "^8.3.0",
     "react": "18.2.0",
     "react-bootstrap": "^2.8.0",
@@ -39,6 +40,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@types/pdfmake": "^0.2.7",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-datepicker": "^4.15.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
