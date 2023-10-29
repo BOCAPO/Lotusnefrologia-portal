@@ -1,95 +1,137 @@
-export class Print {
-  constructor(dadosParaImpressao) {
-    this.dadosParaImpressao = dadosParaImpressao;
-  }
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 
-  async PreparaDocumento() {
-    const corpoDocumento = this.CriaCorpoDocumento();
-    const documento = this.GerarDocumento(corpoDocumento);
-    return documento;
-  }
+function printHistoryChats(registersHistory) {
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-  CriarCorpoDocumento() {
-    const header = [
-      { text: 'Nome', bold: true, fontSize: 9, margin: [0, 4, 0, 0] },
-      { text: 'CPF', bold: true, fontSize: 9, margin: [0, 4, 0, 0] },
-      { text: 'Data', bold: true, fontSize: 9, margin: [0, 4, 0, 0] },
-      { text: 'Hora', bold: true, fontSize: 9, margin: [0, 4, 0, 0] },
-      { text: 'Fila', bold: true, fontSize: 9, margin: [0, 4, 0, 0] },
-      { text: 'Analista', bold: true, fontSize: 9, margin: [0, 4, 0, 0] },
-      { text: 'Unidade', bold: true, fontSize: 9, margin: [0, 4, 0, 0] }
-    ];
-    const body = this.dadosParaImpressao((registro) => {
-      return [
-        { text: registro.patientName, fontSize: 8 },
-        { text: registro.cpf, fontSize: 8 },
-        { text: registro.Date, fontSize: 8 },
-        { text: registro.Time, fontSize: 8 },
-        { text: registro.roomName, fontSize: 8 },
-        { text: registro.attendantName, fontSize: 8 },
-        { text: registro.unitName, fontSize: 8 }
-      ];
-    });
+  const reportTitle = [
+    {
+      text: 'Relatório de Histórico de Atendimento On Line',
+      fontSize: 18,
+      alignment: 'center',
+      margin: [0, 0, 0, 10],
+      bold: true
+    }
+  ];
 
-    const lineHeader = [
+  const data = registersHistory.map((register) => {
+    return [
       {
-        text: '________________________________________________________________',
+        text: register.patientName.toUpperCase(),
+        fontSize: 9,
         alignment: 'center',
-        fontSize: 5,
-        colSpan: 7
+        margin: [0, 2, 0, 2]
       },
-      {},
-      {},
-      {},
-      {},
-      {},
-      {}
+      {
+        text: register.cpf,
+        fontSize: 9,
+        alignment: 'center',
+        margin: [0, 2, 0, 2]
+      },
+      {
+        text: register.Date,
+        fontSize: 9,
+        alignment: 'center',
+        margin: [0, 2, 0, 2]
+      },
+      {
+        text: register.Time,
+        fontSize: 9,
+        alignment: 'center',
+        margin: [0, 1, 0, 1]
+      },
+      {
+        text: register.roomName,
+        fontSize: 9,
+        alignment: 'center',
+        margin: [0, 2, 0, 2]
+      },
+      {
+        text: register.attendantName,
+        fontSize: 9,
+        alignment: 'center',
+        margin: [0, 2, 0, 2]
+      },
+      {
+        text: register.unitName,
+        fontSize: 9,
+        alignment: 'center',
+        margin: [0, 2, 0, 2]
+      }
     ];
+  });
 
-    let content = [header, lineHeader];
-    content = [...content, ...body];
-    return content;
-  }
-
-  GerarDocumento(corpoDocumento) {
-    const documento = {
-      //   pageSize: 'A4',
-      //   pageMargins: [20, 20, 20, 20],
-      //   header: function () {
-      //     return {
-      //       text: 'Relatório de Atendimento',
-      //       alignment: 'center',
-      //       fontSize: 9,
-      //       margin: [0, 10, 0, 0]
-      //     };
-      //   },
-      content: [
-        {
-          layout: 'noBorders',
-          table: {
-            headerRows: 1,
-            widths: ['*', '*', '*', '*', '*', '*', '*'],
-            body: corpoDocumento
-          }
+  const details = [
+    {
+      style: 'tableExample',
+      table: {
+        headerRows: 1,
+        body: [
+          [
+            { text: 'Nome', style: `tableHeader`, alignment: 'center' },
+            { text: 'CPF', style: `tableHeader`, alignment: 'center' },
+            { text: 'Data', style: `tableHeader`, alignment: 'center' },
+            { text: 'Hora', style: `tableHeader`, alignment: 'center' },
+            { text: 'Fila', style: `tableHeader`, alignment: 'center' },
+            { text: 'Analista', style: `tableHeader`, alignment: 'center' },
+            { text: 'Unidade', style: `tableHeader`, alignment: 'center' }
+          ],
+          ...data
+        ]
+      },
+      layout: {
+        fillColor: function (rowIndex) {
+          return rowIndex % 2 === 0 ? '#CCCCCC' : null;
         }
-      ]
-      //   footer: function (currentPage, pageCount) {
-      //     return {
-      //       text: currentPage.toString() + ' de ' + pageCount,
-      //       alignment: 'center',
-      //       fontSize: 9,
-      //       margin: [0, 10, 0, 0]
-      //     };
-      //   },
-      //   styles: {
-      //     reportName: {
-      //       fontSize: 18,
-      //       bold: true,
-      //       alignment: 'center',
-      //       margin: [0, 0, 0, 10]
-      //     }
-      //   }
+      }
+    }
+  ];
+
+  const FooterBody = {
+    columns: [
+      {
+        text: 'Página {{currentPage}} de {{pageCount}}',
+        alignment: 'right',
+        fontSize: 10,
+        bold: true
+      },
+      {
+        text: 'Relatório de Histórico de Atendimento On Line',
+        alignment: 'center',
+        fontSize: 10,
+        bold: true
+      },
+      {
+        text: 'Data: ' + new Date().toLocaleDateString(),
+        alignment: 'left',
+        fontSize: 10,
+        bold: true
+      }
+    ],
+    margin: [0, 20, 0, 0]
+  };
+
+  function Footer(currentPage, pageCount) {
+    return {
+      ...Footer,
+      columns: FooterBody.columns.map((column) => ({
+        ...column,
+        text: column.text
+          .replace('{{currentPage}}', currentPage.toString())
+          .replace('{{pageCount}}', pageCount.toString())
+      }))
     };
-    return documento;
   }
+
+  const docDefinitios = {
+    pagiSize: 'A4',
+    pageMargins: [30, 60, 30, 60],
+    header: reportTitle,
+    content: details,
+    footer: Footer
+  };
+
+  pdfMake.createPdf(docDefinitios).open();
 }
+
+export default printHistoryChats;

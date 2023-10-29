@@ -57,9 +57,9 @@
 .btnsChat {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    width: 30%;
-    margin-left: 10%;
+    justify-content: space-between;
+    width: 40%;
+    margin-left: 5%;
 }
 
 .messagesChat {
@@ -171,5 +171,8 @@
     .headerAwaitList {
         height: 12vh;
         padding: 0;
+    }
+    .btnsChat{
+        width: 50%;
     }
 }

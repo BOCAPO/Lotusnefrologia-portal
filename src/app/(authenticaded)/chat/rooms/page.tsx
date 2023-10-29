@@ -8,6 +8,7 @@ import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
 import ModalError from 'components/ModalError';
 import ModalSuccess from 'components/ModalSuccess';
+import ModalTransferChat from 'components/ModalTransferChat';
 import { LitteText, MediumText2, SmallMediumText } from 'components/Text';
 
 import styles from './rooms.module.css';
@@ -31,7 +32,7 @@ export default function HomeChat(): JSX.Element {
   const [room, setRoom] = React.useState<string>('');
   const [rooms, setRooms] = React.useState(0);
   const [roomsOpen, setRoomsOpen] = React.useState([] as DataChatsModel[]);
-  const [totalRoomsOpen, setTotalRoomsOpen] = React.useState(0);
+  const [quantityRoomsOpen, setQuantityRoomsOpen] = React.useState(0);
   const [idRoom, setIdRoom] = React.useState(0);
   const [patient, setPatient] = React.useState<DataPatientsModel>();
   const [message, setMessage] = React.useState('');
@@ -39,6 +40,8 @@ export default function HomeChat(): JSX.Element {
   const [showModalSuccess, setShowModalSuccess] = React.useState(false);
   const [messageError, setMessageError] = React.useState('');
   const [showModalError, setShowModalError] = React.useState(false);
+  const [showModalTransferChat, setShowModalTransferChat] =
+    React.useState(false);
   const [messages, setMessages] = React.useState<
     Array<{ user: string; message: string; sender_type: string | null }>
   >([
@@ -56,7 +59,7 @@ export default function HomeChat(): JSX.Element {
   React.useEffect(() => {
     getNumberRooms();
     getRoomsOpen();
-  }, [rooms, totalRoomsOpen]);
+  }, [rooms, quantityRoomsOpen]);
 
   React.useEffect(() => {
     Pusher.logToConsole = true;
@@ -130,7 +133,7 @@ export default function HomeChat(): JSX.Element {
     const response = await getOpenedRooms();
     if (response) {
       setRoomsOpen(response.data as unknown as DataChatsModel[]);
-      setTotalRoomsOpen(response.data.length as number);
+      setQuantityRoomsOpen(response.data.length as number);
     }
   }
 
@@ -141,7 +144,7 @@ export default function HomeChat(): JSX.Element {
       setPatient(response.data.patient as DataPatientsModel);
       setRoom(response.data.room_uuid as string);
       setIdRoom(response.data.id as number);
-      setTotalRoomsOpen(totalRoomsOpen + 1);
+      setQuantityRoomsOpen(quantityRoomsOpen + 1);
       setMessages(
         response.data.messages as unknown as Array<{
           user: string;
@@ -172,7 +175,7 @@ export default function HomeChat(): JSX.Element {
       setRooms(rooms);
       setPatient(undefined);
       setRoom('');
-      setTotalRoomsOpen(totalRoomsOpen - 1);
+      setQuantityRoomsOpen(quantityRoomsOpen - 1);
       setMessages([]);
       setMessage('');
       setMessageSuccess(Strings.successCloseRoom);
@@ -238,6 +241,13 @@ export default function HomeChat(): JSX.Element {
     setTotalMessages(selectedRoom[0].messages.length as number);
   }
 
+  async function closeByTransfer(action: boolean) {
+    if (action) {
+      setQuantityRoomsOpen(quantityRoomsOpen - 1);
+      setPatient(undefined);
+      localStorage.removeItem(`send-message-${room}`);
+    }
+  }
   return (
     <React.Fragment>
       <MenuTop />
@@ -339,13 +349,15 @@ export default function HomeChat(): JSX.Element {
                   />
                 </div>
                 <div className={styles.btnsChat}>
-                  {/* <div>
+                  <div>
                     <Button
                       title={Strings.transfer}
                       type="cancel"
-                      onClick={() => {}}
+                      onClick={() => {
+                        setShowModalTransferChat(true);
+                      }}
                     />
-                  </div> */}
+                  </div>
                   <div>
                     <Button
                       title={Strings.finally}
@@ -482,6 +494,16 @@ export default function HomeChat(): JSX.Element {
         show={showModalError}
         onHide={() => {
           setShowModalError(false);
+        }}
+      />
+      <ModalTransferChat
+        show={showModalTransferChat}
+        onHide={() => {
+          setShowModalTransferChat(false);
+        }}
+        room_uuid={room}
+        onClose={(action: boolean) => {
+          closeByTransfer(action);
         }}
       />
     </React.Fragment>

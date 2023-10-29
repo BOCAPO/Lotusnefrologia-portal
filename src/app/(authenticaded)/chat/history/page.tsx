@@ -20,7 +20,7 @@ import {
   getHistoryWithoutPagination,
   getSearchedHistory
 } from 'services/chat';
-import printHistoryChats from 'utils/print1.js';
+import printHistoryChats from 'utils/print.js';
 
 export default function HistoryChatsPage(): JSX.Element {
   const [data, setData] = React.useState<any>(null);

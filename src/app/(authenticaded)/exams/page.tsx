@@ -44,7 +44,7 @@ export default function ExamsPage(): JSX.Element {
     dataUpdated.data = dataUpdated?.data?.map((item: any) => {
       item.patientName = item.patient.name;
       item.specialistName =
-        item.specialist_id !== null ? item.specialist.name : 'Não informado';
+        item.specialist !== null ? item.specialist.name : 'Não informado';
       item.exam_type = item.exam_type.description;
       item.attachment = item.path;
       return item;
@@ -90,7 +90,7 @@ export default function ExamsPage(): JSX.Element {
       dataUpdated.data = dataUpdated?.data?.map((item: any) => {
         item.patientName = item.patient.name;
         item.specialistName =
-          item.specialist_id !== null ? item.specialist.name : 'Não informado';
+          item.specialist !== null ? item.specialist.name : 'Não informado';
         item.exam_type = item.exam_type.description;
         item.attachment = item.path;
         return item;

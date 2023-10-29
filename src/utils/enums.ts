@@ -29,3 +29,10 @@ export const statusOrders = [
   { id: 3, status: 'Entregue' },
   { id: 4, status: 'Cancelado' }
 ];
+
+export const rooms = [
+  { id: 1, name: 'Financeiro' },
+  { id: 2, name: 'Comercial' },
+  { id: 3, name: 'Clínica' },
+  { id: 4, name: 'Suporte Técnico' }
+];
