@@ -46,6 +46,10 @@ export async function getHistoryWithoutPagination() {
   return await getJson('/chat?page=false');
 }
 
+export async function transferChat(roomUUID: string, room: number) {
+  return await getJson(`/chat/transfer/${roomUUID}/${room}`);
+}
+
 export async function getSearchedHistory(search: string) {
   return await getJson(`/chat?search=${search}`);
 }

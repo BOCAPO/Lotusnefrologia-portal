@@ -363,5 +363,6 @@ export const Strings = {
   attendRoom: 'Não há ninguém na espera para atendimento',
   successCloseRoom: 'Atendimento finalizado com sucesso!',
   sendMessageError: 'Erro ao enviar mensagem',
-  messageErrorUpdateUnit: 'Erro ao atualizar unidade'
+  messageErrorUpdateUnit: 'Erro ao atualizar unidade',
+  messageSelectRoomToTransfer: 'Selecione uma sala para transferir'
 };
