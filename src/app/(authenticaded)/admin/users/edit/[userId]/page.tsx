@@ -228,7 +228,7 @@ export default function EditUserPage() {
         <div className={styles.bodyNewUser}>
           <div className={styles.headerNewUser}>
             <SmallMediumText
-              text={Strings.insertUser}
+              text={Strings.updateUser}
               bold={true}
               color={Colors.gray90}
               style={{ lineHeight: '5px' }}
@@ -374,6 +374,7 @@ export default function EditUserPage() {
                   data={states}
                   error={errors.state?.message}
                   onSelectChange={handleStateCode}
+                  label={Strings.labelState}
                   containerStyle={{ width: '25%' }}
                   disabled={true}
                 />
@@ -384,6 +385,7 @@ export default function EditUserPage() {
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
                   error={errors.city?.message}
+                  label={Strings.labelCity}
                   containerStyle={{ width: '25%' }}
                   disabled={true}
                 />
@@ -392,6 +394,7 @@ export default function EditUserPage() {
                   name="status"
                   item={Strings.status}
                   data={statusGeneral}
+                  label={Strings.status}
                   error={errors.status?.message}
                   containerStyle={{ width: '25%' }}
                 />

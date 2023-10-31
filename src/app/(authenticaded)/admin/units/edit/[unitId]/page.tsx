@@ -192,7 +192,7 @@ export default function EditUnitPage() {
         <div className={styles.bodyEditUnit}>
           <div className={styles.headerEditUnit}>
             <SmallMediumText
-              text={Strings.editUnit}
+              text={Strings.updateUnit}
               bold={true}
               color={Colors.gray90}
               style={{ lineHeight: '3px' }}
@@ -371,12 +371,13 @@ export default function EditUnitPage() {
               <div style={{ width: '50%' }}>
                 <div
                   style={{ width: '100%' }}
-                  className={styles.EditUnitDataGeografic}
+                  className={styles.editUnitDataGeografic}
                 >
                   <SelectForm
                     control={control}
                     item={Strings.labelState}
                     name="state"
+                    label={Strings.labelState}
                     disabled={true}
                     data={states !== null ? states : null}
                     onSelectChange={handleStateCode}
@@ -387,6 +388,7 @@ export default function EditUnitPage() {
                     control={control}
                     item={Strings.labelCity}
                     name="cityCode"
+                    label={Strings.labelCity}
                     disabled={true}
                     data={cities !== null ? cities : null}
                     isLoading={isLoadingCities}
@@ -396,6 +398,7 @@ export default function EditUnitPage() {
                   <SelectForm
                     control={control}
                     item={Strings.status}
+                    label={Strings.status}
                     name="status"
                     data={statusGeneral}
                     error={errors.status?.message}
