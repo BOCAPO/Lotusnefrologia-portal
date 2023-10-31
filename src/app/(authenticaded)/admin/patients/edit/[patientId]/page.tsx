@@ -126,7 +126,7 @@ export default function EditPatientPage() {
     setValue('lot', patient.lot);
     setValue('complement', patient.complement!);
     setValue('status', patient.status);
-    setValue('unit', patient.unit);
+    setValue('unit', patient.unit.toString());
     setValue('status', patient.status + 1);
 
     setLoading(false);
@@ -360,6 +360,7 @@ export default function EditPatientPage() {
                   error={errors.state?.message}
                   onSelectChange={handleStateCode}
                   disabled={true}
+                  label={Strings.labelState}
                   containerStyle={{ width: '25%' }}
                 />
                 <SelectForm
@@ -370,6 +371,7 @@ export default function EditPatientPage() {
                   disabled={true}
                   isLoading={isLoadingCities}
                   error={errors.city?.message}
+                  label={Strings.labelCity}
                   containerStyle={{ width: '25%' }}
                 />
                 <SelectForm
@@ -377,6 +379,7 @@ export default function EditPatientPage() {
                   item={Strings.status}
                   name="status"
                   data={statusGeneral}
+                  label={Strings.status}
                   error={errors.status?.message}
                   containerStyle={{ width: '25%' }}
                 />

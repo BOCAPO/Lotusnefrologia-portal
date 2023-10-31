@@ -96,7 +96,7 @@
 
 .divTableLinkedUnits {
     width: 30% !important;
-    height: 25vh;
+    height: 32vh;
     margin-bottom: 2vh;
     display: flex;
     align-items: flex-start !important;
@@ -160,7 +160,11 @@
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .bodyNewUser {
-        height: 79%;
+        height: 80%;
         margin: 2.5vh 5%;
+    }
+
+    .divTableLinkedUnits{
+        height: 25vh;
     }
 }

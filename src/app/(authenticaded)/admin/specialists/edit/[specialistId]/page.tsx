@@ -395,6 +395,7 @@ export default function EditSpecialistPage() {
                   disabled={true}
                   data={states}
                   error={errors.state?.message}
+                  label={Strings.labelState}
                   onSelectChange={handleStateCode}
                   containerStyle={{ width: '25%' }}
                 />
@@ -405,12 +406,14 @@ export default function EditSpecialistPage() {
                   name="citieCode"
                   data={cities !== null ? cities : null}
                   isLoading={isLoadingCities}
+                  label={Strings.labelCity}
                   error={errors.city?.message}
                   containerStyle={{ width: '25%' }}
                 />
                 <SelectForm
                   control={control}
                   name="status"
+                  label={Strings.status}
                   data={statusGeneral}
                   error={errors.status?.message}
                   containerStyle={{ width: '25%' }}

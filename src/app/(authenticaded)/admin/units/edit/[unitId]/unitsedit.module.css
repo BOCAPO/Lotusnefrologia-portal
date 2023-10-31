@@ -31,6 +31,7 @@
     flex-direction: column;
     align-items: center;
     padding: 0 2%;
+    min-height: 57vh;
 }
 
 .formEditUnit>div {
@@ -51,7 +52,7 @@
     margin: 4% 0;
 }
 
-.EditUnitDataGeografic {
+.editUnitDataGeografic {
     margin-bottom: 2vh;
     width: 100%;
     display: flex;
@@ -60,7 +61,7 @@
     justify-content: space-between;
 }
 
-.EditUnitDataGeografic select {
+.editUnitDataGeografic select {
     height: 40px;
     border: 1px solid #E5E5E5;
     border-radius: 5px;
@@ -69,7 +70,7 @@
     color: #8C8E90;
 }
 
-.EditUnitDataGeografic select:active, .EditUnitDataGeografic select:focus {
+.editUnitDataGeografic select:active, .editUnitDataGeografic select:focus {
     border: 1px solid #A1E2A5;
     box-shadow: 0px 3px 6px #A1C9A47F;
     outline: none;
@@ -82,6 +83,7 @@
     border-top: 0.5px solid #D0D1D5;
     height: 3vh;
     padding: 1.5vh 2% 0 2%;
+    margin-top: 5vh;
 }
 
 .btnSaveEditUnit {
@@ -102,19 +104,9 @@
     padding: 20px;
 }
 
-@media screen and (max-height: 1080px) and (min-height: 982px) {
-    .footerEditUnit {
-        margin-top: 9.5vh;
-    }
-
-    .marginBotton {
-        margin-bottom: 2.5vh;
-    }
-}
-
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .footerEditUnit {
-        margin-top: 1vh;
+        margin-top: 2vh;
     }
 
     .marginBotton {
