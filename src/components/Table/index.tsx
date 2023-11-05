@@ -30,11 +30,18 @@ export function Table({
   const [selectedOption, setSelectedOption] = React.useState<
     string | undefined
   >(response?.links[0]?.label);
+  const [selectedId, setSelectedId] = React.useState<string>('');
 
   function handleRowClick(event: React.MouseEvent<HTMLTableRowElement>) {
     const item = event.currentTarget.getAttribute('data-id');
     if (item !== undefined && onItemClick) {
       onItemClick(item);
+    }
+
+    if (JSON.parse(item!).id !== undefined) {
+      if (JSON.parse(item!).room_uuid !== undefined) {
+        setSelectedId(JSON.parse(item!).room_uuid);
+      }
     }
   }
 
@@ -97,6 +104,16 @@ export function Table({
                     key={index}
                     data-id={JSON.stringify(row)}
                     onClick={handleRowClick}
+                    style={{
+                      backgroundColor:
+                        JSON.parse(JSON.stringify(row)).room_uuid === selectedId
+                          ? Colors.greenDark
+                          : 'transparent',
+                      color:
+                        JSON.parse(JSON.stringify(row)).room_uuid === selectedId
+                          ? Colors.white
+                          : Colors.gray90
+                    }}
                   >
                     {keys?.map((key, index) => (
                       <td key={index} className={styles.rows}>
