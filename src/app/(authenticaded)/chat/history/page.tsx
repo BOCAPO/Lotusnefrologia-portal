@@ -12,29 +12,28 @@ import styles from './history.module.css';
 import { Strings } from 'assets/Strings';
 import { Colors } from 'configs/Colors_default';
 import { format } from 'date-fns';
-import { DataHistoryChatsModel } from 'models/DataChatsModel';
+import { DataChatsModel } from 'models/DataChatsModel';
 import { ResponseGetModel } from 'models/ResponseGetModel';
 import {
   getHistory,
+  getHistoryMessages,
   getHistoryPerPage,
-  getHistoryWithoutPagination,
   getSearchedHistory
 } from 'services/chat';
 import printHistoryChats from 'utils/print.js';
 
 export default function HistoryChatsPage(): JSX.Element {
   const [data, setData] = React.useState<any>(null);
-  const [dataComplete, setDataComplete] = React.useState<any>(null);
   const [quantityRegisters, setQuantityRegisters] = React.useState<number>(0);
   const [search, setSearch] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [page, setPage] = React.useState<number>(1);
+  const [dataMessages, setDataMessages] = React.useState<any>(null);
 
   React.useEffect(() => {
     if (search === '') {
       getChatHistory();
     }
-    getAllHistoryChat();
   }, [quantityRegisters, page, search]);
 
   async function getChatHistory() {
@@ -96,33 +95,33 @@ export default function HistoryChatsPage(): JSX.Element {
     setIsLoading(false);
   }
 
-  async function getAllHistoryChat() {
-    const response = await getHistoryWithoutPagination();
-    let dataUpdated = response.data as unknown as DataHistoryChatsModel[];
-    dataUpdated = dataUpdated?.map((item: any) => {
-      item.patientName = item.patient.name;
-      item.cpf = item.patient.cpf;
-      item.Date =
-        item.start_time !== null
-          ? format(new Date(item.start_time.slice(0, 10)), 'dd/MM/yyyy')
-          : 'Não informado';
-      item.Time =
-        item.start_time !== null
-          ? item.start_time.slice(11, 16)
-          : 'Não informado';
-      item.roomName =
-        item.room.name !== null ? item.room.name : 'Não informado';
-      item.attendantName =
-        item.attendant !== null ? item.attendant.name : 'Não informado';
-      item.unitName =
-        item.patient.unit.lenght > 0
-          ? item.patient.unit[0].name
-          : 'Não informado';
+  // async function getAllHistoryChat() {
+  //   const response = await getHistoryWithoutPagination();
+  //   let dataUpdated = response.data as unknown as DataHistoryChatsModel[];
+  //   dataUpdated = dataUpdated?.map((item: any) => {
+  //     item.patientName = item.patient.name;
+  //     item.cpf = item.patient.cpf;
+  //     item.Date =
+  //       item.start_time !== null
+  //         ? format(new Date(item.start_time.slice(0, 10)), 'dd/MM/yyyy')
+  //         : 'Não informado';
+  //     item.Time =
+  //       item.start_time !== null
+  //         ? item.start_time.slice(11, 16)
+  //         : 'Não informado';
+  //     item.roomName =
+  //       item.room.name !== null ? item.room.name : 'Não informado';
+  //     item.attendantName =
+  //       item.attendant !== null ? item.attendant.name : 'Não informado';
+  //     item.unitName =
+  //       item.patient.unit.lenght > 0
+  //         ? item.patient.unit[0].name
+  //         : 'Não informado';
 
-      return item;
-    });
-    setDataComplete(dataUpdated);
-  }
+  //     return item;
+  //   });
+  //   setDataComplete(dataUpdated);
+  // }
 
   const handleSelectionPage = (selectedValue: string) => {
     setPage(parseInt(selectedValue));
@@ -166,6 +165,18 @@ export default function HistoryChatsPage(): JSX.Element {
     }
   }
 
+  async function handleDataChat(data: string) {
+    const dataMensagens = await getHistoryMessages(JSON.parse(data).room_uuid);
+    if (
+      dataMensagens.data !== null &&
+      dataMensagens.data !== undefined &&
+      dataMensagens.data[0] !== undefined &&
+      (dataMensagens.data[0] as DataChatsModel).messages.length > 0
+    ) {
+      setDataMessages((dataMensagens.data[0]! as DataChatsModel).messages);
+    }
+  }
+
   return (
     <React.Fragment>
       <MenuTop />
@@ -175,7 +186,7 @@ export default function HistoryChatsPage(): JSX.Element {
             <Button
               title={Strings.print}
               type="secondary"
-              onClick={() => printHistoryChats(dataComplete)}
+              onClick={() => printHistoryChats(dataMessages)}
             />
           </div>
           <div className={styles.searchBar}>
@@ -210,6 +221,7 @@ export default function HistoryChatsPage(): JSX.Element {
           isLoading={isLoading}
           headersResponse={Strings.headersHistoryChatResponse}
           onClick={handleSelectionPage}
+          onItemClick={handleDataChat}
         />
       </div>
     </React.Fragment>

@@ -5,7 +5,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { useForm } from 'react-hook-form';
 
-import { Button as ButtonPersonal } from 'components/Button';
+import { Button } from 'components/Button';
 import ColorSelector from 'components/ColorSelector';
 import { Icon, TypeIcon } from 'components/Icone';
 import { InputForm } from 'components/Input';
@@ -633,7 +633,7 @@ export default function AppointmentsPage(): JSX.Element {
             </Tab>
           </Tabs>
           <div className={styles.btnNewAppointment}>
-            <ButtonPersonal
+            <Button
               title={Strings.makeAppointment}
               type="secondary"
               onClick={() => {
@@ -769,20 +769,20 @@ export default function AppointmentsPage(): JSX.Element {
             />
           </div>
           <div className={styles.btnsDetailsAppointments}>
-            <ButtonPersonal
+            <Button
               title={Strings.save}
               type="secondary"
               onClick={handleSubmit(handleUpdateAppointment)}
             />
-            <ButtonPersonal title={Strings.print} type="cancel" />
-            <ButtonPersonal
+            <Button title={Strings.print} type="cancel" />
+            <Button
               title={Strings.cancel}
               type="secondary"
               onClick={() => {
                 handleCancelAppointment();
               }}
             />
-            <ButtonPersonal
+            <Button
               title={Strings.clear}
               type="cancel"
               onClick={() => {
