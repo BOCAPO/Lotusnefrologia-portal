@@ -1,10 +1,12 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
+const baseURL = process.env.REACT_APP_API_URL;
+
 const slice = createSlice({
   name: 'portal',
   initialState: {
     isLogged: false,
-    baseURL: 'https://lotus.1boaideia.com.br/api'
+    baseURL: baseURL
   },
   reducers: {
     setLogged: (state, action) => {

@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React from 'react';
+import { Modal } from 'react-bootstrap';
 
 import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
-import Modal from 'components/ModalBoxExams';
 import { TableExams } from 'components/TableExams';
 
 import styles from './exams.module.css';
