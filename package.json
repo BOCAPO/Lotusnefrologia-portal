@@ -24,7 +24,7 @@
     "dotenv": "^16.3.1",
     "eslint-config-next": "13.4.9",
     "moment": "^2.29.4",
-    "next": "^13.5.6",
+    "next": "^14.0.3",
     "pdfmake": "^0.2.7",
     "pusher-js": "^8.3.0",
     "react": "18.2.0",
