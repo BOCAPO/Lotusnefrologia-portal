@@ -1,6 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL = 'https://lotusosasco.ddns.net/api';
 
 const slice = createSlice({
   name: 'portal',
