@@ -115,7 +115,7 @@ export default function EditUnitPage() {
       'state',
       unit.city?.state_code !== undefined ? unit.city.state_code : ''
     );
-    setValue('complement', unit.complement!);
+    setValue('complement', unit.complement !== null ? unit.complement : '');
     setValue('linkFacebook', unit.facebook_link!);
     setValue('linkInstagram', unit.instagram_link!);
     setValue('linkSite', unit.site_link!);
@@ -147,7 +147,7 @@ export default function EditUnitPage() {
       complement: data.complement?.toString(),
       facebook_link: data.linkFacebook?.toString(),
       instagram_link: data.linkInstagram?.toString(),
-      site_link: data.linkSite.toString(),
+      site_link: data.linkSite?.toString(),
       status: Number(data.status) - 1,
       city_name: '',
       state_name: ''

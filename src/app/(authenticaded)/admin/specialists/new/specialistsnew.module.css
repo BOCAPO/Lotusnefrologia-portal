@@ -25,6 +25,10 @@
     margin-bottom: 2vh;
 }
 
+.marginBottom{
+    margin-bottom: 3vh;
+}
+
 .formNewSpecialist {
     width: 100%;
     display: flex;
@@ -155,12 +159,18 @@
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .divTableLinkedUnits {
-        height: 24vh;
+        height: 23vh;
     }
     .tableLinkedUnits tbody tr{
         height: 30px;
     }
     .bodyNewSpecialist{
-        height: 78%;
+        height: 79%;
+    }
+    .marginBottom{
+        margin-bottom: 3.5vh;
+    }
+    .footerNewSpecialist {
+        padding: 1vh 2% 0 2%;
     }
 }

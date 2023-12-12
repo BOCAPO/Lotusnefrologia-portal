@@ -169,7 +169,10 @@ export default function EditUserPage() {
       setValue('number', dataUser.number);
       setValue('block', dataUser.block!);
       setValue('lot', dataUser.lot!);
-      setValue('complement', dataUser.complement!);
+      setValue(
+        'complement',
+        dataUser.complement !== null ? dataUser.complement : ''
+      );
       setValue('cityCode', dataUser.city_code);
       setValue('status', dataUser.status + 1);
     }
@@ -190,7 +193,7 @@ export default function EditUserPage() {
       number: data.number.toString(),
       block: data.block.toString(),
       lot: data.lot.toString(),
-      complement: data.complement.toString(),
+      complement: data.complement?.toString(),
       status: Number(data.status) - 1,
       units: unitsSelected,
       rooms: roomsSelected
@@ -538,7 +541,7 @@ export default function EditUserPage() {
       <ModalSuccess
         show={showModalSuccess}
         onHide={() => setShowModalSuccess(false)}
-        message={Strings.messageSuccessInsertUser}
+        message={Strings.messageSuccessUpdateUser}
       />
     </React.Fragment>
   );
