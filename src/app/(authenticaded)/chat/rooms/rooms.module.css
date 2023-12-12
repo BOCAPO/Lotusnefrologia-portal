@@ -161,11 +161,11 @@
 
 @media screen and (max-height: 981px) and (min-height: 740px) {
     .bodyFormFirstColumn {
-        height: 78vh;
+        height: 77vh;
     }
 
     .bodyFormSecondColumn {
-        height: 78vh;
+        height: 77vh;
     }
 
     .headerAwaitList {
