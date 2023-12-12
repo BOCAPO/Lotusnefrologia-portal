@@ -109,7 +109,7 @@ export default function EditSpecialistPage() {
       number: data.number.toString(),
       block: data.block.toString(),
       lot: data.lot.toString(),
-      complement: data.complement.toString(),
+      complement: data.complement?.toString(),
       units: unitsSelected,
       city_code: data.citieCode.toString(),
       specialties: speciatiesSelected,
