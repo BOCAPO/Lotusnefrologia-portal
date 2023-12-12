@@ -1,6 +1,6 @@
 {
   "name": "lotus-nefrologia-portal",
-  "version": "0.1.9",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -24,7 +24,7 @@
     "dotenv": "^16.3.1",
     "eslint-config-next": "13.4.9",
     "moment": "^2.29.4",
-    "next": "^13.4.10",
+    "next": "^14.0.4",
     "pdfmake": "^0.2.7",
     "pusher-js": "^8.3.0",
     "react": "18.2.0",

@@ -108,7 +108,7 @@ export default function NewUnitPage() {
       complement: data.complement?.toString(),
       facebook_link: data.linkFacebook?.toString(),
       instagram_link: data.linkInstagram?.toString(),
-      site_link: data.linkSite.toString(),
+      site_link: data.linkSite?.toString(),
       status: Number(data.status) - 1,
       city_name: null,
       state_name: null

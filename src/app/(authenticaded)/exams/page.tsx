@@ -2,11 +2,11 @@
 'use client';
 
 import React from 'react';
-import { Modal } from 'react-bootstrap';
 
 import { Button } from 'components/Button';
 import { Icon, TypeIcon } from 'components/Icone';
 import { MenuTop } from 'components/MenuTop';
+import ModalBoxExams from 'components/ModalBoxExams';
 import { TableExams } from 'components/TableExams';
 
 import styles from './exams.module.css';
@@ -152,7 +152,7 @@ export default function ExamsPage(): JSX.Element {
           headersResponse={Strings.headersExamsResponse}
         />
       </div>
-      <Modal
+      <ModalBoxExams
         show={visible}
         onHide={() => {
           setVisible(false);

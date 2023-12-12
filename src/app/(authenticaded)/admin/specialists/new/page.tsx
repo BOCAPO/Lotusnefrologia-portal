@@ -218,7 +218,7 @@ export default function NewSpecialistPage() {
           />
         </div>
         <div className={styles.formNewSpecialist}>
-          <div style={{ marginBottom: '3vh' }}>
+          <div className={styles.marginBottom}>
             <InputForm
               placeholder={Strings.placeholderCPF}
               label={Strings.labelCPF}
@@ -242,7 +242,7 @@ export default function NewSpecialistPage() {
               error={errors.name?.message?.toString()}
             />
           </div>
-          <div style={{ marginBottom: '3vh' }}>
+          <div className={styles.marginBottom}>
             <InputForm
               placeholder={Strings.placeholderEmail}
               label={Strings.labelEmail}
@@ -275,7 +275,7 @@ export default function NewSpecialistPage() {
               style={{ height: '40px', padding: '22px' }}
             />
           </div>
-          <div style={{ marginBottom: '3vh' }}>
+          <div className={styles.marginBottom}>
             <InputForm
               placeholder={Strings.placeholderZipCode}
               label={Strings.labelZipCode}

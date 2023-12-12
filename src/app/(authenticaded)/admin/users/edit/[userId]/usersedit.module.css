@@ -97,7 +97,7 @@
 .divTableLinkedUnits {
     width: 30% !important;
     height: 32vh;
-    margin-bottom: 2vh;
+    margin-bottom: 0vh;
     display: flex;
     align-items: flex-start !important;
     justify-content: flex-start !important;
@@ -166,5 +166,6 @@
 
     .divTableLinkedUnits{
         height: 25vh;
+        margin-bottom: 2vh;
     }
 }

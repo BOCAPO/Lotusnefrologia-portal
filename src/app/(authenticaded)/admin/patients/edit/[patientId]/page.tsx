@@ -119,12 +119,15 @@ export default function EditPatientPage() {
     );
     setValue('zipCode', patient.zip_code);
     setValue('birthDate', format(new Date(patient.birthday), 'yyyy-MM-dd'));
-    setValue('cityCode', patient.city_code);
+    setValue('citieCode', patient.city_code);
     setValue('street', patient.street);
     setValue('number', patient.number);
     setValue('block', patient.block);
     setValue('lot', patient.lot);
-    setValue('complement', patient.complement!);
+    setValue(
+      'complement',
+      patient.complement !== null ? patient.complement : ''
+    );
     setValue('status', patient.status);
     setValue('unit', patient.unit.toString());
     setValue('status', patient.status + 1);
@@ -156,7 +159,7 @@ export default function EditPatientPage() {
       phone_secondary: data.phoneSecondary.toString(),
       zip_code: data.zipCode.toString(),
       birthday: data.birthDate.toString(),
-      city_code: data.cityCode.toString(),
+      city_code: data.citieCode.toString(),
       street: data.street.toString(),
       number: data.number.toString(),
       block: data.block?.toString(),
@@ -366,11 +369,11 @@ export default function EditPatientPage() {
                 <SelectForm
                   control={control}
                   item={Strings.labelCity}
-                  name="cityCode"
+                  name="citieCode"
                   data={cities !== null ? cities : null}
                   disabled={true}
                   isLoading={isLoadingCities}
-                  error={errors.city?.message}
+                  error={errors.citieCode?.message}
                   label={Strings.labelCity}
                   containerStyle={{ width: '25%' }}
                 />
