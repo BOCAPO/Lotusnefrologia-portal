@@ -1,6 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-const baseURL = 'https://lotusosasco.ddns.net/api';
+const baseURL = 'https://lotusweb.2boaideia.com.br/api';
 
 const slice = createSlice({
   name: 'portal',
